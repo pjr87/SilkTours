@@ -17,6 +17,14 @@ def get_user(username):
 def set_user(username):
     return 'Creating new User %s' % username
 
+@app.route('/users/<username>', methods=['PUT'])
+def edit_user(username):
+    return 'Editing new User %s' % username
+
+@app.route('/users/<username>', methods=['DELETE'])
+def delete_user(username):
+    return 'Deleting new User %s' % username
+
 if __name__ == "__main__":
     app.run()
 
