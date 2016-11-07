@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Sign = (props) => {
+const Sign = () => {
   return (
     <div>
-      <h1>Sign In</h1>
+      <h2>Sign In</h2>
     </div>
   )
 }

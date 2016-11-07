@@ -6,4 +6,4 @@ import Header from './components/Header';
 
 
 const rootElement = document.getElementById('app');
-ReactDOM.render(<ExplorePage/>, rootElement);
+ReactDOM.render(<Header/>, rootElement);

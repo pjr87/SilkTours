@@ -1,18 +1,22 @@
 import React from 'react';
 import style from './style/style.css';
 import Header from './Header';
+import Footer from './Footer';
 
-class ExplorePage extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        name: 'Explore'
-      };
-    }
-    render(){
+const ExplorePage = () => {
         return (
           <div className= {style.exploreMain}>
-            <Header/>
+              <div className={style.main}>
+        	   		<h4>available tours</h4>
+        	   		<div className={style.searchMain}>
+        	   			<h5>search</h5>
+        	   			<input></input>
+        	   			<h5>city</h5>
+        	   			<select></select>
+        	   			<h5>state</h5>
+        	   			<select></select>
+        	   	</div>
+        	   	</div>
                 <div className = {style.exploreBox1}>
                   <h6>philadelphia</h6>
                 </div>
@@ -31,9 +35,9 @@ class ExplorePage extends React.Component {
                 <div className = {style.exploreBox2}>
                   <h6>las vegas</h6>
                 </div>
+            <Footer/>
           </div>
         );
-    }
 }
 
 export default ExplorePage;

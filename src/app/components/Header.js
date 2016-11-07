@@ -7,12 +7,13 @@ import Home from './Home';
 import About from './About';
 import Activities from './Activities';
 import Sign from './Sign';
+import ExplorePage from './ExplorePage';
 
 
 const Header = () => {
   return (
     <Router>
-      <div className="header" id="home">
+      <div className = {style.header} id="home">
       <div className = {style.header_top}>
         <div className={style.wrap}>
           <div className={style.logo}><img src={logoImg}/></div>
@@ -25,10 +26,6 @@ const Header = () => {
               <li><Link to='/sign'>Sign in</Link></li>
             </ul>
             <hr/>
-            <Match exactly pattern='/' component={Home}/>
-            <Match pattern='/activities' component={Activities}/>
-            <Match pattern='/about' component={About}/>
-            <Match pattern='/sign' component={Sign}/>
            </div>
           </div>
           </div>
@@ -37,6 +34,10 @@ const Header = () => {
 	          <h2>call to action</h2>
 	          <h3>call to action</h3>
 	        </div>
+          <Match exactly pattern='/' component={ExplorePage}/>
+          <Match pattern='/activities' component={Activities}/>
+          <Match pattern='/about' component={About}/>
+          <Match pattern='/sign' component={Sign}/>
         </div>
     </Router>
   );
