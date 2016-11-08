@@ -1,11 +1,13 @@
 import boto3
 import uuid
+from interests import Interests
 
 
 class User:
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
-             "tours_completed", "phone", "description", "dob", "password"}
+             "tours_completed", "phone", "description", "dob", "password",
+             "id"}
 
     # A set of properties required to create a new user
     REQUIRED_PROPS = {"name", "description"}  # TODO Determine required props
@@ -13,7 +15,7 @@ class User:
     # A set of properties visible to consumer of the API
     VISABLE_PROPS = {"name", "profilePicture", "location", "phone",
                      "description", "dob", "address", "city", "country",
-                     "zip"}
+                     "zip", "id"}
 
     def __init__(self):
         self.props = {}
@@ -31,6 +33,7 @@ class User:
         if "Item" not in response:
             return
         self.parseResponse(response)
+        # Interests().getByUser(self)
 
     def parseResponse(self, response):
         if "Item" not in response:
@@ -69,6 +72,10 @@ class User:
             if key not in self.props or (self.props[key] != props[key]):
                 self.props[key] = props[key]
                 self.changed.add(key)
+
+    def delete(self, id):
+        # marks as delete rather than deleting
+        pass
 
     def serialize(self):
         return self.props
