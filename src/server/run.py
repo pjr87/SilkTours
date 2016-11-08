@@ -3,12 +3,13 @@
 #app.run(host='0.0.0.0', port=8000, debug=True)
 
 from app.database_module.controlers import dyanamoDbController
+from app.s3_module.controlers import S3Controller
 from flask import Flask
 from flask import jsonify
 app = Flask(__name__)
 
 db = dyanamoDbController()
-db.listTables()
+s3 = S3Controller()
 
 @app.route("/")
 def hello():
@@ -24,22 +25,31 @@ def set_user(username):
 
 @app.route('/tours', methods=['GET'])
 def get_tour_list():
-    tour_list = {}
-    tour_list['key'] = 'value'
-    return jsonify(tour_list)
+    return db.list_tours()
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return 'Tour id %s' % db.listTables()
+    return db.list_tour_with_id(tourid)
 
 @app.route('/tours/<tourname>', methods=['POST'])
 def set_tour(tourname):
-    return 'Tour post Name %s' % tourname
+    return db.post_tour_with_name(tourname)
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return 'Tour put Id %s' % tourid
+    return db.edit_tour_with_id(tourid)
 
+@app.route('/pics', methods=['GET'])
+def get_tour_pics():
+    return s3.getItems()
+
+@app.route('/ratings/<ratingid>', methods=['GET'])
+def get_rating(ratingid):
+    return db.list_rating_with_id(ratingid)
+
+@app.route('/tourevents/<teid>', methods=['GET'])
+def get_tourevent(teid):
+    return db.list_tourevent_with_id(teid)
 
 
 if __name__ == "__main__":
