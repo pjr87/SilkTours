@@ -1,5 +1,7 @@
-import path from 'path';
-import Express from 'express';
+//import Express from 'express';
+//import path from 'path';
+var Express = require('express');
+var path = require('path');
 
 var app = Express();
 var server;
