@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import FacebookLogin from '/Facebook';
+/*import FacebookLogin from './Facebook/facebook';*/
 
 const Sign = (response) => {
   return (
@@ -9,7 +9,7 @@ const Sign = (response) => {
     </div>
   )
 }
-
+/*
 ReactDOM.render(
   <FacebookLogin
     appId="606443696175641"
@@ -17,7 +17,7 @@ ReactDOM.render(
     callback={responseFacebook}
     icon="fa-facebook"
   />,
-  document.getElementById('demo')
+  document.getElementById('app')
 );
-
+*/
 export default Sign;
