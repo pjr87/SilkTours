@@ -21,7 +21,7 @@ class Cart extends React.Component {
    */
   render () {
     return <div className="cart">
-      <h2>{"This is a  Test Title"/*this.props.cart.title*/}</h2>
+      <h2>{"This is a Test CartZZZZss Title"/*this.props.cart.title*/}</h2>
       <ul>
         {this.props.cart.items.map(function (item, key) {
           return <Item key={key} item={item} />;
