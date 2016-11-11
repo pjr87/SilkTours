@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
@@ -10,16 +11,33 @@ module.exports = {
     //publicPath: "./src/app/",
     //filename: 'bundle.js'
     path: path.resolve(__dirname, '../dist'),
-    filename: 'bundle.js' 
+    filename: 'bundle.js'
   },
 
   module: {
     loaders: [
       {
         test: /src\/.+.js$/,
+        loader: 'babel',
         exclude: /node_modules/,
-        loader: 'babel'
-      }
+        query: {
+            cacheDirectory: true,
+            presets: ['es2015', 'react'],
+            plugins: ["react-hot-loader/babel"]
+          }
+        },
+        {
+          test: /\.css$/,
+          loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+        },
+        {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          loaders: ['file?hash=sha512&digest=hex&name=[hash].[ext]','image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+          ]
+        }
     ]
-  }
+  },
+  plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+  ]
 };
