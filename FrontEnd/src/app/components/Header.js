@@ -8,7 +8,7 @@ import About from './About';
 import Activities from './Activities';
 import Sign from './Sign';
 import ExplorePage from './ExplorePage';
-
+import MyTours from './MyTours';
 
 const Header = () => {
   return (
@@ -21,7 +21,7 @@ const Header = () => {
           <div className={style.menu}>
             <ul>
               <li><Link to='/'>Home</Link></li>
-              <li><Link to='/activities'>Activities</Link></li>
+              <li><Link to='/myTours'>My Tours</Link></li>
               <li><Link to='/about'>About us</Link></li>
               <li><Link to='/sign'>Sign in</Link></li>
             </ul>
@@ -35,7 +35,7 @@ const Header = () => {
 	          <h3>call to action</h3>
 	        </div>
           <Match exactly pattern='/' component={ExplorePage}/>
-          <Match pattern='/activities' component={Activities}/>
+          <Match pattern='/MyTours' component={MyTours}/>
           <Match pattern='/about' component={About}/>
           <Match pattern='/sign' component={Sign}/>
         </div>
