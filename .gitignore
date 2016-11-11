@@ -28,8 +28,5 @@ build/Release
 node_modules
 dist
 
-<<<<<<< HEAD
 bundle.js
-=======
 .DS_STORE
->>>>>>> Yong
