@@ -1,18 +1,16 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import style from './style/style.css';
 
-class Activities extends React.Component {
-  render(){
+const AvailableToursPage = ( { location } ) => {
   return (
     <div>
       <Header/>
-      <h2>Activities</h2>
+      <h2>{location.query.location}</h2>
+      <h2>AvailableTours</h2>
       <Footer/>
     </div>
   )
 }
-}
 
-export default Activities;
+export default AvailableToursPage;
