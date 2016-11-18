@@ -1,10 +1,12 @@
 import React from 'react';
 import style from './style/style.css';
+import Header from './Header';
 import Footer from './Footer';
 
 const About = () => {
   return (
     <div className= {style.exploreMain}>
+      <Header/>
       <div className={style.main}>
         <h4>mission statement</h4>
         <br/>
