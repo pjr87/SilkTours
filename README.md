@@ -23,18 +23,14 @@ Before the python server can be run, you must have
 - python 2.7
 - pip
 - Flask (run "pip install Flask")
-- boto3 (run "pip install boto3")
+- MySQL (not required for stubbed server)
+- MySQLdb (not required for stubbed server)
 
-To run the stubed out server methods:
+To run the stubbed out server methods:
 ```
 python runStubs.py
 ```
 This will start a python webservice on localhost:5000
-
-In order to run the full version of the server, you must install:
-- Python
-- MySQL
-- MySQLdb
 
 To run the full version of the server:
 ```
