@@ -1,10 +1,11 @@
 from flask import Flask
 from flask import jsonify
+import json
 from flask import request
-from user import User
+#from user import User
 import boto3
 
-from app.database_module.controlers import dyanamoDbController
+from app.database_module.controlers import Tours
 from app.s3_module.controlers import S3Controller
 from flask import Flask
 from flask import jsonify
@@ -12,7 +13,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 
 client = boto3.client('cognito-identity')
-
+tours = Tours()
 
 def checkLogin(id):
     return True
@@ -35,8 +36,6 @@ def notAuthorizedResponse():
     return "<h1>403: Not Authorized. Click <a"
     + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
 
-db = dyanamoDbController()
-s3 = S3Controller()
 
 @app.route("/")
 def hello():
@@ -74,22 +73,21 @@ def edit_user(id):
 
 @app.route('/tours', methods=['GET'])
 def get_tour_list():
-    return db.list_tours()
+    return tours.list_tours()
 
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return db.list_tour_with_id(tourid)
+    return tours.list_tour_with_id(tourid)
 
+@app.route('/tours', methods=['POST'])
+def set_tour():
 
-@app.route('/tours/<tourname>', methods=['POST'])
-def set_tour(tourname):
-    return db.post_tour_with_name(tourname)
-
+    return tours.post_tour_with_name()
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return db.edit_tour_with_id(tourid)
+    return tours.edit_tour_with_id(tourid)
 
 
 @app.route('/pics', methods=['GET'])
@@ -99,12 +97,12 @@ def get_tour_pics():
 
 @app.route('/ratings/<ratingid>', methods=['GET'])
 def get_rating(ratingid):
-    return db.list_rating_with_id(ratingid)
+    return tours.list_rating_with_id(ratingid)
 
 
 @app.route('/tourevents/<teid>', methods=['GET'])
 def get_tourevent(teid):
-    return db.list_tourevent_with_id(teid)
+    return tours.list_tourevent_with_id(teid)
 
 
 if __name__ == "__main__":
