@@ -31,6 +31,11 @@ python runStubs.py
 ```
 This will start a python webservice on localhost:5000
 
+In order to run the full version of the server, you must install:
+- Python
+- MySQL
+- MySQLdb
+
 To run the full version of the server:
 ```
 python run.py
