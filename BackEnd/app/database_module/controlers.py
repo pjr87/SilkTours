@@ -15,7 +15,7 @@ class dyanamoDbController:
                      db="silktours")
 
     def execute(self, sql_cmd):
-        cur = self.db.cursor()
+        cur = self.db.cursor(MySQLdb.cursors.DictCursor)
         cur.execute(sql_cmd)
         return cur.fetchall()
 
