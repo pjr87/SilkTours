@@ -2,11 +2,22 @@ import boto3
 import uuid
 from botocore.exceptions import ClientError
 import json
+import MySQLdb
 
 class dyanamoDbController:
     def __init__(self):
         self.client = boto3.client('dynamodb')
         self.resource = boto3.resource('dynamodb')
+        self.db = MySQLdb.connect(host="silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com",
+                     port=3306,
+                     user="silktours",
+                     passwd="32193330",
+                     db="silktours")
+
+    def execute(self, sql_cmd):
+        cur = self.db.cursor()
+        cur.execute(sql_cmd)
+        return cur.fetchall()
 
     def list_tours(self):
         response = self.client.scan(TableName='Tour') # TODO change 'test' to tour table
