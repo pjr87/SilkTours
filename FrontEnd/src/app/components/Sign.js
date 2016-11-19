@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FacebookLogin from 'react-facebook-login';
+import Header from './Header';
+import Footer from './Footer';
 /*import {Config, CognitoIdentityCredentials} from "aws-sdk";
 import {
   CognitoUserPool,

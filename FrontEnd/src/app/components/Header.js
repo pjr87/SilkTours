@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
+import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import style from './style/style.css';
 import logoImg from './style/images/logo.png';
 import logoImg2 from './style/images/logo2.png';
@@ -8,11 +8,11 @@ import About from './About';
 import Activities from './Activities';
 import Sign from './Sign';
 import ExplorePage from './ExplorePage';
+import AvailableToursPage from './AvailableToursPage';
 
-
-const Header = () => {
-  return (
-    <Router>
+class Header extends React.Component {
+  render(){
+    return(
       <div className = {style.header} id="home">
       <div className = {style.header_top}>
         <div className={style.wrap}>
@@ -34,13 +34,9 @@ const Header = () => {
 	          <h2>call to action</h2>
 	          <h3>call to action</h3>
 	        </div>
-          <Match exactly pattern='/' component={ExplorePage}/>
-          <Match pattern='/activities' component={Activities}/>
-          <Match pattern='/about' component={About}/>
-          <Match pattern='/sign' component={Sign}/>
         </div>
-    </Router>
-  );
-};
+  )
+  }
+}
 
 export default Header;
