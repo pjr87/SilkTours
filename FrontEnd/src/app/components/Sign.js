@@ -1,103 +1,98 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login';
+/*import {Config, CognitoIdentityCredentials} from "aws-sdk";
+import {
+  CognitoUserPool,
+  CognitoUserAttribute
+} from "amazon-cognito-identity-js";
+import appConfig from "./config";
 
-componentDidMount: function() {
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '606443696175641',
-      cookie     : true,  // enable cookies to allow the server to access
-                        // the session
-      xfbml      : true,  // parse social plugins on this page
-      version    : 'v2.1' // use version 2.1
-    });
+Config.region = appConfig.region;
+Config.credentials = new CognitoIdentityCredentials({
+  IdentityPoolId: appConfig.IdentityPoolId
+});
 
-    // Now that we've initialized the JavaScript SDK, we call
-    // FB.getLoginStatus().  This function gets the state of the
-    // person visiting this page and can return one of three states to
-    // the callback you provide.  They can be:
-    //
-    // 1. Logged into your app ('connected')
-    // 2. Logged into Facebook, but not your app ('not_authorized')
-    // 3. Not logged into Facebook and can't tell if they are logged into
-    //    your app or not.
-    //
-    // These three cases are handled in the callback function.
-    FB.getLoginStatus(function(response) {
-      this.statusChangeCallback(response);
-    }.bind(this));
-  }.bind(this);
+const userPool = new CognitoUserPool({
+  UserPoolId: appConfig.UserPoolId,
+  ClientId: appConfig.ClientId,
+});*/
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-},
-
-// Here we run a very simple test of the Graph API after login is
-// successful.  See statusChangeCallback() for when this call is made.
-testAPI: function() {
-  console.log('Welcome!  Fetching your information.... ');
-  FB.api('/me', function(response) {
-  console.log('Successful login for: ' + response.name);
-  document.getElementById('status').innerHTML =
-    'Thanks for logging in, ' + response.name + '!';
-  });
-},
-
-// This is called with the results from from FB.getLoginStatus().
-statusChangeCallback: function(response) {
-  console.log('statusChangeCallback');
+const responseFacebook = (response) => {
   console.log(response);
-  // The response object is returned with a status field that lets the
-  // app know the current login status of the person.
-  // Full docs on the response object can be found in the documentation
-  // for FB.getLoginStatus().
-  if (response.status === 'connected') {
-    // Logged into your app and Facebook.
-    this.testAPI();
-  } else if (response.status === 'not_authorized') {
-    // The person is logged into Facebook, but not your app.
-    document.getElementById('status').innerHTML = 'Please log ' +
-      'into this app.';
-  } else {
-    // The person is not logged into Facebook, so we're not sure if
-    // they are logged into this app or not.
-    document.getElementById('status').innerHTML = 'Please log ' +
-    'into Facebook.';
-  }
-},
+/*
+  // access_token received in the authentication response
+  // from Facebook
+  creds.params.Logins = {};
+  creds.params.Logins['graph.facebook.com'] = response;
 
-// This function is called when someone finishes with the Login
-// Button.  See the onlogin handler attached to it in the sample
-// code below.
-checkLoginState: function() {
-  FB.getLoginStatus(function(response) {
-    this.statusChangeCallback(response);
-  }.bind(this));
-},
-
-handleClick: function() {
-  FB.login(this.checkLoginState());
-},
-
-const Sign = () => {
-  return(
-    <a href="#" onClick={this.handleClick}>Login</a>
-  )
+  // Explicity expire credentials so they are refreshed
+  // on the next request.
+  creds.expired = true;*/
 }
 
-/*ReactDOM.render(
-  <FacebookLogin
-    appId="606443696175641"
-    autoLoad={true}
-    fields="name,email,picture"
-    callback={Sign} />,
-  document.getElementById('demo')
-);*/
+class Sign extends React.Component{
+/*  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
+
+  handleEmailChange(e) {
+    this.setState({email: e.target.value});
+  }
+
+  handlePasswordChange(e) {
+    this.setState({password: e.target.value});
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const email = this.state.email.trim();
+    const password = this.state.password.trim();
+    const attributeList = [
+      new CognitoUserAttribute({
+        Name: 'email',
+        Value: email,
+      })
+    ];
+    userPool.signUp(email, password, attributeList, null, (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log('user name is ' + result.user.getUsername());
+      console.log('call result: ' + result);
+    });
+  }*/
+
+  render(){
+    return(
+      <FacebookLogin
+        appId="606443696175641"
+        autoLoad={true}
+        fields="name,email,picture"
+        callback={Sign} />
+    )
+  }
+  /*
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit.bind(this)}>
+        <input type="text"
+               value={this.state.email}
+               placeholder="Email"
+               onChange={this.handleEmailChange.bind(this)}/>
+        <input type="password"
+               value={this.state.password}
+               placeholder="Password"
+               onChange={this.handlePasswordChange.bind(this)}/>
+        <input type="submit"/>
+      </form>
+    );
+  }*/
+}
 
 export default Sign;
