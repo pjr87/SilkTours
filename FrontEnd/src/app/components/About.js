@@ -6,7 +6,7 @@ import Footer from './Footer';
 const About = () => {
   return (
     <div className= {style.exploreMain}>
-      <Header/>
+      <Header largeHeader={false} />
       <div className={style.main}>
         <h4>mission statement</h4>
         <br/>

@@ -11,7 +11,7 @@ class ExplorePage extends React.Component{
   render(){
         return (
           <div className= {style.exploreMain}>
-              <Header/>
+              <Header largeHeader={true} />
               <div className={style.main}>
         	   		<h4>available tours</h4>
         	   		<div className={style.searchMain}>

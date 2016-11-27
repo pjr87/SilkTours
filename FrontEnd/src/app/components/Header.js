@@ -12,6 +12,25 @@ import AvailableToursPage from './AvailableToursPage';
 
 class Header extends React.Component {
   render(){
+
+    if(this.props.largeHeader){
+      var header = ( <div className="image">
+        <figure><img src={logoImg2} alt="image" width="100%" height="500" /></figure>
+        <h2>call to action</h2>
+        <h3>call to action</h3>
+      </div> );
+    }
+    else {
+      var header = ( <div>
+        <div style={{height:74}}></div>
+    <div className={style.smallHeaderImage}>
+        <img src={logoImg2} alt="image" width="100%" height="74" />
+      </div>
+    </div>
+    );
+    }
+
+
     return(
       <div className = {style.header} id="home">
       <div className = {style.header_top}>
@@ -29,11 +48,7 @@ class Header extends React.Component {
            </div>
           </div>
           </div>
-          <div className="image">
-            <figure><img src={logoImg2} alt="image" width="100%" height="500"/></figure>
-	          <h2>call to action</h2>
-	          <h3>call to action</h3>
-	        </div>
+          {header}
         </div>
   )
   }
