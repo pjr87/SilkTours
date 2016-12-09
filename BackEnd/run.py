@@ -4,7 +4,7 @@ from flask import request
 from user import User
 import boto3
 
-from app.database_module.controlers import dyanamoDbController
+from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
 from flask import Flask
 from flask import jsonify

@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 import json
 import MySQLdb
 
-class dyanamoDbController:
+class DbController:
     def __init__(self):
         self.client = boto3.client('dynamodb')
         self.resource = boto3.resource('dynamodb')
