@@ -35,8 +35,9 @@ def notAuthorizedResponse():
     return "<h1>403: Not Authorized. Click <a"
     + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
 
-db = dyanamoDbController()
+db = DbController()
 s3 = S3Controller()
+
 
 @app.route("/")
 def hello():
@@ -48,7 +49,7 @@ def get_user(id):
     if (not checkLogin(id)):
         return notAuthorizedResponse()
 
-    user = User()
+    user = User(db)
     user.getById(id)
     checkLogin(id)
     return jsonify(user.serialize())

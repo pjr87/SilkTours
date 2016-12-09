@@ -1,6 +1,8 @@
 import boto3
 import uuid
-from interests import Interests
+# from interests import Interests
+import MySQLdb
+import datetime
 
 
 class User:
@@ -10,40 +12,39 @@ class User:
              "id"}
 
     # A set of properties required to create a new user
-    REQUIRED_PROPS = {"name", "description"}  # TODO Determine required props
+    REQUIRED_PROPS = {"first_name", "last_name", "description"}
 
     # A set of properties visible to consumer of the API
-    VISABLE_PROPS = {"name", "profilePicture", "location", "phone",
-                     "description", "dob", "address", "city", "country",
-                     "zip", "id"}
+    VISABLE_PROPS = {"first_name", "last_name", "address_number",
+                     "address_street", "address_suffix", "address_unit",
+                     "address_unit_number", "address_city", "address_country",
+                     "address_zip", "description", "dob", "is_guide",
+                     "id_users", "phone_number", "profile_picture"}
 
-    def __init__(self):
+    def __init__(self, dbController):
         self.props = {}
         self.dynamodb = boto3.resource('dynamodb')
         self.table = self.dynamodb.Table('User')
         self.changed = set()
+        self.dbController = dbController
 
     def getById(self, id):
-        response = self.table.get_item(
-            Key={
-                'u_id': id
-            }
-        )
-
-        if "Item" not in response:
-            return
-        self.parseResponse(response)
-        # Interests().getByUser(self)
+        response = self.dbController.execute("SELECT * from User")
+        print response
+        self.parseResponse(response[0])
+#        Interests().getByUser(self)
 
     def parseResponse(self, response):
-        if "Item" not in response:
-            return
-
-        response = response["Item"]
+        self.props["address"] = {}
         for item in response:
-            item_local = item[2:]
-            if item_local in User.VISABLE_PROPS:
-                self.props[item_local] = response[item]
+            if item in User.VISABLE_PROPS:
+                if type(response[item]) is datetime.date:
+                    # Convert to ISO 8601 formated date string
+                    self.props[item] = response[item].isoformat()
+                elif item.startswith("address_"):
+                    self.props["address"][item[8:]] = response[item]
+                else:
+                    self.props[item] = response[item]
 
     def create(self, props):
         for prop in User.REQUIRED_PROPS:
