@@ -5,7 +5,11 @@ from flask import request
 #from user import User
 import boto3
 
+<<<<<<< HEAD
 from app.database_module.controlers import Tours
+=======
+from app.database_module.controlers import DbController
+>>>>>>> refs/remotes/origin/master
 from app.s3_module.controlers import S3Controller
 from flask import Flask
 from flask import jsonify
@@ -36,6 +40,12 @@ def notAuthorizedResponse():
     return "<h1>403: Not Authorized. Click <a"
     + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
 
+<<<<<<< HEAD
+=======
+db = DbController()
+s3 = S3Controller()
+>>>>>>> refs/remotes/origin/master
+
 
 @app.route("/")
 def hello():
@@ -47,7 +57,7 @@ def get_user(id):
     if (not checkLogin(id)):
         return notAuthorizedResponse()
 
-    user = User()
+    user = User(db)
     user.getById(id)
     checkLogin(id)
     return jsonify(user.serialize())

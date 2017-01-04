@@ -10,6 +10,10 @@ class Tours:
 
     VISABLE_PROPS = {}
 
+<<<<<<< HEAD
+=======
+class DbController:
+>>>>>>> refs/remotes/origin/master
     def __init__(self):
         self.conn = mysql.connector.connect(user='silktours', password='32193330', host='silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com', database='silktours')
         self.cursor = self.conn.cursor()

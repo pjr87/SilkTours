@@ -7,7 +7,7 @@ class Activities extends React.Component {
   render(){
   return (
     <div>
-      <Header/>
+      <Header largeHeader={false} />
       <h2>Activities</h2>
       <Footer/>
     </div>

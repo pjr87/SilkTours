@@ -91,6 +91,12 @@ img{max-width:100%;}
 	-o-transition:all .2s linear; /* opera */
 	-ms-transition:all .2s linear;
  }
+.smallHeaderImage{
+  z-index:8;
+	width: 100%;
+	position:fixed;
+	top:0;
+}
  h2{
 	position: relative;
 	font: bold 48px Helvetica, Sans-Serif;
