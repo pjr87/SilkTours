@@ -82,8 +82,7 @@ def get_tour(tourid):
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-
-    return tours.post_tour_with_name()
+    return tours.post_tour(request.args.to_dict())
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
