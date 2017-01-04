@@ -15,7 +15,7 @@ class Tours:
         self.cursor = self.conn.cursor()
         self.f = '%Y-%m-%d %H:%M:%S'
         print("Connection is created")
-        
+
 
     def list_tours(self):
         query = ("SELECT id_tour, name FROM Tour")
