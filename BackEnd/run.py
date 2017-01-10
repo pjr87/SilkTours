@@ -1,7 +1,9 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from user import User
+from user_mapped import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import sessionmaker
 import boto3
 
 from app.database_module.controlers import DbController
@@ -38,20 +40,24 @@ def notAuthorizedResponse():
 db = DbController()
 s3 = S3Controller()
 
+engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+Session = sessionmaker(bind=engine)
+session = Session()
+
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    user = session.query(User).get(1)
+    #session.query(User).filter_by(first_name="Andrew").first()
+    return "Hello " + user.first_name
 
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
     if (not checkLogin(id)):
         return notAuthorizedResponse()
-
-    user = User(db)
-    user.getById(id)
     checkLogin(id)
+    user = session.query(User).get(id)
     return jsonify(user.serialize())
 
 
@@ -59,17 +65,19 @@ def get_user(id):
 @app.route('/users', methods=['POST'])
 def set_user():
     user = User()
-    user.create(request.form)
+    user.set_props(request.form)
+    session.add(user)
+    session.commit()
     return jsonify(user.serialize())
 
 
 # Edits a user
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
-    user = User()
-    user.getById(id)
-    user.setProps(request.form)
-    user.commit()
+    user = session.query(User).get(id)
+    user.set_props(request.form)
+    session.add(user)
+    session.commit()
     return jsonify(user.serialize())
 
 
