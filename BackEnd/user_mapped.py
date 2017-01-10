@@ -1,8 +1,10 @@
 # from interests import Interests
 import datetime
+from interests_mapped import Interests
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, Boolean
-Base = declarative_base()
+from sqlalchemy.orm import relationship
+from base import Base
 
 
 class User(Base):
@@ -27,6 +29,8 @@ class User(Base):
     profile_picture = Column(String)
     reg_date = Column(Date)
 
+    interests = relationship("Interests")
+
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
              "tours_completed", "phone", "description", "dob", "password",
@@ -47,7 +51,13 @@ class User(Base):
             setattr(self, key, data[key])
 
     def serialize(self):
+        print self.interests
         result = {}
+
+        result["interests"] = []
+        for interest in self.interests:
+            result["interests"].append(interest.serialize())
+
         for c in self.__table__.columns:
             key = c.name
             if key in User.VISABLE_PROPS:
