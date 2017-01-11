@@ -1,6 +1,7 @@
 # from interests import Interests
 import datetime
 from interests_mapped import Interests
+from tour_event_mapped import TourEvent
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, Boolean
 from sqlalchemy.orm import relationship
@@ -30,6 +31,8 @@ class User(Base):
     reg_date = Column(Date)
 
     interests = relationship("Interests")
+    tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
+    tours_taking = relationship("TourEvent", foreign_keys="TourEvent.id_user")
 
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
@@ -57,6 +60,14 @@ class User(Base):
         result["interests"] = []
         for interest in self.interests:
             result["interests"].append(interest.serialize())
+
+        result["tours_teaching"] = []
+        for tourEvent in self.tours_teaching:
+            result["tours_teaching"].append(tourEvent.serialize())
+
+        result["tours_taking"] = []
+        for tourEvent in self.tours_taking:
+            result["tours_taking"].append(tourEvent.serialize())
 
         for c in self.__table__.columns:
             key = c.name
