@@ -1,7 +1,7 @@
 import datetime
 from interests_mapped import Interests
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
 
@@ -30,6 +30,7 @@ class Tour(Base):
     additional_food = Column(String)
     additional_transport = Column(String)
     id_rating = Column(Integer)
+    average_rating = Column(Float)
 
     def serialize(self, deep):
         result = {}
