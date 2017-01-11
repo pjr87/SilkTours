@@ -5,19 +5,16 @@ from flask import request
 #from user import User
 import boto3
 
-<<<<<<< HEAD
-from app.database_module.controlers import Tours
-=======
+
 from app.database_module.controlers import DbController
->>>>>>> refs/remotes/origin/master
 from app.s3_module.controlers import S3Controller
+from app.search_module.controlers import SearchController
 from flask import Flask
 from flask import jsonify
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
 client = boto3.client('cognito-identity')
-tours = Tours()
 
 def checkLogin(id):
     return True
@@ -40,11 +37,10 @@ def notAuthorizedResponse():
     return "<h1>403: Not Authorized. Click <a"
     + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
 
-<<<<<<< HEAD
-=======
+
 db = DbController()
+searcher = SearchController()
 s3 = S3Controller()
->>>>>>> refs/remotes/origin/master
 
 
 @app.route("/")
@@ -83,35 +79,24 @@ def edit_user(id):
 
 @app.route('/tours', methods=['GET'])
 def get_tour_list():
-    return tours.list_tours()
+    return db.list_tours()
 
+@app.route('/tours/search', methods=['GET'])
+def search_tour():
+    return searcher.search()
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return tours.list_tour_with_id(tourid)
+    return db.list_tour_with_id(tourid)
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-    return tours.post_tour(request.args.to_dict())
+    return db.post_tour(request.args.to_dict())
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return tours.edit_tour_with_id(tourid)
+    return db.edit_tour_with_id(tourid)
 
-
-@app.route('/pics', methods=['GET'])
-def get_tour_pics():
-    return s3.getItems()
-
-
-@app.route('/ratings/<ratingid>', methods=['GET'])
-def get_rating(ratingid):
-    return tours.list_rating_with_id(ratingid)
-
-
-@app.route('/tourevents/<teid>', methods=['GET'])
-def get_tourevent(teid):
-    return tours.list_tourevent_with_id(teid)
 
 
 if __name__ == "__main__":
