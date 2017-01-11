@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from user_mapped import User
+from ratings_mapped import Rating
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 import boto3
@@ -79,6 +80,20 @@ def edit_user(id):
     session.add(user)
     session.commit()
     return jsonify(user.serialize())
+
+
+# Adds a new rating
+@app.route('/ratings', methods=['POST'])
+def add_rating():
+    rating = Rating()
+    id_user_rated = request.form.get("id_user_rated")
+    id_tour_rated = request.form.get("id_tour_rated")
+    rating_value = request.form.get("rating")
+    comment = request.form.get("comment")
+    rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
+    session.add(rating)
+    session.commit()
+    return "Success"
 
 
 @app.route('/tours', methods=['GET'])
