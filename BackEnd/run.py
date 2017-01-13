@@ -56,6 +56,32 @@ def hello():
     return "Hello " + user.first_name
 
 
+@app.route("/search", methods=['GET'])
+def search():
+    # interest = request.args.getlist("interest", [])
+    rating = request.args.get("rating", None)
+    priceMin = request.args.get("priceMin", None)
+    priceMax = request.args.get("priceMax", None)
+    city = request.args.get("city", None)
+
+    query = session.query(Tour)
+    if rating is not None:
+        query = query.filter("Tour.average_rating>="+rating)
+    if priceMin is not None:
+        query = query.filter("Tour.price>="+priceMin)
+    if priceMax is not None:
+        query = query.filter("Tour.price<="+priceMax)
+    if city is not None:
+        query = query.filter(Tour.address_city == city)
+
+    tours = query.all()
+    result = []
+    for tour in tours:
+        result.append(tour.serialize(True))
+
+    return jsonify({"data": result})
+
+
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
     if (not checkLogin(id)):

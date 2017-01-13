@@ -13,7 +13,7 @@ class Tour(Base):
     firstStart_date = Column(Date)
     lastEnd_date = Column(Date)
     name = Column(String)
-    price = Column(String)
+    price = Column(Float)
     description = Column(String)
     min_group_size = Column(Integer)
     max_group_size = Column(Integer)
