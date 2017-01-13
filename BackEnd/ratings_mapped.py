@@ -1,6 +1,5 @@
 import datetime
 from interests_mapped import Interests
-from tour_mapped import Tour
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
@@ -16,6 +15,7 @@ class Rating(Base):
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
     id_user = Column(Integer, ForeignKey("User.id_users"))
     is_deleted = Column(Boolean)
+    tour = relationship("Tour", foreign_keys=[id_tour])
 
     def set_props(self, rating, comment, id_tour, id_user):
         self.rate = rating
@@ -24,3 +24,4 @@ class Rating(Base):
         # TODO update tour and/or user with new average rating
         self.comments = comment
         self.date_time_created = datetime.datetime.now()
+        self.id_rating = None

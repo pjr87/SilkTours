@@ -1,5 +1,6 @@
 import datetime
 from interests_mapped import Interests
+from ratings_mapped import Rating
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
@@ -31,6 +32,8 @@ class Tour(Base):
     additional_transport = Column(String)
     id_rating = Column(Integer)
     average_rating = Column(Float)
+    rating_count = Column(Integer)
+    ratings = relationship("Rating")
 
     def serialize(self, deep):
         result = {}

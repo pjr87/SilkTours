@@ -3,6 +3,7 @@ from flask import jsonify
 from flask import request
 from user_mapped import User
 from ratings_mapped import Rating
+from tour_mapped import Tour
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 import boto3
@@ -50,6 +51,8 @@ session = Session()
 def hello():
     user = session.query(User).get(1)
     #session.query(User).filter_by(first_name="Andrew").first()
+    print "Hello"
+    print "Wats up" + user.first_name
     return "Hello " + user.first_name
 
 
@@ -88,9 +91,15 @@ def add_rating():
     rating = Rating()
     id_user_rated = request.form.get("id_user_rated")
     id_tour_rated = request.form.get("id_tour_rated")
-    rating_value = request.form.get("rating")
+    rating_value = float(request.form.get("rating"))
     comment = request.form.get("comment")
     rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
+    tour = session.query(Tour).get(int(id_tour_rated))
+    tour.average_rating = ((tour.average_rating
+                           * tour.rating_count+rating_value)
+                           / (tour.rating_count+1))
+    tour.rating_count += 1
+    session.add(tour)
     session.add(rating)
     session.commit()
     return "Success"
