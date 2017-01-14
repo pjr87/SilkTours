@@ -4,6 +4,7 @@ from flask import request
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from interests_mapped import Interests
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 import boto3
@@ -58,13 +59,16 @@ def hello():
 
 @app.route("/search", methods=['GET'])
 def search():
-    # interest = request.args.getlist("interest", [])
+    interestList = request.args.getlist("interest")
+    print interestList
     rating = request.args.get("rating", None)
     priceMin = request.args.get("priceMin", None)
     priceMax = request.args.get("priceMax", None)
     city = request.args.get("city", None)
 
     query = session.query(Tour)
+    for interest in interestList:
+        query = query.filter(Tour.interests.any(name=interest))
     if rating is not None:
         query = query.filter("Tour.average_rating>="+rating)
     if priceMin is not None:
