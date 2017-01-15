@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -11,10 +12,9 @@ import boto3
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
-from flask import Flask
-from flask import jsonify
 app = Flask(__name__)
 app.config['DEBUG'] = True
+CORS(app)
 
 client = boto3.client('cognito-identity')
 
@@ -61,6 +61,7 @@ def hello():
 def search():
     interestList = request.args.getlist("interest")
     print interestList
+    keyWordsStr = request.args.get("keywords", None)
     rating = request.args.get("rating", None)
     priceMin = request.args.get("priceMin", None)
     priceMax = request.args.get("priceMax", None)
@@ -69,6 +70,15 @@ def search():
     query = session.query(Tour)
     for interest in interestList:
         query = query.filter(Tour.interests.any(name=interest))
+    if keyWordsStr is not None:
+        for word in keyWordsStr.split(','):
+            print "word:" + word
+            # Filter where name or description contains word
+            query = query.filter(
+                Tour.name.contains(word)
+                | Tour.description.contains(word)
+            )
+
     if rating is not None:
         query = query.filter("Tour.average_rating>="+rating)
     if priceMin is not None:
