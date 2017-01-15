@@ -59,8 +59,7 @@ def hello():
 
 @app.route("/search", methods=['GET'])
 def search():
-    interestList = request.args.getlist("interest")
-    print interestList
+    interests = request.args.get("interests", None)
     keyWordsStr = request.args.get("keywords", None)
     rating = request.args.get("rating", None)
     priceMin = request.args.get("priceMin", None)
@@ -68,8 +67,13 @@ def search():
     city = request.args.get("city", None)
 
     query = session.query(Tour)
-    for interest in interestList:
-        query = query.filter(Tour.interests.any(name=interest))
+    if interests is not None:
+        query = query.filter(
+            or_(
+                Tour.interests.any(name=x) for x in interests.split(',')
+            )
+        )
+
     if keyWordsStr is not None:
         innterQuery = None
         for word in keyWordsStr.split(','):
