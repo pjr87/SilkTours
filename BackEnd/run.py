@@ -6,7 +6,7 @@ from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
 from interests_mapped import Interests
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm.session import sessionmaker
 import boto3
 
@@ -72,11 +72,12 @@ def search():
         query = query.filter(Tour.interests.any(name=interest))
     if keyWordsStr is not None:
         for word in keyWordsStr.split(','):
+            word = word.lower()
             print "word:" + word
             # Filter where name or description contains word
             query = query.filter(
-                Tour.name.contains(word)
-                | Tour.description.contains(word)
+                func.lower(Tour.name).contains(word)
+                | func.lower(Tour.description).contains(word)
             )
 
     if rating is not None:
