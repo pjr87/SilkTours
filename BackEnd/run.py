@@ -6,7 +6,7 @@ from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
 from interests_mapped import Interests
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
 import boto3
 
@@ -71,14 +71,18 @@ def search():
     for interest in interestList:
         query = query.filter(Tour.interests.any(name=interest))
     if keyWordsStr is not None:
+        innterQuery = None
         for word in keyWordsStr.split(','):
             word = word.lower()
-            print "word:" + word
-            # Filter where name or description contains word
-            query = query.filter(
-                func.lower(Tour.name).contains(word)
-                | func.lower(Tour.description).contains(word)
-            )
+            if (innterQuery is not None):
+                innterQuery = innterQuery.or_(
+                    func.lower(Tour.name).contains(word),
+                    func.lower(Tour.description).contains(word))
+            else:
+                innterQuery = or_(
+                    func.lower(Tour.name).contains(word),
+                    func.lower(Tour.description).contains(word))
+        query = query.filter(innterQuery)
 
     if rating is not None:
         query = query.filter("Tour.average_rating>="+rating)
