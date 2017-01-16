@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 from flask import jsonify
 from flask import request
 from flask_cors import CORS, cross_origin
@@ -8,6 +8,7 @@ from tour_mapped import Tour
 from interests_mapped import Interests
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
+from sqlalchemy.orm import scoped_session
 import boto3
 
 from app.database_module.controlers import DbController
@@ -44,11 +45,13 @@ db = DbController()
 s3 = S3Controller()
 
 engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
-Session = sessionmaker(bind=engine)
-session = Session()
+Session = scoped_session(sessionmaker(bind=engine))
+#Session = scoped_session(sessionmaker())
+session = None
+# Session()
 
 
-def commitSession():
+def commitSession(session):
     try:
         session.commit()
     except:
@@ -56,12 +59,23 @@ def commitSession():
         session.roolback()
 
 
+@app.before_request
+def before_request():
+    global session
+    session = Session()
+
+
+@app.after_request
+def after_request(response):
+    for funct in getattr(g, 'call_after_request', ()):
+        response = funct(response)
+    session.close()
+    return response
+
+
 @app.route("/")
 def hello():
     user = session.query(User).get(1)
-    #session.query(User).filter_by(first_name="Andrew").first()
-    print "Hello"
-    print "Wats up" + user.first_name
     return "Hello " + user.first_name
 
 
