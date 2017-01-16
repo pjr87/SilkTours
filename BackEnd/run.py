@@ -51,7 +51,7 @@ session = None
 # Session()
 
 
-def commitSession(session):
+def commitSession():
     try:
         session.commit()
     except:
