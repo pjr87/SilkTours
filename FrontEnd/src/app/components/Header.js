@@ -9,6 +9,27 @@ import Activities from './Activities';
 import Sign from './Sign';
 import ExplorePage from './ExplorePage';
 import AvailableToursPage from './AvailableToursPage';
+import AccountDropdown from './Dropdown';
+
+//import Dropdown from './Dropdown';
+//import DropdownTrigger from Dropdown.DropdownTrigger;
+//var DropdownContent = Dropdown.DropdownContent;
+
+class Signin extends React.Component {
+  handleLinkClick() {
+      this.refs.dropdown.hide();
+    }
+
+  render(){
+    if(this.props.loggedIn){
+      var button = (<AccountDropdown name={this.props.name} />);
+    }
+    else{
+      var button = (<Link to='/sign'> Sign in </Link>);
+    }
+    return button;
+  }
+}
 
 class Header extends React.Component {
   render(){
@@ -42,7 +63,7 @@ class Header extends React.Component {
               <li><Link to='/'>Home</Link></li>
               <li><Link to='/activities'>Activities</Link></li>
               <li><Link to='/about'>About us</Link></li>
-              <li><Link to='/sign'>Sign in</Link></li>
+              <li> <Signin loggedIn={true} name="Donald Trump"/> </li>
             </ul>
             <hr/>
            </div>
