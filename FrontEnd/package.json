@@ -37,6 +37,7 @@
     "react-facebook-login": "^3.4.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-imageloader": "^2.1.0",
+    "react-redux": "^5.0.2",
     "react-router": "^4.0.0-2",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.9",
