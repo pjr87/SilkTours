@@ -15,7 +15,6 @@ ReactDOM.render((<Router history={browserHistory}>
       <Match pattern='/activities' component={Activities}/>
       <Match pattern='/about' component={About}/>
       <Match pattern='/sign' component={Sign}/>
-      <Match pattern='/sign' component={Sign}/>
       <Match pattern='/explore' component={AvailableToursPage}/>
     </div>
   </Router>), rootElement);

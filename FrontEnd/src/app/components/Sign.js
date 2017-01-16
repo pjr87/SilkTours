@@ -1,100 +1,74 @@
+/*
+ Sign.js
+
+ User sign in/up page, integration with FB, AWS
+ Written by: Phillip Ryan
+
+ Calls functions from CognitoSync folder to display login functions
+ Displayed when Signin/Signup is clicke
+
+ TODO:
+  test
+  add other social media integrations
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FacebookLogin from 'react-facebook-login';
 import Header from './Header';
 import Footer from './Footer';
-/*import {Config, CognitoIdentityCredentials} from "aws-sdk";
-import {
-  CognitoUserPool,
-  CognitoUserAttribute
-} from "amazon-cognito-identity-js";
-import appConfig from "./config";
-
-Config.region = appConfig.region;
-Config.credentials = new CognitoIdentityCredentials({
-  IdentityPoolId: appConfig.IdentityPoolId
-});
-
-const userPool = new CognitoUserPool({
-  UserPoolId: appConfig.UserPoolId,
-  ClientId: appConfig.ClientId,
-});*/
+import {DeveloperAuth} from './CognitoSync/DeveloperAuth.js'
+import {AWSauth} from './CognitoSync/AWSauth.js'
+import appConfig from "./CognitoSync/config";
+import AuthStore from "../stores/AuthStore.js"
 
 const responseFacebook = (response) => {
-  console.log(response);
-/*
-  // access_token received in the authentication response
-  // from Facebook
-  creds.params.Logins = {};
-  creds.params.Logins['graph.facebook.com'] = response;
-
-  // Explicity expire credentials so they are refreshed
-  // on the next request.
-  creds.expired = true;*/
+  //console.log(response);
+  var AWSAuth = new AWSauth(response);
+  AWSAuth.startAWS(response, "Facebook");
 }
 
 class Sign extends React.Component{
-/*  constructor(props) {
-    super(props);
+  //Define auth profile state
+  constructor(){
+    super();
     this.state = {
-      email: '',
-      password: '',
+      authProfile: AuthStore.getProfile(), //Get current profile
     };
   }
 
-  handleEmailChange(e) {
-    this.setState({email: e.target.value});
-  }
-
-  handlePasswordChange(e) {
-    this.setState({password: e.target.value});
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const email = this.state.email.trim();
-    const password = this.state.password.trim();
-    const attributeList = [
-      new CognitoUserAttribute({
-        Name: 'email',
-        Value: email,
+  //Before component mounts, check login state
+  componentWillMount() {
+    AuthStore.on("login", () => {
+      this.setState({
+        authProfile: AuthStore.getProfile(),
       })
-    ];
-    userPool.signUp(email, password, attributeList, null, (err, result) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log('user name is ' + result.user.getUsername());
-      console.log('call result: ' + result);
-    });
-  }*/
+    })
 
-  render(){
-    return(
-      <FacebookLogin
-        appId="606443696175641"
-        autoLoad={true}
-        fields="name,email,picture"
-        callback={Sign} />
-    )
+    AuthStore.on("logout", () => {
+      this.setState({
+        authProfile: AuthStore.getProfile(), //Will return 0
+      })
+    })
   }
-  /*
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text"
-               value={this.state.email}
-               placeholder="Email"
-               onChange={this.handleEmailChange.bind(this)}/>
-        <input type="password"
-               value={this.state.password}
-               placeholder="Password"
-               onChange={this.handlePasswordChange.bind(this)}/>
-        <input type="submit"/>
-      </form>
+      <div>
+      <Header/>
+
+      <FacebookLogin
+        appId={appConfig.facebookAppId}
+        autoLoad={false}
+        fields="name,email,picture"
+        callback={responseFacebook} />
+
+      <DeveloperAuth/>
+
+      <Footer/>
+      </div>
     );
-  }*/
+  }
 }
 
 export default Sign;
