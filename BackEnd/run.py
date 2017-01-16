@@ -73,21 +73,15 @@ def search():
                 Tour.interests.any(name=x) for x in interests.split(',')
             )
         )
-
     if keyWordsStr is not None:
-        innterQuery = None
-        for word in keyWordsStr.split(','):
-            word = word.lower()
-            if (innterQuery is not None):
-                innterQuery = innterQuery.or_(
-                    func.lower(Tour.name).contains(word),
-                    func.lower(Tour.description).contains(word))
-            else:
-                innterQuery = or_(
-                    func.lower(Tour.name).contains(word),
-                    func.lower(Tour.description).contains(word))
-        query = query.filter(innterQuery)
-
+        query = query.filter(
+            or_(
+                (
+                    func.lower(Tour.name).contains(word.lower()) |
+                    func.lower(Tour.description).contains(word.lower())
+                ) for word in keyWordsStr.split(',')
+            )
+        )
     if rating is not None:
         query = query.filter("Tour.average_rating>="+rating)
     if priceMin is not None:
