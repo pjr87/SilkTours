@@ -48,6 +48,14 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
+def commitSession():
+    try:
+        session.commit()
+    except:
+        print "INFO: session commit failed"
+        session.roolback()
+
+
 @app.route("/")
 def hello():
     user = session.query(User).get(1)
@@ -114,7 +122,7 @@ def set_user():
     user = User()
     user.set_props(request.form)
     session.add(user)
-    session.commit()
+    commitSession()
     return jsonify(user.serialize())
 
 
@@ -124,7 +132,7 @@ def edit_user(id):
     user = session.query(User).get(id)
     user.set_props(request.form)
     session.add(user)
-    session.commit()
+    commitSession()
     return jsonify(user.serialize())
 
 
@@ -144,7 +152,7 @@ def add_rating():
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
-    session.commit()
+    commitSession()
     return "Success"
 
 
