@@ -1,7 +1,26 @@
 import $ from "jquery";
+import AuthStore from "./stores/AuthStore.js"
 
+AuthStore.on("login", () => {
+
+  console.log("GOT USER!")
+});
 
 class GetData{
+  static loggedInUser;
+
+  constructor(){
+
+    AuthStore.on("login", () => {
+
+      console.log("GOT USER!")
+    });
+  }
+
+  static getUser(){
+    console.log("called.")
+    return loggedInUser;
+  }
 
   static getUser(id){
 
@@ -47,8 +66,7 @@ class GetData{
         console.log(data);
         data.profile_picture="http://thehustle.co/wp-content/uploads/2016/03/1453212321_maxresdefault.jpg";
         console.log(data);
-        //return data;
-
+        //loggedInUser = data;
     });
     return user1;
   }

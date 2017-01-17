@@ -6,65 +6,17 @@ import Footer from './Footer';
 import GetData from '../databaseFunctions';
 import {ProfileHeader} from './Profile';
 
-/*const p = {
-    lName:"Smith",
-    fName:"James",
-    profileImage:"null",
-    email:"w",
-    cell:"w",
-    streetAddress:"w",
-    streetAddress2:"w",
-    city:"w",
-    state:"w",
-    zip:"w",
-    country:"w",
-    interests:['basket ball','ping pong']
-};*/
-
-
-const p = {id_users: "1",
-address: {
-    number: 1600,
-    street: "Pennsylvania",
-    suffix: "Ave",
-    unit: "",
-    unit_number: "",
-    city: "Washington",
-    state: "DC",
-    country: "USA",
-    zip: "20500"
-},
-dob: "1946-06-14",
-is_guide: true,
-first_name: "Donald",
-last_name: "Trump",
-phone_number: "000-000-0000",
-profile_picture: "http://i.imgur.com/vw6zfa1.jpg",
-tours_taking: [
-    {
-        name: "White House Tour",
-        tour_id: "1",
-        state: "future"
-    },
-    {
-        name: "Trump Tower",
-        tour_id: "2",
-        state: "completed"
-    }
-],
-tours_guiding: [
-    {
-        name: "MAGA",
-        tour_id: "3",
-    }
-]
-};
-
 class SettingsPg extends React.Component {
 
   shouldComponentUpdate () {
     return React.addons.PureRenderMixin.shouldComponentUpdate.apply(this, arguments);
   }
+
+
+  // componentWillMount(){
+  //   GetData.
+  // }
+
 
   render () {
 
@@ -180,7 +132,7 @@ class SettingsPg extends React.Component {
 }
 
 const Settings = () => {
-  
+
   return (<SettingsPg person={GetData.getUser(1)} />);
 }
 //Profile.propTypes = {

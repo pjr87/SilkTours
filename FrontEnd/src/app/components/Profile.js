@@ -32,6 +32,9 @@ class TourTile extends React.Component{
 
 class Profile extends React.Component{
 
+
+
+
   render(){
     var userData = GetData.getUser(1);
 
