@@ -17,6 +17,18 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+        }
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
+      },
+      {
         test: /src\/.+.js$/,
         loader: 'babel',
         exclude: /node_modules/,

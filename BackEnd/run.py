@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 from flask import jsonify
 import json
 from flask import request
@@ -10,15 +10,22 @@ from tour_mapped import Tour
 '''
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
+from flask_cors import CORS, cross_origin
+from user_mapped import User
+from ratings_mapped import Rating
+from tour_mapped import Tour
+from interests_mapped import Interests
+from sqlalchemy import create_engine, func, or_
+from sqlalchemy.orm.session import sessionmaker
+from sqlalchemy.orm import scoped_session
 import boto3
 
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
-from flask import Flask
-from flask import jsonify
 app = Flask(__name__)
 app.config['DEBUG'] = True
+CORS(app)
 
 #client = boto3.client('cognito-identity')
 
@@ -46,14 +53,47 @@ def notAuthorizedResponse():
 
 db = DbController()
 s3 = S3Controller()
+
 '''
 engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
 Session = sessionmaker(bind=engine)
 session = Session()
+=======
+
+engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+Session = scoped_session(sessionmaker(bind=engine))
+#Session = scoped_session(sessionmaker())
+session = None
+# Session()
+
+
+def commitSession():
+    try:
+        session.commit()
+    except:
+        print "INFO: session commit failed"
+        session.roolback()
+
+
+@app.before_request
+def before_request():
+    global session
+    session = Session()
+
+
+@app.after_request
+def after_request(response):
+    for funct in getattr(g, 'call_after_request', ()):
+        response = funct(response)
+    session.close()
+    return response
+
+>>>>>>> master
 
 @app.route("/")
 def hello():
     user = session.query(User).get(1)
+<<<<<<< HEAD
     #session.query(User).filter_by(first_name="Andrew").first()
     print "Hello"
     print "Wats up" + user.first_name
@@ -63,12 +103,39 @@ def hello():
 @app.route("/search", methods=['GET'])
 def search():
     # interest = request.args.getlist("interest", [])
+=======
+    return "Hello " + user.first_name
+
+
+@app.route("/search", methods=['GET'])
+def search():
+    interests = request.args.get("interests", None)
+    keyWordsStr = request.args.get("keywords", None)
+>>>>>>> master
     rating = request.args.get("rating", None)
     priceMin = request.args.get("priceMin", None)
     priceMax = request.args.get("priceMax", None)
     city = request.args.get("city", None)
 
     query = session.query(Tour)
+<<<<<<< HEAD
+=======
+    if interests is not None:
+        query = query.filter(
+            or_(
+                Tour.interests.any(name=x) for x in interests.split(',')
+            )
+        )
+    if keyWordsStr is not None:
+        query = query.filter(
+            or_(
+                (
+                    func.lower(Tour.name).contains(word.lower()) |
+                    func.lower(Tour.description).contains(word.lower())
+                ) for word in keyWordsStr.split(',')
+            )
+        )
+>>>>>>> master
     if rating is not None:
         query = query.filter("Tour.average_rating>="+rating)
     if priceMin is not None:
@@ -101,7 +168,11 @@ def set_user():
     user = User()
     user.set_props(request.form)
     session.add(user)
+<<<<<<< HEAD
     session.commit()
+=======
+    commitSession()
+>>>>>>> master
     return jsonify(user.serialize())
 
 
@@ -111,7 +182,11 @@ def edit_user(id):
     user = session.query(User).get(id)
     user.set_props(request.form)
     session.add(user)
+<<<<<<< HEAD
     session.commit()
+=======
+    commitSession()
+>>>>>>> master
     return jsonify(user.serialize())
 
 
@@ -131,7 +206,11 @@ def add_rating():
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
+<<<<<<< HEAD
     session.commit()
+=======
+    commitSession()
+>>>>>>> master
     return "Success"
 
 
@@ -162,4 +241,4 @@ def edit_tourevent(tourid):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', debug=True)

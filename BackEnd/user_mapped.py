@@ -30,7 +30,11 @@ class User(Base):
     profile_picture = Column(String)
     reg_date = Column(Date)
 
+<<<<<<< HEAD
     interests = relationship("Interests")
+=======
+    interests = relationship("Interests", foreign_keys="Interests.id_user")
+>>>>>>> master
     tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
     tours_taking = relationship("TourEvent", foreign_keys="TourEvent.id_user")
 
