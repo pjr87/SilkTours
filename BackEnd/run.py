@@ -3,18 +3,24 @@ from flask import jsonify
 import json
 from flask import request
 #from user import User
+'''
+from user_mapped import User
+from ratings_mapped import Rating
+from tour_mapped import Tour
+'''
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import sessionmaker
 import boto3
 
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
-from app.search_module.controlers import SearchController
 from flask import Flask
 from flask import jsonify
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-client = boto3.client('cognito-identity')
+#client = boto3.client('cognito-identity')
 
 def checkLogin(id):
     return True
@@ -39,23 +45,53 @@ def notAuthorizedResponse():
 
 
 db = DbController()
-searcher = SearchController()
 s3 = S3Controller()
-
+'''
+engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+Session = sessionmaker(bind=engine)
+session = Session()
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    user = session.query(User).get(1)
+    #session.query(User).filter_by(first_name="Andrew").first()
+    print "Hello"
+    print "Wats up" + user.first_name
+    return "Hello " + user.first_name
+'''
+
+@app.route("/search", methods=['GET'])
+def search():
+    # interest = request.args.getlist("interest", [])
+    rating = request.args.get("rating", None)
+    priceMin = request.args.get("priceMin", None)
+    priceMax = request.args.get("priceMax", None)
+    city = request.args.get("city", None)
+
+    query = session.query(Tour)
+    if rating is not None:
+        query = query.filter("Tour.average_rating>="+rating)
+    if priceMin is not None:
+        query = query.filter("Tour.price>="+priceMin)
+    if priceMax is not None:
+        query = query.filter("Tour.price<="+priceMax)
+    if city is not None:
+        query = query.filter(Tour.address_city == city)
+
+    tours = query.all()
+    result = []
+    for tour in tours:
+        result.append(tour.serialize(True))
+
+    return jsonify({"data": result})
 
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
     if (not checkLogin(id)):
         return notAuthorizedResponse()
-
-    user = User(db)
-    user.getById(id)
     checkLogin(id)
+    user = session.query(User).get(id)
     return jsonify(user.serialize())
 
 
@@ -63,27 +99,46 @@ def get_user(id):
 @app.route('/users', methods=['POST'])
 def set_user():
     user = User()
-    user.create(request.form)
+    user.set_props(request.form)
+    session.add(user)
+    session.commit()
     return jsonify(user.serialize())
 
 
 # Edits a user
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
-    user = User()
-    user.getById(id)
-    user.setProps(request.form)
-    user.commit()
+    user = session.query(User).get(id)
+    user.set_props(request.form)
+    session.add(user)
+    session.commit()
     return jsonify(user.serialize())
+
+
+# Adds a new rating
+@app.route('/ratings', methods=['POST'])
+def add_rating():
+    rating = Rating()
+    id_user_rated = request.form.get("id_user_rated")
+    id_tour_rated = request.form.get("id_tour_rated")
+    rating_value = float(request.form.get("rating"))
+    comment = request.form.get("comment")
+    rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
+    tour = session.query(Tour).get(int(id_tour_rated))
+    tour.average_rating = ((tour.average_rating
+                           * tour.rating_count+rating_value)
+                           / (tour.rating_count+1))
+    tour.rating_count += 1
+    session.add(tour)
+    session.add(rating)
+    session.commit()
+    return "Success"
 
 
 @app.route('/tours', methods=['GET'])
 def get_tour_list():
     return db.list_tours()
 
-@app.route('/tours/search', methods=['GET'])
-def search_tour():
-    return searcher.search()
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
@@ -91,12 +146,19 @@ def get_tour(tourid):
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-    return db.post_tour(request.args.to_dict())
+    return db.post(request.args.to_dict(), 'Tour')
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return db.edit_tour_with_id(tourid)
+    return db.edit(tourid, request.args.to_dict(), 'Tour')
 
+@app.route('/tours/<tourid>', methods=['PUT'])
+def set_tourevent(tourid):
+    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
+
+@app.route('/tours/<tourid>', methods=['PUT'])
+def edit_tourevent(tourid):
+    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
 
 
 if __name__ == "__main__":
