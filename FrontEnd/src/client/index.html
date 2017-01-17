@@ -3,7 +3,49 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>My App</title>
+<!--
+	<script type="text/javascript">
+		var $original;
+		if (typeof jQuery !== 'undefined') {
+			$original = jQuery.noConflict(true);
+			$ = $original;
+			jQuery = $original;
+		}
+	</script>
 
+<script src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/applozic.plugins.min.js"></script>
+<script type="text/javascript" src="./js/applozic.widget.min.js"></script>
+<script type="text/javascript" src="./js/applozic.emojis.min.js"></script>
+<script type="text/javascript" src="./js/applozic.socket.min.js"></script>
+
+<script type="text/javascript"
+src="https://maps.google.com/maps/api/js?key=AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4&libraries=places"></script>
+<script type="text/javascript" src="./js/locationpicker.jquery.min.js"></script>
+
+<script type="text/javascript" src="./js/app/applozic.common.js"></script>
+
+<script type="text/javascript" src="./js/app/fullview/applozic.fullview.js"></script>
+
+<script>
+
+var oModal = "";
+if (typeof $original !== 'undefined') {
+   $ = $original;
+   jQuery = $original;
+   if (typeof $.fn.modal === 'function') {
+      oModal = $.fn.modal.noConflict();
+   }
+} else {
+   $ = $applozic;
+   jQuery = $applozic;
+   if (typeof $applozic.fn.modal === 'function') {
+      oModal = $applozic.fn.modal.noConflict();
+   }
+}
+
+</script>
+-->
 </head>
 <body>
   <div id="app"></div>
