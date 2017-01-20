@@ -21,12 +21,127 @@ nav.vertical ul li{	display:block;}/* vertical menu */
 nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
- body{
+body{
 	 font-family: 'Titillium Web', sans-serif;
 	 background:#FFF;
 
  }
 
+ .dropdown {
+     position: relative;
+     display: inline-block;
+ }
+
+ .dropdownContent {
+     display: block;
+     position: absolute;
+     background-color: #f9f9f9;
+     min-width: 160px;
+     overflow: auto;
+     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+ }
+
+ .dropdownContent Link {
+     color: black;
+     padding: 12px 16px;
+     text-decoration: none;
+     display: block;
+ }
+
+/******** Profile ********/
+ .profileHeader{
+   background-color: #DFDAE0;
+   width:80%;
+   height:200px;
+   margin:0 10%;
+/*   margin-right: auto;
+   /*text-align: center;*/
+   display: inline-block;
+   border-bottom: solid #A799A6 2px;
+ }
+ .profileNameText{
+   color: #A799A6;
+   display: inline-block;
+   font-size:30pt;
+   padding-left:15px;
+   vertical-align: bottom;
+   padding-bottom: 15px;
+ }
+
+ .profileText{
+   width:175px;
+   height:75%;
+   padding-top: 10px;
+   padding-left:10px;
+   margin-top: 40px;
+   background-color: #A799A6;
+   display: inline-block;
+   font-size:30pt;
+   color: #DFDAE0;
+ }
+
+ .mainBody{
+   background-color: #DFDAE0;
+   width:80%;
+   margin:0 10%;
+   display: inline-block;
+ }
+
+ .formSection{
+   border: solid #EBEBEB 1px;
+   width:100%;
+   font-size: 1rem;
+ }
+
+.formHeader{
+  font-size: 24px;
+  padding-top: 22.5px;
+  padding-left:22.5px;
+  height:40px;
+  background-color: #FFFFFF;
+  color: #AB619E;
+  border-bottom: solid #EBEBEB 1px;
+}
+
+.formRow{
+  border-bottom: solid #EBEBEB 1px;
+}
+
+.formField{
+  display: inline-block;
+  width:auto;
+}
+
+.formInput{
+  margin-left:15px;
+  display: inline-block;
+  /*height:70px;*/
+}
+
+.formInput label{
+  font-size: 14px;
+}
+.imgCircle{
+    margin: 1 25%;
+    border-radius: 50%;
+}
+
+.formInput input{
+  display:block;
+  width:300px;
+  height:30px
+}
+
+.formLabel{
+  padding:1rem;
+  width:257px;
+  height:100%;
+  display: inline-block;
+  border-right: solid #EBEBEB 1px;
+  background-color: #FFFFFF;
+}
+
+/**/
  .footerStyle{
    display: center;
  }
@@ -72,6 +187,7 @@ img{max-width:100%;}
    background-color: #67536D;
    display: inline-block;
  }
+ 
  .wrap{
 	width:80%;
 	margin:0 auto;
@@ -146,17 +262,18 @@ img{max-width:100%;}
 	float:left;
 	margin:0 35px;
  }
-   .logo2{
+.logo2{
      font: bold 25px Helvetica, Sans-Serif;
      color: #643a79;
 	  float:left;
 	margin:5px 0px;
  }
-  .searchMain{
+.searchMain{
   	 float:left;
   	 display:inline;
 	 margin:14px 0 10px 30px;
  }
+
   .exploreMain{
   	 float:left;
      align-items: center;

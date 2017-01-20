@@ -9,10 +9,42 @@ import Activities from './Activities';
 import Sign from './Sign';
 import ExplorePage from './ExplorePage';
 import AvailableToursPage from './AvailableToursPage';
+import AccountDropdown from './Dropdown';
+import AuthStore from "../stores/AuthStore.js";
+import GetData from "../databaseFunctions";
+
+//import Dropdown from './Dropdown';
+//import DropdownTrigger from Dropdown.DropdownTrigger;
+//var DropdownContent = Dropdown.DropdownContent;
+
+class Signin extends React.Component {
+  handleLinkClick() {
+      this.refs.dropdown.hide();
+    }
+
+  render(){
+    if(this.props.loggedIn){
+      var button = (<AccountDropdown name={this.props.name} />);
+    }
+    else{
+      var button = (<Link to='/sign'> Sign in </Link>);
+    }
+    return button;
+  }
+}
 
 class Header extends React.Component {
-  render(){
 
+
+
+  render(){
+    if(AuthStore.signedIn()){
+      var profile = AuthStore.getProfile();
+      GetData.getUser(1);
+    }
+    else {
+      var profile = {first_name:"T", last_name:"S"};
+    }
     if(this.props.largeHeader){
       var header = ( <div className="image">
         <figure><img src={logoImg2} alt="image" width="100%" height="500" /></figure>
@@ -42,7 +74,7 @@ class Header extends React.Component {
               <li><Link to='/'>Home</Link></li>
               <li><Link to='/activities'>Activities</Link></li>
               <li><Link to='/about'>About us</Link></li>
-              <li><Link to='/sign'>Sign in</Link></li>
+              <li> <Signin loggedIn={AuthStore.signedIn()} name={profile.name} /> </li>
             </ul>
             <hr/>
            </div>
