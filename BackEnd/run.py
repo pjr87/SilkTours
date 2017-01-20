@@ -3,7 +3,7 @@ from flask import jsonify
 import json
 from flask import request
 #from user import User
-'''
+
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -19,7 +19,7 @@ from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.orm import scoped_session
 import boto3
-'''
+
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
@@ -54,7 +54,6 @@ def notAuthorizedResponse():
 db = DbController()
 s3 = S3Controller()
 
-'''
 
 engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
 Session = scoped_session(sessionmaker(bind=engine))
@@ -92,7 +91,6 @@ def hello():
     print "Hello"
     print "Wats up" + user.first_name
     return "Hello " + user.first_name
-'''
 
 
 @app.route("/search", methods=['GET'])
@@ -198,21 +196,26 @@ def get_tour_list():
 def get_tour(tourid):
     return db.list_tour_with_id(tourid)
 
+
 @app.route('/tours', methods=['POST'])
 def set_tour():
     return db.post(request.args.to_dict(), 'Tour')
+
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
     return db.edit(tourid, request.args.to_dict(), 'Tour')
 
+
 @app.route('/tourevents/<tourid>', methods=['POST'])
 def set_tourevent(tourid):
     return db.edit(tourid, request.args.to_dict(), 'TourEvent')
 
+
 @app.route('/tourevents/<tourid>', methods=['PUT'])
 def edit_tourevent(tourid):
     return db.edit(tourid, request.args.to_dict(), 'TourEvent')
+
 
 @app.route('/tours/<tourid>', methods=['POST'])
 def upload(tourid):
@@ -221,4 +224,4 @@ def upload(tourid):
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', debug=True)
+    app.run(host='0.0.0.0', debug=True)
