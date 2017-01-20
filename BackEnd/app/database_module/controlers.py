@@ -50,7 +50,7 @@ class DbController:
         return j
 
     def list_tour_with_id(self, tourId):
-        PROP = list(self.PROPS['Tour'].keys())
+        PROP = list(self.PROPS['Tour'])
         query = ("SELECT * FROM Tour Where id_tour=" + tourId)
         rows = self.execute(query)
 
@@ -60,7 +60,7 @@ class DbController:
             for i in range(len(row)):
                 d[PROP[i]] = self.parse(row[i])
 
-        PROP = list(self.PROPS['TourEvent'].keys())
+        PROP = list(self.PROPS['TourEvent'])
         query = ("SELECT * FROM TourEvent Where id_tour=" + tourId)
         rows = self.execute(query)
         e = []
@@ -88,7 +88,7 @@ class DbController:
         data = "("
         for entry in entrys:
             fields = fields + entry + ","
-            data = data + PROPTYPES[entry] + ","
+            data = data + '%s' + ","
         fields = fields[:-1] + ")"
         data = data[:-1] + ");"
         query = ("INSERT INTO " + table + fields + " VALUES " + data)
@@ -103,15 +103,21 @@ class DbController:
             if prop in self.PROPS[table]:
                 entrys.append(prop)
                 values.append(self.parsedb(prop, props[prop]))
-        PROPTYPES = self.PROPS[table]
         fields = ""
         for entry in entrys:
-            fields = fields + entry + "=" + PROPTYPES[entry] + ","
+            fields = fields + entry + "=" + '%s' + ","
         fields = fields[:-1]
-        query = ("UPDATE Tour SET " + fields + " WHERE " + self.IDS[table] + "=" + id)
-        print(query)
+        query = ("UPDATE " + table + " SET " + fields + " WHERE " + self.IDS[table] + "=" + id)
         self.cursor.execute(query, values)
         self.db.commit()
         return "jjj"
+
+    def delete(self, id, table):
+        query = ("UPDATE " + table + " SET is_deleted=1 WHERE " + self.IDS[table] + "=" + id)
+        self.cursor.execute(query)
+        self.db.commit()
+
+
+
 
 
