@@ -21,7 +21,6 @@ class Interests(Base):
         }
 
     def getByUser(self, user):
-        print user.props
         user.props["interests"] = []
         response = Interests.client.get_item(
             Key={
