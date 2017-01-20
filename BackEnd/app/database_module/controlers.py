@@ -1,122 +1,117 @@
-import boto3
-import uuid
-from botocore.exceptions import ClientError
+import mysql.connector
 import json
-import MySQLdb
+import collections
+import datetime
+from .props import Props
+
 
 class DbController:
-    def __init__(self):
-        self.client = boto3.client('dynamodb')
-        self.resource = boto3.resource('dynamodb')
-        self.db = MySQLdb.connect(host="silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com",
-                     port=3306,
-                     user="silktours",
-                     passwd="32193330",
-                     db="silktours")
 
-    def execute(self, sql_cmd):
-        cur = self.db.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute(sql_cmd)
-        return cur.fetchall()
+    def __init__(self):
+        self.db = mysql.connector.connect(user='silktours', password='32193330',
+                                          host='silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com',
+                                          database='silktours')
+        self.cursor = self.db.cursor()
+        self.f = '%Y-%m-%d'
+        self.p = Props()
+        self.PROPS = self.p.PROPS
+        self.IDS = self.p.IDS
+
+    def execute(self, query):
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def parse(self, data):
+        if isinstance(data, datetime.date):
+            return data.strftime(self.f)
+
+        return data
+
+    def parsedb(self, entry, value):
+        if "date" in entry:
+            return datetime.datetime.strptime(value, self.f).date()
+
+        return value
 
     def list_tours(self):
-        response = self.client.scan(TableName='Tour') # TODO change 'test' to tour table
-        items = response['Items']
-        json_response = json.dumps(items, sort_keys=True, indent=4, separators=(',', ': '))
-        print("GetTables succeeded")
-        return json_response
+        query = ("SELECT id_tour, name FROM Tour")
+        self.cursor.execute(query)
+        rows = self.cursor.fetchall()
 
-    def list_tour_with_id(self, id):
-        table = self.resource.Table('Tour') # TODO TODO change 'test' to tour table
-        try:
-            response = table.get_item(
-                Key={
-                    't_id': id
-                }
-            )
-        except ClientError as e:
-            print(e.response['Error']['Message'])
-        else:
-            item = response['Item']
-            print("GetItem succeeded")
-            json_response = json.dumps(item, sort_keys=True, indent=4, separators=(',', ': '))
-            return json_response
+        objects_list = []
+        for row in rows:
+            print(row)
+            d = collections.OrderedDict()
+            d['Id'] = row[0]
+            d['Name'] = row[1]
+            objects_list.append(d)
 
-    def post_tour_with_name(self, tourname):
-        table = self.resource.Table('Tour')
-        id = uuid.uuid4()
-        response = table.put_item(
-            Item={
-                't_id': str(id),
-                't_locations': tourname,
-                't_FirstDateTime': '10-24-2016'
-            }
-        )
-        print("PutItem succeeded")
-        json_response = json.dumps(response, sort_keys=True, indent=4, separators=(',', ': '))
-        return json_response
+        j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))
+        return j
 
-    def edit_tour_with_id(self, id):
-        table = self.resource.Table('Tour')
-        response = table.update_item(
-            Key={
-                't_id': id
-            },
-            UpdateExpression="set t_guideName = :r",
-            ExpressionAttributeValues={
-                ':r': 'Yongqiang Fan'
-            },
-            ReturnValues="UPDATED_NEW"
-        )
+    def list_tour_with_id(self, tourId):
+        PROP = list(self.PROPS['Tour'].keys())
+        query = ("SELECT * FROM Tour Where id_tour=" + tourId)
+        rows = self.execute(query)
 
-        print("UpdateItem succeeded")
-        json_response = json.dumps(response, sort_keys=True, indent=4, separators=(',', ': '))
-        return json_response
+        objects_list = []
+        for row in rows:
+            d = collections.OrderedDict()
+            for i in range(len(row)):
+                d[PROP[i]] = self.parse(row[i])
 
-    def list_rating_with_id(self, id):
-        table = self.resource.Table('Rating')  # TODO TODO change 'test' to tour table
-        try:
-            response = table.get_item(
-                Key={
-                    'r_id': id
-                }
-            )
-        except ClientError as e:
-            print(e.response['Error']['Message'])
-        else:
-            item = response['Item']
-            print("GetItem succeeded")
-            json_response = json.dumps(item, sort_keys=True, indent=4, separators=(',', ': '))
-            return json_response
+        PROP = list(self.PROPS['TourEvent'].keys())
+        query = ("SELECT * FROM TourEvent Where id_tour=" + tourId)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        d['TourEvents'] = e
 
-    def list_tourevent_with_id(self, id):
-        table = self.resource.Table('TourEvent')  # TODO TODO change 'test' to tour table
-        try:
-            response = table.get_item(
-                Key={
-                    'te_id': id
-                }
-            )
-        except ClientError as e:
-            print(e.response['Error']['Message'])
-        else:
-            item = response['Item']
-            print("GetItem succeeded")
-            json_response = json.dumps(item, sort_keys=True, indent=4, separators=(',', ': '))
-            return json_response
+        objects_list.append(d)
+        j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))
+        return j
 
-    def list_interest_with_id(self, id):
-        table = self.resource.Table('Interest')  # TODO TODO change 'test' to tour table
-        try:
-            response = table.get_item(
-                Key={
-                    'i_id': id
-                }
-            )
-        except ClientError as e:
-            print(e.response['Error']['Message'])
-        else:
-            item = response['Item']
-            print("GetItem succeeded")
-            json_response = json.dumps(item, sort_keys=True, indent=4, separators=(',', ': '))
-            return json_response
+    def post(self, props, table):
+        entrys = []
+        values = []
+        for prop in props:
+            if prop in self.PROPS[table]:
+                entrys.append(prop)
+                values.append(self.parsedb(prop, props[prop]))
+
+        PROPTYPES = self.PROPS[table]
+        fields = "("
+        data = "("
+        for entry in entrys:
+            fields = fields + entry + ","
+            data = data + PROPTYPES[entry] + ","
+        fields = fields[:-1] + ")"
+        data = data[:-1] + ");"
+        query = ("INSERT INTO " + table + fields + " VALUES " + data)
+        self.cursor.execute(query, values)
+        self.db.commit()
+        return "hhh"
+
+    def edit(self, id, props, table):
+        entrys = []
+        values = []
+        for prop in props:
+            if prop in self.PROPS[table]:
+                entrys.append(prop)
+                values.append(self.parsedb(prop, props[prop]))
+        PROPTYPES = self.PROPS[table]
+        fields = ""
+        for entry in entrys:
+            fields = fields + entry + "=" + PROPTYPES[entry] + ","
+        fields = fields[:-1]
+        query = ("UPDATE Tour SET " + fields + " WHERE " + self.IDS[table] + "=" + id)
+        print(query)
+        self.cursor.execute(query, values)
+        self.db.commit()
+        return "jjj"
+
+

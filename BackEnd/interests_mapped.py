@@ -10,7 +10,11 @@ class Interests(Base):
     id_interestList = Column(Integer, primary_key=True)
     name = Column(String)
     #id_interest = Column(Integer, ForeignKey("address.id"))
+<<<<<<< HEAD
+    #id_tour = Column(Integer, ForeignKey("address.id"))
+=======
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
+>>>>>>> master
     id_user = Column(Integer, ForeignKey("User.id_users"))
 
     def serialize(self):

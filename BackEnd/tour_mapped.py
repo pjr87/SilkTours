@@ -34,7 +34,10 @@ class Tour(Base):
     average_rating = Column(Float)
     rating_count = Column(Integer)
     ratings = relationship("Rating")
+<<<<<<< HEAD
+=======
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
+>>>>>>> master
 
     def serialize(self, deep):
         result = {}
