@@ -1,8 +1,8 @@
 import React from 'react';
-import style from './style/style.css';
-import Header from './Header';
+import style from '../../style/style.css';
+import Header from '../header/Header';
 
-import GetData from '../databaseFunctions';
+import GetData from '../../databaseFunctions';
 
 class ProfileHeader extends React.Component{
 
