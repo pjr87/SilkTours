@@ -13,7 +13,7 @@ import { BrowserRouter as Router, Route, Link, Match, Miss, browserHistory } fro
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
     <div>
-      <Match exactly pattern='/' component={ExplorePage} />
+      <Match exactly pattern='/' component={Profile} />
       <Match pattern='/activities' component={Activities}/>
       <Match pattern='/about' component={About}/>
       <Match pattern='/sign' component={Sign}/>

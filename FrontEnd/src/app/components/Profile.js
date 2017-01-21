@@ -17,14 +17,48 @@ class ProfileHeader extends React.Component{
   }
 }
 
+
+
 class TourTile extends React.Component{
 
   render(){
     return (
       <div>
-        <img className={style.imgCircle} src={this.props.tourPic} width="100px" height="100px" />
+        <img src={this.props.tourPic} width="100px" height="100px" />
+        <div className={style.tourName}>
+          {this.props.tourName}this is the name of the tour.
+        </div>
+        <div>
+          This is the tour discription!
+        </div>
+      </div>
+    );
+  }
+}
 
+class ToursTab extends React.Component{
+  render(){
 
+    return (
+      <div>
+        <Link
+          to={{
+            pathname: '/explore',
+            query: { location: 'philadelphia' }
+          }}>
+        <div className = {style.exploreBox1}>
+          <h6>philadelphia</h6>
+        </div>
+        </Link>
+        <Link
+          to={{
+            pathname: '/explore',
+            query: { location: 'newyork' }
+          }}>
+        <div className = {style.exploreBox2}>
+          <h6>new york</h6>
+        </div>
+        </Link>
       </div>
     );
   }
@@ -32,16 +66,39 @@ class TourTile extends React.Component{
 
 class Profile extends React.Component{
 
+  constructor(props){
+    super(props);
+    this.state={tab:'saves'};
+  }
 
-
+  buttonHandler(val){
+    this.setState( {tab:val} );
+  }
 
   render(){
     var userData = GetData.getUser(1);
+    var tabPage = <div> </div>;
+    if(this.state.tab == 'saves'){
+      var tabPage = <ToursTab> </ToursTab>;
+    }
+    else if (this.state.tab = 'trips') {
+      var tabPage = <ToursTab> </ToursTab>;
+    }
+    else {
+      var tabPage = <div> </div>;
+    }
 
     return (<div>
       <Header largeHeader={false} />
       <ProfileHeader profilePicture={userData.profile_picture} name={userData.first_name+" "+userData.last_name} />
       <div className={style.mainBody}>
+        <div className={style.profileButtonMenu}>
+          <button id="firstButton" className={style.profileButtons} onClick={this.buttonHandler.bind(this,"messages")}>messages</button>
+          <button className={style.profileButtons} onClick={this.buttonHandler.bind(this,'saves')}>saves</button>
+          <button className={style.profileButtons} onClick={this.buttonHandler.bind(this,'trips')}> trips</button>
+
+        </div>
+        {tabPage}
       <div className={style.formSection}>
           <div className={style.formHeader}> Tours Taken </div>
         </div>

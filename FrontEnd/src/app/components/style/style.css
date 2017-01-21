@@ -80,6 +80,40 @@ body{
    color: #DFDAE0;
  }
 
+ .profileButtons{
+	 margin:20px;
+	 height: 50px;
+	 color: #A799A6;
+	 font-size: 1rem;
+	 background-color: inherit;
+	 width:200px;
+	 border: solid #A799A6 3px;
+ }
+
+ #firstButton{
+	 /*margin: 0px;*/
+ }
+
+.profileButtonMenu{
+	text-align: center;
+	background-color: white;
+}
+
+.tourName{
+	padding-left: 10px;
+	padding-top: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	display: inline-block;
+}
+.tourDescription {
+	padding-left: 10px;
+	padding-top: 10px;
+	font-weight: bold;
+	vertical-align: top;
+	display: inline-block;
+}
+
  .mainBody{
    background-color: #DFDAE0;
    width:80%;
@@ -187,7 +221,7 @@ body{
    background-color: #67536D;
    display: inline-block;
  }
- 
+
  .wrap{
 	width:80%;
 	margin:0 auto;
