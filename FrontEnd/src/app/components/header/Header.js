@@ -1,17 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
-import style from './style/style.css';
-import logoImg from './style/images/logo.png';
-import logoImg2 from './style/images/logo2.png';
-import Home from './Home';
-import About from './About';
-import Activities from './Activities';
-import Sign from './Sign';
-import ExplorePage from './ExplorePage';
-import AvailableToursPage from './AvailableToursPage';
-import AccountDropdown from './Dropdown';
-import AuthStore from "../stores/AuthStore.js";
-import GetData from "../databaseFunctions";
+
+// Importing css style and images
+import style from '../../style/style.css';
+import logoImg from '../../style/images/logo.png';
+import logoImg2 from '../../style/images/logo2.png';
+
+// Importing components
+import About from '../pages/About';
+import Activities from '../pages/Activities';
+import Sign from '../pages/Sign';
+import ExplorePage from '../pages/ExplorePage';
+import AvailableToursPage from '../pages/AvailableToursPage';
+import AccountDropdown from '../Dropdown';
+import AuthStore from "../../stores/AuthStore.js";
+import GetData from "../../databaseFunctions";
 
 //import Dropdown from './Dropdown';
 //import DropdownTrigger from Dropdown.DropdownTrigger;
@@ -33,10 +36,11 @@ class Signin extends React.Component {
   }
 }
 
+// Header page in ES6 with headerbar, and footer.
 class Header extends React.Component {
-
-
-
+  constructor(props) {
+  super(props);
+  }
   render(){
     if(AuthStore.signedIn()){
       var profile = AuthStore.getProfile();
@@ -47,16 +51,14 @@ class Header extends React.Component {
     }
     if(this.props.largeHeader){
       var header = ( <div className="image">
-        <figure><img src={logoImg2} alt="image" width="100%" height="500" /></figure>
-        <h2>call to action</h2>
-        <h3>call to action</h3>
+        <figure><img src={this.props.fileName} alt="image" width="100%" height="500" /></figure>
       </div> );
     }
     else {
       var header = ( <div>
         <div style={{height:74}}></div>
     <div className={style.smallHeaderImage}>
-        <img src={logoImg2} alt="image" width="100%" height="74" />
+        <img src={this.props.fileName} alt="image" width="100%" height="74" />
       </div>
     </div>
     );
@@ -80,7 +82,9 @@ class Header extends React.Component {
            </div>
           </div>
           </div>
-          {header}
+          <div className="image">
+            <figure><img src={this.props.fileName} alt="image" width="100%" height="500"/></figure>
+	        </div>
         </div>
   )
   }

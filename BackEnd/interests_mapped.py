@@ -11,6 +11,7 @@ class Interests(Base):
     name = Column(String)
     #id_interest = Column(Integer, ForeignKey("address.id"))
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
+
     id_user = Column(Integer, ForeignKey("User.id_users"))
 
     def serialize(self):
@@ -20,7 +21,6 @@ class Interests(Base):
         }
 
     def getByUser(self, user):
-        print user.props
         user.props["interests"] = []
         response = Interests.client.get_item(
             Key={

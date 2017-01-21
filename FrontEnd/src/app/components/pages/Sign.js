@@ -15,12 +15,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FacebookLogin from 'react-facebook-login';
-import Header from './Header';
-import Footer from './Footer';
-import {DeveloperAuth} from './CognitoSync/DeveloperAuth.js'
-import {AWSauth} from './CognitoSync/AWSauth.js'
-import appConfig from "./CognitoSync/config";
-import AuthStore from "../stores/AuthStore.js"
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
+import {DeveloperAuth} from '../CognitoSync/DeveloperAuth.js'
+import {AWSauth} from '../CognitoSync/AWSauth.js'
+import appConfig from "../CognitoSync/config";
+import AuthStore from "../../stores/AuthStore.js"
+import logoImg from '../../style/images/logo5.png';
 
 const responseFacebook = (response) => {
   //console.log(response);
@@ -55,7 +56,7 @@ class Sign extends React.Component{
   render() {
     return (
       <div>
-      <Header/>
+      <Header fileName={logoImg}/>
 
       <FacebookLogin
         appId={appConfig.facebookAppId}

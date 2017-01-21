@@ -1,7 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
-import style from './style/style.css';
 
+// Importing css style
+import style from '../../style/style.css';
+
+// Footer page in ES6
 const Footer = () => {
   return (
     <div className = {style.footerStyle}>
@@ -11,4 +13,3 @@ const Footer = () => {
 };
 
 export default Footer;
- 

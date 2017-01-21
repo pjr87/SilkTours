@@ -1,9 +1,9 @@
 
 import React from 'react';
-import style from './style/style.css';
-import Header from './Header';
-import Footer from './Footer';
-import GetData from '../databaseFunctions';
+import style from '../../style/style.css';
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
+import GetData from '../../databaseFunctions';
 import {ProfileHeader} from './Profile';
 
 class SettingsPg extends React.Component {
