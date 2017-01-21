@@ -55,7 +55,9 @@ db = DbController()
 s3 = S3Controller()
 
 
-engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+#engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+
 Session = scoped_session(sessionmaker(bind=engine))
 #Session = scoped_session(sessionmaker())
 session = None
@@ -66,7 +68,7 @@ def commitSession():
     try:
         session.commit()
     except:
-        print "INFO: session commit failed"
+        print ("INFO: session commit failed")
         session.roolback()
 
 
@@ -88,8 +90,6 @@ def after_request(response):
 def hello():
     user = session.query(User).get(1)
     #session.query(User).filter_by(first_name="Andrew").first()
-    print "Hello"
-    print "Wats up" + user.first_name
     return "Hello " + user.first_name
 
 

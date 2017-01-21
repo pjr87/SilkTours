@@ -55,7 +55,6 @@ class User(Base):
             setattr(self, key, data[key])
 
     def serialize(self):
-        print self.interests
         result = {}
 
         result["interests"] = []
