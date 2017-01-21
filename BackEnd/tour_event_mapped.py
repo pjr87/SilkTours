@@ -17,7 +17,6 @@ class TourEvent(Base):
     tour = relationship("Tour", foreign_keys=[id_tour])
 
     def serialize(self):
-        print self.tour
         return {
             "id_tourEvent": self.id_tourEvent,
             "tour": self.tour.serialize(False)

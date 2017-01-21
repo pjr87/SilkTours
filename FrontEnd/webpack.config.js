@@ -1,43 +1,50 @@
 var webpack = require('webpack');
-var path = require('path');
 
 module.exports = {
-  context: path.join(__dirname, "src"),
-  entry: path.resolve(__dirname, '../src/client/scripts/client.js'),
+  entry: ['react-hot-loader/patch', './src/app/index.js'],
   output: {
     //context: path.join(__dirname, "src"),
     //devtool: debug ? "inline-sourcemap" : null,
     //path: path.resolve(__dirname, '../dist/'),
     //publicPath: "./src/app/",
     //filename: 'bundle.js'
-    path: path.resolve(__dirname, '../dist'),
+    path: __dirname + '/src/client/',
     filename: 'bundle.js'
+  },
+
+  devServer: {
+      hot: true,
+      inline: true,
+      host: '0.0.0.0',
+      port: 3000,
+      historyApiFallback: true,
+      contentBase: __dirname + '/src/client/',
   },
 
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-        }
+         test: /\.jsx?$/,
+         loader: 'babel',
+         exclude: /node_modules/,
+         query: {
+            cacheDirectory: true,
+         }
       },
       {
         test: /\.json$/,
         loader: 'json'
       },
       {
-        test: /src\/.+.js$/,
+        test: /\.js?$/,
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-            cacheDirectory: true,
-            presets: ['es2015', 'react'],
-            plugins: ["react-hot-loader/babel"]
-          }
-        },
+          cacheDirectory: true,
+          presets: ['es2015', 'react', 'stage-0'],
+          plugins: ['transform-runtime']
+        }
+      },
         {
           test: /\.css$/,
           loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'

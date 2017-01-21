@@ -1,6 +1,15 @@
 from flask import Flask, g
 from flask import jsonify
+import json
 from flask import request
+#from user import User
+
+from user_mapped import User
+from ratings_mapped import Rating
+from tour_mapped import Tour
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import sessionmaker
 from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
@@ -11,14 +20,14 @@ from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.orm import scoped_session
 import boto3
 
+
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
 app = Flask(__name__)
 app.config['DEBUG'] = True
-CORS(app)
+#CORS(app)
 
-client = boto3.client('cognito-identity')
-
+#client = boto3.client('cognito-identity')
 
 def checkLogin(id):
     return True
@@ -41,10 +50,14 @@ def notAuthorizedResponse():
     return "<h1>403: Not Authorized. Click <a"
     + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
 
+
 db = DbController()
 s3 = S3Controller()
 
-engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+
+#engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+
 Session = scoped_session(sessionmaker(bind=engine))
 #Session = scoped_session(sessionmaker())
 session = None
@@ -55,7 +68,7 @@ def commitSession():
     try:
         session.commit()
     except:
-        print "INFO: session commit failed"
+        print ("INFO: session commit failed")
         session.roolback()
 
 
@@ -76,6 +89,7 @@ def after_request(response):
 @app.route("/")
 def hello():
     user = session.query(User).get(1)
+    #session.query(User).filter_by(first_name="Andrew").first()
     return "Hello " + user.first_name
 
 
@@ -136,6 +150,7 @@ def set_user():
     user = User()
     user.set_props(request.form)
     session.add(user)
+    session.commit()
     commitSession()
     return jsonify(user.serialize())
 
@@ -146,6 +161,7 @@ def edit_user(id):
     user = session.query(User).get(id)
     user.set_props(request.form)
     session.add(user)
+    session.commit()
     commitSession()
     return jsonify(user.serialize())
 
@@ -166,6 +182,7 @@ def add_rating():
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
+    session.commit()
     commitSession()
     return "Success"
 
@@ -180,29 +197,30 @@ def get_tour(tourid):
     return db.list_tour_with_id(tourid)
 
 
-@app.route('/tours/<tourname>', methods=['POST'])
-def set_tour(tourname):
-    return db.post_tour_with_name(tourname)
+@app.route('/tours', methods=['POST'])
+def set_tour():
+    return db.post(request.args.to_dict(), 'Tour')
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return db.edit_tour_with_id(tourid)
+    return db.edit(tourid, request.args.to_dict(), 'Tour')
 
 
-@app.route('/pics', methods=['GET'])
-def get_tour_pics():
-    return s3.getItems()
+@app.route('/tourevents/<tourid>', methods=['POST'])
+def set_tourevent(tourid):
+    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
 
 
-@app.route('/ratings/<ratingid>', methods=['GET'])
-def get_rating(ratingid):
-    return db.list_rating_with_id(ratingid)
+@app.route('/tourevents/<tourid>', methods=['PUT'])
+def edit_tourevent(tourid):
+    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
 
 
-@app.route('/tourevents/<teid>', methods=['GET'])
-def get_tourevent(teid):
-    return db.list_tourevent_with_id(teid)
+@app.route('/tours/<tourid>', methods=['POST'])
+def upload(tourid):
+    file = request.files['file']
+    return s3.upload(file, tourid)
 
 
 if __name__ == "__main__":
