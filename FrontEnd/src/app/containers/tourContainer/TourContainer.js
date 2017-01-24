@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ToursDisplay from '../../components/tours/toursDisplay';
-import Warning from '../../components/warning/Warning';
-import * as service from '../../ajaxServices/AjaxList';
+import ToursDisplay from '../../components/tours/ToursDisplay.js';
+import Warning from '../../components/warning/Warning.js';
+import * as service from '../../ajaxServices/AjaxList.js';
 
 
 class TourContainer extends Component {

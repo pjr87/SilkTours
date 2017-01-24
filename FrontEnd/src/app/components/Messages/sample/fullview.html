@@ -3,8 +3,6 @@
 <!-- Custom CSS -->
 <link href="../css/app/fullview/applozic.combined.min.css"
 	rel="stylesheet">
-<!-- AutoSuggest Plugin CSS -->
-<link href="../autosuggest/css/jquery.atwho.min.css" rel="stylesheet">
 
 <link href="../css/app/fullview/applozic.fullview.css" rel="stylesheet">
 
@@ -31,31 +29,6 @@
 					<div class="blk-lg-7">
 						<h4 id="mck-box-title" class="mck-box-title mck-truncate">Conversations</h4>
 					</div>
-					<div class="blk-lg-2 move-right mck-menu-item mck-text-right">
-						<div class="mck-dropdown-toggle" data-toggle="mckdropdown"
-							aria-expanded="true">
-							<img style="visibility: hidden;" src="../images/icon-menu.png" class="mck-menu-icon"
-								alt="Menu">
-						</div>
-						<ul id="mck-start-new-menu-box"
-							class="mck-dropdown-menu mck-tab-menu-box menu-right" role="menu">
-							<li><a href="#" class="mck-contact-search menu-item"
-								title="New Chat">New Chat</a></li>
-							<li><a href="#" class="mck-contact-search menu-item"
-								title="Contacts">Contacts</a></li>
-							<li><a href="#" class="mck-group-search menu-item"
-								title="Groups">Groups</a></li>
-							<li><a href="#" id="mck-new-group" class="menu-item"
-								title="Create Group">Create Group</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="top">
-					<span class="mck-search-icon"> <a href="#" role="link"
-						class="mck-tab-search"> <span class="mck-icon-search"></span>
-					</a>
-					</span> <input type="text" id="mck-search" data-provide="typeahead"
-						placeholder="Search..." autofocus />
 				</div>
 				<div class="mck-panel-body">
 					<div id="mck-contact-cell" class="mck-panel-cell">
@@ -231,7 +204,7 @@
 										title="Attach File"> </a> <span id="mck-text-box"
 										contenteditable="true" class="mck-text-box mck-text required"></span>
 
-									<a href="#"  style="visibility: hidden; " type="button" id="mck-btn-smiley"
+									<a href="#" type="button" id="mck-btn-smiley"
 										class="write-link smiley mck-btn-smiley mck-btn-text-panel"
 										title="Smiley"></a> <a href="#" type="submit"
 										id="mck-msg-sbmt" class="write-link send mck-btn-text-panel"
@@ -305,6 +278,7 @@
 										<select id="mck-group-create-type" class="mck-select">
 											<option value="2" selected>Public</option>
 											<option value="1">Private</option>
+											<option value="6">Open</option>
 										</select>
 									</div>
 								</div>
@@ -592,7 +566,6 @@
 				oModal = $.fn.modal.noConflict();
 			}
 		} else {
-			console.log("using here");
 			$ = $applozic;
 			jQuery = $applozic;
 			if (typeof $applozic.fn.modal === 'function') {
@@ -602,21 +575,7 @@
 	</script>
 	<script type="text/javascript">
 		//var $applozic = jQuery.noConflict(true);
-		//Sample json contains display name and photoLink for userId
-		var contacts = {
-			"user1" : {
-				"displayName" : "Devashish",
-				"imageLink" : "https://www.applozic.com/resources/images/applozic_icon.png"
-			},
-			"user2" : {
-				"displayName" : "Adarsh",
-				"imageLink" : "https://www.applozic.com/resources/images/applozic_icon.png"
-			},
-			"user3" : {
-				"displayName" : "Shanki",
-				"imageLink" : "https://www.applozic.com/resources/images/applozic_icon.png"
-			}
-		};
+
 		function readMessage() {
 			//console.log(userId);
 		}
@@ -637,49 +596,19 @@
 		  }*/
 		//callback function execute after plugin initialize.
 		function onInitialize(response) {
-			if (response === 'success') {
+			if (response.status === 'success') {
+				console.dir(response);
+				// $applozic.fn.applozic('loadContacts', {'contacts':contactsJSON});
+				// $applozic.fn.applozic('loadTab', 'shanki.connect');
 				//write your logic exectute after plugin initialize.
-			} else if (response === 'object' && response.status === 'error') {
-				alert("Error:" + response.errorMessage);
+			} else {
+				alert(response.errorMessage);
 			}
 		}
-		// Examples shows how to define variable for auto suggest
-		var autoSuggest = {
-			queries : [ {
-				name : "How to integrate?",
-				content : "How to integrate Applozic SDK?"
-			}, {
-				name : "Android",
-				content : "https://www.applozic.com/docs/android-chat-sdk.html"
-			}, {
-				name : "iOS",
-				content : "https://www.applozic.com/docs/ios-chat-sdk.html"
-			}, {
-				name : "Web Plugin",
-				content : "https://www.applozic.com/docs/web-chat-plugin.html"
-			} ],
-			templates : [ {
-				name : "I am busy. I will call you later",
-				content : "I am busy. I will call you later"
-			}, {
-				name : "I'm in a meeting.",
-				content : "I'm in a meeting."
-			}, {
-				name : "Where are You?",
-				content : "Where are You?"
-			}, {
-				name : "Please reply ASAP. It's Urgent.",
-				content : "Please reply ASAP. It's Urgent."
-			}, {
-				name : "I'm on my way home",
-				content : "I'm on my way home"
-			}, {
-				name : "I'm coming",
-				content : "I'm coming"
-			} ]
-		}
+		
+		
 		// Function to initialize auto suggest plugin on message textbox
-		/* 		  function initAutoSuggestions() {
+		  function initAutoSuggestions() {
 		 $('#mck-text-box').atwho({
 		 at: "#queries",
 		 insertTpl: '${content}',
@@ -696,32 +625,8 @@
 		 displayTpl: '<li>${name} <small>${content}</small></li>',
 		 data: autoSuggest.templates
 		 });
-		 } */
+		 } 
 
-		$(document)
-				.ready(
-						function() {
-							//Function to initialize plugin
-							$applozic.fn
-									.applozic({
-										userId : 'customer-1',
-										userName : 'Customer1',
-										appId : 'applozic-sample-app',
-										ojq : $original,
-										obsm : oModal,
-										//	autoTypeSearchEnabled : false,
-										// messageBubbleAvator: true,
-										notificationIconLink : "https://www.applozic.com/resources/images/applozic_icon.png",
-										readConversation : readMessage, // readMessage function defined above
-										onInit : onInitialize, //callback function execute on plugin initialize
-										maxAttachmentSize : 25, //max attachment size in MB
-										desktopNotification : true,
-										locShare : true,
-										topicBox : true,
-										googleApiKey : "AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4", // replace it with your Google API key
-									// initAutoSuggestions : initAutoSuggestions //  function to enable auto suggestions
-									});
-						});
 	</script>
 
 </body>

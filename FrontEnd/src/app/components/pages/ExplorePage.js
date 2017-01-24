@@ -11,8 +11,45 @@ import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import AvailableToursPage from './AvailableToursPage';
 
+import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
+
 class ExplorePage extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+  }
+
+    handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('An essay was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  onFormSubmit(event) {
+    event.preventDefault();
+          saveState(this.state.value);
+          window.location = '/messages';
+        };
+
+
+
+
   render(){
+
+    function onButtonPress(arg) {
+      saveState(arg);
+      window.location = '/messages';
+    };
+
+
     return (
       <div className= {style.exploreMain}>
           <Header fileName={logoImg}/>
@@ -169,6 +206,21 @@ class ExplorePage extends React.Component{
             </div>
             </Link>
             */}
+
+
+          <form onSubmit={this.onFormSubmit}>
+                <label>
+                ID To Chat With:
+                <textarea value={this.state.value} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+          </form>
+
+          <button
+            onClick={() => onButtonPress('myNewUserIjustCreated')}
+            title = "Press to start Chat with Meow"
+            color="#841584">Press to start Chat with Meow
+          </button>
         <Footer/>
       </div>
     );
