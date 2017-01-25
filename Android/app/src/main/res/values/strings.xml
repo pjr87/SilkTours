@@ -13,4 +13,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_create_tour">create_tour</string>
+    <string name="title_activity_search">search</string>
+    <string name="title_activity_viewtour">Viewtour</string>
+    <string name="title_activity_join_tour">JoinTour</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_my_tours">MyTours</string>
+    <string name="title_activity_message_threads">MessageThreads</string>
 </resources>
