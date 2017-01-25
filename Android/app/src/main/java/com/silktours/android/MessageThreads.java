@@ -15,6 +15,7 @@ public class MessageThreads extends AppCompatActivity {
         setContentView(R.layout.activity_message_threads);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        MenuBar.setupClickListeners(this);
     }
 
 }

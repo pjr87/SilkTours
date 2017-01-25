@@ -15,6 +15,7 @@ public class MyTours extends AppCompatActivity {
         setContentView(R.layout.activity_my_tours);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        MenuBar.setupClickListeners(this);
     }
 
 }

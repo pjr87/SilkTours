@@ -15,6 +15,7 @@ public class JoinTour extends AppCompatActivity {
         setContentView(R.layout.activity_join_tour);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        MenuBar.setupClickListeners(this);
     }
 
 }

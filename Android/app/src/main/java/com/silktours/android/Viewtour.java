@@ -15,6 +15,7 @@ public class Viewtour extends AppCompatActivity {
         setContentView(R.layout.activity_viewtour);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        MenuBar.setupClickListeners(this);
     }
 
 }
