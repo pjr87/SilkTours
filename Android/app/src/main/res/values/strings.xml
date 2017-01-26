@@ -20,4 +20,6 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_my_tours">MyTours</string>
     <string name="title_activity_message_threads">MessageThreads</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

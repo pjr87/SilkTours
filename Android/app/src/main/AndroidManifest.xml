@@ -16,17 +16,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name=".Messages"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="@string/app_name"></activity>
         <activity
-            android:name=".CreateTour"
-            android:label="@string/title_activity_create_tour"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".search"
-            android:label="@string/title_activity_search"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,26 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Viewtour"
-            android:label="@string/title_activity_viewtour"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".JoinTour"
-            android:label="@string/title_activity_join_tour"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Profile"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MyTours"
-            android:label="@string/title_activity_my_tours"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MessageThreads"
-            android:label="@string/title_activity_message_threads"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
