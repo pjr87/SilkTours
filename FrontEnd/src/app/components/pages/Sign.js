@@ -5,7 +5,7 @@
  Written by: Phillip Ryan
 
  Calls functions from CognitoSync folder to display login functions
- Displayed when Signin/Signup is clicke
+ Displayed when Signin/Signup is click
 
  TODO:
   test
@@ -25,8 +25,8 @@ import logoImg from '../../style/images/logo5.png';
 
 const responseFacebook = (response) => {
   //console.log(response);
-  var AWSAuth = new AWSauth(response);
-  AWSAuth.startAWS(response, "Facebook");
+  var AWSAuth = new AWSauth();
+  AWSAuth.startAWS(response, "facebook");
 }
 
 class Sign extends React.Component{

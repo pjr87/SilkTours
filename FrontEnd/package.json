@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/RisingStack/react-way-getting-started",
   "dependencies": {
-    "amazon-cognito-identity-js": "^1.5.0",
+    "amazon-cognito-identity-js": "^1.12.0",
     "aws-sdk": "^2.7.6",
     "axios": "^0.15.3",
     "babel-plugin-transform-class-properties": "^6.22.0",
@@ -29,6 +29,7 @@
     "file-loader": "^0.9.0",
     "image-webpack-loader": "^3.0.0",
     "jquery": "^3.1.1",
+    "jsbn": "^0.1.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "promise-polyfill": "^6.0.2",
@@ -41,6 +42,7 @@
     "react-redux": "^5.0.2",
     "react-responsive": "^1.2.6",
     "react-router": "^4.0.0-2",
+    "sjcl": "^1.0.6",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.1"
