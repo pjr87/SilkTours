@@ -7,14 +7,10 @@
 
 export default {
   //AWS Cognito
-  awsAccountId: '803858137669',
   region: 'us-east-1',
-  identityPoolId: 'us-east-1:214507f3-048d-4a2b-a874-09969dcb6f84',
-  userPoolId: 'us-east-1_U8wBma7tt',
-  clientId: '3nconl88mjb4sb7civmc8ivflm',
-  iamAuthRole: 'arn:aws:iam::803858137669:role/Cognito_silktours_MOBILEHUB_2107655215Auth_Role',
-  iamNoAuthRole: 'arn:aws:iam::803858137669:role/Cognito_silktours_MOBILEHUB_2107655215Unauth_Role',
-  dataSet: 'silktours-userfiles-mobilehub-2107655215',
+  identityPoolId: 'us-east-1:c80067bd-83f5-4e32-8206-72fdd7e98943',
+  userPoolId: 'us-east-1_pWcQExZSx',
+  clientId: '2c90obh0adrcqcpitb1s9dmbm6',
 
   //Facebook
   facebookAppId: '606443696175641',
