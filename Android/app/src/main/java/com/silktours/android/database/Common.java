@@ -6,8 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,8 +21,7 @@ public class Common {
     public static final String SERVER_URL = "http://34.197.42.24:5000";
 
     public static String httpRequest(String urlString) throws IOException, JSONException {
-        HttpURLConnection urlConnection = null;
-
+        /*HttpURLConnection urlConnection = null;
         URL url = new URL(urlString);
 
         urlConnection = (HttpURLConnection) url.openConnection();
@@ -30,15 +31,29 @@ public class Common {
         urlConnection.setDoOutput(true);
         urlConnection.connect();
 
-        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
+        BufferedReader br=new BufferedReader(
+                new InputStreamReader(
+                        urlConnection.getInputStream()
+                )
+        );*/
 
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line+"\n");
+        URL url = new URL(urlString);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line+"\n");
+            }
+            br.close();
+            return sb.toString();
+        } finally {
+            urlConnection.disconnect();
         }
-        br.close();
-        return sb.toString();
+
+
     }
 
     public static JSONObject getJson(String urlString) throws IOException, JSONException {
