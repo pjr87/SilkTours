@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,13 +43,42 @@ public class Tour {
     public String profile_image;
     public Integer rating_count;
 
-    public static List<Tour> getBySearch(List<String> keywords) throws IOException, JSONException {
-        String command = "/search";
-        if (keywords.size() > 0) {
-            command += "?keywords=";
-            command += TextUtils.join(",", keywords);
+    public static class FilterParams {
+        public String query;
+        public String location;
+        public Integer radius;
+        public Boolean useCurrentLocation;
+        public Float priceMin;
+        public Float priceMax;
+        public Float minRating;
+    }
+
+    public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
+        URIBuilder uri = new URIBuilder(Common.SERVER_URL + "/search");
+        if (params.query != null) {
+            List<String> keywords = Arrays.asList(params.query.split(" "));
+            if (keywords.size() > 0) {
+                uri.addParam("keywords", TextUtils.join(",", keywords));
+            }
         }
-        JSONArray resultsJSON = Common.getJson(Common.SERVER_URL + command).getJSONArray("data");
+
+        if (params.priceMin != null) {
+            uri.addParam("priceMin", Float.toString(params.priceMin));
+        }
+
+        if (params.priceMax != null && params.priceMax != 0.0) {
+            uri.addParam("priceMax", Float.toString(params.priceMax));
+        }
+
+        if (params.minRating != null && params.minRating != 0) {
+            uri.addParam("rating", Float.toString(params.minRating));
+        }
+
+        if (params.location != null && !params.location.isEmpty()) {
+            uri.addParam("city", params.location);
+        }
+
+        JSONArray resultsJSON = Common.getJson(uri.build()).getJSONArray("data");
         ArrayList<Tour> result = new ArrayList<>(resultsJSON.length());
         for (int i=0; i<resultsJSON.length(); i++) {
             JSONObject tourJSON = resultsJSON.getJSONObject(i);
