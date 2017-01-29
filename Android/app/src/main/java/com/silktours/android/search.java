@@ -38,7 +38,7 @@ public class Search extends Fragment {
                              Bundle savedInstanceState) {
         this.filterParams = new Tour.FilterParams();
         this.rootView = inflater.inflate(R.layout.content_search, container, false);
-        final SearchView searchView = (SearchView) rootView.findViewById(R.id.searchView);
+        searchView = (SearchView) rootView.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -81,10 +81,10 @@ public class Search extends Fragment {
                         EditText priceMax = (EditText) filterDialog.findViewById(R.id.filterPriceMax);
                         RatingBar minRating = (RatingBar) filterDialog.findViewById(R.id.filterRating);
                         filterParams.location = location.getText().toString().trim();
-                        filterParams.radius = Integer.getInteger(radius.getText().toString());
+                        filterParams.radius = stringToInt(radius.getText().toString());
                         filterParams.useCurrentLocation = useCurrentLocation.isChecked();
-                        filterParams.priceMin = Float.parseFloat(priceMin.getText().toString());
-                        filterParams.priceMax = Float.parseFloat(priceMax.getText().toString());
+                        filterParams.priceMin = stringToFloat(priceMin.getText().toString());
+                        filterParams.priceMax = stringToFloat(priceMax.getText().toString());
                         filterParams.minRating = minRating.getRating();
                         filterDialog = null;
                         search();
@@ -133,5 +133,25 @@ public class Search extends Fragment {
                 });
             }
         }).start();
+    }
+
+    private Float stringToFloat(String f) {
+        if (f==null)
+            return null;
+        try {
+            return Float.parseFloat(f);
+        }catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Integer stringToInt(String i) {
+        if (i==null)
+            return null;
+        try {
+            return Integer.parseInt(i);
+        }catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
