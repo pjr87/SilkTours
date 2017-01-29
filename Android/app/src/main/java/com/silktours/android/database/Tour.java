@@ -46,11 +46,16 @@ public class Tour {
     public static class FilterParams {
         public String query;
         public String location;
-        public Integer radius;
-        public Boolean useCurrentLocation;
-        public Float priceMin;
-        public Float priceMax;
-        public Float minRating;
+        public int radius;
+        public boolean useCurrentLocation;
+        public float priceMin;
+        public float priceMax;
+        public float minRating;
+
+        public FilterParams() {
+            query = "";
+            location = "";
+        }
     }
 
     public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
@@ -62,15 +67,15 @@ public class Tour {
             }
         }
 
-        if (params.priceMin != null) {
+        if (params.priceMin != 0) {
             uri.addParam("priceMin", Float.toString(params.priceMin));
         }
 
-        if (params.priceMax != null && params.priceMax != 0.0) {
+        if (params.priceMax != 0.0) {
             uri.addParam("priceMax", Float.toString(params.priceMax));
         }
 
-        if (params.minRating != null && params.minRating != 0) {
+        if (params.minRating != 0) {
             uri.addParam("rating", Float.toString(params.minRating));
         }
 

@@ -98,6 +98,20 @@ public class Search extends Fragment {
                 });
         filterDialog = builder.create();
         filterDialog.show();
+        if (filterParams != null) {
+            EditText location = (EditText) filterDialog.findViewById(R.id.filterLocation);
+            EditText radius = (EditText) filterDialog.findViewById(R.id.filterRadius);
+            CheckBox useCurrentLocation = (CheckBox) filterDialog.findViewById(R.id.filterCurrentLocation);
+            EditText priceMin = (EditText) filterDialog.findViewById(R.id.filterPriceMin);
+            EditText priceMax = (EditText) filterDialog.findViewById(R.id.filterPriceMax);
+            RatingBar minRating = (RatingBar) filterDialog.findViewById(R.id.filterRating);
+            location.setText(filterParams.location);
+            radius.setText(String.valueOf(filterParams.radius));
+            useCurrentLocation.setChecked(filterParams.useCurrentLocation);
+            priceMin.setText(String.valueOf(filterParams.priceMin));
+            priceMax.setText(String.valueOf(filterParams.priceMax));
+            minRating.setRating(filterParams.minRating);
+        }
     }
 
     private void search() {
@@ -137,7 +151,7 @@ public class Search extends Fragment {
 
     private Float stringToFloat(String f) {
         if (f==null)
-            return null;
+            return (float)0.0;
         try {
             return Float.parseFloat(f);
         }catch (NumberFormatException e) {
@@ -147,7 +161,7 @@ public class Search extends Fragment {
 
     private Integer stringToInt(String i) {
         if (i==null)
-            return null;
+            return 0;
         try {
             return Integer.parseInt(i);
         }catch (NumberFormatException e) {
