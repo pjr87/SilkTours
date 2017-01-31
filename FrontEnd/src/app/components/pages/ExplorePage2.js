@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
+import { Link } from 'react-router';
 import Modal from 'react-modal';
 import MediaQuery from 'react-responsive';
 
@@ -14,17 +14,6 @@ import AvailableToursPage from './AvailableToursPage';
 import ToursList from '../tours/ToursList';
 import TourContainer from '../../containers/tourContainer/TourContainer';
 
-// modal style constructor
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
 
 // Explore page in ES6. Link has a location parameter.
 class ExplorePage2 extends React.Component{
@@ -55,11 +44,6 @@ class ExplorePage2 extends React.Component{
         return (
           <div className= {style.exploreMain}>
               <Header fileName={logoImg}/>
-                <Modal isOpen={this.state.open} style={customStyles}>
-                  <div className={style.aboutMain}>
-                  <button onClick={this.closeModal}>Close</button>
-                  </div>
-                </Modal>
                 <h4>available tours</h4>
                 <div className={style.searchMain}>
                   <p className={style.searchMainFont}>search</p>

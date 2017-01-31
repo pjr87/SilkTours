@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
+import { Link } from 'react-router';
 import _ from "lodash";
 
 // Importing css style and images

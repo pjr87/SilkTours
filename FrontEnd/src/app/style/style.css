@@ -345,6 +345,54 @@ body{
  	align-items: center;
  	display:inline;
  }
+ .tourModalTitle{
+   font: bold 2.5vw Helvetica, Sans-Serif;
+   margin: 0 0;
+   color: #A52F99;
+   text-align: center;
+ }
+ .tourModalPrice{
+   font: bold 2vw Helvetica, Sans-Serif;
+   margin: 8% 0% 8% 20%;
+   color: #FFFFFF;
+   text-align: center;
+ }
+ .tourModalPriceBox{
+   width:25%;
+   height:10%;
+   margin: 0 0;
+   background-color: #A52F99;
+   display: inline-block;
+ }
+ .tourModalName{
+   font: bold 2vw Helvetica, Sans-Serif;
+   margin: 4% 4% 4% 4%;
+   color: #A52F99;
+   border-color: #A52F99;
+   text-align: center;
+ }
+ .tourModalNameBox{
+   width:50%;
+   height: 10%;
+   margin: 0% 0% 0% 20%;
+   border: 1px solid #A52F99;
+   display: inline-block;
+ }
+ .tourModalInfoTitle{
+   font: bold 1.5vw Helvetica, Sans-Serif;
+   margin: 0 0;
+   color: #585757;
+   text-align: left;
+ }
+ .tourModalInfoContents{
+   font: bold 1.4vw Helvetica, Sans-Serif;
+   margin: 0 0;
+   color: #585757;
+   text-align: left;
+ }
+ .tourModalLeft{
+   width:48%;
+ }
   .menu{
 	 float:right;
 	 margin:14px 0;
