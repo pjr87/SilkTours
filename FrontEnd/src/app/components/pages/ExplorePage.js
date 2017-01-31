@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
+import { Link } from 'react-router';
 import MediaQuery from 'react-responsive';
 
 // Importing css style and images
