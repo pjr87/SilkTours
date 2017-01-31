@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/searchResultImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/searchResultTitle"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search Result"
-        android:background="@android:drawable/toast_frame"/>
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.3"
+        android:shadowRadius="1.6"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:text="Search Result"/>
 </RelativeLayout>

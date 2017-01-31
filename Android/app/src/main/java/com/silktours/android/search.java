@@ -1,10 +1,12 @@
 package com.silktours.android;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.silktours.android.database.Tour;
 
-import org.apmem.tools.layouts.FlowLayout;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,12 +59,13 @@ public class Search extends Fragment {
                 launchFilterDialog();
             }
         });
+
         return rootView;
     }
 
     private void launchFilterDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.dialog_filter_search, null))
@@ -110,7 +110,7 @@ public class Search extends Fragment {
             useCurrentLocation.setChecked(filterParams.useCurrentLocation);
             priceMin.setText(String.valueOf(filterParams.priceMin));
             priceMax.setText(String.valueOf(filterParams.priceMax));
-            minRating.setRating(filterParams.minRating);
+            minRating.setRating((float)filterParams.minRating);
         }
     }
 
@@ -121,7 +121,6 @@ public class Search extends Fragment {
             public void run() {
                 final List<Tour> tours;
                 try {
-                    //List<String> keywords = Arrays.asList(query.split(" "));
                     tours = Tour.getBySearch(filterParams);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -133,16 +132,13 @@ public class Search extends Fragment {
                 MainActivity.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        FlowLayout grid = (FlowLayout) rootView.findViewById(R.id.searchResults);
-                        grid.removeAllViews();
-                        for (Tour tour : tours) {
-                            LayoutInflater inflater = (LayoutInflater) MainActivity.getInstance()
-                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            View view = inflater.inflate(R.layout.search_result, grid, false);
-                            TextView title = (TextView) view.findViewById(R.id.searchResultTitle);
-                            title.setText(tour.name);
-                            grid.addView(view);
-                        }
+                        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+                        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                        manager.setItemPrefetchEnabled(false);
+                        recyclerView.setLayoutManager(manager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        RecyclerView.Adapter i = new SearchResultsAdapter(MainActivity.getInstance(), tours);
+                        recyclerView.setAdapter(i);
                     }
                 });
             }
