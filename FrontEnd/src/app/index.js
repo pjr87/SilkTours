@@ -11,6 +11,7 @@ import Header from './components/header/Header';
 import Settings from './components/pages/Settings'
 import Profile from './components/pages/Profile'
 import Sign from './components/pages/Sign';
+import SignUp from './components/pages/SignUp';
 import About from './components/pages/About';
 
 const rootElement = document.getElementById('app');
@@ -20,6 +21,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Match pattern='/activities' component={ExplorePage2}/>
       <Match pattern='/about' component={About}/>
       <Match pattern='/sign' component={Sign}/>
+      <Match pattern='/signup' component={SignUp}/>
 
       <Match pattern='/profile' component={Profile}/>
       <Match pattern='/settings' component={Settings}/>

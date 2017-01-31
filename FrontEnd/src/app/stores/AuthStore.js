@@ -5,9 +5,12 @@ class AuthStore extends EventEmitter {
     super();
 
     //This is the information stored on sign in
+    // 1. ID token that contains user claims
+    // 2. Access token that is used internally to perform authenticated calls
+    // 3. Refresh token that is used internally to refresh the session after it expires each hour.
     this.authProfile =
     {
-      id: 0, //AWS token
+      userName: 0, //userName
       name: "", //User's name
       signedin: 0, //if signed in
       provider: "" //What service signed in with (Facebook, Developer)
