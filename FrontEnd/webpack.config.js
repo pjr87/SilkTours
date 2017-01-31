@@ -8,7 +8,7 @@ module.exports = {
     //path: path.resolve(__dirname, '../dist/'),
     //publicPath: "./src/app/",
     //filename: 'bundle.js'
-    path: __dirname + '/src/client/',
+    path: __dirname + '/src/public/',
     filename: 'bundle.js'
   },
 
@@ -18,7 +18,7 @@ module.exports = {
       host: '0.0.0.0',
       port: 3000,
       historyApiFallback: true,
-      contentBase: __dirname + '/src/client/',
+      contentBase: __dirname + '/src/public/',
   },
 
   module: {

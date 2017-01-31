@@ -1,4 +1,3 @@
-import $ from "jquery";
 import AuthStore from "./stores/AuthStore.js"
 
 AuthStore.on("login", () => {
