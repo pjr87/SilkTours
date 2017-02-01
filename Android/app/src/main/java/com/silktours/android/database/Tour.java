@@ -48,9 +48,9 @@ public class Tour {
         public String location;
         public int radius;
         public boolean useCurrentLocation;
-        public float priceMin;
-        public float priceMax;
-        public float minRating;
+        public double priceMin;
+        public double priceMax;
+        public double minRating;
 
         public FilterParams() {
             query = "";
@@ -68,15 +68,15 @@ public class Tour {
         }
 
         if (params.priceMin != 0) {
-            uri.addParam("priceMin", Float.toString(params.priceMin));
+            uri.addParam("priceMin", Double.toString(params.priceMin));
         }
 
         if (params.priceMax != 0.0) {
-            uri.addParam("priceMax", Float.toString(params.priceMax));
+            uri.addParam("priceMax", Double.toString(params.priceMax));
         }
 
         if (params.minRating != 0) {
-            uri.addParam("rating", Float.toString(params.minRating));
+            uri.addParam("rating", Double.toString(params.minRating));
         }
 
         if (params.location != null && !params.location.isEmpty()) {
