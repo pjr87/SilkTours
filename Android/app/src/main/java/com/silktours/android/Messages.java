@@ -11,7 +11,7 @@ public class Messages extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.content_message_threads, container, false);
+        View rootView = inflater.inflate(R.layout.content_message, container, false);
         return rootView;
     }
 }

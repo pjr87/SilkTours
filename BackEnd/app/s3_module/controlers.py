@@ -41,3 +41,5 @@ class S3Controller:
         values = [tourid, filename, url, isV, rank]
         self.post(values)
         return "sss"
+
+    def get_image(self, id):
