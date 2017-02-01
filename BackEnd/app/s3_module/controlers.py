@@ -1,7 +1,8 @@
 import boto3
 import mysql.connector
-import  uuid
+import uuid
 import json
+import collections
 
 class S3Controller:
 
@@ -43,3 +44,26 @@ class S3Controller:
         return "sss"
 
     def get_image(self, id):
+        query = ("SELECT * FROM Tour Where id_tour=" + tourId)
+        rows = self.execute(query)
+
+        objects_list = []
+        for row in rows:
+            d = collections.OrderedDict()
+            for i in range(len(row)):
+                d[PROP[i]] = self.parse(row[i])
+
+        PROP = list(self.PROPS['TourEvent'])
+        query = ("SELECT * FROM TourEvent Where id_tour=" + tourId)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        d['TourEvents'] = e
+
+        objects_list.append(d)
+        j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))
+        return j
