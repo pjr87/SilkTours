@@ -7,6 +7,7 @@ from flask import request
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from stop_mapped import Stop
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
@@ -182,6 +183,22 @@ def add_rating():
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
+    session.commit()
+    commitSession()
+    return "Success"
+
+
+# Adds a new rating
+@app.route('/stops', methods=['POST'])
+def add_stop():
+    stop = Stop()
+    id_tour = request.form.get("id_tour")
+    lat = float(request.form.get("lat"))
+    lon = float(request.form.get("lon"))
+
+    stop.set_props(id_tour, lat, lon)
+
+    session.add(stop)
     session.commit()
     commitSession()
     return "Success"

@@ -1,3 +1,4 @@
+import datetime
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -10,6 +11,12 @@ class Stop(Base):
     lat = Column(Integer)
     lon = Column(Integer)
     tour = relationship("Tour", foreign_keys=[tour_id])
+
+    def set_props(self, tour_id, lat, lon):
+        self.tour_id = tour_id
+        self.lat = lat
+        self.lon = lon
+        self.id_stop = None
 
     def serialize(self):
         return {
