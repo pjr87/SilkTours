@@ -126,8 +126,14 @@ def search():
         query = query.filter("Tour.price<="+priceMax)
     if city is not None:
         query = query.filter(Tour.address_city == city)
+    
+    tours = []
+    try:
+        tours = query.all()
+    except:
+        session.rollback()
+        raise
 
-    tours = query.all()
     result = []
     for tour in tours:
         result.append(tour.serialize(True))
