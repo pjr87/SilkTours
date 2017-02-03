@@ -1,11 +1,14 @@
 package com.silktours.android;
 
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silktours.android.database.User;
@@ -14,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class Profile extends Fragment {
     private View rootView;
@@ -31,18 +35,21 @@ public class Profile extends Fragment {
             @Override
             public void run() {
                 User user;
+                final Drawable profileImage;
                 try {
                     user = User.getByID(userID);
+                    URL thumb_u = new URL(user.profile_picture);
+                    profileImage = Drawable.createFromStream(thumb_u.openStream(), "src");
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                     return;
                 }
-                updateFieldsOnURThread(user);
+                updateFieldsOnURThread(user, profileImage);
             }
         }).start();
     }
 
-    private void updateFieldsOnURThread(final User user) {
+    private void updateFieldsOnURThread(final User user, final Drawable profileImageDrawable) {
         MainActivity.getInstance().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -50,6 +57,8 @@ public class Profile extends Fragment {
                 EditText lastName = (EditText) rootView.findViewById(R.id.lastName);
                 EditText phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
                 EditText email = (EditText) rootView.findViewById(R.id.email);
+                ImageView profileImage = (ImageView) rootView.findViewById(R.id.profileImage);
+                profileImage.setImageDrawable(profileImageDrawable);
                 firstName.setText(user.first_name);
                 lastName.setText(user.last_name);
                 phoneNumber.setText(user.phone_number);
