@@ -10,13 +10,13 @@ import java.io.IOException;
  * Created by andrew on 2/2/17.
  */
 public class User {
-    String first_name;
-    String last_name;
-    String phone_number;
-    String email;
+    public String first_name;
+    public String last_name;
+    public String phone_number;
+    public String email;
 
     public static User getByID(int id) throws IOException, JSONException {
-        String url = Common.SERVER_URL + "/users";
+        String url = Common.SERVER_URL + "/users/" + id;
         JSONObject userJSON = Common.getJson(url);
         User result = new User();
         result.first_name = userJSON.getString("first_name");
