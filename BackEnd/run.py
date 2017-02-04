@@ -10,7 +10,7 @@ from tour_mapped import Tour
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
-from flask_cors import CORS, cross_origin
+#from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -217,11 +217,14 @@ def edit_tourevent(tourid):
     return db.edit(tourid, request.args.to_dict(), 'TourEvent')
 
 
-@app.route('/tours/<tourid>', methods=['POST'])
+@app.route('/tours/image/<tourid>', methods=['POST'])
 def upload(tourid):
     file = request.files['file']
     return s3.upload(file, tourid)
 
+@app.route('/tours/image/<tourid>', methods=['GET'])
+def get_image(tourid):
+    return s3.get_image(tourid)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
