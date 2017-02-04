@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
     Activity activity;
     List<Tour> tourList;
     int parentWidth, parentHeight;
+
 
     public SearchResultsAdapter(Activity activity, List<Tour> tourList) {
         this.activity = activity;
@@ -69,8 +71,16 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
                             int width = thumb_d.getBounds().width();
                             int height = thumb_d.getBounds().height();
 
-                            image.getLayoutParams().width = parentWidth/2;
-                            image.getLayoutParams().height = height*(parentWidth/2)/width;
+                            if (position == 0 && width >= height) {
+                                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+                                layoutParams.setFullSpan(true);
+                                image.getLayoutParams().width = parentWidth;
+                                image.getLayoutParams().height = height*(parentWidth)/width;
+                            }else{
+                                image.getLayoutParams().width = parentWidth/2;
+                                image.getLayoutParams().height = height*(parentWidth/2)/width;
+                            }
+
                             image.requestLayout();
                         }
                     });
