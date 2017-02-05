@@ -25,6 +25,8 @@ class Tour(Base):
     address_city = Column(String)
     address_country = Column(String)
     profile_image = Column(String)
+    profile_image_width = Column(Integer)
+    profile_image_height = Column(Integer)
     id_guide = Column(Integer, ForeignKey("User.id_users"))
     is_deleted = Column(Boolean)
     additional_accomadation = Column(String)
