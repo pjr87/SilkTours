@@ -34,16 +34,16 @@ class DbController:
         return value
 
     def list_tours(self):
+        PROP = list(self.PROPS['Tour'])
         query = ("SELECT id_tour, name FROM Tour")
         self.cursor.execute(query)
         rows = self.cursor.fetchall()
 
         objects_list = []
         for row in rows:
-            print(row)
             d = collections.OrderedDict()
-            d['Id'] = row[0]
-            d['Name'] = row[1]
+            for i in range(len(row)):
+                d[PROP[i]] = self.parse(row[i])
             objects_list.append(d)
 
         j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))
@@ -70,6 +70,17 @@ class DbController:
                 t[PROP[i]] = self.parse(row[i])
             e.append(t)
         d['TourEvents'] = e
+
+        PROP = list(self.PROPS['Stop'])
+        query = ("SELECT * FROM Stop Where id_tour=" + tourId)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        d['Stop'] = e
 
         objects_list.append(d)
         j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))

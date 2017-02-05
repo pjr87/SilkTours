@@ -17,6 +17,8 @@ class Props:
 
     TOUREVENT = ['id_tourEvent', 'id_guide', 'id_rating', 'id_tour', 'id_user']
 
+    STOP = ['id_stop', 'lat', 'lon', 'id_tour', 'address']
+
 
     IDS = {'Tour':'id_tour', 'TourEvent':'id_tourEvent', 'Media':'id_media'}
 
@@ -24,5 +26,6 @@ class Props:
         self.PROPS = {}
         self.PROPS['Tour'] = self.TOUR
         self.PROPS['TourEvent'] = self.TOUREVENT
+        self.PROPS['Stop'] = self.STOP
 
 
