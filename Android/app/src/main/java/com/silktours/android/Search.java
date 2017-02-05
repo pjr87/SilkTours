@@ -64,6 +64,12 @@ public class Search extends Fragment {
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        makeLayoutManager();
+        recyclerView.setLayoutManager(manager);
+        return rootView;
+    }
+
+    private void makeLayoutManager() {
         if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         }
@@ -71,11 +77,7 @@ public class Search extends Fragment {
             manager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         }
         manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-
         manager.setItemPrefetchEnabled(false);
-        recyclerView.setLayoutManager(manager);
-
-        return rootView;
     }
 
     private void launchFilterDialog() {
@@ -131,6 +133,7 @@ public class Search extends Fragment {
 
     private void search() {
         filterParams.query = searchView.getQuery().toString();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -147,9 +150,13 @@ public class Search extends Fragment {
                 MainActivity.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                        RecyclerView.Adapter i = new SearchResultsAdapter(MainActivity.getInstance(), tours);
-                        recyclerView.setAdapter(i);
+                        RecyclerView.Adapter i = new SearchResultsAdapter(
+                                MainActivity.getInstance(),
+                                tours,
+                                recyclerView.getWidth(),
+                                recyclerView.getHeight()
+                        );
+                        recyclerView.swapAdapter(i, false);
                     }
                 });
             }
