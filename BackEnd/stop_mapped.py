@@ -7,13 +7,13 @@ from base import Base
 class Stop(Base):
     __tablename__ = 'Stop'
     id_stop = Column(Integer, primary_key=True)
-    tour_id = Column(Integer, ForeignKey("Tour.id_tour"))
+    id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
     lat = Column(Integer)
     lon = Column(Integer)
-    tour = relationship("Tour", foreign_keys=[tour_id])
+    tour = relationship("Tour", foreign_keys=[id_tour])
 
-    def set_props(self, tour_id, lat, lon):
-        self.tour_id = tour_id
+    def set_props(self, id_tour, lat, lon):
+        self.id_tour = id_tour
         self.lat = lat
         self.lon = lon
         self.id_stop = None
