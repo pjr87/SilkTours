@@ -11,6 +11,7 @@
 
  TODO:
   Link back to the home page afer sign up
+  Todo phone number verification
   Add SignUp from new user account sequence for (Facebook, other)
 */
 

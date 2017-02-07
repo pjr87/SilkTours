@@ -68,7 +68,7 @@ class Sign extends React.Component{
 
         <DeveloperAuthSignIn/>
 
-        <Link to='/SignUp'>SignUp</Link>
+        <Link to='/signup'>SignUp</Link>
 
       <Footer/>
       </div>

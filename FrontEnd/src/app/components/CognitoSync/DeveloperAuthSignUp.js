@@ -59,6 +59,7 @@ export class DeveloperAuthSignUp extends React.Component{
     //The state holds the relevant information a user can enter
     //when signing up via Developer Authentication
     this.state = {
+      userName: '',
       email: '',
       password: '',
       phoneNumber: '',
@@ -71,6 +72,10 @@ export class DeveloperAuthSignUp extends React.Component{
 
     //Global cognitoUser represents the authenticated person
     this.cognitoUser;
+  }
+
+  handleUserNameChange(e) {
+    this.setState({userName: e.target.value});
   }
 
   handleEmailChange(e) {
@@ -92,6 +97,7 @@ export class DeveloperAuthSignUp extends React.Component{
   //Fucntion called when the signUp form is submited by user
   handleSubmit(e) {
     e.preventDefault();
+    const userName = this.state.userName.trim();
     const email = this.state.email.trim();
     const password = this.state.password.trim();
     const phoneNumber = this.state.phoneNumber.trim();
@@ -116,7 +122,7 @@ export class DeveloperAuthSignUp extends React.Component{
 
     var err;
 
-    userPool.signUp(email, password, attributeList, null, (err, result) => {
+    userPool.signUp(userName, password, attributeList, null, (err, result) => {
       if (err) {
         console.log(err);
         return;
@@ -158,6 +164,13 @@ export class DeveloperAuthSignUp extends React.Component{
       <div>
       <h1>Sign up!</h1>
       <form onSubmit={this.handleSubmit.bind(this)}>
+        <label>
+          User Name
+          <input type="text"
+            value={this.state.userName}
+            placeholder="User Name"
+            onChange={this.handleUserNameChange.bind(this)}/>
+        </label>
         <label>
           Email
           <input type="email"

@@ -41,7 +41,7 @@ export class FederatedAuthSignIn{
 
 
     //Tell the authStore that the user is signed in, //TODO with relavant information
-    authStore.updateProfile(1, this.response.name, provider);
+    authStore.updateProfile("name", this.response.name, provider);
   }
 
   // ---------------

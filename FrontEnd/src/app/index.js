@@ -21,7 +21,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/activities" component={ExplorePage2}/>
       <Route path="/about" component={About}/>
       <Route path="/sign" component={Sign}/>
-      <Match pattern='/signup' component={SignUp}/>
+      <Route path='/signup' component={SignUp}/>
       <Route path="/explore" component={AvailableToursPage}/>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>

@@ -22,8 +22,8 @@ class AuthStore extends EventEmitter {
   // ---------------
   //This function is called when a user signs in
   //This funciton will update those listening
-  updateProfile(id, name, provider){
-    this.authProfile.id = id;
+  updateProfile(userName, name, provider){
+    this.authProfile.userName = userName;
     this.authProfile.name = name;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 1;
