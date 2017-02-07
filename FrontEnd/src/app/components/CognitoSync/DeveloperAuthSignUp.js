@@ -22,6 +22,10 @@ import {
 import Modal from 'react-modal';
 import appConfig from "./config";
 
+/*
+
+*/
+
 // Modal style constructor
 const customStyles = {
   content : {
@@ -59,7 +63,6 @@ export class DeveloperAuthSignUp extends React.Component{
     //The state holds the relevant information a user can enter
     //when signing up via Developer Authentication
     this.state = {
-      userName: '',
       email: '',
       password: '',
       phoneNumber: '',
@@ -74,8 +77,18 @@ export class DeveloperAuthSignUp extends React.Component{
     this.cognitoUser;
   }
 
-  handleUserNameChange(e) {
-    this.setState({userName: e.target.value});
+  buildJSON(phoneNumber){
+    var user1 = {
+    is_guide: false,
+    first_name: "",
+    last_name: "",
+    phone_number: phoneNumber,
+    profile_picture: "",
+    tours_taking: [
+    ],
+    tours_guiding: [
+    ]
+    };
   }
 
   handleEmailChange(e) {
@@ -97,10 +110,25 @@ export class DeveloperAuthSignUp extends React.Component{
   //Fucntion called when the signUp form is submited by user
   handleSubmit(e) {
     e.preventDefault();
-    const userName = this.state.userName.trim();
     const email = this.state.email.trim();
     const password = this.state.password.trim();
-    const phoneNumber = this.state.phoneNumber.trim();
+    var phoneNumber = this.state.phoneNumber.trim();
+
+    //Remove all non-digit characters except + for international numbers
+    phoneNumber = phoneNumber.replace(/[^\d\+]/g,"");
+
+    //Add proper format to phone number
+    if(phoneNumber.length == 10){
+      var tmp = '+1' + phoneNumber;
+      phoneNumber = tmp;
+      console.log("Phone number is " + phoneNumber);
+    }
+    else if (phoneNumber.length == 12){
+      console.log("Phone number is " + phoneNumber);
+    }
+    else{
+      alert("Phone number must contain 10 or 12 digits");
+    }
 
     //Step 2 - Signing up Users to the User Pool for Silk
 
@@ -114,7 +142,7 @@ export class DeveloperAuthSignUp extends React.Component{
       });
     var attributePhoneNumber = new CognitoUserAttribute({
         Name: 'phone_number',
-        Value: this.state.phoneNumber,
+        Value: phoneNumber,
       });
 
     attributeList.push(attributeEmail);
@@ -122,23 +150,21 @@ export class DeveloperAuthSignUp extends React.Component{
 
     var err;
 
-    userPool.signUp(userName, password, attributeList, null, (err, result) => {
+    userPool.signUp(email, password, attributeList, null, (err, result) => {
       if (err) {
         console.log(err);
+        alert(err);
         return;
       }
-      this.cognitoUser = result.user;
-      console.log('user name is ' + this.cognitoUser.getUsername());
-      console.log('call result: ' + result);
-    });
+      else{
+        this.cognitoUser = result.user;
+        console.log('user name is ' + this.cognitoUser.getUsername());
+        console.log('call result: ' + result);
 
-    if(err){
-      console.log(err);
-      return;
-    }else{
-      //Opens the modal which allows user to input conirmationCode
-      this.openModal();
-    }
+        //Opens the modal which allows user to input conirmationCode
+        this.openModal();
+      }
+    });
   }
 
   openModal () { this.setState({open: true}); }
@@ -152,7 +178,14 @@ export class DeveloperAuthSignUp extends React.Component{
         alert(err);
         return;
       }
-      console.log('call result: ' + result);
+      else{
+        console.log('call result: ' + result);
+
+        //TODO put new user
+
+        //TODO direct to profile page to finish sign up
+      }
+
     });
   }
 
@@ -164,13 +197,6 @@ export class DeveloperAuthSignUp extends React.Component{
       <div>
       <h1>Sign up!</h1>
       <form onSubmit={this.handleSubmit.bind(this)}>
-        <label>
-          User Name
-          <input type="text"
-            value={this.state.userName}
-            placeholder="User Name"
-            onChange={this.handleUserNameChange.bind(this)}/>
-        </label>
         <label>
           Email
           <input type="email"

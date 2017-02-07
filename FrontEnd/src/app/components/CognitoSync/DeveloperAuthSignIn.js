@@ -91,14 +91,14 @@ export class DeveloperAuthSignIn extends React.Component{
         onSuccess: function (result) {
             console.log('access token + ' + result.getAccessToken().getJwtToken());
 
-            /*let loginsIdpData = {};
+            //let loginsIdpData = {};
             let loginsCognitoKey = 'cognito-idp.us-east-1.amazonaws.com/' + appConfig.userPoolId
-            loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();*/
+            //loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();*/
 
             config.credentials = new CognitoIdentityCredentials({
               IdentityPoolId: appConfig.identityPoolId,
               Logins: {
-                  'cognito-idp.us-east-1.amazonaws.com/us-east-1_59hTNVuuw':result.getIdToken().getJwtToken()
+                  'cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld':result.getIdToken().getJwtToken()
               }
             });
 
@@ -149,7 +149,7 @@ export class DeveloperAuthSignIn extends React.Component{
           User Name
           <input type="text"
             value={this.state.userName}
-            placeholder="UserName"
+            placeholder="Email"
             onChange={this.handleUserNameChange.bind(this)}/>
         </label>
         <label>
