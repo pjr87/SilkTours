@@ -145,6 +145,14 @@ def get_user(id):
     return jsonify(user.serialize())
 
 
+@app.route('/users/email/<email>', methods=['GET'])
+def get_user_by_email(email):
+    # if (not checkLogin(id)):
+    #     return notAuthorizedResponse()
+    # checkLogin(id)
+    user = session.query(User).filter(User.email == email).first()
+    return jsonify(user.serialize())
+
 # Creates a new user
 @app.route('/users', methods=['POST'])
 def set_user():
