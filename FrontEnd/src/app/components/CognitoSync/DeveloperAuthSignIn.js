@@ -125,7 +125,7 @@ export class DeveloperAuthSignIn extends React.Component{
               }
             });
 
-          //  authStore.updateProfile(1, "", "DeveloperAuth");
+            authStore.updateProfile(userName, "", "DeveloperAuth");
         },
         onFailure: function(err) {
             alert(err);

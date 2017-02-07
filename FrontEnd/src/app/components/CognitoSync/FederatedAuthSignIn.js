@@ -25,9 +25,6 @@ export class FederatedAuthSignIn{
     if(!aws.config.region)
       aws.config.region = 'us-east-1';
 
-      this.cognitoIdentity = new AWS.CognitoIdentity();
-      this.cognitoSync = new AWS.CognitoSync();
-      this.ses = new AWS.SES();
     }
 
   //This function gets called upon a successful sign in
@@ -37,8 +34,12 @@ export class FederatedAuthSignIn{
     this.response = response;
     console.log(this.response)
 
-    //TODO switch based on provider
+    if(provider == "Facebook"){
 
+    }
+    else{
+      console.log("Provider not yet supported")
+    }
 
     //Tell the authStore that the user is signed in, //TODO with relavant information
     authStore.updateProfile("name", this.response.name, provider);
