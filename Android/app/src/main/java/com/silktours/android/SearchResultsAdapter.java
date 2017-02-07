@@ -19,7 +19,9 @@ import com.silktours.android.database.Tour;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by andrew on 1/30/17.
@@ -30,9 +32,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
     int parentWidth, parentHeight;
 
 
-    public SearchResultsAdapter(Activity activity, List<Tour> tourList) {
+    public SearchResultsAdapter(Activity activity, List<Tour> tourList, int width, int height) {
         this.activity = activity;
         this.tourList = tourList;
+        this.parentWidth = width;
+        this.parentHeight = height;
     }
 
     @Override
@@ -56,8 +60,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         TextView title = (TextView) convertView.findViewById(R.id.searchResultTitle);
         title.setText(tour.name);
 
-
         final ImageView image = (ImageView) convertView.findViewById(R.id.searchResultImage);
+        image.getLayoutParams().width = parentWidth/2;
+        image.getLayoutParams().height = tour.profile_image_height*(parentWidth/2)/tour.profile_image_width;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -68,20 +73,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
                         @Override
                         public void run() {
                             image.setImageDrawable(thumb_d);
-                            int width = thumb_d.getBounds().width();
-                            int height = thumb_d.getBounds().height();
-
-                            if (position == 0 && width >= height) {
-                                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-                                layoutParams.setFullSpan(true);
-                                image.getLayoutParams().width = parentWidth;
-                                image.getLayoutParams().height = height*(parentWidth)/width;
-                            }else{
-                                image.getLayoutParams().width = parentWidth/2;
-                                image.getLayoutParams().height = height*(parentWidth/2)/width;
-                            }
-
-                            image.requestLayout();
                         }
                     });
                 } catch (MalformedURLException e) {
