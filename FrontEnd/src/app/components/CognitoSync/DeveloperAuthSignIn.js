@@ -14,7 +14,7 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
+import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
@@ -56,7 +56,8 @@ export class DeveloperAuthSignIn extends React.Component{
     console.log('password + ' + password);
 
     // Step 1 - Define global AWS identity credentials
-    Config.region = appConfig.region;
+    //Config.region = appConfig.region;
+    config.update({region:'us-east-1'});
 
     //Step 2 - A confirmed user signs in to obtain a session.
     //The session contains:
@@ -90,12 +91,27 @@ export class DeveloperAuthSignIn extends React.Component{
         onSuccess: function (result) {
             console.log('access token + ' + result.getAccessToken().getJwtToken());
 
-            let loginsIdpData = {};
+            /*let loginsIdpData = {};
             let loginsCognitoKey = 'cognito-idp.us-east-1.amazonaws.com/' + appConfig.userPoolId
-            loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();
-            Config.credentials = new CognitoIdentityCredentials({
+            loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();*/
+
+            config.credentials = new CognitoIdentityCredentials({
               IdentityPoolId: appConfig.identityPoolId,
-              Logins: loginsCognitoKey
+              Logins: {
+                  'cognito-idp.us-east-1.amazonaws.com/us-east-1_59hTNVuuw':result.getIdToken().getJwtToken()
+              }
+            });
+
+            // set region if not set (as not set by the SDK by default)
+            config.update({
+              credentials: config.credentials,
+              region: appConfig.region
+            });
+
+            config.credentials.get(function(err){
+                if (err) {
+                    alert(err);
+                }
             });
 
             cognitoUser.getUserAttributes(function(err, result) {
@@ -111,7 +127,6 @@ export class DeveloperAuthSignIn extends React.Component{
 
           //  authStore.updateProfile(1, "", "DeveloperAuth");
         },
-
         onFailure: function(err) {
             alert(err);
         },
