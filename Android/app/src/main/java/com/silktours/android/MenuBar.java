@@ -61,7 +61,7 @@ public class MenuBar {
                                 bottomNavigationView.getMenu().getItem(2).setChecked(true);
                                 break;
                             case R.id.action_my_tours:
-                                //startActivity(activity, MyTours.class);
+                                //startActivity(activity, Tours.class);
                                 startFragment(new MyTours());
                                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
                                 break;
