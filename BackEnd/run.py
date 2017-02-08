@@ -174,7 +174,7 @@ def set_user():
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
     user = session.query(User).get(id)
-    user.set_props(request.form)
+    user.set_props(request.get_json())
     session.add(user)
     session.commit()
     commitSession()
@@ -185,10 +185,11 @@ def edit_user(id):
 @app.route('/ratings', methods=['POST'])
 def add_rating():
     rating = Rating()
-    id_user_rated = request.form.get("id_user_rated")
-    id_tour_rated = request.form.get("id_tour_rated")
-    rating_value = float(request.form.get("rating"))
-    comment = request.form.get("comment")
+    req_json = request.get_json()
+    id_user_rated = req_json["id_user_rated"]
+    id_tour_rated = req_json["id_tour_rated"]
+    rating_value = float(req_json["rating"])
+    comment = req_json["comment"]
     rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
     tour = session.query(Tour).get(int(id_tour_rated))
     tour.average_rating = ((tour.average_rating
@@ -206,9 +207,10 @@ def add_rating():
 @app.route('/stops', methods=['POST'])
 def add_stop():
     stop = Stop()
-    id_tour = request.form.get("id_tour")
-    lat = float(request.form.get("lat"))
-    lon = float(request.form.get("lon"))
+    req_json = request.get_json()
+    id_tour = req_json["id_tour"]
+    lat = float(req_json["lat"])
+    lon = float(req_json["lon"])
 
     stop.set_props(id_tour, lat, lon)
 
@@ -235,17 +237,17 @@ def set_tour():
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return db.edit(tourid, request.args.to_dict(), 'Tour')
+    return db.edit(tourid, request.get_json(), 'Tour')
 
 
 @app.route('/tourevents/<tourid>', methods=['POST'])
 def set_tourevent(tourid):
-    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
+    return db.edit(tourid, request.get_json(), 'TourEvent')
 
 
 @app.route('/tourevents/<tourid>', methods=['PUT'])
 def edit_tourevent(tourid):
-    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
+    return db.edit(tourid, request.get_json(), 'TourEvent')
 
 
 @app.route('/tours/image/<tourid>', methods=['POST'])
