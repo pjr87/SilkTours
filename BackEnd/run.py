@@ -163,7 +163,7 @@ def get_user_by_email(email):
 @app.route('/users', methods=['POST'])
 def set_user():
     user = User()
-    user.set_props(request.form)
+    user.set_props(request.get_json())
     session.add(user)
     session.commit()
     commitSession()
@@ -230,7 +230,7 @@ def get_tour(tourid):
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-    return db.post(request.args.to_dict(), 'Tour')
+    return db.post(request.get_json(), 'Tour')
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
