@@ -68,7 +68,7 @@ body{
    padding-bottom: 15px;
  }
 
- .profileText{
+ .profileBox{
    width:175px;
    height:75%;
    padding-top: 10px;
@@ -146,6 +146,12 @@ body{
   width:auto;
 }
 
+.formButton{
+	width:100px;
+	height:40px;
+	margin: 10px;
+}
+
 .formInput{
   margin-left:15px;
   display: inline-block;
@@ -161,22 +167,28 @@ body{
 }
 
 .formInput input{
-  display:block;
+  display: block;
   width:300px;
-  height:30px
+  height:30px;
+}
+ .formFirstLabel{
+	height:22px;
+	padding:1rem;
+	width:257px;
+	display: inline-block;
+	border-right: solid #EBEBEB 1px;
+	background-color: #FFFFFF;
+	float:left;
 }
 
 .formLabel{
   padding:1rem;
   width:257px;
-  height:100%;
   display: inline-block;
   border-right: solid #EBEBEB 1px;
   background-color: #FFFFFF;
 }
 
-/**/
-<<<<<<< HEAD:FrontEnd/src/app/components/style/style.css
  .footerStyle{
    display: center;
  }
@@ -223,7 +235,6 @@ body{
    display: inline-block;
  }
 
-=======
 .exploreBox1{
 	width:50%;
 	height:40%;
@@ -336,7 +347,7 @@ body{
 	background-color: #67536D;
 	display: inline-block;
 }
->>>>>>> master:FrontEnd/src/app/style/style.css
+
  .wrap{
 	width:80%;
 	margin:0 auto;
@@ -451,7 +462,7 @@ body{
 	 -webkit-transition: all 0.3s ease;
 	  -moz-transition: all 0.3s ease;
 	  -o-transition: all 0.3s ease;
-      transition: all 0.3s ease;
+    transition: all 0.3s ease;
  }
  .menu li a:hover ,.menu li.active a{
 	 color:#643a79;
@@ -1087,6 +1098,14 @@ body{
 		width:90%;
 	}
 }
+@media only screen and (max-width: 1190px){
+	.formInput{
+		display: block;
+	}
+	.formFirstLabel{
+ 		height:76px;
+ 	}
+}
 @media all and (max-width:1024px){
  	.wrap{
  		width:90%;
@@ -1123,24 +1142,87 @@ body{
  		width:91%;
  	}
 }
- @media all and (max-width:640px){
- 	.wrap{
- 		width:95%;
- 	}
- 	.header_desc p{
- 		font-size:2em;
- 	}
- 	.listview_1_of_2{
- 		margin:0;
- 	}
- 	.images_1_of_2{
- 		width:94%;
- 		padding:3%;
- 	}
- 	.testimonials2{
- 		margin-top:0;
- 	}
-}
+
+	@media all and (max-width:780px){
+		.formFirstLabel{
+			width:170px;
+		}
+
+		.formLabel{
+			width:170px;
+		}
+		.profileNameText{
+			/*display: inline-block;*/
+			font-size:20pt;
+		}
+	}
+
+	@media all and (max-width:690px){
+		.formFirstLabel{
+	 		height:auto;
+			float: none;
+			width: auto;
+			display: block;
+	 	}
+
+		.formLabel{
+		  display: block;
+			width: auto;
+		}
+
+		.formInput{
+			display: block;
+			width: auto;
+			padding:5px;
+		}
+
+		.profileHeader{
+	    /*background-color: #DFDAE0;
+	    width:80%;
+	    height:200px;
+	    margin:0 10%;
+	    display: inline-block;
+	    border-bottom: solid #A799A6 2px;*/
+	  }
+
+		.profileHeader{
+			text-align: center;
+		}
+
+		.profileNameText{
+	    /*display: inline-block;*/
+			padding-left:0px;
+			padding-top:10px;
+			margin:0px;
+	    font-size:16pt;
+	  }
+
+		.profileText{
+			display: none;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.imgCircle{
+			margin:0px;
+			padding:0px;
+		}
+
+	  .profileBox{
+	    /*width:175px;
+	    height:75%;
+	    padding-top: 10px;
+	    padding-left:10px;
+	    margin-top: 40px;
+	    background-color: #A799A6;
+			*/
+	    display: block;
+			margin-top: 0px;
+	    font-size:16pt;
+			margin: 0 auto;
+	  }
+	}
+
  @media all and (max-width:480px){
  	.wrap{
  		width:95%;

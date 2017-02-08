@@ -1,5 +1,6 @@
-import $ from "jquery";
-import AuthStore from "./stores/AuthStore.js"
+
+import AuthStore from "./stores/AuthStore.js";
+import axios from 'axios';
 
 AuthStore.on("login", () => {
 
@@ -63,7 +64,7 @@ class GetData{
         }
     ]
     };
-    $.get("http://34.197.42.24:5000/users/"+id)
+    axios.get("http://34.197.42.24:5000/users/"+id)
       .done(function(data) {
         console.log(data);
         data.profile_picture="http://thehustle.co/wp-content/uploads/2016/03/1453212321_maxresdefault.jpg";
