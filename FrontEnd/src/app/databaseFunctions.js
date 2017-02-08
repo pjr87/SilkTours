@@ -1,10 +1,5 @@
 import AuthStore from "./stores/AuthStore.js"
 
-AuthStore.on("login", () => {
-
-  console.log("GOT USER!")
-});
-
 class GetData{
   static loggedInUser;
 
@@ -60,13 +55,13 @@ class GetData{
         }
     ]
     };
-    $.get("http://34.197.42.24:5000/users/"+id)
+    /*$.get("http://34.197.42.24:5000/users/"+id)
       .done(function(data) {
         console.log(data);
         data.profile_picture="http://thehustle.co/wp-content/uploads/2016/03/1453212321_maxresdefault.jpg";
         console.log(data);
         //loggedInUser = data;
-    });
+    });*/
     return user1;
   }
 }

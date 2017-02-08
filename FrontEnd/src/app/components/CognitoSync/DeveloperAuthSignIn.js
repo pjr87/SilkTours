@@ -14,6 +14,7 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AuthStore from "../../stores/AuthStore.js"
 import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -33,13 +34,13 @@ export class DeveloperAuthSignIn extends React.Component{
     //The state holds the relevant information a user can enter
     //when signing in via Developer Authentication
     this.state = {
-      userName: '',
+      email: '',
       password: ''
     };
   }
 
-  handleUserNameChange(e) {
-    this.setState({userName: e.target.value});
+  handleEmailChange(e) {
+    this.setState({email: e.target.value});
   }
 
   handlePasswordChange(e) {
@@ -49,11 +50,13 @@ export class DeveloperAuthSignIn extends React.Component{
   //Fucntion called when the signIn form is submited by user
   handleSubmit(e) {
     e.preventDefault();
-    const userName = this.state.userName.trim();
+    const email = this.state.email.trim();
     const password = this.state.password.trim();
 
-    console.log('username + ' + userName);
+    console.log('email + ' + email);
     console.log('password + ' + password);
+
+    AuthStore.setEmail(email);
 
     // Step 1 - Define global AWS identity credentials
     //Config.region = appConfig.region;
@@ -67,7 +70,7 @@ export class DeveloperAuthSignIn extends React.Component{
 
     //authData represents the reqiured userName and password
     const authData = {
-      Username: userName,
+      Username: email,
       Password: password,
     };
 
@@ -81,7 +84,7 @@ export class DeveloperAuthSignIn extends React.Component{
     var userPool = new CognitoIdentityServiceProvider.CognitoUserPool(poolData);
 
     var userData = {
-        Username : userName,
+        Username : email,
         Pool : userPool
     };
 
@@ -112,6 +115,14 @@ export class DeveloperAuthSignIn extends React.Component{
                 if (err) {
                     alert(err);
                 }
+                else{
+                  console.log("sessionToken : " + aws.config.credentials.sessionToken);
+                  console.log("accessKeyId : " + aws.config.credentials.accessKeyId);
+                  console.log("secretAccessKey : " + aws.config.credentials.secretAccessKey);
+                  console.log("expiryWindow : " + aws.config.credentials.expiryWindow);
+                  console.log("expired : " + aws.config.credentials.expired);
+                  console.dir("cred : " + aws.config.credentials);
+                }
             });
 
             cognitoUser.getUserAttributes(function(err, result) {
@@ -125,7 +136,10 @@ export class DeveloperAuthSignIn extends React.Component{
               }
             });
 
-            authStore.updateProfile(userName, "", "DeveloperAuth");
+            //TODO pull name from users table
+
+            AuthStore.login("1", result.getIdToken().getJwtToken(), "Developer");
+            //TODO move to explore page
         },
         onFailure: function(err) {
             alert(err);
@@ -143,14 +157,14 @@ export class DeveloperAuthSignIn extends React.Component{
   render() {
     return (
       <div>
-      <h1>Sign In User Name and password</h1>
+      <h1>Sign In Email and password</h1>
       <form onSubmit={this.handleSubmit.bind(this)}>
         <label>
           User Name
           <input type="text"
-            value={this.state.userName}
+            value={this.state.email}
             placeholder="Email"
-            onChange={this.handleUserNameChange.bind(this)}/>
+            onChange={this.handleEmailChange.bind(this)}/>
         </label>
         <label>
           Password

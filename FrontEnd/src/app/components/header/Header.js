@@ -47,6 +47,8 @@ class Header extends React.Component {
       GetData.getUser(1);
     }
     else {
+
+
       var profile = {first_name:"T", last_name:"S"};
     }
     if(this.props.largeHeader){

@@ -14,6 +14,7 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AuthStore from "../../stores/AuthStore.js"
 import { Config, CognitoIdentityCredentials } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -21,10 +22,7 @@ import {
 } from "amazon-cognito-identity-js";
 import Modal from 'react-modal';
 import appConfig from "./config";
-
-/*
-
-*/
+import * as service from '../../ajaxServices/AjaxList';
 
 // Modal style constructor
 const customStyles = {
@@ -77,18 +75,13 @@ export class DeveloperAuthSignUp extends React.Component{
     this.cognitoUser;
   }
 
-  buildJSON(phoneNumber){
+  buildJSON(phoneNumber, email){
     var user1 = {
-    is_guide: false,
-    first_name: "",
-    last_name: "",
-    phone_number: phoneNumber,
-    profile_picture: "",
-    tours_taking: [
-    ],
-    tours_guiding: [
-    ]
+      is_guide: false,
+      phone_number: phoneNumber,
+      email: email
     };
+    return user1;
   }
 
   handleEmailChange(e) {
@@ -129,6 +122,8 @@ export class DeveloperAuthSignUp extends React.Component{
     else{
       alert("Phone number must contain 10 or 12 digits");
     }
+
+    this.state.phoneNumber = phoneNumber;
 
     //Step 2 - Signing up Users to the User Pool for Silk
 
@@ -172,6 +167,7 @@ export class DeveloperAuthSignUp extends React.Component{
   closeModal () {
     //When the user enters the confirmation code it is subbited to AWS
     this.setState({open: false});
+    var err;
 
     this.cognitoUser.confirmRegistration(this.state.confirmationCode, true, function(err, result) {
       if (err) {
@@ -180,13 +176,40 @@ export class DeveloperAuthSignUp extends React.Component{
       }
       else{
         console.log('call result: ' + result);
-
-        //TODO put new user
-
-        //TODO direct to profile page to finish sign up
       }
-
     });
+
+    if (err) {
+      alert(err);
+      return;
+    }
+    else{
+      const email = this.state.email;
+      const phoneNumber = this.state.phoneNumber;
+
+      var user1 = {
+        is_guide: false,
+        phone_number: phoneNumber,
+        email: email
+      };
+
+      console.log('user1 phone: ' + user1.phone_number);
+      console.log('user1 email: ' + user1.email);
+
+      var response;
+
+      service.registerNewUser(user1).then(function(response){
+        console.log("RESPONSE ");
+        console.log(response.data);
+        console.log(response.status);
+      });
+
+      console.log(response.data.id_users);
+
+      AuthStore.signUp(email, "Developer");
+
+      //TODO direct to profile page to finish sign up
+    }
   }
 
   //Mounting function, called when component is created and inserted into DOM
