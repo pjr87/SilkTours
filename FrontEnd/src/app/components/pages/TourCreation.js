@@ -37,8 +37,8 @@ const originalTour = {
       profile_image_width: 640,
       rating_count: 0,
       stops: []
-    }
-}
+    };
+
 
 export default class TourCreation extends React.Component{
 
@@ -74,7 +74,7 @@ export default class TourCreation extends React.Component{
 
   onMapClicked(e){
     console.log('onClick', e);
-    this.addstop(e);
+    this.addStop(e);
   }
 
   renderstops(){
@@ -120,12 +120,15 @@ export default class TourCreation extends React.Component{
 
   removeStop(key){
     var tour = this.state.tour;
-    var temp = tour.stops[s1];
-    temp.key=s2;
-    tour.stops[s2].key=s1;
-    tour.stops[s1]=tour.stops[s2];
-    tour.stops[s2]=temp;
-    console.log("swapStopstour", tour)
+    var i = 0;
+    for(i=0; i<tour.stops.length; i++){
+      if(i > key){
+        tour.stops[i].key--;
+      }
+    }
+    tour.stops.splice(key, 1);
+
+    console.log("deleteStopstour: ", tour)
     this.setState({
         tour:tour
     });
@@ -133,11 +136,11 @@ export default class TourCreation extends React.Component{
 
   moveStop(dir, key){
     if(dir=="up" && key!=0){
-      this.swapstops(key, key-1);
+      this.swapStops(key, key-1);
       return true;
     }
     else if(dir=="down" && key!=this.state.tour.stops.length-1 ){
-      this.swapstops(key, key+1);
+      this.swapStops(key, key+1);
     }
   }
 

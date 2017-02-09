@@ -17,7 +17,6 @@ import TourCreation from './components/pages/TourCreation';
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
     <div>
-
       <Route path="/" component={ExplorePage}/>
       <Route path="/activities" component={ExplorePage2}/>
       <Route path="/about" component={About}/>
@@ -26,5 +25,6 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>
       <Route path='/tour-creation' component={TourCreation}/>
+
     </div>
   </Router>), rootElement);
