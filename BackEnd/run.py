@@ -28,9 +28,13 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 #CORS(app)
 
-#client = boto3.client('cognito-identity')
+client = boto3.client('cognito-idp')
 
-def checkLogin(id):
+def checkLogin(accessToken):
+    response = client.get_user(
+        AccessToken="EAAInjq0WOhkBAMSo5Ki3RrvzOLBZB6flRRnx20p2fkGjZAv9puwvHHKuGZCZC4ZBXVTtvxrZBaSE5ZBpGZBcA4NWSZBiddEpP4qN3ZBrbeSNgVTkHIdddmnAgsV6gQV5U6CmvzueK6zVM93aPGJZCYZBZC6T4WgLjjBt3nYZAkrTnHszhj8EKZB1rCLUL4D"#accessToken
+    )
+    print(response)
     return True
     '''
     try:
@@ -89,6 +93,7 @@ def after_request(response):
 
 @app.route("/")
 def hello():
+    checkLogin("")
     user = session.query(User).get(1)
     #session.query(User).filter_by(first_name="Andrew").first()
     return "Hello " + user.first_name
@@ -127,7 +132,7 @@ def search():
         query = query.filter("Tour.price<="+priceMax)
     if city is not None:
         query = query.filter(Tour.address_city == city)
-    
+
     tours = []
     try:
         tours = query.all()
@@ -158,6 +163,17 @@ def get_user_by_email(email):
     # checkLogin(id)
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
+
+
+@app.route('/users/<id>/login/<accessKeyID>', methods=['PUT'])
+def login(id, accessKeyID):
+    user = session.query(User).get(id)
+    user.accessKeyID = accessKeyID
+    session.add(user)
+    session.commit()
+    commitSession()
+    return jsonify(user.serialize())
+
 
 # Creates a new user
 @app.route('/users', methods=['POST'])
