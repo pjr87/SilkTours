@@ -15,6 +15,8 @@ import About from './components/pages/About';
 
 import Messages from './components/pages/Messages';
 
+import ContactUs from './components/pages/ContactUs'
+
 
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
@@ -29,6 +31,8 @@ ReactDOM.render((<Router history={browserHistory}>
       <Match pattern='/settings' component={Settings}/>
 
       <Match pattern='/explore' component={AvailableToursPage}/>
+
+      <Match pattern='/contactus' component={ContactUs} />
 
     </div>
   </Router>), rootElement);

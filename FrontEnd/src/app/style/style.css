@@ -1107,3 +1107,75 @@ body{
  		margin-bottom:1em;
  	}
 }
+
+
+.messagesMain{
+
+	background-color: yellow;
+}
+
+
+
+.h3Contact {
+	top: 0px;
+	color: black;
+}
+
+.contactUsMain{
+
+	padding: 100px 150px 75px 150px;
+
+}
+
+.contactUsForm{
+	display: inline;
+    width: 99%;
+    height: 18px;
+    padding: 6px 12px 0px 12px;
+    font-size: 14px;
+    
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+}
+
+.contactLine{
+	width:15%;
+	float: left;
+}
+
+.contactGroup{
+	display: inline;
+	padding: 10px 10px 25px 10px;
+
+}
+
+.form-control{
+	display: inline-block;
+}
+
+.contactUsTextBox{
+	display: inline;
+    width: 100%;
+    height: 200px;
+    padding: 6px 12px;
+    font-size: 14px;
+
+    resize: none;
+}
+
+.contactGroup{
+
+}
+
+.contactInput{
+	padding: 0px 0px 25px 0px;
+}
+
+
+
+.errorText{
+	color: #a94442;
+}

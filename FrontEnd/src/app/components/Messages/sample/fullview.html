@@ -574,7 +574,7 @@
 		}
 	</script>
 	<script type="text/javascript">
-		//var $applozic = jQuery.noConflict(true);
+		var $applozic = jQuery.noConflict(true);
 
 		function readMessage() {
 			//console.log(userId);
@@ -606,27 +606,6 @@
 			}
 		}
 		
-		
-		// Function to initialize auto suggest plugin on message textbox
-		  function initAutoSuggestions() {
-		 $('#mck-text-box').atwho({
-		 at: "#queries",
-		 insertTpl: '${content}',
-		 displayTpl: '<li>${name} <small>${content}</small></li>',
-		 data: autoSuggest.queries
-		 }).atwho({
-		 at: "@templates",
-		 insertTpl: '${content}',
-		 displayTpl: '<li>${name} <small>${content}</small></li>',
-		 data: autoSuggest.templates
-		 }).atwho({
-		 at: "#templates",
-		 insertTpl: '${content}',
-		 displayTpl: '<li>${name} <small>${content}</small></li>',
-		 data: autoSuggest.templates
-		 });
-		 } 
-
 	</script>
 
 </body>

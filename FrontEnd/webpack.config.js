@@ -58,6 +58,7 @@ module.exports = {
           test: /\.html$/,
           loader: 'html' 
         }
+
     ]
   },
   plugins: [
