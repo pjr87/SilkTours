@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
+import {Link} from 'react-router';
 
 // Importing css style and images
 import style from '../../style/style.css';
@@ -49,6 +49,8 @@ class Header extends React.Component {
       GetData.getUser(1);
     }
     else {
+
+
       var profile = {first_name:"T", last_name:"S"};
     }
     if(this.props.largeHeader){

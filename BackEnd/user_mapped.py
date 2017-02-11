@@ -29,6 +29,7 @@ class User(Base):
     phone_number = Column(String)
     profile_picture = Column(String)
     reg_date = Column(Date)
+    email = Column(String)
 
     interests = relationship("Interests")
     interests = relationship("Interests", foreign_keys="Interests.id_user")
@@ -38,17 +39,17 @@ class User(Base):
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
              "tours_completed", "phone", "description", "dob", "password",
-             "id"}
+             "id", "email"}
 
     # A set of properties required to create a new user
-    REQUIRED_PROPS = {"first_name", "last_name", "description"}
+    REQUIRED_PROPS = {"first_name", "last_name", "description", "email"}
 
     # A set of properties visible to consumer of the API
     VISABLE_PROPS = {"first_name", "last_name", "address_number",
                      "address_street", "address_suffix", "address_unit",
                      "address_unit_number", "address_city", "address_country",
                      "address_zip", "description", "dob", "is_guide",
-                     "id_users", "phone_number", "profile_picture"}
+                     "id_users", "phone_number", "profile_picture", "email"}
 
     def set_props(self, data):
         for key in data:

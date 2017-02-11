@@ -1,7 +1,7 @@
 import datetime
 from interests_mapped import Interests
 from ratings_mapped import Rating
-from sqlalchemy.ext.declarative import declarative_base
+from stop_mapped import Stop
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -25,6 +25,8 @@ class Tour(Base):
     address_city = Column(String)
     address_country = Column(String)
     profile_image = Column(String)
+    profile_image_width = Column(Integer)
+    profile_image_height = Column(Integer)
     id_guide = Column(Integer, ForeignKey("User.id_users"))
     is_deleted = Column(Boolean)
     additional_accomadation = Column(String)
@@ -34,6 +36,7 @@ class Tour(Base):
     average_rating = Column(Float)
     rating_count = Column(Integer)
     ratings = relationship("Rating")
+    stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
 
     def serialize(self, deep):
@@ -45,4 +48,9 @@ class Tour(Base):
             if type(value) is datetime.date:
                 value = str(value)
             result[key] = value
+
+        result["stops"] = []
+        for stop in self.stops:
+            result["stops"].append(stop.serialize())
+
         return result

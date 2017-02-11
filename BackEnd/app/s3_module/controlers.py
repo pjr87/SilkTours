@@ -1,9 +1,12 @@
 import boto3
 import mysql.connector
-import  uuid
+import uuid
 import json
+import datetime
+import collections
 
 class S3Controller:
+    PROP = ['id_media', 'id_tour', 'url', 'is_video', 'file_name', 'display_rank', 'is_deleted', 'id_media', 'id']
 
     VIDEO = ['avi', 'mp4', 'mkv', '3gp', 'wmv']
 
@@ -26,6 +29,12 @@ class S3Controller:
             return 0
         return 1
 
+    def parse(self, data):
+        if isinstance(data, datetime.date):
+            return data.strftime(self.f)
+
+        return data
+
     def upload(self, file, tourid):
         query = ("SELECT * FROM Media Where id_tour=" + tourid)
         self.cursor.execute(query)
@@ -36,8 +45,23 @@ class S3Controller:
         extension = s[-1]
         filename = uuid.uuid4().hex + "." + extension
         self.bucket.put_object(Key= 'tour/' + tourid + '/' + filename, Body=file)
-        url = 'https://s3.amazonaws.com/silktours-media/tour/' + filename
+        url = 'https://s3.amazonaws.com/silktours-media/' + 'tour/' + tourid + '/' + filename
         isV = self.isVideo(extension)
         values = [tourid, filename, url, isV, rank]
         self.post(values)
-        return "sss"
+        return "s"
+
+    def get_image(self, tourId):
+        query = ("SELECT * FROM Media Where id_tour=" + tourId)
+        self.cursor.execute(query)
+        rows = self.cursor.fetchall()
+
+        objects_list = []
+        for row in rows:
+            d = collections.OrderedDict()
+            for i in range(len(row)):
+                d[self.PROP[i]] = self.parse(row[i])
+            objects_list.append(d)
+
+        j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))
+        return j

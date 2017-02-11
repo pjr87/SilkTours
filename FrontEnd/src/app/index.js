@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link, Match, Miss, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 // Importing componenets
 import ExplorePage from './components/pages/ExplorePage';
@@ -11,6 +11,7 @@ import Header from './components/header/Header';
 import Settings from './components/pages/Settings'
 import Profile from './components/pages/Profile'
 import Sign from './components/pages/Sign';
+import SignUp from './components/pages/SignUp';
 import About from './components/pages/About';
 
 import Messages from './components/pages/Messages';
@@ -21,18 +22,15 @@ import ContactUs from './components/pages/ContactUs'
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
     <div>
-      <Match exactly pattern='/' component={ExplorePage} />
-      <Match pattern='/messages' component={Messages}/>
-      <Match pattern='/activities' component={ExplorePage2}/>
-      <Match pattern='/about' component={About}/>
-      <Match pattern='/sign' component={Sign}/>
-
-      <Match pattern='/profile' component={Profile}/>
-      <Match pattern='/settings' component={Settings}/>
-
-      <Match pattern='/explore' component={AvailableToursPage}/>
-
       <Match pattern='/contactus' component={ContactUs} />
-
+      <Match pattern='/messages' component={Messages}/>
+      <Route path="/" component={ExplorePage}/>
+      <Route path="/activities" component={ExplorePage2}/>
+      <Route path="/about" component={About}/>
+      <Route path="/sign" component={Sign}/>
+      <Route path='/signup' component={SignUp}/>
+      <Route path="/explore" component={AvailableToursPage}/>
+      <Route path="/profile" component={Profile}/>
+      <Route path="/settings" component={Settings}/>
     </div>
   </Router>), rootElement);

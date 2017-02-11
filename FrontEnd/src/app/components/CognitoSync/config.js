@@ -8,9 +8,9 @@
 export default {
   //AWS Cognito
   region: 'us-east-1',
-  identityPoolId: 'us-east-1:c80067bd-83f5-4e32-8206-72fdd7e98943',
-  userPoolId: 'us-east-1_pWcQExZSx',
-  clientId: '2c90obh0adrcqcpitb1s9dmbm6',
+  identityPoolId: 'us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349',
+  userPoolId: 'us-east-1_917Igx5Ld',
+  clientId: '2bs9l9t5ol4m09fgfmadk3jmh7',
 
   //Facebook
   facebookAppId: '606443696175641',

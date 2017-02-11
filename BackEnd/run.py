@@ -7,10 +7,11 @@ from flask import request
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from stop_mapped import Stop
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
-from flask_cors import CORS, cross_origin
+#from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -187,6 +188,22 @@ def add_rating():
     return "Success"
 
 
+# Adds a new rating
+@app.route('/stops', methods=['POST'])
+def add_stop():
+    stop = Stop()
+    id_tour = request.form.get("id_tour")
+    lat = float(request.form.get("lat"))
+    lon = float(request.form.get("lon"))
+
+    stop.set_props(id_tour, lat, lon)
+
+    session.add(stop)
+    session.commit()
+    commitSession()
+    return "Success"
+
+
 @app.route('/tours', methods=['GET'])
 def get_tour_list():
     return db.list_tours()
@@ -217,11 +234,14 @@ def edit_tourevent(tourid):
     return db.edit(tourid, request.args.to_dict(), 'TourEvent')
 
 
-@app.route('/tours/<tourid>', methods=['POST'])
+@app.route('/tours/image/<tourid>', methods=['POST'])
 def upload(tourid):
     file = request.files['file']
     return s3.upload(file, tourid)
 
+@app.route('/tours/image/<tourid>', methods=['GET'])
+def get_image(tourid):
+    return s3.get_image(tourid)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
