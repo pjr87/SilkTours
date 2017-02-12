@@ -7,10 +7,11 @@ from flask import request
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from stop_mapped import Stop
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
-from flask_cors import CORS, cross_origin
+#from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -126,8 +127,14 @@ def search():
         query = query.filter("Tour.price<="+priceMax)
     if city is not None:
         query = query.filter(Tour.address_city == city)
+    
+    tours = []
+    try:
+        tours = query.all()
+    except:
+        session.rollback()
+        raise
 
-    tours = query.all()
     result = []
     for tour in tours:
         result.append(tour.serialize(True))
@@ -144,11 +151,19 @@ def get_user(id):
     return jsonify(user.serialize())
 
 
+@app.route('/users/email/<email>', methods=['GET'])
+def get_user_by_email(email):
+    # if (not checkLogin(id)):
+    #     return notAuthorizedResponse()
+    # checkLogin(id)
+    user = session.query(User).filter(User.email == email).first()
+    return jsonify(user.serialize())
+
 # Creates a new user
 @app.route('/users', methods=['POST'])
 def set_user():
     user = User()
-    user.set_props(request.form)
+    user.set_props(request.get_json())
     session.add(user)
     session.commit()
     commitSession()
@@ -159,7 +174,7 @@ def set_user():
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
     user = session.query(User).get(id)
-    user.set_props(request.form)
+    user.set_props(request.get_json())
     session.add(user)
     session.commit()
     commitSession()
@@ -170,10 +185,11 @@ def edit_user(id):
 @app.route('/ratings', methods=['POST'])
 def add_rating():
     rating = Rating()
-    id_user_rated = request.form.get("id_user_rated")
-    id_tour_rated = request.form.get("id_tour_rated")
-    rating_value = float(request.form.get("rating"))
-    comment = request.form.get("comment")
+    req_json = request.get_json()
+    id_user_rated = req_json["id_user_rated"]
+    id_tour_rated = req_json["id_tour_rated"]
+    rating_value = float(req_json["rating"])
+    comment = req_json["comment"]
     rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
     tour = session.query(Tour).get(int(id_tour_rated))
     tour.average_rating = ((tour.average_rating
@@ -182,6 +198,23 @@ def add_rating():
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
+    session.commit()
+    commitSession()
+    return "Success"
+
+
+# Adds a new rating
+@app.route('/stops', methods=['POST'])
+def add_stop():
+    stop = Stop()
+    req_json = request.get_json()
+    id_tour = req_json["id_tour"]
+    lat = float(req_json["lat"])
+    lon = float(req_json["lon"])
+
+    stop.set_props(id_tour, lat, lon)
+
+    session.add(stop)
     session.commit()
     commitSession()
     return "Success"
@@ -199,29 +232,32 @@ def get_tour(tourid):
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-    return db.post(request.args.to_dict(), 'Tour')
+    return db.post(request.get_json(), 'Tour')
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    return db.edit(tourid, request.args.to_dict(), 'Tour')
+    return db.edit(tourid, request.get_json(), 'Tour')
 
 
 @app.route('/tourevents/<tourid>', methods=['POST'])
 def set_tourevent(tourid):
-    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
+    return db.edit(tourid, request.get_json(), 'TourEvent')
 
 
 @app.route('/tourevents/<tourid>', methods=['PUT'])
 def edit_tourevent(tourid):
-    return db.edit(tourid, request.args.to_dict(), 'TourEvent')
+    return db.edit(tourid, request.get_json(), 'TourEvent')
 
 
-@app.route('/tours/<tourid>', methods=['POST'])
+@app.route('/tours/image/<tourid>', methods=['POST'])
 def upload(tourid):
     file = request.files['file']
     return s3.upload(file, tourid)
 
+@app.route('/tours/image/<tourid>', methods=['GET'])
+def get_image(tourid):
+    return s3.get_image(tourid)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

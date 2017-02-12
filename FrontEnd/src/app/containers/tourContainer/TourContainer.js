@@ -24,9 +24,7 @@ class TourContainer extends Component {
         this.setState({
             warningVisibility: true
         });
-
         // after 1.5 sec
-
         setTimeout(
             () => {
                 this.setState({
@@ -59,10 +57,12 @@ class TourContainer extends Component {
             });
 
         } catch(e) {
+
             // if err, stop at this point
             this.setState({
                 fetching: false
             });
+
             this.showWarning();
         }
     }

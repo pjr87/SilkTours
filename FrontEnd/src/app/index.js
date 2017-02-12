@@ -12,6 +12,7 @@ import Settings from './components/pages/Settings'
 import Profile from './components/pages/Profile'
 import Sign from './components/pages/Sign';
 import About from './components/pages/About';
+import TourCreation from './components/pages/TourCreation';
 
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
@@ -23,5 +24,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/explore" component={AvailableToursPage}/>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>
+      <Route path='/tour-creation' component={TourCreation}/>
+
     </div>
   </Router>), rootElement);
