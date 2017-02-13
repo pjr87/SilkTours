@@ -21,7 +21,7 @@ import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
 
 //React.Component is abstract base class
-class FederatedAuthSignIn{
+class FederatedAuthSignUp{
   //Constructor to initiate proxy if needed
   constructor(){
     if(!config.region)
@@ -62,28 +62,24 @@ class FederatedAuthSignIn{
         }
         else{
           var user1 = {
+            is_guide: false,
+            first_name: name[0],
+            last_name: name[1],
+            email: email,
             accessKeyId: config.credentials.accessKeyId,
             secretAccessKey: config.credentials.secretAccessKey
           };
 
           var response;
 
-          service.getUserByEmail(email).then(function(response){
+          service.registerNewUser(user1).then(function(response){
             console.log("RESPONSE ");
             console.log(response.data);
             console.log(response.status);
-            var id = response.data.id_users;
-            if(response.status == 200){
-              service.updateExistingUser(id, user1).then(function(response){
-                console.log("RESPONSE ");
-                console.log(response.data);
-                console.log(response.status);
 
-                AuthStore.login(id, config.credentials.secretAccessKey, "Developer");
+            AuthStore.signUp(email, response.data.id_users, config.credentials.secretAccessKey, "Developer");
 
-                //TODO move to explore page
-              });
-            }
+            //TODO direct to profile page to finish sign up
           });
         }
       });
@@ -95,7 +91,8 @@ class FederatedAuthSignIn{
     return;
   }
 }
-const federatedAuthSignIn = new FederatedAuthSignIn;
+
+const federatedAuthSignUp = new FederatedAuthSignUp;
 //Whenever you import AuthStore you will get this above created AuthStore
-window.federatedAuthSignIn = federatedAuthSignIn; // Exposes AuthStore globally
-export default federatedAuthSignIn;
+window.federatedAuthSignUp = federatedAuthSignUp; // Exposes AuthStore globally
+export default federatedAuthSignUp;

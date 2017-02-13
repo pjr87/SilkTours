@@ -86,5 +86,5 @@ class AuthStore extends EventEmitter {
 //Create new authStore
 const authStore = new AuthStore;
 //Whenever you import AuthStore you will get this above created AuthStore
-window.authStore = authStore; // Exposes AuthStore globally*/
+window.authStore = authStore; // Exposes AuthStore globally
 export default authStore;
