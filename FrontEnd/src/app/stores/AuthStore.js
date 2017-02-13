@@ -77,10 +77,9 @@ class AuthStore extends EventEmitter {
       return this.authProfile;
     }
     else {
-      return 0
+      return 0;
     }
   }
-
 }
 
 //Create new authStore

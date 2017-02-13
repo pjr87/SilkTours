@@ -44,7 +44,7 @@ class Header extends React.Component {
   render(){
     if(AuthStore.signedIn()){
       var profile = AuthStore.getProfile();
-      GetData.getUser(1);
+      //GetData.getUser(1);
     }
     else {
 
