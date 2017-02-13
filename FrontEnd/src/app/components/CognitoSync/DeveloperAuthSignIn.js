@@ -14,13 +14,14 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthStore from "../../stores/AuthStore.js"
+import AuthStore from "../../stores/AuthStore.js";
 import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
 import appConfig from "./config";
+import * as service from '../../ajaxServices/AjaxList';
 
 //React.Component is abstract base class
 //DeveloperAuthSignIn is a subclass of React.Component
@@ -94,15 +95,13 @@ export class DeveloperAuthSignIn extends React.Component{
         onSuccess: function (result) {
             console.log('access token + ' + result.getAccessToken().getJwtToken());
 
-            //let loginsIdpData = {};
+            let loginsIdpData = {};
             let loginsCognitoKey = 'cognito-idp.us-east-1.amazonaws.com/' + appConfig.userPoolId
-            //loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();*/
+            loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();
 
             config.credentials = new CognitoIdentityCredentials({
               IdentityPoolId: appConfig.identityPoolId,
-              Logins: {
-                  'cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld':result.getIdToken().getJwtToken()
-              }
+              Logins: loginsIdpData
             });
 
             // set region if not set (as not set by the SDK by default)
@@ -112,34 +111,36 @@ export class DeveloperAuthSignIn extends React.Component{
             });
 
             config.credentials.get(function(err){
-                if (err) {
-                    alert(err);
-                }
-                else{
-                  console.log("sessionToken : " + aws.config.credentials.sessionToken);
-                  console.log("accessKeyId : " + aws.config.credentials.accessKeyId);
-                  console.log("secretAccessKey : " + aws.config.credentials.secretAccessKey);
-                  console.log("expiryWindow : " + aws.config.credentials.expiryWindow);
-                  console.log("expired : " + aws.config.credentials.expired);
-                  console.dir("cred : " + aws.config.credentials);
-                }
-            });
-
-            cognitoUser.getUserAttributes(function(err, result) {
               if (err) {
                   alert(err);
-                  return;
               }
-              var i = 0;
-              for (i = 0; i < result.length; i++) {
-                  console.log('attribute ' + result[i].getName() + ' has value ' + result[i].getValue());
+              else{
+                var user1 = {
+                  accessKeyId: config.credentials.accessKeyId,
+                  secretAccessKey: config.credentials.secretAccessKey
+                };
+
+                var response;
+
+                service.getUserByEmail(email).then(function(response){
+                  console.log("RESPONSE ");
+                  console.log(response.data);
+                  console.log(response.status);
+                  var id = response.data.id_users;
+                  if(response.status == 200){
+                    service.updateExistingUser(id, user1).then(function(response){
+                      console.log("RESPONSE ");
+                      console.log(response.data);
+                      console.log(response.status);
+
+                      AuthStore.login(id, config.credentials.secretAccessKey, "Developer");
+
+                      //TODO move to explore page
+                    });
+                  }
+                });
               }
             });
-
-            //TODO pull name from users table
-
-            AuthStore.login("1", result.getIdToken().getJwtToken(), "Developer");
-            //TODO move to explore page
         },
         onFailure: function(err) {
             alert(err);

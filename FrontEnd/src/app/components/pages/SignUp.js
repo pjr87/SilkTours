@@ -22,9 +22,9 @@ import FacebookLogin from 'react-facebook-login';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import appConfig from "../CognitoSync/config";
-import AuthStore from "../../stores/AuthStore.js"
+import AuthStore from "../../stores/AuthStore.js";
 import logoImg from '../../style/images/logo5.png';
-import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js'
+import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
 
 class SignUp extends React.Component{
   //Define auth profile state

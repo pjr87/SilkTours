@@ -10,8 +10,11 @@ class AuthStore extends EventEmitter {
     // 3. Refresh token that is used internally to refresh the session after it expires each hour.
     this.authProfile =
     {
+      /*
+      secretAccessKey and identityID - Used with all ajax calls
+      */
       email: "", //User's email
-      awsAccessToken: "", //Access token from aws once signed in
+      secretAccessKey: "", //AWS secret access Key
       identityID: "", //Unique identityID assigned to user by AWS
       signedin: 0, //if signed in
       provider: "" //What service signed in with (Facebook, Developer)
@@ -23,9 +26,10 @@ class AuthStore extends EventEmitter {
   // ---------------
   //This function is called when a user signs up
   //This funciton will update those listening
-  signUp(email, identityID, provider){
+  signUp(email, identityID, secretAccessKey, provider){
     this.authProfile.email = email;
     this.authProfile.identityID = identityID;
+    this.authProfile.secretAccessKey = secretAccessKey;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 0;
 
@@ -38,9 +42,9 @@ class AuthStore extends EventEmitter {
 
   //This function is called when a user signs in
   //This funciton will update those listening
-  login(identityID, awsAccessToken, provider){
+  login(identityID, secretAccessKey, provider){
     this.authProfile.identityID = identityID;
-    this.authProfile.awsAccessToken = awsAccessToken;
+    this.authProfile.secretAccessKey = secretAccessKey;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 1;
 

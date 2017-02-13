@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+/*
+Every call must use
+  secretAccessKey and identityID - Used with all ajax calls
+  Can be seen from AuthStore
+*/
+
 export function getAllTours() {
     return axios.get('http://34.197.42.24:5000/search');
 }
@@ -13,8 +19,12 @@ export function registerNewUser(json) {
   return axios.post('http://34.197.42.24:5000/users', json);
 }
 
-export function updateExistingUser(userName) {
-  return axios.put('http://34.197.42.24:5000/users' + userName);
+export function updateExistingUser(email, json) {
+  return axios.put('http://34.197.42.24:5000/users/' + email, json);
+}
+
+export function getUserByEmail(email) {
+  return axios.get('http://34.197.42.24:5000/users/email/' + email);
 }
 
 export function getUser(email) {
