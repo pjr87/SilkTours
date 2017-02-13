@@ -30,7 +30,7 @@ class User(Base):
     profile_picture = Column(String)
     reg_date = Column(Date)
     email = Column(String)
-    accessKeyID = Column(String)
+    accessKeyId = Column(String)
     secretAccessKey = None
 
     interests = relationship("Interests")

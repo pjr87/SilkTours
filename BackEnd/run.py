@@ -30,25 +30,15 @@ app.config['DEBUG'] = True
 
 client = boto3.client('cognito-idp')
 
+
 def checkLogin(accessToken):
+    '''
     response = client.get_user(
         AccessToken="EAAInjq0WOhkBAMSo5Ki3RrvzOLBZB6flRRnx20p2fkGjZAv9puwvHHKuGZCZC4ZBXVTtvxrZBaSE5ZBpGZBcA4NWSZBiddEpP4qN3ZBrbeSNgVTkHIdddmnAgsV6gQV5U6CmvzueK6zVM93aPGJZCYZBZC6T4WgLjjBt3nYZAkrTnHszhj8EKZB1rCLUL4D"#accessToken
     )
     print(response)
+    '''
     return True
-    '''
-    try:
-        # TODO there is probably a better way of checking for valid login
-        # maybe try get_credentials_for_identity. It has an expireation time.
-        response = client.describe_identity(
-            IdentityId=id
-        )
-        print response
-        return True
-    except:
-        print "Could not find IdentityId = " + id
-        return False
-    '''
 
 
 def notAuthorizedResponse():
