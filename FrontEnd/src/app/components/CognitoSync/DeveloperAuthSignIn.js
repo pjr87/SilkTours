@@ -14,7 +14,7 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -23,6 +23,7 @@ import {
 import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
 import style from '../../style/style.css';
+//import { push } from 'react-router-redux';
 
 //React.Component is abstract base class
 //DeveloperAuthSignIn is a subclass of React.Component
@@ -58,7 +59,7 @@ export class DeveloperAuthSignIn extends React.Component{
     console.log('email + ' + email);
     console.log('password + ' + password);
 
-    AuthStore.setEmail(email);
+    authStore.setEmail(email);
 
     // Step 1 - Define global AWS identity credentials
     //Config.region = appConfig.region;
@@ -137,12 +138,14 @@ export class DeveloperAuthSignIn extends React.Component{
 
                       var name = response.data.first_name + " " + response.data.last_name;
 
-                      AuthStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
+                      authStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
 
                       config.credentials.clearCachedId();
 
                       //move to explore page
-                      window.location.assign('..');
+                      //window.location.assign('../Settings');
+                      //this.props.dispatch(push('../Settings'));
+
                     });
                   }
                 });

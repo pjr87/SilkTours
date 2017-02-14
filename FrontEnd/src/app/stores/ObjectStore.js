@@ -1,7 +1,7 @@
 import AuthStore from './AuthStore';
 import * as service from '../../ajaxServices/AjaxList';
 
-AuthStore.on("login", () => {
+authStore.on("login", () => {
   //ObjectStore.setState();
   UserStore.
   console.log("GOT USERzz!");
@@ -76,7 +76,7 @@ class UserStore{
 
 
 getUserProfile(){
-  if(AuthStore.signedin())
+  if(authStore.signedin())
     return this.userProfile;
 
   return {};

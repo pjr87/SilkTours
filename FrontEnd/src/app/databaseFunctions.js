@@ -1,9 +1,9 @@
 
-import AuthStore from "./stores/AuthStore.js";
+//import AuthStore from "./stores/AuthStore.js";
 import axios from 'axios';
 
 
-AuthStore.on("login", () => {
+authStore.on("login", () => {
 
   console.log("GOT USER!")
 });
@@ -15,7 +15,7 @@ class GetData{
 
   constructor(){
 
-    AuthStore.on("login", () => {
+    authStore.on("login", () => {
 
       console.log("GOT USERzz!")
     });

@@ -11,7 +11,7 @@ all
 */
 
 //import cognito libraries
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -37,6 +37,8 @@ class FederatedAuthSignUp{
 
     if(provider == "Facebook"){
       console.log("Facebook User is logged in " + this.response.accessToken);
+
+      //TODO check if user already exists
 
       let loginsIdpData = {};
       let loginsCognitoKey = 'graph.facebook.com';
@@ -89,12 +91,12 @@ class FederatedAuthSignUp{
             var fullName = name[0] + " " + name[1];
 
             if(response.data.email == email){
-              AuthStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Developer");
+              authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Developer");
 
               config.credentials.clearCachedId();
 
               //direct to profile page to finish sign up
-              window.location.assign('../Settings');
+              //window.location.assign('../Settings');
             }
           });
         }
