@@ -24,12 +24,16 @@ client = boto3.client('cognito-identity')
 
 def checkLogin(logins, identityId):
     try:
-        client.get_credentials_for_identity(
+        result = client.get_credentials_for_identity(
             IdentityId=identityId,
             Logins=logins
         )
+        print ("Success")
+        print(result)
         return True
-    except:
+    except Exception as e:
+        print(e)
+        print("Fail")
         return False
 
 
@@ -73,8 +77,8 @@ def after_request(response):
 @app.route("/")
 def hello():
     checkLogin({
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld": "eyJraWQiOiJCZTVyY2oraXJUclNvdHVMRGhSc1JGemVudzdyelwvTVNDR0ZzaFVTYXZTND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhOGE3MjYwNy0yOTZlLTQxMWUtOWYzOC00ZTYwZjRmM2NlMGYiLCJhdWQiOiIyYnM5bDl0NW9sNG0wOWZnZm1hZGszam1oNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTQ4NzAyOTA4MCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOTE3SWd4NUxkIiwicGhvbmVfbnVtYmVyX3ZlcmlmaWVkIjpmYWxzZSwiY29nbml0bzp1c2VybmFtZSI6ImFuZHJld3NoaWRlbEBnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIrMTQxMjY1MTA0OTgiLCJleHAiOjE0ODcwMzI2ODAsImlhdCI6MTQ4NzAyOTA4MCwiZW1haWwiOiJhbmRyZXdzaGlkZWxAZ21haWwuY29tIn0.KzCZXzja9pierqXzrSNEXC6ioXmU4l3kOCjFcx5Bf1l8qqxLzEMwzne2RzNfLFP4wVB1uodcjof_gFgLHDP-iAgQlfJbI_L0SfsWkhSznPu7ZPeO9M0Jco8SxQVpKUtHkYuiUmCbYKNrXUPlP17BbUwcaeGr2s6fsJhqsu1XBYP3OfctvBNaIMCytYbZ48BQUFRpSf_ypqQgEhAzkONvXHRypCQUD91KOLYQ6IqsJEK0vSeggNgi8rKzzVA53Mp-x0Ke3WqeYQ8c6oz6Qg4rpIMhMh1BX_CQQcZeaRilTEsXbZkc_DMIxsuIXEZXNY_goP9Fo0Qj6ysN8FNeI4_yNA"
-    }, "us-east-1:e40401ad-863b-464e-8281-21475d67a0ab")
+        "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld": "eyJraWQiOiJCZTVyY2oraXJUclNvdHVMRGhSc1JGemVudzdyelwvTVNDR0ZzaFVTYXZTND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhOGE3MjYwNy0yOTZlLTQxMWUtOWYzOC00ZTYwZjRmM2NlMGYiLCJhdWQiOiIyYnM5bDl0NW9sNG0wOWZnZm1hZGszam1oNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTQ4NzAzODM1NCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOTE3SWd4NUxkIiwicGhvbmVfbnVtYmVyX3ZlcmlmaWVkIjpmYWxzZSwiY29nbml0bzp1c2VybmFtZSI6ImFuZHJld3NoaWRlbEBnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIrMTQxMjY1MTA0OTgiLCJleHAiOjE0ODcwNDE5NTQsImlhdCI6MTQ4NzAzODM1NCwiZW1haWwiOiJhbmRyZXdzaGlkZWxAZ21haWwuY29tIn0.WrfAVkJ7dsb2DBK2pdVZl3mz4DUg-bxdtej83Oq9SQpe5Qzw61o6rcHorVQwwuOfrGva3Ckg2mq9Cl8Nt9ATsUalhdo0J_RC3LENrue17bW7ubVQ_WA1if1xac-mqmyCN_KO7FlZ6iFNRRP2nAaoQtvs3i6_SLrEWaMg_yoY9NA-zcOLKwr78emWhY1vo5lIlyR0evtuL3FJqUh27c6eocDXdc5Cfo4kpSRw8ixx-3Lvcd65WnIL_5QNVfya8qabd-pKYyKQNrpBIMsT1b6xh-WUKQqUCouJAb0DD4t_RclFrDUwK1kMTZDvlkTVKtEVfICMjQVCw6oZocrpb5nZHw"
+    }, "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349")
 
     user = session.query(User).get(1)
     return "Hello " + user.first_name

@@ -55,6 +55,8 @@ class User(Base):
 
     def set_props(self, data):
         for key in data:
+            if key is "IdentityId":
+                setattr(self, "id_users", data[key])
             setattr(self, key, data[key])
 
     def serialize(self):
