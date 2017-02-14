@@ -77,6 +77,12 @@ def after_request(response):
     return response
 
 
+@app.errorhandler(500)
+def internal_server_error(e):
+    session.rollback()
+    return "Internal Server Error. Rolling back session. Try again.", 500
+
+
 @app.route("/")
 def hello():
     checkLogin({
@@ -121,13 +127,7 @@ def search():
     if city is not None:
         query = query.filter(Tour.address_city == city)
 
-    tours = []
-    try:
-        tours = query.all()
-    except:
-        session.rollback()
-        raise
-
+    tours = query.all()
     result = []
     for tour in tours:
         result.append(tour.serialize(True))
