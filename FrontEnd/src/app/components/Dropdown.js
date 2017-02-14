@@ -30,6 +30,7 @@ class AccountDropdown extends React.Component {
             <Link to='/profile'>profile</Link>
             <Link to='/settings'>settings</Link>
             <Link to='/tour-creation'>Create Tour</Link>
+            <Link to='/tour-signup'>Tour Signup</Link>
             <a>logout</a>
           </div>
         </div>);

@@ -6,8 +6,9 @@ import Footer from '../footer/Footer';
 //import GetData from '../../databaseFunctions';
 import {ProfileHeader} from './Profile';
 import * as service from '../../ajaxServices/AjaxList';
-import {EditableField, FormTitle, DoubleEditableField} from '../forms/Forms.js';
+import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../forms/Forms.js';
 import logoImg from '../../style/images/logo2.png';
+import { WithContext as ReactTags } from 'react-tag-input';
 
 class SettingsPg extends React.Component {
 
@@ -17,7 +18,7 @@ class SettingsPg extends React.Component {
      // initializes component state
      this.state = {
          fetching: false, // tells whether the request is waiting for response or not
-         user: {},
+         user: {interests:[]},
          warningVisibility: false
      };
   }
@@ -40,13 +41,14 @@ class SettingsPg extends React.Component {
      );
   }
 
+  onSubmitClick(){
+    console.log("submit clicked!")
+  }
+
   getUserInfo = async (postId) => {
-     /*this.setState({
-         fetching: true
-     });
-*/
+
      try {
-    
+
         service.getUser(1).then((function(response){
           console.log("response: ");
           console.log( response.data );
@@ -69,6 +71,21 @@ class SettingsPg extends React.Component {
      }
   }
 
+  handleDelete(i) {
+        var user = this.state.user;
+        user.interests.splice(i, 1);
+        this.setState({user:user});
+    }
+
+    handleAddition(tag) {
+        let user = this.state.user;
+        user.interests.push({
+            id: user.interests.length+1,
+            text: tag
+        });
+        this.setState({user: user});
+    }
+
   renderInterests(){
 
     const interests = _.map(this.state.user.interests, function(obj) {
@@ -87,19 +104,8 @@ class SettingsPg extends React.Component {
 
   render () {
     const {fetching, user} = this.state;
-    const interests=<div></div>;
-      if(user.interests){
-    const interests = user.interests.map(
-        (name, index)=>(
-            <li>
-              {name}
-            </li>
-        )
-    );
-}
 
-    return (
-      <div>
+    return (<div>
         <Header largeHeader={false} fileName={logoImg} />
         <ProfileHeader profilePicture={user.profile_picture} name={user.first_name+" "+user.last_name}/>
 
@@ -116,15 +122,29 @@ class SettingsPg extends React.Component {
         <EditableField update={this.textChange.bind(this)} value={user.address_state} name="address_state" label="State" />
         <EditableField update={this.textChange.bind(this)} value={user.address_zip} name="address_zip" label="Zip Code" />
 
-        <div className={style.formSection}>
+
           <div>Interests Information</div>
           <div>
-            <input type="text" placeholder="Search For Interests"/>
+            {/*<input type="text" placeholder="Search For Interests"/>*/}
 
-            {this.renderInterests()}
+            {/*this.renderInterests()*/}
+            <ReactTags classNames={{
+              tags: style.ReactTags__tags,
+              tagInput: style.ReactTags__tagInput,
+              tagInputField: style.ReactTags__tagInputField,
+              selected: style.ReactTags__selected,
+              tag: style.ReactTags__tag,
+              remove: style.ReactTags__remove,
+              suggestions: style.ReactTags__suggestions
+            }}
+              tags={user.interests}
+              handleDelete={this.handleDelete.bind(this)}
+              handleAddition={this.handleAddition.bind(this)}
+               />
+             <br />
 
         </div>
-        </div>
+        <FormButton action={this.onSubmitClick.bind(this)}></FormButton>
     </div>
   </div> </div> );
   }

@@ -13,6 +13,7 @@ import Profile from './components/pages/Profile'
 import Sign from './components/pages/Sign';
 import About from './components/pages/About';
 import TourCreation from './components/pages/TourCreation';
+import TourSignup from './components/pages/TourSignup';
 
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
@@ -25,6 +26,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>
       <Route path='/tour-creation' component={TourCreation}/>
+      <Route path='/tour-signup' component={TourSignup}/>
 
     </div>
   </Router>), rootElement);
