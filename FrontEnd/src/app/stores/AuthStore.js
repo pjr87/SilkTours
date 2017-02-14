@@ -13,8 +13,9 @@ class AuthStore extends EventEmitter {
       /*
       secretAccessKey and identityID - Used with all ajax calls
       */
+      name: "", //User's name
       email: "", //User's email
-      secretAccessKey: "", //AWS secret access Key
+      Logins: "", //AWS value needed to request secured endpoints
       identityID: "", //Unique identityID assigned to user by AWS
       signedin: 0, //if signed in
       provider: "" //What service signed in with (Facebook, Developer)
@@ -26,10 +27,11 @@ class AuthStore extends EventEmitter {
   // ---------------
   //This function is called when a user signs up
   //This funciton will update those listening
-  signUp(email, identityID, secretAccessKey, provider){
+  signUp(name, email, identityID, logins, provider){
+    this.authProfile.name = name;
     this.authProfile.email = email;
     this.authProfile.identityID = identityID;
-    this.authProfile.secretAccessKey = secretAccessKey;
+    this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 0;
 
@@ -42,9 +44,10 @@ class AuthStore extends EventEmitter {
 
   //This function is called when a user signs in
   //This funciton will update those listening
-  login(identityID, secretAccessKey, provider){
+  login(name, identityID, logins, provider){
+    this.authProfile.name = name;
     this.authProfile.identityID = identityID;
-    this.authProfile.secretAccessKey = secretAccessKey;
+    this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 1;
 
