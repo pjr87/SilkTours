@@ -116,17 +116,19 @@ export class DeveloperAuthSignIn extends React.Component{
                   alert(err);
               }
               else{
+                var id = config.credentials._identityId;
                 var user1 = {
-                  Logins: loginsIdpData
+                  Logins: loginsIdpData,
+                  IdentityId: id
                 };
 
                 var response;
 
-                service.getUserByEmail(email).then(function(response){
+                service.getUserByEmail(email, user1).then(function(response){
                   console.log("RESPONSE ");
                   console.log(response.data);
                   console.log(response.status);
-                  var id = response.data.id_users;
+
                   if(response.data.email == email){
                     service.updateExistingUser(id, user1).then(function(response){
                       console.log("RESPONSE ");
@@ -137,7 +139,10 @@ export class DeveloperAuthSignIn extends React.Component{
 
                       AuthStore.login(name, id, loginsIdpData, "Developer");
 
-                      //TODO move to explore page
+                      config.credentials.clearCachedId();
+                      
+                      //move to explore page
+                      window.location.assign('..');
                     });
                   }
                 });

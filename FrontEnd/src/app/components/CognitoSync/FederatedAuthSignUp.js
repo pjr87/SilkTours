@@ -42,11 +42,15 @@ class FederatedAuthSignUp{
       let loginsCognitoKey = 'graph.facebook.com';
       loginsIdpData[loginsCognitoKey] = this.response.accessToken;
 
-      // Add the Facebook access token to the Cognito credentials login map.
-      config.credentials = new AWS.CognitoIdentityCredentials({
+      var cognitoParams = {
         IdentityPoolId: appConfig.identityPoolId,
         Logins: loginsIdpData
-      });
+      };
+
+      // Add the Facebook access token to the Cognito credentials login map.
+      config.credentials = new AWS.CognitoIdentityCredentials(cognitoParams);
+
+      config.credentials.clearCachedId();
 
       // set region if not set (as not set by the SDK by default)
       config.update({
@@ -64,13 +68,15 @@ class FederatedAuthSignUp{
             alert(err);
         }
         else{
+          var id = config.credentials._identityId;
           var user1 = {
             is_guide: false,
             first_name: name[0],
             last_name: name[1],
             email: email,
             profile_picture: profilePic,
-            Logins: loginsIdpData
+            Logins: loginsIdpData,
+            IdentityId: id
           };
 
           var response;
@@ -83,9 +89,12 @@ class FederatedAuthSignUp{
             var fullName = name[0] + " " + name[1];
 
             if(response.data.email == email){
-              AuthStore.signUp(fullName, email, response.data.id_users, loginsIdpData, "Developer");
+              AuthStore.signUp(fullName, email, id, loginsIdpData, "Developer");
 
-              //TODO direct to profile page to finish sign up
+              config.credentials.clearCachedId();
+
+              //direct to profile page to finish sign up
+              window.location.assign('../Settings');
             }
           });
         }
@@ -95,6 +104,7 @@ class FederatedAuthSignUp{
       console.log("Provider not yet supported")
     }
 
+    config.credentials.clearCachedId();
     return;
   }
 }

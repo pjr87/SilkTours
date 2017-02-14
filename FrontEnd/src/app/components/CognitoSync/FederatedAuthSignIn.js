@@ -63,17 +63,21 @@ class FederatedAuthSignIn{
             alert(err);
         }
         else{
+          console.log("DATA");
+          console.log(config.credentials._identityId);
+          var id = config.credentials._identityId;
           var user1 = {
-            Logins: loginsIdpData
+            Logins: loginsIdpData,
+            IdentityId: id
           };
 
           var response;
 
-          service.getUserByEmail(email).then(function(response){
+          service.getUserByEmail(email, user1).then(function(response){
             console.log("RESPONSE 1");
             console.log(response.data);
             console.log(response.status);
-            var id = response.data.id_users;
+
             if(response.data.email == email){
               service.updateExistingUser(id, user1).then(function(response){
                 console.log("RESPONSE 2");
@@ -85,7 +89,10 @@ class FederatedAuthSignIn{
 
                 AuthStore.login(fullName, id, loginsIdpData, "Developer");
 
-                //TODO move to explore page
+                config.credentials.clearCachedId();
+
+                //move to explore page
+                window.location.assign('..');
               });
             }
           });
