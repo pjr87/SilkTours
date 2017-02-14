@@ -23,6 +23,7 @@ import {
 import Modal from 'react-modal';
 import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
+import style from '../../style/style.css';
 
 // Modal style constructor
 const customStyles = {
@@ -279,30 +280,41 @@ export class DeveloperAuthSignUp extends React.Component{
   render() {
     return (
       <div>
-      <h1>Sign up!</h1>
+      <h4>Create a travel profile</h4>
+      <br/>
+
       <form onSubmit={this.handleSubmit.bind(this)}>
         <label>
-          Email
+          <p className = {style.signInContents}>Email</p>
           <input type="email"
             value={this.state.email}
             placeholder="Email"
             onChange={this.handleEmailChange.bind(this)}/>
+          <br/>
+          <br/>
         </label>
         <label>
-          Password
+          <p className = {style.signInContents}>Password</p>
           <input type="password"
             value={this.state.password}
             placeholder="Password"
             onChange={this.handlePasswordChange.bind(this)}/>
+          <br/>
+          <br/>
         </label>
         <label>
-          Phone Number
+          <p className = {style.signInContents}>Phone Number</p>
           <input type="text"
             value={this.state.phoneNumber}
             placeholder="Phone Number"
             onChange={this.handlePhoneNumberChange.bind(this)}/>
+          <br/>
+          <br/>
           <input type="submit" value="Sign Up"/>
+          <br/>
+          <br/>
         </label>
+        <br/>
       </form>
 
       <Modal isOpen={this.state.open} contentLabel="Modal" style={customStyles}>
