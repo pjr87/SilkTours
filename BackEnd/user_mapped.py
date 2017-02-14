@@ -2,7 +2,6 @@
 import datetime
 from interests_mapped import Interests
 from tour_event_mapped import TourEvent
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, Boolean
 from sqlalchemy.orm import relationship
 from base import Base
@@ -55,8 +54,6 @@ class User(Base):
 
     def set_props(self, data):
         for key in data:
-            if key is "IdentityId":
-                setattr(self, "id_users", data[key])
             setattr(self, key, data[key])
 
     def serialize(self):
