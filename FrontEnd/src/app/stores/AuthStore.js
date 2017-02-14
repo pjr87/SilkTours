@@ -10,8 +10,12 @@ class AuthStore extends EventEmitter {
     // 3. Refresh token that is used internally to refresh the session after it expires each hour.
     this.authProfile =
     {
+      /*
+      secretAccessKey and identityID - Used with all ajax calls
+      */
+      name: "", //User's name
       email: "", //User's email
-      awsAccessToken: "", //Access token from aws once signed in
+      Logins: "", //AWS value needed to request secured endpoints
       identityID: "", //Unique identityID assigned to user by AWS
       signedin: 0, //if signed in
       provider: "", //What service signed in with (Facebook, Developer)
@@ -24,9 +28,11 @@ class AuthStore extends EventEmitter {
   // ---------------
   //This function is called when a user signs up
   //This funciton will update those listening
-  signUp(email, identityID, provider){
+  signUp(name, email, identityID, logins, provider){
+    this.authProfile.name = name;
     this.authProfile.email = email;
     this.authProfile.identityID = identityID;
+    this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 0;
 
@@ -39,9 +45,10 @@ class AuthStore extends EventEmitter {
 
   //This function is called when a user signs in
   //This funciton will update those listening
-  login(identityID, awsAccessToken, provider){
+  login(name, identityID, logins, provider){
+    this.authProfile.name = name;
     this.authProfile.identityID = identityID;
-    this.authProfile.awsAccessToken = awsAccessToken;
+    this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 1;
 
@@ -74,14 +81,13 @@ class AuthStore extends EventEmitter {
       return this.authProfile;
     }
     else {
-      return 0
+      return 0;
     }
   }
-
 }
 
 //Create new authStore
 const authStore = new AuthStore;
 //Whenever you import AuthStore you will get this above created AuthStore
-window.authStore = authStore; // Exposes AuthStore globally*/
+window.authStore = authStore; // Exposes AuthStore globally
 export default authStore;

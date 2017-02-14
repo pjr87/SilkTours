@@ -14,8 +14,8 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthStore from "../../stores/AuthStore.js"
-import { Config, CognitoIdentityCredentials } from "aws-sdk";
+import AuthStore from "../../stores/AuthStore.js";
+import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
@@ -65,6 +65,9 @@ export class DeveloperAuthSignUp extends React.Component{
       password: '',
       phoneNumber: '',
       confirmationCode: '',
+      accessKeyId: '',
+      secretAccessKey: '',
+      sessionToken: '',
       open: false,
     };
 
@@ -73,15 +76,6 @@ export class DeveloperAuthSignUp extends React.Component{
 
     //Global cognitoUser represents the authenticated person
     this.cognitoUser;
-  }
-
-  buildJSON(phoneNumber, email){
-    var user1 = {
-      is_guide: false,
-      phone_number: phoneNumber,
-      email: email
-    };
-    return user1;
   }
 
   handleEmailChange(e) {
@@ -100,7 +94,7 @@ export class DeveloperAuthSignUp extends React.Component{
     this.setState({confirmationCode: e.target.value});
   }
 
-  //Fucntion called when the signUp form is submited by user
+  //Function called when the signUp form is submited by user
   handleSubmit(e) {
     e.preventDefault();
     const email = this.state.email.trim();
@@ -184,31 +178,98 @@ export class DeveloperAuthSignUp extends React.Component{
       return;
     }
     else{
-      const email = this.state.email;
+      const email = this.state.email.trim();
+      const password = this.state.password.trim();
+
+      console.log('email + ' + email);
+      console.log('password + ' + password);
       const phoneNumber = this.state.phoneNumber;
 
-      var user1 = {
-        is_guide: false,
-        phone_number: phoneNumber,
-        email: email
+      //TODO get initial tokens
+      // Step 1 - Define global AWS identity credentials
+      //Config.region = appConfig.region;
+      config.update({region:'us-east-1'});
+
+      //Step 2 - A confirmed user signs in to obtain a session.
+      //The session contains:
+      // 1. ID token that contains user claims
+      // 2. Access token that is used internally to perform authenticated calls
+      // 3. Refresh token that is used internally to refresh the session after it expires each hour.
+
+      //authData represents the reqiured userName and password
+      const authData = {
+        Username: email,
+        Password: password,
       };
 
-      console.log('user1 phone: ' + user1.phone_number);
-      console.log('user1 email: ' + user1.email);
+      var authDetails = new CognitoIdentityServiceProvider.AuthenticationDetails(authData);
 
-      var response;
+      const poolData = {
+        UserPoolId: appConfig.userPoolId,
+        ClientId: appConfig.clientId,
+      };
 
-      service.registerNewUser(user1).then(function(response){
-        console.log("RESPONSE ");
-        console.log(response.data);
-        console.log(response.status);
+      var userPool = new CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+
+      var userData = {
+          Username : email,
+          Pool : userPool
+      };
+
+      var cognitoUser = new CognitoIdentityServiceProvider.CognitoUser(userData);
+
+      cognitoUser.authenticateUser(authDetails, {
+        onSuccess: function (result) {
+            console.log('access token + ' + result.getAccessToken().getJwtToken());
+
+            let loginsIdpData = {};
+            let loginsCognitoKey = 'cognito-idp.us-east-1.amazonaws.com/' + appConfig.userPoolId
+            loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();
+
+            config.credentials = new CognitoIdentityCredentials({
+              IdentityPoolId: appConfig.identityPoolId,
+              Logins: loginsIdpData
+            });
+
+            // set region if not set (as not set by the SDK by default)
+            config.update({
+              credentials: config.credentials,
+              region: appConfig.region
+            });
+
+            // Can get lots of credential information ie(sessionToken,accessKeyId
+            // secretAccessKey,expiryWindow,expired,cred)
+            config.credentials.get(function(err){
+              if (err) {
+                  alert(err);
+              }
+              else{
+                var user1 = {
+                  is_guide: false,
+                  phone_number: phoneNumber,
+                  email: email,
+                  Logins: loginsIdpData
+                };
+
+                var response;
+
+                service.registerNewUser(user1).then(function(response){
+                  console.log("RESPONSE ");
+                  console.log(response.data);
+                  console.log(response.status);
+
+                  var fullName = name[0] + " " + name[1];
+
+                  if(response.data.email == email){
+                    AuthStore.signUp(fullName, email, response.data.id_users, loginsIdpData, "Developer");
+
+                    //TODO direct to settings page to finish sign up
+                  }
+                });
+              }
+          });
+        }
       });
-
-      console.log(response.data.id_users);
-
-      AuthStore.signUp(email, "Developer");
-
-      //TODO direct to profile page to finish sign up
     }
   }
 

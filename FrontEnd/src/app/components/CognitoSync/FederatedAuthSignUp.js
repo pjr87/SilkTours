@@ -21,7 +21,7 @@ import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
 
 //React.Component is abstract base class
-class FederatedAuthSignIn{
+class FederatedAuthSignUp{
   //Constructor to initiate proxy if needed
   constructor(){
     if(!config.region)
@@ -56,6 +56,7 @@ class FederatedAuthSignIn{
 
       var name = this.response.name.split(" ");
       var email = this.response.email;
+      var profilePic = this.response.picture.data.url;
 
       // Obtain AWS credentials
       config.credentials.get(function(err){
@@ -64,29 +65,27 @@ class FederatedAuthSignIn{
         }
         else{
           var user1 = {
+            is_guide: false,
+            first_name: name[0],
+            last_name: name[1],
+            email: email,
+            profile_picture: profilePic,
             Logins: loginsIdpData
           };
 
           var response;
 
-          service.getUserByEmail(email).then(function(response){
-            console.log("RESPONSE 1");
+          service.registerNewUser(user1).then(function(response){
+            console.log("RESPONSE ");
             console.log(response.data);
             console.log(response.status);
-            var id = response.data.id_users;
+
+            var fullName = name[0] + " " + name[1];
+
             if(response.data.email == email){
-              service.updateExistingUser(id, user1).then(function(response){
-                console.log("RESPONSE 2");
-                console.log(response.data);
-                console.log(response.status);
+              AuthStore.signUp(fullName, email, response.data.id_users, loginsIdpData, "Developer");
 
-                var fullName = name[0] + " " + name[1];
-                console.log(fullName);
-
-                AuthStore.login(fullName, id, loginsIdpData, "Developer");
-
-                //TODO move to explore page
-              });
+              //TODO direct to profile page to finish sign up
             }
           });
         }
@@ -99,7 +98,8 @@ class FederatedAuthSignIn{
     return;
   }
 }
-const federatedAuthSignIn = new FederatedAuthSignIn;
-//Whenever you import FederatedAuthSignIn you will get this above created FederatedAuthSignIn
-window.federatedAuthSignIn = federatedAuthSignIn; // Exposes FederatedAuthSignIn globally
-export default federatedAuthSignIn;
+
+const federatedAuthSignUp = new FederatedAuthSignUp;
+//Whenever you import FederatedAuthSignUp you will get this above created FederatedAuthSignUp
+window.federatedAuthSignUp = federatedAuthSignUp; // Exposes FederatedAuthSignUp globally
+export default federatedAuthSignUp;

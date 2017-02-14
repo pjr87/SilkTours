@@ -22,9 +22,16 @@ import FacebookLogin from 'react-facebook-login';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import appConfig from "../CognitoSync/config";
-import AuthStore from "../../stores/AuthStore.js"
+import AuthStore from "../../stores/AuthStore.js";
 import logoImg from '../../style/images/logo5.png';
-import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js'
+import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
+import FederatedAuthSignUp from "../CognitoSync/FederatedAuthSignUp.js";
+
+const responseFacebook = (response) => {
+  console.log(response);
+
+  FederatedAuthSignUp.startAWS(response, "Facebook");
+}
 
 class SignUp extends React.Component{
   //Define auth profile state
@@ -56,6 +63,12 @@ class SignUp extends React.Component{
       <Header fileName={logoImg}/>
 
       <DeveloperAuthSignUp/>
+
+      <FacebookLogin
+        appId={appConfig.facebookAppId}
+        autoLoad={false}
+        fields="name,email,picture"
+        callback={responseFacebook} />
 
       <Footer/>
       </div>

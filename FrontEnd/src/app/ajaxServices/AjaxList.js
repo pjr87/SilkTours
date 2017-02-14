@@ -1,7 +1,34 @@
 import axios from 'axios';
+import AuthStore from '../stores/AuthStore';
+
+/*
+Every call must use
+  secretAccessKey and identityID - Used with all ajax calls
+  Can be seen from AuthStore
+*/
 
 export function getAllTours() {
-    return axios.get('http://34.197.42.24:5000/search');
+    return axios.get("http://34.197.42.24:5000/search");
+}
+
+export function getUser(id){
+    if(AuthStore.signedIn()){
+      var url = "http://34.197.42.24:5000/users/"+id;
+      console.log("url: "+url);
+      return axios.get(url);
+    }
+    return false;
+}
+
+export function newTour(data){
+    if(AuthStore.signedIn()){
+      console.log(data);
+      var url = "http://34.197.42.24:5000/tours";
+      console.log("url: "+url);
+      //var t = JSON.stringify(data);
+      return axios.post(url, data);
+   }
+    return false;
 }
 
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.
@@ -13,12 +40,12 @@ export function registerNewUser(json) {
   return axios.post('http://34.197.42.24:5000/users', json);
 }
 
-export function updateExistingUser(userName) {
-  return axios.put('http://34.197.42.24:5000/users' + userName);
+export function updateExistingUser(id, json) {
+  return axios.put('http://34.197.42.24:5000/users/' + id, json);
 }
 
-export function getUser(email) {
-  return axios.put('http://34.197.42.24:5000/users/email/' + email);
+export function getUserByEmail(email) {
+  return axios.get('http://34.197.42.24:5000/users/email/' + email);
 }
 
 export function postSupportTicket(department, fname, lname, email, textBody) {
