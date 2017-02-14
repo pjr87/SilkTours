@@ -248,8 +248,7 @@ export class DeveloperAuthSignUp extends React.Component{
                   is_guide: false,
                   phone_number: phoneNumber,
                   email: email,
-                  accessKeyId: config.credentials.accessKeyId,
-                  secretAccessKey: config.credentials.secretAccessKey
+                  Logins: loginsIdpData
                 };
 
                 var response;
@@ -259,9 +258,13 @@ export class DeveloperAuthSignUp extends React.Component{
                   console.log(response.data);
                   console.log(response.status);
 
-                  AuthStore.signUp(email, response.data.id_users, config.credentials.secretAccessKey, "Developer");
+                  var fullName = name[0] + " " + name[1];
 
-                  //TODO direct to profile page to finish sign up
+                  if(response.data.email == email){
+                    AuthStore.signUp(fullName, email, response.data.id_users, loginsIdpData, "Developer");
+
+                    //TODO direct to settings page to finish sign up
+                  }
                 });
               }
           });
