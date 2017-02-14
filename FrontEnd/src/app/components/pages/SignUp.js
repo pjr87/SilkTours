@@ -69,7 +69,8 @@ class SignUp extends React.Component{
         autoLoad={false}
         fields="name,email,picture"
         callback={responseFacebook} />
-
+      <br/>
+      <br/>
       <Footer/>
       </div>
     );
