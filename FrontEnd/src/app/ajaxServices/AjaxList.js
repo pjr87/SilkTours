@@ -40,8 +40,8 @@ export function registerNewUser(json) {
   return axios.post('http://34.197.42.24:5000/users', json);
 }
 
-export function updateExistingUser(email, json) {
-  return axios.put('http://34.197.42.24:5000/users/' + email, json);
+export function updateExistingUser(id, json) {
+  return axios.put('http://34.197.42.24:5000/users/' + id, json);
 }
 
 export function getUserByEmail(email) {

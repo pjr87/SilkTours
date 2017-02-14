@@ -116,8 +116,7 @@ export class DeveloperAuthSignIn extends React.Component{
               }
               else{
                 var user1 = {
-                  accessKeyId: config.credentials.accessKeyId,
-                  secretAccessKey: config.credentials.secretAccessKey
+                  Logins: loginsIdpData
                 };
 
                 var response;
@@ -127,13 +126,15 @@ export class DeveloperAuthSignIn extends React.Component{
                   console.log(response.data);
                   console.log(response.status);
                   var id = response.data.id_users;
-                  if(response.status == 200){
+                  if(response.data.email == email){
                     service.updateExistingUser(id, user1).then(function(response){
                       console.log("RESPONSE ");
                       console.log(response.data);
                       console.log(response.status);
 
-                      AuthStore.login(id, config.credentials.secretAccessKey, "Developer");
+                      var name = response.data.first_name + " " + response.data.last_name;
+
+                      AuthStore.login(name, id, loginsIdpData, "Developer");
 
                       //TODO move to explore page
                     });

@@ -38,12 +38,14 @@ class FederatedAuthSignIn{
     if(provider == "Facebook"){
       console.log("Facebook User is logged in " + this.response.accessToken);
 
+      let loginsIdpData = {};
+      let loginsCognitoKey = 'graph.facebook.com';
+      loginsIdpData[loginsCognitoKey] = this.response.accessToken;
+
       // Add the Facebook access token to the Cognito credentials login map.
       config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: appConfig.identityPoolId,
-        Logins: {
-          'graph.facebook.com': this.response.accessToken
-        }
+        Logins: loginsIdpData
       });
 
       // set region if not set (as not set by the SDK by default)
@@ -62,24 +64,26 @@ class FederatedAuthSignIn{
         }
         else{
           var user1 = {
-            accessKeyId: config.credentials.accessKeyId,
-            secretAccessKey: config.credentials.secretAccessKey
+            Logins: loginsIdpData
           };
 
           var response;
 
           service.getUserByEmail(email).then(function(response){
-            console.log("RESPONSE ");
+            console.log("RESPONSE 1");
             console.log(response.data);
             console.log(response.status);
             var id = response.data.id_users;
-            if(response.status == 200){
+            if(response.data.email == email){
               service.updateExistingUser(id, user1).then(function(response){
-                console.log("RESPONSE ");
+                console.log("RESPONSE 2");
                 console.log(response.data);
                 console.log(response.status);
 
-                AuthStore.login(id, config.credentials.secretAccessKey, "Developer");
+                var fullName = name[0] + " " + name[1];
+                console.log(fullName);
+
+                AuthStore.login(fullName, id, loginsIdpData, "Developer");
 
                 //TODO move to explore page
               });
@@ -96,6 +100,6 @@ class FederatedAuthSignIn{
   }
 }
 const federatedAuthSignIn = new FederatedAuthSignIn;
-//Whenever you import AuthStore you will get this above created AuthStore
-window.federatedAuthSignIn = federatedAuthSignIn; // Exposes AuthStore globally
+//Whenever you import FederatedAuthSignIn you will get this above created FederatedAuthSignIn
+window.federatedAuthSignIn = federatedAuthSignIn; // Exposes FederatedAuthSignIn globally
 export default federatedAuthSignIn;
