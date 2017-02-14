@@ -31,6 +31,7 @@ const ToursList = ({tours}) => {
                 price={tours.price}
                 profile_image={tours.profile_image}
                 rating_count={tours.rating_count}
+                stops={tours.stops}
                 styleIndex={index}
                 key={index}
             />
