@@ -137,20 +137,12 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
-    data = request.get_json()
-    if (not checkLogin(data)):
-        return notAuthorizedResponse()
-
     user = session.query(User).get(id)
     return jsonify(user.serialize())
 
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
-    data = request.get_json()
-    if (not checkLogin(data)):
-        return notAuthorizedResponse()
-
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 
