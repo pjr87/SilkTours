@@ -30,6 +30,8 @@ class User(Base):
     profile_picture = Column(String)
     reg_date = Column(Date)
     email = Column(String)
+    accessKeyId = Column(String)
+    secretAccessKey = None
 
     interests = relationship("Interests")
     interests = relationship("Interests", foreign_keys="Interests.id_user")
@@ -39,7 +41,7 @@ class User(Base):
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
              "tours_completed", "phone", "description", "dob", "password",
-             "id", "email"}
+             "id", "email", "accessKeyID", "secritAccessKey"}
 
     # A set of properties required to create a new user
     REQUIRED_PROPS = {"first_name", "last_name", "description", "email"}
@@ -53,6 +55,8 @@ class User(Base):
 
     def set_props(self, data):
         for key in data:
+            if key is "IdentityId":
+                setattr(self, "id_users", data[key])
             setattr(self, key, data[key])
 
     def serialize(self):

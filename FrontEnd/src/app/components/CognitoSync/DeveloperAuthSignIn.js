@@ -22,6 +22,7 @@ import {
 } from "amazon-cognito-identity-js";
 import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
+import style from '../../style/style.css';
 
 //React.Component is abstract base class
 //DeveloperAuthSignIn is a subclass of React.Component
@@ -115,17 +116,19 @@ export class DeveloperAuthSignIn extends React.Component{
                   alert(err);
               }
               else{
+                var id = config.credentials._identityId;
                 var user1 = {
-                  Logins: loginsIdpData
+                  Logins: loginsIdpData,
+                  IdentityId: id
                 };
 
                 var response;
 
-                service.getUserByEmail(email).then(function(response){
+                service.getUserByEmail(email, user1).then(function(response){
                   console.log("RESPONSE ");
                   console.log(response.data);
                   console.log(response.status);
-                  var id = response.data.id_users;
+
                   if(response.data.email == email){
                     service.updateExistingUser(id, user1).then(function(response){
                       console.log("RESPONSE ");
@@ -136,7 +139,10 @@ export class DeveloperAuthSignIn extends React.Component{
 
                       AuthStore.login(name, id, loginsIdpData, "Developer");
 
-                      //TODO move to explore page
+                      config.credentials.clearCachedId();
+                      
+                      //move to explore page
+                      window.location.assign('..');
                     });
                   }
                 });
@@ -159,21 +165,25 @@ export class DeveloperAuthSignIn extends React.Component{
   render() {
     return (
       <div>
-      <h1>Sign In Email and password</h1>
+      <p className={style.signIn}>Sign in to your travel profile</p>
+      <br/>
       <form onSubmit={this.handleSubmit.bind(this)}>
         <label>
-          User Name
+
+          <p className = {style.signInContents}>User Name:</p>
           <input type="text"
             value={this.state.email}
             placeholder="Email"
             onChange={this.handleEmailChange.bind(this)}/>
         </label>
         <label>
-          Password
+          <p className = {style.signInContents}>Password:</p>
           <input type="password"
             value={this.state.password}
             placeholder="Password"
             onChange={this.handlePasswordChange.bind(this)}/>
+          <br/>
+          <br/>
             <input type="submit" value="Sign In"/>
         </label>
       </form>

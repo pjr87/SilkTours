@@ -26,6 +26,7 @@ import AuthStore from "../../stores/AuthStore.js";
 import logoImg from '../../style/images/logo5.png';
 import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
 import FederatedAuthSignUp from "../CognitoSync/FederatedAuthSignUp.js";
+import FaFacebook from 'react-icons/lib/fa/facebook';
 
 const responseFacebook = (response) => {
   console.log(response);
@@ -68,8 +69,13 @@ class SignUp extends React.Component{
         appId={appConfig.facebookAppId}
         autoLoad={false}
         fields="name,email,picture"
-        callback={responseFacebook} />
-
+        callback={responseFacebook}
+        size="medium"
+        textButton=" Sign up"
+        icon={<FaFacebook />}
+        />
+      <br/>
+      <br/>
       <Footer/>
       </div>
     );

@@ -14,6 +14,7 @@ import Sign from './components/pages/Sign';
 import SignUp from './components/pages/SignUp';
 import About from './components/pages/About';
 import TourCreation from './components/pages/TourCreation';
+import TourSignup from './components/pages/TourSignup';
 
 import Messages from './components/pages/Messages';
 
@@ -23,10 +24,9 @@ import ContactUs from './components/pages/ContactUs'
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
     <div>
-      <Route path='/contactus' component={ContactUs} />
+      <Route path="/" component={ExplorePage2}/>
+      <Route path="/activities" component={Activities}/>
       <Route path='/messages' component={Messages}/>
-      <Route path="/" component={ExplorePage}/>
-      <Route path="/activities" component={ExplorePage2}/>
      {/*  <Route path="/about" component={About}/>*/}
       <Route path="/sign" component={Sign}/>
       <Route path='/signup' component={SignUp}/>
@@ -34,6 +34,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>
       <Route path='/tour-creation' component={TourCreation}/>
-
+      <Route path='/tour-signup' component={TourSignup}/>
+      <Route path="*" component={ExplorePage2}/>
     </div>
   </Router>), rootElement);

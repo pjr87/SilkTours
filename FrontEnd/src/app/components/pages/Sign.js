@@ -24,6 +24,7 @@ import logoImg from '../../style/images/logo5.png';
 import {DeveloperAuthSignIn} from '../CognitoSync/DeveloperAuthSignIn.js';
 import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
 import SignUp from './SignUp.js';
+import FaFacebook from 'react-icons/lib/fa/facebook';
 
 const responseFacebook = (response) => {
   console.log(response);
@@ -59,17 +60,28 @@ class Sign extends React.Component{
     return (
       <div>
       <Header fileName={logoImg}/>
+        <h4>sign in</h4>
+        <br/>
+        <br/>
+        <DeveloperAuthSignIn/>
+        <br/>
 
         <FacebookLogin
           appId={appConfig.facebookAppId}
           autoLoad={false}
           fields="name,email,picture"
-          callback={responseFacebook} />
+          callback={responseFacebook}
+          textButton=" Login"
+          size="medium"
+          icon={<FaFacebook />}
+          />
+        <br/>
+        <br/>
 
-        <DeveloperAuthSignIn/>
-
-        <Link to='/signup'>SignUp</Link>
-
+        <p>Don't have one?</p>
+        <Link to='/signup'>CREATE ONE</Link>
+        <br/>
+        <br/>
       <Footer/>
       </div>
     );

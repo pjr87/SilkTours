@@ -11,7 +11,7 @@ class AuthStore extends EventEmitter {
     this.authProfile =
     {
       /*
-      secretAccessKey and identityID - Used with all ajax calls
+      Logins and identityID - Used with all ajax calls
       */
       name: "", //User's name
       email: "", //User's email
