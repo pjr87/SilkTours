@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silktours.android.database.User;
+import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ public class Profile extends Fragment {
         rootView = inflater.inflate(R.layout.content_profile, container, false);
 
         filloutFields(1);
+        setUpListeners();
         return rootView;
     }
 
@@ -77,8 +79,15 @@ public class Profile extends Fragment {
         locationEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView location = (TextView) rootView.findViewById(R.id.locationTextView);
-
+                new LocationPrompt(MainActivity.getInstance(), new LocationPrompt.OnLocationSetListener() {
+                    @Override
+                    public void onLocationSet(String location) {
+                        if (location != null) {
+                            TextView locationView = (TextView) rootView.findViewById(R.id.locationTextView);
+                            locationView.setText(location);
+                        }
+                    }
+                });
             }
         });
     }
