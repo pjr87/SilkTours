@@ -6,6 +6,7 @@ import Footer from '../footer/Footer';
 //import GetData from '../../databaseFunctions';
 import {ProfileHeader} from './Profile';
 import * as service from '../../ajaxServices/AjaxList';
+import AuthStore from "../../stores/AuthStore.js";
 import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../forms/Forms.js';
 import logoImg from '../../style/images/logo2.png';
 import { WithContext as ReactTags } from 'react-tag-input';
@@ -19,12 +20,31 @@ class SettingsPg extends React.Component {
      this.state = {
          fetching: false, // tells whether the request is waiting for response or not
          user: {interests:[]},
-         warningVisibility: false
+         warningVisibility: false,
+         authProfile: AuthStore.getProfile(), //Get current profile
      };
   }
 
+  //Before component mounts, check login state
+  componentWillMount() {
+    AuthStore.on("login", () => {
+      this.setState({
+        authProfile: AuthStore.getProfile(),
+      })
+    })
+
+    AuthStore.on("logout", () => {
+      this.setState({
+        authProfile: AuthStore.getProfile(), //Will return 0
+      })
+    })
+  }
+
   componentDidMount() {
-     this.getUserInfo(1);
+    this.setState({
+      authProfile: AuthStore.getProfile(),
+    });
+     this.getUserInfo(this.state.authProfile.id_user);
   }
 
   showWarning = () => {
@@ -47,9 +67,13 @@ class SettingsPg extends React.Component {
 
   getUserInfo = async (postId) => {
 
+    this.setState({
+      authProfile: AuthStore.getProfile(),
+    });
+
      try {
 
-        service.getUser(1).then((function(response){
+        service.getUser(this.state.authProfile.id_user).then((function(response){
           console.log("response: ");
           console.log( response.data );
           //var test = {test:""};

@@ -130,17 +130,17 @@ export class DeveloperAuthSignIn extends React.Component{
                   console.log(response.status);
 
                   if(response.data.email == email){
-                    service.updateExistingUser(id, user1).then(function(response){
+                    service.updateExistingUser(response.data.id_users, user1).then(function(response){
                       console.log("RESPONSE ");
                       console.log(response.data);
                       console.log(response.status);
 
                       var name = response.data.first_name + " " + response.data.last_name;
 
-                      AuthStore.login(name, id, loginsIdpData, "Developer");
+                      AuthStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
 
                       config.credentials.clearCachedId();
-                      
+
                       //move to explore page
                       window.location.assign('..');
                     });
