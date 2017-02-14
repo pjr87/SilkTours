@@ -244,11 +244,13 @@ export class DeveloperAuthSignUp extends React.Component{
                   alert(err);
               }
               else{
+                var id = config.credentials._identityId;
                 var user1 = {
                   is_guide: false,
                   phone_number: phoneNumber,
                   email: email,
-                  Logins: loginsIdpData
+                  Logins: loginsIdpData,
+                  IdentityId: id
                 };
 
                 var response;
@@ -261,9 +263,12 @@ export class DeveloperAuthSignUp extends React.Component{
                   var fullName = name[0] + " " + name[1];
 
                   if(response.data.email == email){
-                    AuthStore.signUp(fullName, email, response.data.id_users, loginsIdpData, "Developer");
+                    AuthStore.signUp(fullName, email, id, loginsIdpData, "Developer");
 
-                    //TODO direct to settings page to finish sign up
+                    config.credentials.clearCachedId();
+
+                    //direct to settings page to finish sign up
+                    window.location.assign('../Settings');
                   }
                 });
               }
