@@ -15,6 +15,7 @@ public class User {
     public String phone_number;
     public String email;
     public String profile_picture;
+    public String address_city;
 
     public static User getByID(int id) throws IOException, JSONException {
         String url = Common.SERVER_URL + "/users/" + id;
@@ -25,6 +26,7 @@ public class User {
         result.phone_number = userJSON.getString("phone_number");
         result.email = userJSON.getString("email");
         result.profile_picture = userJSON.getString("profile_picture");
+        result.address_city = userJSON.getString("address_city");
         return result;
     }
 }
