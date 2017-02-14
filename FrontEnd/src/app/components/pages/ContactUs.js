@@ -5,11 +5,7 @@ import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import style from '../../style/style.css';
 
-//import bootStrapStyle from '../../style/bootstrap.min.css';
-//import bsStyle from 'bootstrap/dist/css/bootstrap.min.css';
-
-var htmlContent = require('../Messages/sample/fullview.html'); 
-
+import * as service from '../../ajaxServices/AjaxList';
 
 import logoImg from '../../style/images/logo5.png';
 
@@ -29,12 +25,22 @@ class ContactUs extends React.Component{
 
 
 	render() {
-    var submitted
+    var submitted;
+    var buttonPlaceholder = <div></div>;
     if (this.state.submitted !== null) {
-      submitted = <div className="alert alert-success">
-        <p>ContactForm data:</p>
-        <pre><code>{JSON.stringify(this.state.submitted, null, '  ')}</code></pre>
-      </div>
+      submitted = <div className={style.contactSuccess}>
+      Thanks for contacting Silk Tours! We appreciate that you’ve taken the time to write us. We’ll get back to you very soon!
+      </div>;      
+    }
+    else
+    {
+      submitted = <ContactForm ref="contactForm"
+              email={this.state.email}
+              question={this.state.question}
+              company={this.props.company}
+            />;
+
+      buttonPlaceholder = <button type="button" className="contactSubmitButton" onClick={this.handleSubmit}>Submit</button>;
     }
 
     return(
@@ -43,17 +49,13 @@ class ContactUs extends React.Component{
 	      <div className={style.contactUsMain}>
 	        <div className = {style.contactUsForm}>
 	        	<h3 className={style.h3Contact}>Contact Us</h3>
-	          <ContactForm ref="contactForm"
-	            email={this.state.email}
-	            question={this.state.question}
-	            company={this.props.company}
-	          />
+	          {submitted}
 	        </div>
 	        <div>
-	          <button type="button" className="contactSubmitButton" onClick={this.handleSubmit}>Submit</button>
+          {buttonPlaceholder}
 	        </div>
 	      </div>
-	      {submitted}
+	      
 	    <Footer />
     </div>
 
@@ -71,7 +73,13 @@ class ContactUs extends React.Component{
     if (this.refs.contactForm.isValid()) {
       this.setState({submitted: this.refs.contactForm.getFormData()});
 
-      console.log(this.refs.contactForm.getFormData());
+      var data = this.refs.contactForm.getFormData();
+
+      
+
+      service.postSupportTicket(data.department, data.firstName, data.lastName, data.email, data.question);
+      
+      this.refs.contactForm.clearForm();
     }
   }
 }
@@ -90,7 +98,24 @@ var ContactForm = React.createClass({
     return {errors: {}}
   }
 
+, emailCheck: function(){
+
+  var regex  = /^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+
+  if ( regex.test( this.refs['email'].value ) )//regex.test('shouldFail@gmail.com') ) 
+  { 
+    console.log("Success222  " + this.refs['email'].value);
+    return true; 
+  }
+    console.log("Failure222 " + this.refs['email'].value);
+  return false;
+
+
+}
+
 , isValid: function() {
+    this.refs['email'].value = this.refs['email'].value.toLowerCase();
+
     var fields = ['firstName', 'lastName', 'email','question', 'ticketOpts' ]
 
     var errors = {}
@@ -102,6 +127,16 @@ var ContactForm = React.createClass({
     }.bind(this))
 
 
+    var emailEmpty = !trim(this.refs['email'].value);
+    if( !this.emailCheck() && !emailEmpty) 
+    {
+      errors['email'] = 'invalid'
+      this.setState({invalidEmail: true});
+    }
+    else
+    {
+      this.setState({invalidEmail: false});
+    }
 
     this.setState({errors: errors})
 
@@ -124,37 +159,39 @@ var ContactForm = React.createClass({
 
     return data
   }
+, clearForm: function() {
+
+  this.refs.firstName.value = "";
+  this.refs.lastName.value = "";
+  this.refs.email.value = "";
+  this.refs.question.value = "";
+  this.refs.ticketOpts.value = null;
+}
+, componentDidMount: function(){
+  window.scrollTo(0,0);
+}
 
 
 , render: function() {
 
 	function ErrorFunc(props){
-		console.log("props:" + props);
+
 		const isError = props.isError;
-		if( isError )
+
+    if( props.isEmail )
+    {
+      if( props.invalidEmail)
+      {
+        return(<div className={style.errorText}>Invalid Email Address</div>);
+      }
+    }
+
+    if( isError )
 		{
 			return(<div className={style.errorText}>Field Required</div>);
 		}
 		return null;
 	}
-
-	function checkEmail(){
-		var regex  = /^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
-
-		if ( regex.test('shouldFail@gmail.com') ) 
-		{ 
-			console.log("Success");
-			return(<div>"Success"</div>); 
-		}
-		else
-		{
-			console.log("Failure");
-			return(<div>"Failure"</div>);
-		}
-
-		return( <div>"error"</div>);
-	}
-
 
     return (
     	<div>
@@ -166,11 +203,13 @@ var ContactForm = React.createClass({
 			<label className={style.contactLine} htmlFor={'Department'}>{'Department'}</label>
 			<div className={style.contactInput}>
 				<select className={style['form-control']} id={'ticketOpts'} ref={'ticketOpts'}>
+          <option value={null}></option>
 					<option value={'Technical'}>{'Technical'}</option>
 					<option value={'Sales'}>{'Sales'}</option>
 					<option value={'Billing'}>{'Billing'}</option>
 					<option value={'Feedback'}>{'Feedback'}</option>
 				</select>
+        <ErrorFunc isError={'ticketOpts' in this.state.errors} />
 			</div>
 		</div>
 
@@ -203,7 +242,7 @@ var ContactForm = React.createClass({
 			<label className={style.contactLine} htmlFor={'email'}>{'Email Address'}</label>
 			<div className={style.contactInput}>
 				<input type="text" className={style.contactUsForm} id={'email'} ref={'email'}/>
-				<ErrorFunc isError={'email' in this.state.errors} />
+				<ErrorFunc isError={'email' in this.state.errors} isEmail={true} invalidEmail={this.state.invalidEmail} />
 			</div>
 		</div>
 
@@ -217,15 +256,7 @@ var ContactForm = React.createClass({
 				<ErrorFunc isError={'question' in this.state.errors} />
 			</div>
 		</div>
-
-		<div>
-			<checkEmail value={'test'}/>
-		</div>
-
-
-
-    </div>
-
+	  </div>
     </div>);
   }
 
@@ -234,6 +265,7 @@ var ContactForm = React.createClass({
       <input type="text" className={style.contactUsForm} id={id} ref={id}/>
     )
   }
+
 , renderEmailInput: function(id, label){
 	return this.renderField(id, label, <input type="text" className={style.contactUsForm} id={id} ref={id}/> )
 }

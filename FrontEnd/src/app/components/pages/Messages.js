@@ -63,14 +63,6 @@ class Messages extends React.Component{
       }
 
  
-  componentWillMount() {
- {
-
-    console.log("CHCECKKKKKKK THISSSSSSSSSS");
-
-  }
-  }
-
   componentDidMount(props){
 
     function startConversation( username )
@@ -99,8 +91,7 @@ class Messages extends React.Component{
     if(AuthStore.signedIn()){
           var profile = AuthStore.getProfile();
           //GetData.getUser(1);
-          console.log("profile:\n"+profile);
-          nameUser = profile.name.split(" ")[0].trim();
+          nameUser = "[INSERT NAME]";
         }
 
 

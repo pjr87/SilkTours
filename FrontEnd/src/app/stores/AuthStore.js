@@ -14,7 +14,8 @@ class AuthStore extends EventEmitter {
       awsAccessToken: "", //Access token from aws once signed in
       identityID: "", //Unique identityID assigned to user by AWS
       signedin: 0, //if signed in
-      provider: "" //What service signed in with (Facebook, Developer)
+      provider: "", //What service signed in with (Facebook, Developer)
+      name: "firstName lastName"
     }
   }
 

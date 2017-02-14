@@ -9,7 +9,7 @@ import style from '../../style/style.css';
 const Footer = () => {
   return (
     <div className = {style.footerStyle}>
-    <h4><Link to='/contactus'>Contact us</Link></h4>
+    <h4 className= {style.contactLinkFooter}><Link to='/contactus'>Contact us</Link></h4>
       <h4>&#169;silk tours inc.</h4>
     </div>
   );

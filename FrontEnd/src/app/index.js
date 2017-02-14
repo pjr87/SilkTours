@@ -12,7 +12,7 @@ import Settings from './components/pages/Settings'
 import Profile from './components/pages/Profile'
 import Sign from './components/pages/Sign';
 import SignUp from './components/pages/SignUp';
-import About from './components/pages/About';
+//import About from './components/pages/About';
 
 import Messages from './components/pages/Messages';
 
@@ -22,11 +22,11 @@ import ContactUs from './components/pages/ContactUs'
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
     <div>
-      <Match pattern='/contactus' component={ContactUs} />
-      <Match pattern='/messages' component={Messages}/>
+      <Route path='/contactus' component={ContactUs} />
+      <Route path='/messages' component={Messages}/>
       <Route path="/" component={ExplorePage}/>
       <Route path="/activities" component={ExplorePage2}/>
-      <Route path="/about" component={About}/>
+     {/*  <Route path="/about" component={About}/>*/}
       <Route path="/sign" component={Sign}/>
       <Route path='/signup' component={SignUp}/>
       <Route path="/explore" component={AvailableToursPage}/>

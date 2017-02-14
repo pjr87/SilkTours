@@ -7,7 +7,7 @@ import logoImg from '../../style/images/logo.png';
 import logoImg2 from '../../style/images/logo2.png';
 
 // Importing components
-import About from '../pages/About';
+//import About from '../pages/About';
 import Activities from '../pages/Activities';
 import Sign from '../pages/Sign';
 import ExplorePage from '../pages/ExplorePage';
@@ -51,7 +51,7 @@ class Header extends React.Component {
     else {
 
 
-      var profile = {first_name:"T", last_name:"S"};
+      var profile = {first_name:"T", last_name:"S", name:"FullName"};
     }
     if(this.props.largeHeader){
       var header = ( <div className="image">

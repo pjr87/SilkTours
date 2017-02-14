@@ -1227,3 +1227,13 @@ body{
 .errorText{
 	color: #a94442;
 }
+
+.contactSuccess{
+	margin: 20px;
+	text-align: center;
+}
+
+.contactLinkFooter{
+
+	font-size: 12pt;
+}
