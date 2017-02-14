@@ -12,4 +12,60 @@
     tools:context="com.silktours.android.JoinTour"
     tools:showIn="@layout/activity_join_tour">
 
+
+    <TextView
+        android:id="@+id/startDateSelectText"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Start Date"/>
+
+    <Spinner
+        android:id="@+id/startDateSelectView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startDateSelectText"
+        ></Spinner>
+
+    <TextView
+        android:id="@+id/endDateText"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startDateSelectView"
+        android:text="End Date is: "/>
+
+    //TODO
+
+    <TextView
+        android:id="@+id/endDateShowText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shows End date after selecting start date"
+        android:layout_alignBaseline="@+id/endDateText"
+        android:layout_alignBottom="@+id/endDateText"
+        android:layout_toRightOf="@+id/endDateText"
+        android:layout_toEndOf="@+id/endDateText" />
+
+
+    <TextView
+        android:id="@+id/additionalRequestText"
+        android:layout_below="@+id/endDateText"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Additional Services"/>
+    <EditText
+        android:id="@+id/additionalRequest"
+        android:layout_below="@+id/additionalRequestText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:text="Enter services"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Join tour"/>
 </RelativeLayout>
