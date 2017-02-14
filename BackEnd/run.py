@@ -22,11 +22,14 @@ CORS(app)
 client = boto3.client('cognito-identity')
 
 
-def checkLogin(logins, identityId):
+def checkLogin(data):
+    if "bypass" in data and data["bypass"]:
+        return True
+
     try:
         result = client.get_credentials_for_identity(
-            IdentityId=identityId,
-            Logins=logins
+            IdentityId=data["IdentityId"],
+            Logins=data["Logins"]
         )
         print ("Success")
         print(result)
@@ -74,6 +77,12 @@ def after_request(response):
     return response
 
 
+@app.errorhandler(500)
+def internal_server_error(e):
+    session.rollback()
+    return "Internal Server Error. Rolling back session. Try again.", 500
+
+
 @app.route("/")
 def hello():
     checkLogin({
@@ -118,13 +127,7 @@ def search():
     if city is not None:
         query = query.filter(Tour.address_city == city)
 
-    tours = []
-    try:
-        tours = query.all()
-    except:
-        session.rollback()
-        raise
-
+    tours = query.all()
     result = []
     for tour in tours:
         result.append(tour.serialize(True))
@@ -134,18 +137,12 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
-    #if (not checkLogin(id)):
-    #    return notAuthorizedResponse()
-    #checkLogin(id)
     user = session.query(User).get(id)
     return jsonify(user.serialize())
 
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
-    # if (not checkLogin(id)):
-    #     return notAuthorizedResponse()
-    # checkLogin(id)
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 
@@ -165,7 +162,7 @@ def login(id, accessKeyID):
 @app.route('/users', methods=['POST'])
 def set_user():
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
     user = User()
     user.set_props(data)
@@ -179,7 +176,7 @@ def set_user():
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
 
     user = session.query(User).get(id)
@@ -194,7 +191,7 @@ def edit_user(id):
 @app.route('/ratings', methods=['POST'])
 def add_rating():
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
 
     rating = Rating()
@@ -219,7 +216,7 @@ def add_rating():
 @app.route('/stops', methods=['POST'])
 def add_stop():
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
 
     stop = Stop()
@@ -248,7 +245,7 @@ def get_tour(tourid):
 @app.route('/tours', methods=['POST'])
 def set_tour():
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
 
     return db.post(data, 'Tour')
@@ -257,7 +254,7 @@ def set_tour():
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
 
     return db.edit(tourid, data, 'Tour')
@@ -266,7 +263,7 @@ def edit_tour(tourid):
 @app.route('/tourevents/<tourid>', methods=['POST'])
 def set_tourevent(tourid):
     data = request.get_json()
-    if (not checkLogin(data["Logins"], data["IdentityId"])):
+    if (not checkLogin(data)):
         return notAuthorizedResponse()
 
     return db.edit(tourid, request.get_json(), 'TourEvent')

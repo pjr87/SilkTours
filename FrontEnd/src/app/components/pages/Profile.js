@@ -84,8 +84,20 @@ class Profile extends React.Component{
          fetching: false, // tells whether the request is waiting for response or not
          user: [],
          tab:'saves',
-         warningVisibility: false
+         warningVisibility: false,
+         authProfile: authStore.getProfile()
      };
+  }
+
+  //Before component mounts, check login state
+  componentWillMount() {
+    authStore.on("login", () => {
+      this.state.authProfile = authStore.getProfile();
+    })
+
+    authStore.on("logout", () => {
+      this.state.authProfile = authStore.getProfile();
+    })
   }
 
   componentDidMount() {
@@ -112,9 +124,10 @@ class Profile extends React.Component{
      });
 
      try {
+         this.state.authProfile = authStore.getProfile();
          // wait for two promises
          const info = await Promise.all([
-             service.getUser(1)
+             service.getUser(this.state.authProfile.id_user)
          ]);
 
          const user = info[0].data;

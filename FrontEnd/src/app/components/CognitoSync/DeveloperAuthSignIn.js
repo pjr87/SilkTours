@@ -14,7 +14,7 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -23,6 +23,7 @@ import {
 import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
 import style from '../../style/style.css';
+//import { push } from 'react-router-redux';
 
 //React.Component is abstract base class
 //DeveloperAuthSignIn is a subclass of React.Component
@@ -58,7 +59,7 @@ export class DeveloperAuthSignIn extends React.Component{
     console.log('email + ' + email);
     console.log('password + ' + password);
 
-    AuthStore.setEmail(email);
+    authStore.setEmail(email);
 
     // Step 1 - Define global AWS identity credentials
     //Config.region = appConfig.region;
@@ -116,28 +117,35 @@ export class DeveloperAuthSignIn extends React.Component{
                   alert(err);
               }
               else{
+                var id = config.credentials._identityId;
                 var user1 = {
-                  Logins: loginsIdpData
+                  Logins: loginsIdpData,
+                  IdentityId: id
                 };
 
                 var response;
 
-                service.getUserByEmail(email).then(function(response){
+                service.getUserByEmail(email, user1).then(function(response){
                   console.log("RESPONSE ");
                   console.log(response.data);
                   console.log(response.status);
-                  var id = response.data.id_users;
+
                   if(response.data.email == email){
-                    service.updateExistingUser(id, user1).then(function(response){
+                    service.updateExistingUser(response.data.id_users, user1).then(function(response){
                       console.log("RESPONSE ");
                       console.log(response.data);
                       console.log(response.status);
 
                       var name = response.data.first_name + " " + response.data.last_name;
 
-                      AuthStore.login(name, id, loginsIdpData, "Developer");
+                      authStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
 
-                      //TODO move to explore page
+                      config.credentials.clearCachedId();
+
+                      //move to explore page
+                      //window.location.assign('../Settings');
+                      //this.props.dispatch(push('../Settings'));
+
                     });
                   }
                 });
