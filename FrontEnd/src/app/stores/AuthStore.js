@@ -38,7 +38,7 @@ class AuthStore extends EventEmitter {
     this.authProfile.provider = provider;
     this.authProfile.signedin = 0;
 
-    this.emit("signup");
+    this.emit("login");
   }
 
   setEmail(email){
@@ -80,12 +80,7 @@ class AuthStore extends EventEmitter {
 
   //Will return whole auth profile information
   getProfile(){
-    if(this.signedIn()){
-      return this.authProfile;
-    }
-    else {
-      return 0;
-    }
+    return this.authProfile;
   }
 }
 

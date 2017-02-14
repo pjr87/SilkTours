@@ -12,7 +12,7 @@ export function getAllTours() {
 }
 
 export function getUser(id){
-    if(AuthStore.signedIn()){
+    if(authStore.signedIn()){
       var url = "http://34.197.42.24:5000/users/"+id;
       console.log("url: "+url);
       return axios.get(url);
@@ -21,7 +21,7 @@ export function getUser(id){
 }
 
 export function newTour(data){
-    if(AuthStore.signedIn()){
+    if(authStore.signedIn()){
       console.log(data);
       var url = "http://34.197.42.24:5000/tours";
       console.log("url: "+url);

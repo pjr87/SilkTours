@@ -13,7 +13,7 @@ import Sign from '../pages/Sign';
 import ExplorePage from '../pages/ExplorePage';
 import AvailableToursPage from '../pages/AvailableToursPage';
 import AccountDropdown from '../Dropdown';
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import GetData from "../../databaseFunctions";
 
 
@@ -44,8 +44,8 @@ class Header extends React.Component {
   super(props);
   }
   render(){
-    if(AuthStore.signedIn()){
-      var profile = AuthStore.getProfile();
+    if(authStore.signedIn()){
+      var profile = authStore.getProfile();
       //GetData.getUser(1);
     }
     else {
@@ -80,7 +80,7 @@ class Header extends React.Component {
               <li><Link to='/'>Home</Link></li>
               <li><Link to='/activities'>Activities</Link></li>
               <li><Link to='/about'>About us</Link></li>
-              <li> <Signin loggedIn={AuthStore.signedIn()} name={profile.name} /> </li>
+              <li> <Signin loggedIn={authStore.signedIn()} name={profile.name} /> </li>
             </ul>
             <hr/>
            </div>

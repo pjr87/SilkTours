@@ -19,7 +19,7 @@ import FacebookLogin from 'react-facebook-login';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import appConfig from "../CognitoSync/config";
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import logoImg from '../../style/images/logo5.png';
 import {DeveloperAuthSignIn} from '../CognitoSync/DeveloperAuthSignIn.js';
 import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
@@ -37,21 +37,21 @@ class Sign extends React.Component{
   constructor(){
     super();
     this.state = {
-      authProfile: AuthStore.getProfile(), //Get current profile
+      authProfile: authStore.getProfile(), //Get current profile
     };
   }
 
   //Before component mounts, check login state
   componentWillMount() {
-    AuthStore.on("login", () => {
+    authStore.on("login", () => {
       this.setState({
-        authProfile: AuthStore.getProfile(),
+        authProfile: authStore.getProfile(),
       })
     })
 
-    AuthStore.on("logout", () => {
+    authStore.on("logout", () => {
       this.setState({
-        authProfile: AuthStore.getProfile(), //Will return 0
+        authProfile: authStore.getProfile(), //Will return 0
       })
     })
   }
