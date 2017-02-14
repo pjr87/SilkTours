@@ -30,7 +30,7 @@ class User:
 
     def getById(self, id):
         response = self.dbController.execute("SELECT * from User")
-        print response
+        print (response)
         self.parseResponse(response[0])
 #        Interests().getByUser(self)
 
