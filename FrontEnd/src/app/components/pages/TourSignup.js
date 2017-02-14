@@ -40,7 +40,7 @@ const originalTour = {
     };
 
 
-export default class TourCreation extends React.Component{
+export default class TourSignup extends React.Component{
 
   constructor(props){
     super(props);
@@ -188,19 +188,11 @@ export default class TourCreation extends React.Component{
         <Header largeHeader={false}/>
         <div className={style.mainBody}>
           <div className={style.formSection} >
-            <FormTitle title="New Tour" />
-            <EditableField update={this.textChange.bind(this)} value={tour.name} label="Tour Name" name="tour_name"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.address_city} label="City" name="address_city"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.address_state} label="State" name="address_state"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.address_country} label="Country" name="address_country"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.min_group_size} label="Min Group Size" name="min_group_size"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.max_group_size} label="Max Group Size" name="max_group_size"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.date} label="Date" name="date"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.time} label="Time" name="time"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.description} label="Description" name="description"/>
-            <EditableField update={this.textChange.bind(this)} value={tour.price} label="Price Per Person" name="price"/>
-
-            {this.renderMap()}
+            <FormTitle title="Tour Signup" />
+            Available Positions {}<EditableField update={this.textChange.bind(this)} value={tour.tourist_quantity} label="How Many Persons" name="tourist_quantity"/>
+            <select>
+              <option>test</option>
+            </select>
 
             <div>
               {this.renderstops()}

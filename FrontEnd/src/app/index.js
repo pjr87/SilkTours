@@ -11,8 +11,10 @@ import Header from './components/header/Header';
 import Settings from './components/pages/Settings'
 import Profile from './components/pages/Profile'
 import Sign from './components/pages/Sign';
+import SignUp from './components/pages/SignUp';
 import About from './components/pages/About';
 import TourCreation from './components/pages/TourCreation';
+import TourSignup from './components/pages/TourSignup';
 
 const rootElement = document.getElementById('app');
 ReactDOM.render((<Router history={browserHistory}>
@@ -21,10 +23,12 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/activities" component={ExplorePage2}/>
       <Route path="/about" component={About}/>
       <Route path="/sign" component={Sign}/>
+      <Route path='/signup' component={SignUp}/>
       <Route path="/explore" component={AvailableToursPage}/>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>
       <Route path='/tour-creation' component={TourCreation}/>
+      <Route path='/tour-signup' component={TourSignup}/>
 
     </div>
   </Router>), rootElement);

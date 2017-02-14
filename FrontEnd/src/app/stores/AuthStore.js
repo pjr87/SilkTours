@@ -5,10 +5,18 @@ class AuthStore extends EventEmitter {
     super();
 
     //This is the information stored on sign in
+    // 1. ID token that contains user claims
+    // 2. Access token that is used internally to perform authenticated calls
+    // 3. Refresh token that is used internally to refresh the session after it expires each hour.
     this.authProfile =
     {
-      id: 0, //AWS token
+      /*
+      secretAccessKey and identityID - Used with all ajax calls
+      */
       name: "", //User's name
+      email: "", //User's email
+      Logins: "", //AWS value needed to request secured endpoints
+      identityID: "", //Unique identityID assigned to user by AWS
       signedin: 0, //if signed in
       provider: "" //What service signed in with (Facebook, Developer)
     }
@@ -17,11 +25,29 @@ class AuthStore extends EventEmitter {
   // ---------------
   // HELPERS
   // ---------------
+  //This function is called when a user signs up
+  //This funciton will update those listening
+  signUp(name, email, identityID, logins, provider){
+    this.authProfile.name = name;
+    this.authProfile.email = email;
+    this.authProfile.identityID = identityID;
+    this.authProfile.Logins = logins;
+    this.authProfile.provider = provider;
+    this.authProfile.signedin = 0;
+
+    this.emit("signup");
+  }
+
+  setEmail(email){
+    this.authProfile.email = email;
+  }
+
   //This function is called when a user signs in
   //This funciton will update those listening
-  updateProfile(id, name, provider){
-    this.authProfile.id = id;
+  login(name, identityID, logins, provider){
     this.authProfile.name = name;
+    this.authProfile.identityID = identityID;
+    this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 1;
 
@@ -31,8 +57,7 @@ class AuthStore extends EventEmitter {
   //This function is called when a user logs off
   //This funciton will update those listening
   logout(){
-    this.authProfile.id = 0;
-    this.authProfile.name = "";
+    this.authProfile.identityID = 0;
     this.authProfile.provider = "";
     this.authProfile.signedin = 0;
 
@@ -56,16 +81,6 @@ class AuthStore extends EventEmitter {
     }
     else {
       return 0;
-    }
-  }
-
-  //Will return name of signed in member
-  getName(){
-    if(this.signedIn()){
-      return this.authProfile.name;
-    }
-    else {
-      return 0
     }
   }
 }

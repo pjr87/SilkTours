@@ -1,15 +1,18 @@
 /*
- Sign.js
+ SignUp.js
 
- User sign in page, integration with FB, AWS
+ User sign up page, integration with FB, AWS
  Written by: Phillip Ryan
 
  Calls functions from CognitoSync folder to display login functions
- Displayed when Signin is click
+ Displayed when Signup is click
+
+
 
  TODO:
-  Link back to the home page after sign up
-  Add Signin from exisiting user account sequence for (devAuth, Facebook, other)
+  Link back to the home page afer sign up
+  Todo phone number verification
+  Add SignUp from new user account sequence for (Facebook, other)
 */
 
 import React from 'react';
@@ -21,17 +24,16 @@ import Footer from '../footer/Footer';
 import appConfig from "../CognitoSync/config";
 import AuthStore from "../../stores/AuthStore.js";
 import logoImg from '../../style/images/logo5.png';
-import {DeveloperAuthSignIn} from '../CognitoSync/DeveloperAuthSignIn.js';
-import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
-import SignUp from './SignUp.js';
+import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
+import FederatedAuthSignUp from "../CognitoSync/FederatedAuthSignUp.js";
 
 const responseFacebook = (response) => {
   console.log(response);
 
-  FederatedAuthSignIn.startAWS(response, "Facebook");
+  FederatedAuthSignUp.startAWS(response, "Facebook");
 }
 
-class Sign extends React.Component{
+class SignUp extends React.Component{
   //Define auth profile state
   constructor(){
     super();
@@ -56,19 +58,17 @@ class Sign extends React.Component{
   }
 
   render() {
-    return (
+    return(
       <div>
       <Header fileName={logoImg}/>
 
-        <FacebookLogin
-          appId={appConfig.facebookAppId}
-          autoLoad={false}
-          fields="name,email,picture"
-          callback={responseFacebook} />
+      <DeveloperAuthSignUp/>
 
-        <DeveloperAuthSignIn/>
-
-        <Link to='/signup'>SignUp</Link>
+      <FacebookLogin
+        appId={appConfig.facebookAppId}
+        autoLoad={false}
+        fields="name,email,picture"
+        callback={responseFacebook} />
 
       <Footer/>
       </div>
@@ -76,4 +76,4 @@ class Sign extends React.Component{
   }
 }
 
-export default Sign;
+export default SignUp;
