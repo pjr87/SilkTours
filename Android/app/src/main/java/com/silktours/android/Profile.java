@@ -4,13 +4,16 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.silktours.android.database.User;
 import com.silktours.android.utils.LocationPrompt;
@@ -24,12 +27,25 @@ import java.net.URL;
 
 public class Profile extends Fragment {
     private View rootView;
+    private User user;
+    private ImageView profileImage;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText phoneNumber;
+    private EditText email;
+    private TextView location;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.content_profile, container, false);
-
+        firstName = (EditText) rootView.findViewById(R.id.firstName);
+        lastName = (EditText) rootView.findViewById(R.id.lastName);
+        phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
+        email = (EditText) rootView.findViewById(R.id.email);
+        location = (TextView) rootView.findViewById(R.id.locationTextView);
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImage);
         filloutFields(1);
         setUpListeners();
         return rootView;
@@ -43,33 +59,28 @@ public class Profile extends Fragment {
                 final Drawable profileImage;
                 try {
                     user = User.getByID(userID);
-                    URL thumb_u = new URL(user.profile_picture);
+                    URL thumb_u = new URL(user.getStr(user.PROFILE_PICTURE));
                     profileImage = Drawable.createFromStream(thumb_u.openStream(), "src");
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                     return;
                 }
-                updateFieldsOnURThread(user, profileImage);
+                Profile.this.user = user;
+                updateFieldsOnURThread(profileImage);
             }
         }).start();
     }
 
-    private void updateFieldsOnURThread(final User user, final Drawable profileImageDrawable) {
+    private void updateFieldsOnURThread(final Drawable profileImageDrawable) {
         MainActivity.getInstance().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                EditText firstName = (EditText) rootView.findViewById(R.id.firstName);
-                EditText lastName = (EditText) rootView.findViewById(R.id.lastName);
-                EditText phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
-                EditText email = (EditText) rootView.findViewById(R.id.email);
-                TextView location = (TextView) rootView.findViewById(R.id.locationTextView);
-                ImageView profileImage = (ImageView) rootView.findViewById(R.id.profileImage);
                 profileImage.setImageDrawable(profileImageDrawable);
-                firstName.setText(user.first_name);
-                lastName.setText(user.last_name);
-                phoneNumber.setText(user.phone_number);
-                email.setText(user.email);
-                location.setText(user.address_city);
+                firstName.setText(user.getStr(user.FIRST_NAME));
+                lastName.setText(user.getStr(user.LAST_NAME));
+                phoneNumber.setText(user.getStr(user.PHONE_NUMBER));
+                email.setText(user.getStr(user.EMAIL));
+                location.setText(user.getStr(user.ADDRESS_CITY));
             }
         });
     }
@@ -88,6 +99,51 @@ public class Profile extends Fragment {
                         }
                     }
                 });
+            }
+        });
+
+        Button saveButton = (Button) rootView.findViewById(R.id.saveProfile);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user == null) return;
+                user.set(User.ADDRESS_CITY, location.getText().toString());
+                user.set(User.EMAIL, email.getText().toString());
+                user.set(User.PHONE_NUMBER, phoneNumber.getText().toString());
+                user.set(User.LAST_NAME, lastName.getText().toString());
+                user.set(User.FIRST_NAME, firstName.getText().toString());
+                commitUser();
+            }
+        });
+    }
+    private void commitUser() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    user.commit();
+                    postCommit(false);
+                } catch (IOException e) {
+                    postCommit(true);
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+    private void postCommit(final boolean error) {
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!error) {
+                    Toast.makeText(MainActivity.getInstance(),
+                            "User saved successfully",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.getInstance(),
+                            "User could not be saved",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
