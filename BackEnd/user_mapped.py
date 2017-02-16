@@ -54,7 +54,8 @@ class User(Base):
 
     def set_props(self, data):
         for key in data:
-            setattr(self, key, data[key])
+            if key not in ["tours_taking", "tours_teaching", "interests"]:
+                setattr(self, key, data[key])
 
     def serialize(self):
         result = {}
