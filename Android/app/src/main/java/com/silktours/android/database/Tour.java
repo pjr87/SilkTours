@@ -24,11 +24,11 @@ public class Tour {
     public String address_city;
     public String address_country;
     public String address_street;
-    public String address_sufix;
+    public String address_suffix;
     public String address_unit;
     public String address_unit_number;
     public String address_zip;
-    public Float average_rating;
+    public Double average_rating;
     public String description;
     public String firstStart_date;
     public String lastEnd_date;
@@ -39,9 +39,12 @@ public class Tour {
     public Integer max_group_size;
     public Integer min_group_size;
     public String name;
-    public Float price;
+    public Double price;
     public String profile_image;
+    public Integer profile_image_width;
+    public Integer profile_image_height;
     public Integer rating_count;
+    public Object stops;
 
     public static class FilterParams {
         public String query;
@@ -95,7 +98,7 @@ public class Tour {
                     Field field = Tour.class.getField(key);
                     field.set(tour, tourJSON.get(key));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
             result.add(tour);
