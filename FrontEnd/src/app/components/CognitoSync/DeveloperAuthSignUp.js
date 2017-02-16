@@ -14,7 +14,7 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -264,12 +264,12 @@ export class DeveloperAuthSignUp extends React.Component{
                   var fullName = name[0] + " " + name[1];
 
                   if(response.data.email == email){
-                    AuthStore.signUp(fullName, email, id, loginsIdpData, "Developer");
+                    authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Developer");
 
                     config.credentials.clearCachedId();
 
                     //direct to settings page to finish sign up
-                    window.location.assign('../Settings');
+                    //window.location.assign('../Settings');
                   }
                 });
               }

@@ -17,6 +17,7 @@ class AuthStore extends EventEmitter {
       email: "", //User's email
       Logins: "", //AWS value needed to request secured endpoints
       identityID: "", //Unique identityID assigned to user by AWS
+      id_user: "", //Primary key of user in users table
       signedin: 0, //if signed in
       provider: "" //What service signed in with (Facebook, Developer)
     }
@@ -27,15 +28,16 @@ class AuthStore extends EventEmitter {
   // ---------------
   //This function is called when a user signs up
   //This funciton will update those listening
-  signUp(name, email, identityID, logins, provider){
+  signUp(name, email, identityID, id_user, logins, provider){
     this.authProfile.name = name;
     this.authProfile.email = email;
     this.authProfile.identityID = identityID;
+    this.authProfile.id_user = id_user;
     this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 0;
 
-    this.emit("signup");
+    this.emit("login");
   }
 
   setEmail(email){
@@ -44,9 +46,10 @@ class AuthStore extends EventEmitter {
 
   //This function is called when a user signs in
   //This funciton will update those listening
-  login(name, identityID, logins, provider){
+  login(name, identityID, id_user, logins, provider){
     this.authProfile.name = name;
     this.authProfile.identityID = identityID;
+    this.authProfile.id_user = id_user;
     this.authProfile.Logins = logins;
     this.authProfile.provider = provider;
     this.authProfile.signedin = 1;
@@ -76,12 +79,7 @@ class AuthStore extends EventEmitter {
 
   //Will return whole auth profile information
   getProfile(){
-    if(this.signedIn()){
-      return this.authProfile;
-    }
-    else {
-      return 0;
-    }
+    return this.authProfile;
   }
 }
 

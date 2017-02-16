@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import style from '../../style/style.css';
 import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import MediaQuery from 'react-responsive';
 
 // modal style constructor
@@ -65,7 +65,7 @@ class Tours extends React.Component{
   closeModal () { this.setState({open: false}); }
 
   componentDidMount() {
-    if(AuthStore.signedIn()){
+    if(authStore.signedIn()){
       this.setState({showReserveTourButton: true});
     }
     else{

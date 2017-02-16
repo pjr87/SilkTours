@@ -11,7 +11,7 @@ all
 */
 
 //import cognito libraries
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -73,13 +73,16 @@ class FederatedAuthSignIn{
 
           var response;
 
+          console.log("HERE");
+          console.log(email);
+
           service.getUserByEmail(email, user1).then(function(response){
             console.log("RESPONSE 1");
             console.log(response.data);
             console.log(response.status);
 
             if(response.data.email == email){
-              service.updateExistingUser(id, user1).then(function(response){
+              service.updateExistingUser(response.data.id_users, user1).then(function(response){
                 console.log("RESPONSE 2");
                 console.log(response.data);
                 console.log(response.status);
@@ -87,12 +90,12 @@ class FederatedAuthSignIn{
                 var fullName = name[0] + " " + name[1];
                 console.log(fullName);
 
-                AuthStore.login(fullName, id, loginsIdpData, "Developer");
+                authStore.login(fullName, id, response.data.id_users, loginsIdpData, "Developer");
 
                 config.credentials.clearCachedId();
 
                 //move to explore page
-                window.location.assign('..');
+                //window.location.assign('..');
               });
             }
           });
