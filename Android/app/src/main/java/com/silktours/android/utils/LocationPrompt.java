@@ -10,6 +10,10 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.silktours.android.MainActivity;
 import com.silktours.android.R;
 
@@ -18,6 +22,8 @@ import com.silktours.android.R;
  */
 public class LocationPrompt {
     private AlertDialog filterDialog;
+    private String selection = null;
+
 
     public LocationPrompt(Activity activity, final OnLocationSetListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -32,8 +38,7 @@ public class LocationPrompt {
                             listener.onLocationSet(null);
                             return;
                         }
-                        EditText filterLocation = (EditText) filterDialog.findViewById(R.id.filterLocation);
-                        listener.onLocationSet(filterLocation.getText().toString());
+                        listener.onLocationSet(selection);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -44,6 +49,18 @@ public class LocationPrompt {
                     }
                 });
         filterDialog = builder.create();
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                selection = place.getAddress().toString();
+            }
+
+            @Override
+            public void onError(Status status) {
+            }
+        });
         filterDialog.show();
 
         /*CheckBox useGPS = (CheckBox) filterDialog.findViewById(R.id.useGPS);
