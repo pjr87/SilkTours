@@ -3,7 +3,9 @@ package com.silktours.android.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,14 +25,24 @@ import com.silktours.android.R;
 public class LocationPrompt {
     private AlertDialog filterDialog;
     private String selection = null;
+    private static View view;
 
 
     public LocationPrompt(Activity activity, final OnLocationSetListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-
-        builder.setView(inflater.inflate(R.layout.location_select, null))
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.location_select, null);
+        }catch(InflateException e) {
+            e.printStackTrace();
+        }
+        builder.setView(view)
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
