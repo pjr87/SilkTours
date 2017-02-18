@@ -1,6 +1,7 @@
 package com.silktours.android.database;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Created by andrew on 1/26/17.
  */
-public class Tour {
+public class Tour extends Base{
     public String additional_accomadation;
     public String additional_food;
     public String additional_transport;
@@ -29,7 +30,7 @@ public class Tour {
     public String address_unit_number;
     public String address_zip;
     public Double average_rating;
-    public String description;
+    public static final String description = "description";
     public String firstStart_date;
     public String lastEnd_date;
     public Integer id_guide;
@@ -38,7 +39,7 @@ public class Tour {
     public Boolean is_deleted;
     public Integer max_group_size;
     public Integer min_group_size;
-    public String name;
+    public static final String name = "name";
     public Double price;
     public String profile_image;
     public Integer profile_image_width;
@@ -104,5 +105,13 @@ public class Tour {
             result.add(tour);
         }
         return result;
+    }
+
+    public void commit() throws IOException {
+        String url = Common.SERVER_URL + "/tours";
+        set("bypass", true); // Bypass auth
+        Log.d("JSON", JSON.toString());
+        String result = Common.request(url, JSON.toString(), "POST");
+        Log.d("Server", result);
     }
 }
