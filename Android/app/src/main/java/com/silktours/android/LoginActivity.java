@@ -28,9 +28,23 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.cognito.CognitoSyncManager;
+import com.amazonaws.mobileconnectors.cognito.Dataset;
+import com.amazonaws.mobileconnectors.cognito.DefaultSyncCallback;
+import com.amazonaws.regions.Regions;
+import com.facebook.*;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.silktours.android.utils.CredentialHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -61,11 +75,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private CallbackManager callbackManager;
+    private CognitoCachingCredentialsProvider credentialsProvider;
+    private CognitoSyncManager syncClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+        setupFacebook();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -92,6 +111,77 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+    
+    private void setupFacebook() {
+        // Facebook SDK
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile");
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            private ProfileTracker mProfileTracker;
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // AWS
+                credentialsProvider = new CognitoCachingCredentialsProvider(
+                        getApplication(), // Context
+                        CredentialHandler.identityPoolId, // Identity Pool ID
+                        Regions.US_EAST_1 // Region
+                );
+                CredentialHandler.credentialsProvider = credentialsProvider;
+
+                syncClient = new CognitoSyncManager(
+                        getApplication(), // Context
+                        Regions.US_EAST_1, // Region
+                        credentialsProvider
+                );
+
+                if(com.facebook.Profile.getCurrentProfile() == null) {
+                    mProfileTracker = new ProfileTracker() {
+                        @Override
+                        protected void onCurrentProfileChanged(com.facebook.Profile profile, com.facebook.Profile profile2) {
+                            // profile2 is the new profile
+                            Map<String, String> logins = new HashMap<String, String>();
+                            logins.put("graph.facebook.com", AccessToken.getCurrentAccessToken().getToken());
+                            credentialsProvider.setLogins(logins);
+
+                            String name = profile2.getName();
+                            CredentialHandler.username = name;
+                            Dataset dataset = syncClient.openOrCreateDataset("FacebookUser");
+                            dataset.put("Name", name);
+                            dataset.synchronize(new DefaultSyncCallback());
+                            mProfileTracker.stopTracking();
+                            goHome();
+                        }
+                    };
+                    mProfileTracker.startTracking();
+                }
+                else {
+                    com.facebook.Profile profile = com.facebook.Profile.getCurrentProfile();
+                    String name = profile.getName();
+                    CredentialHandler.username = name;
+                    Dataset dataset = syncClient.openOrCreateDataset("FacebookUser");
+                    dataset.put("Name", name);
+                    dataset.synchronize(new DefaultSyncCallback());
+                    goHome();
+                }
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
+    }
+
+    private void goHome() {
+        Toast.makeText(this, "Go Home", Toast.LENGTH_SHORT).show();
     }
 
     private void populateAutoComplete() {
@@ -160,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -191,13 +281,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.length() >= 5 && email.contains("@") && email.contains(".");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        // Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number
+        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
     }
 
     /**
