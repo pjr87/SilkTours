@@ -1,26 +1,18 @@
 from flask import Flask, g
 from flask import jsonify
 from flask import request
-<<<<<<< HEAD
-=======
-# from user import User
->>>>>>> android
-
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
 from stop_mapped import Stop
 
-<<<<<<< HEAD
-=======
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
-# from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
 from interests_mapped import Interests
->>>>>>> android
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
 from flask_cors import CORS
@@ -32,18 +24,10 @@ from app.s3_module.controlers import S3Controller
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-<<<<<<< HEAD
 CORS(app)
 
 client = boto3.client('cognito-identity')
 
-=======
-
-
-# CORS(app)
-
-# client = boto3.client('cognito-identity')
->>>>>>> android
 
 def checkLogin(data):
     if "bypass" in data and data["bypass"]:
@@ -75,19 +59,10 @@ s3 = S3Controller()
 engine = create_engine(
     'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-<<<<<<< HEAD
 engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
 Session = scoped_session(sessionmaker(bind=engine))
 session = None
-=======
-Session = scoped_session(sessionmaker(bind=engine))
-# Session = scoped_session(sessionmaker())
-session = None
-
-
-# Session()
->>>>>>> android
 
 
 def commitSession():
@@ -125,10 +100,6 @@ def hello():
     }, "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349")
 
     user = session.query(User).get(1)
-<<<<<<< HEAD
-=======
-    # session.query(User).filter_by(first_name="Andrew").first()
->>>>>>> android
     return "Hello " + user.first_name
 
 
@@ -188,17 +159,13 @@ def get_user(id):
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
-<<<<<<< HEAD
-=======
     # if (not checkLogin(id)):
     #     return notAuthorizedResponse()
     # checkLogin(id)
->>>>>>> android
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 
 
-<<<<<<< HEAD
 '''
 @app.route('/users/<id>/login/<accessKeyID>', methods=['PUT'])
 def login(id, accessKeyID):
@@ -210,8 +177,6 @@ def login(id, accessKeyID):
 '''
 
 
-=======
->>>>>>> android
 # Creates a new user
 @app.route('/users', methods=['POST'])
 def set_user():
@@ -219,11 +184,7 @@ def set_user():
     if (not checkLogin(data)):
         return notAuthorizedResponse()
     user = User()
-<<<<<<< HEAD
-    user.set_props(data)
-=======
     user.set_props(request.get_json())
->>>>>>> android
     session.add(user)
     session.commit()
     commitSession()
@@ -273,7 +234,6 @@ def add_rating():
 # Adds a new rating
 @app.route('/stops', methods=['POST'])
 def add_stop():
-<<<<<<< HEAD
     data = request.get_json()
     if (not checkLogin(data)):
         return notAuthorizedResponse()
@@ -282,12 +242,6 @@ def add_stop():
     id_tour = data["id_tour"]
     lat = float(data["lat"])
     lon = float(data["lon"])
-=======
-    stop = Stop()
-    id_tour = request.form.get("id_tour")
-    lat = float(request.form.get("lat"))
-    lon = float(request.form.get("lon"))
->>>>>>> android
 
     stop.set_props(id_tour, lat, lon)
 
@@ -309,15 +263,11 @@ def get_tour(tourid):
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-<<<<<<< HEAD
     data = request.get_json()
     if (not checkLogin(data)):
         return notAuthorizedResponse()
 
-    return db.post(data, 'Tour')
-=======
     return db.post(request.get_json(), 'Tour')
->>>>>>> android
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
@@ -353,9 +303,5 @@ def upload(tourid):
 def get_image(tourid):
     return s3.get_image(tourid)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> android
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
