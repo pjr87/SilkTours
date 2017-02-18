@@ -69,12 +69,12 @@ public class Common {
         return new JSONArray(httpRequest(urlString));
     }
 
-    public static String makePUT(String uri, String json) throws IOException {
+    public static String request(String uri, String json, String method) throws IOException {
         HttpURLConnection httpcon = (HttpURLConnection) ((new URL (uri).openConnection()));
         httpcon.setDoOutput(true);
         httpcon.setRequestProperty("Content-Type", "application/json");
         httpcon.setRequestProperty("Accept", "application/json");
-        httpcon.setRequestMethod("PUT");
+        httpcon.setRequestMethod(method);
         httpcon.connect();
 
         //Write
