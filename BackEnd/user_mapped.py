@@ -22,7 +22,6 @@ class User(Base):
     dob = Column(Date)
     first_name = Column(String)
     is_deleted = Column(Boolean)
-    is_guide = Column(Boolean)
     last_name = Column(String)
     password_hash = Column(String)
     phone_number = Column(String)
