@@ -73,8 +73,11 @@ class User(Base):
         result["tours_taking"] = []
         for tourEvent in self.tours_taking:
             result["tours_taking"].append(tourEvent.serialize())
-
-        result["address"] = self.address.serialize()
+        
+        if self.address is not None:
+            result["address"] = self.address.serialize()
+        else:
+            result["address"] = None
 
         for c in self.__table__.columns:
             key = c.name
