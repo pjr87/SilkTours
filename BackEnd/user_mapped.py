@@ -47,8 +47,17 @@ class User(Base):
 
     def set_props(self, data):
         for key in data:
+            print(key)
             if key not in ["tours_taking", "tours_teaching", "interests", "address"]:
+                print("setting")
                 setattr(self, key, data[key])
+            elif key == "address":
+                print("creatingAddress")
+                if self.address_id is None:
+                    self.address = Address.create(data[key])
+                    self.address_id = self.address.id_address
+                else:
+                    self.address.setProps(data[key])
 
     def serialize(self):
         result = {}

@@ -1,6 +1,7 @@
 # from interests import Interests
 from sqlalchemy import Column, Integer, String
 from base import Base
+from db_session import session, commitSession, createSession
 
 
 class Address(Base):
@@ -28,3 +29,15 @@ class Address(Base):
             "zip": self.zip,
             "state_code": self.state_code
         }
+
+    def create(data):
+        result = Address()
+        result.setProps(data)
+        return result
+
+    def setProps(self, data):
+        for key in data:
+            setattr(self, key, data[key])
+        createSession()
+        session.add(self)
+        commitSession()

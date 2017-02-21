@@ -18,6 +18,7 @@ from sqlalchemy.orm.session import sessionmaker
 from flask_cors import CORS
 from sqlalchemy.orm import scoped_session
 import boto3
+from db_session import session, commitSession, createSession
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
@@ -56,27 +57,18 @@ db = DbController()
 s3 = S3Controller()
 
 # engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
-engine = create_engine(
-    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+#engine = create_engine(
+#    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+#engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-Session = scoped_session(sessionmaker(bind=engine))
-session = None
-
-
-def commitSession():
-    try:
-        session.commit()
-    except:
-        print("INFO: session commit failed")
-        session.roolback()
+#Session = scoped_session(sessionmaker(bind=engine))
+#session = None
 
 
 @app.before_request
 def before_request():
-    global session
-    session = Session()
+    createSession()
 
 
 @app.after_request
