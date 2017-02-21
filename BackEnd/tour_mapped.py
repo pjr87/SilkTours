@@ -2,6 +2,7 @@ import datetime
 from interests_mapped import Interests
 from ratings_mapped import Rating
 from stop_mapped import Stop
+from tour_guide_mapped import TourGuides
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -27,7 +28,6 @@ class Tour(Base):
     profile_image = Column(String)
     profile_image_width = Column(Integer)
     profile_image_height = Column(Integer)
-    id_guide = Column(Integer, ForeignKey("User.id_users"))
     is_deleted = Column(Boolean)
     additional_accomadation = Column(String)
     additional_food = Column(String)
@@ -38,6 +38,7 @@ class Tour(Base):
     ratings = relationship("Rating")
     stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
+    guides = relationship("TourGuides", foreign_keys="TourGuides.id_tour")
 
     def serialize(self, deep):
         result = {}
@@ -53,4 +54,7 @@ class Tour(Base):
         for stop in self.stops:
             result["stops"].append(stop.serialize())
 
+        result["guides"] = []
+        for guide in self.guides:
+            result["guides"].append(guide.serialize())
         return result
