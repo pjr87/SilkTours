@@ -1,8 +1,9 @@
 # from interests import Interests
 import datetime
+from address_mapped import Address
 from interests_mapped import Interests
 from tour_event_mapped import TourEvent
-from sqlalchemy import Column, Integer, String, Date, Boolean
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
 
@@ -10,14 +11,6 @@ from base import Base
 class User(Base):
     __tablename__ = 'User'
     id_users = Column(Integer, primary_key=True)
-    address_city = Column(String)
-    address_country = Column(String)
-    address_number = Column(String)
-    address_street = Column(String)
-    address_suffix = Column(String)
-    address_unit = Column(String)
-    address_unit_number = Column(String)
-    address_zip = Column(String)
     description = Column(String)
     dob = Column(Date)
     first_name = Column(String)
@@ -30,6 +23,9 @@ class User(Base):
     email = Column(String)
     accessKeyId = Column(String)
     secretAccessKey = None
+
+    address_id = Column(Integer, ForeignKey("Address.id_address"))
+    address = relationship("Address", foreign_keys=[address_id])
 
     interests = relationship("Interests")
     interests = relationship("Interests", foreign_keys="Interests.id_user")
@@ -46,14 +42,12 @@ class User(Base):
 
     # A set of properties visible to consumer of the API
     VISABLE_PROPS = {"first_name", "last_name", "address_number",
-                     "address_street", "address_suffix", "address_unit",
-                     "address_unit_number", "address_city", "address_country",
-                     "address_zip", "description", "dob", "is_guide",
+                     "description", "dob", "is_guide",
                      "id_users", "phone_number", "profile_picture", "email"}
 
     def set_props(self, data):
         for key in data:
-            if key not in ["tours_taking", "tours_teaching", "interests"]:
+            if key not in ["tours_taking", "tours_teaching", "interests", "address"]:
                 setattr(self, key, data[key])
 
     def serialize(self):
@@ -70,6 +64,8 @@ class User(Base):
         result["tours_taking"] = []
         for tourEvent in self.tours_taking:
             result["tours_taking"].append(tourEvent.serialize())
+
+        result["address"] = self.address.serialize()
 
         for c in self.__table__.columns:
             key = c.name
