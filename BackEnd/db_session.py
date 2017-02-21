@@ -19,4 +19,4 @@ def commitSession():
         session.commit()
     except:
         print("INFO: session commit failed")
-        session.roolback()
+        session.rollback()
