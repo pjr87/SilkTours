@@ -1,13 +1,13 @@
 import React from 'react';
 
 // Importing css style
-import style from '../../style/style.css';
+import style from './style.css';
 
 // Footer page in ES6
 const Footer = () => {
   return (
-    <div className = {style.footerStyle}>
-      <h4>&#169;silk tours inc.</h4>
+    <div>
+      <p className = {style.Footer}>&#169;silk tours inc.</p>
     </div>
   );
 };

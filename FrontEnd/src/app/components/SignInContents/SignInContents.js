@@ -13,26 +13,20 @@
 */
 
 import React from 'react';
-import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
-import ReactDOM from 'react-dom';
 import FacebookLogin from 'react-facebook-login';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
-import appConfig from "../CognitoSync/config";
-//import AuthStore from "../../stores/AuthStore.js";
-import logoImg from '../../style/images/logo5.png';
+import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
+
 import {DeveloperAuthSignIn} from '../CognitoSync/DeveloperAuthSignIn.js';
 import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
-import SignUp from './SignUp.js';
+import appConfig from "../CognitoSync/config";
 import FaFacebook from 'react-icons/lib/fa/facebook';
 
 const responseFacebook = (response) => {
   console.log(response);
-
   FederatedAuthSignIn.startAWS(response, "Facebook");
 }
 
-class Sign extends React.Component{
+class SignInContents extends React.Component{
   //Define auth profile state
   constructor(){
     super();
@@ -59,13 +53,10 @@ class Sign extends React.Component{
   render() {
     return (
       <div>
-      <Header fileName={logoImg}/>
-        <h4>sign in</h4>
         <br/>
         <br/>
         <DeveloperAuthSignIn/>
         <br/>
-
         <FacebookLogin
           appId={appConfig.facebookAppId}
           autoLoad={false}
@@ -77,15 +68,13 @@ class Sign extends React.Component{
           />
         <br/>
         <br/>
-
         <p>Don't have one?</p>
         <Link to='/signup'>CREATE ONE</Link>
         <br/>
         <br/>
-      <Footer/>
       </div>
     );
   }
 }
 
-export default Sign;
+export default SignInContents;
