@@ -1,94 +1,82 @@
 import React from 'react';
-import {Link} from 'react-router';
 
-// Importing css style and images
-import style from '../../style/style.css';
 import logoImg from '../../style/images/logo.png';
-import logoImg2 from '../../style/images/logo2.png';
 
-// Importing components
-import About from '../pages/About';
-import Activities from '../pages/Activities';
-import Sign from '../pages/Sign';
-import ExplorePage from '../pages/ExplorePage';
-import AvailableToursPage from '../pages/AvailableToursPage';
-import AccountDropdown from '../Dropdown';
-//import AuthStore from "../../stores/AuthStore.js";
+import Nav from 'react-bootstrap/lib/Nav';
+import NavItem from 'react-bootstrap/lib/NavItem';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import Image from 'react-bootstrap/lib/Image';
+import {LinkContainer} from 'react-router-bootstrap';
+import NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
+
 import GetData from "../../databaseFunctions";
 
-//import Dropdown from './Dropdown';
-//import DropdownTrigger from Dropdown.DropdownTrigger;
-//var DropdownContent = Dropdown.DropdownContent;
-
-class Signin extends React.Component {
-  handleLinkClick() {
-      this.refs.dropdown.hide();
-    }
-
+class Header extends React.Component {
   render(){
-    if(this.props.loggedIn){
-      var button = (<AccountDropdown name={this.props.name} />);
+    var profile = {}
+    if(authStore.signedIn()){
+      profile = authStore.getProfile();
+      //GetData.getUser(1);
     }
-    else{
-      var button = (<Link to='/sign'> Sign in </Link>);
-    }
-    return button;
+    return (
+      <div>
+        <Navbar fixedTop collapseOnSelect style={{opacity:0.5}}>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <a href="/">Silk Tours</a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <LinkContainer to="/">
+                <NavItem eventKey={1}>home</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/activities">
+                <NavItem eventKey={2}>activities</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/about">
+                <NavItem eventKey={3}>about us</NavItem>
+              </LinkContainer>
+              <Signin loggedIn={authStore.signedIn()} name={profile.name} />
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        <br/>
+      </div>
+    )
   }
 }
 
-// Header page in ES6 with headerbar, and footer.
-class Header extends React.Component {
-  constructor(props) {
-  super(props);
-  }
+class Signin extends React.Component {
   render(){
-    if(authStore.signedIn()){
-      var profile = authStore.getProfile();
-      //GetData.getUser(1);
+    if(this.props.loggedIn){
+      var button = (
+        <NavDropdown eventKey={4} title = {this.props.name} id="nav-dropdown">
+        <LinkContainer to="/profile">
+          <MenuItem eventKey={4.1}>profile</MenuItem>
+        </LinkContainer>
+        <LinkContainer to="/settings">
+          <MenuItem eventKey={4.2}>settings</MenuItem>
+        </LinkContainer>
+        <LinkContainer to="/tour-creation">
+          <MenuItem eventKey={4.3}>Create Tour</MenuItem>
+        </LinkContainer>
+        </NavDropdown>
+      );
     }
-    else {
-
-
-      var profile = {first_name:"T", last_name:"S"};
+    else{
+      var button = (
+        <LinkContainer to="/sign">
+          <NavItem eventKey={4}>sign in</NavItem>
+        </LinkContainer>
+      );
     }
-    if(this.props.largeHeader){
-      var header = ( <div className="image">
-        <figure><img src={this.props.fileName} alt="image" width="100%" height="500" /></figure>
-      </div> );
-    }
-    else {
-      var header = ( <div>
-        <div style={{height:74}}></div>
-    <div className={style.smallHeaderImage}>
-        <img src={this.props.fileName} alt="image" width="100%" height="74" />
-      </div>
-    </div>
-    );
-    }
-
-
-    return(
-      <div className = {style.header} id="home">
-      <div className = {style.header_top}>
-        <div className={style.wrap}>
-          <div className={style.logo}><img src={logoImg}/></div>
-          <div className={style.logo2}><p>silk tours</p></div>
-          <div className={style.menu}>
-            <ul>
-              <li><Link to='/'>Home</Link></li>
-              <li><Link to='/activities'>Activities</Link></li>
-              <li><Link to='/about'>About us</Link></li>
-              <li> <Signin loggedIn={authStore.signedIn()} name={profile.name} /> </li>
-            </ul>
-            <hr/>
-           </div>
-          </div>
-          </div>
-          <div className="image">
-            <figure><img src={this.props.fileName} alt="image" width="100%" height="500"/></figure>
-	        </div>
-        </div>
-  )
+    return button;
   }
 }
 

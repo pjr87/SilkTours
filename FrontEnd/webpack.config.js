@@ -1,7 +1,10 @@
 var webpack = require('webpack');
+const path = require('path');
+
+const ROOT_PATH = path.resolve(__dirname);
 
 module.exports = {
-  entry: ['react-hot-loader/patch', './src/app/index.js'],
+  entry: ['react-hot-loader/patch', path.resolve(ROOT_PATH, './src/app')],
   output: {
     //context: path.join(__dirname, "src"),
     //devtool: debug ? "inline-sourcemap" : null,
@@ -55,6 +58,13 @@ module.exports = {
           ]
         }
     ]
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json'],
+    alias: {
+      components: path.resolve(ROOT_PATH, 'src/app/components'),
+      pages: path.resolve(ROOT_PATH, 'src/app/pages')
+    },
   },
   plugins: [
       new webpack.HotModuleReplacementPlugin(),

@@ -17,13 +17,9 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
-import ReactDOM from 'react-dom';
 import FacebookLogin from 'react-facebook-login';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
 import appConfig from "../CognitoSync/config";
 //import AuthStore from "../../stores/AuthStore.js";
-import logoImg from '../../style/images/logo5.png';
 import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
 import FederatedAuthSignUp from "../CognitoSync/FederatedAuthSignUp.js";
 import FaFacebook from 'react-icons/lib/fa/facebook';
@@ -61,10 +57,7 @@ class SignUp extends React.Component{
   render() {
     return(
       <div>
-      <Header fileName={logoImg}/>
-
       <DeveloperAuthSignUp/>
-
       <FacebookLogin
         appId={appConfig.facebookAppId}
         autoLoad={false}
@@ -76,7 +69,6 @@ class SignUp extends React.Component{
         />
       <br/>
       <br/>
-      <Footer/>
       </div>
     );
   }

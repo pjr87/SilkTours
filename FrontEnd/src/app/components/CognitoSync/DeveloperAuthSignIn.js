@@ -22,7 +22,7 @@ import {
 } from "amazon-cognito-identity-js";
 import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
-import style from '../../style/style.css';
+import style from './style.css';
 //import { push } from 'react-router-redux';
 
 //React.Component is abstract base class
