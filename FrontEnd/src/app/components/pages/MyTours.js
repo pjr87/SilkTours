@@ -71,7 +71,7 @@ class ToursTab extends React.Component{
   }
 }
 
-class Profile extends React.Component{
+class MyTours extends React.Component{
 
   buttonHandler(val){
     this.setState( {tab:val} );
@@ -183,5 +183,5 @@ class Profile extends React.Component{
   }
 }
 
-export default Profile;
+export default MyTours;
 export {ProfileHeader};

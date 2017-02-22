@@ -27,8 +27,8 @@ class AccountDropdown extends React.Component {
             <div> {this.props.name}</div>
           </a>
           <div className={style.dropdownContent}>
-            <Link to='/profile'>profile</Link>
-            <Link to='/settings'>settings</Link>
+            <Link to='/my-tours'>My Tours</Link>
+            <Link to='/settings'>Settings</Link>
             <Link to='/tour-creation'>Create Tour</Link>
             <Link to='/tour-signup'>Tour Signup</Link>
             <a>logout</a>

@@ -12,23 +12,24 @@ const originalTour = {
   date:"date",
   time:"time",
   media:[],
-  additional_accomadation: null,
-  additional_food: null,
-  additional_transport: null,
+  additional_accomadation: "",
+  additional_food: "",
+  additional_transport: "",
   address_country: "mnm",
-  address_street: null,
-  address_suffix: null,
-      address_unit: null,
-      address_unit_number: null,
-      address_zip: null,
-      average_rating: null,
+  address_street: "",
+  address_suffix: "",
+  address_state: "",
+      address_unit: "",
+      address_unit_number: "",
+      address_zip: "",
+      average_rating: "",
       description: "description",
-      firstStart_date: null,
-      id_guide: null,
-      id_rating: null,
+      firstStart_date: "",
+      id_guide: "",
+      id_rating: "",
       id_tour: 29,
       is_deleted: false,
-      lastEnd_date: null,
+      lastEnd_date: "",
       max_group_size: 0,
       min_group_size: 0,
       price: 0.0,
@@ -189,7 +190,7 @@ export default class TourCreation extends React.Component{
         <div className={style.mainBody}>
           <div className={style.formSection} >
             <FormTitle title="New Tour" />
-            <EditableField update={this.textChange.bind(this)} value={tour.name} label="Tour Name" name="tour_name"/>
+            <EditableField update={this.textChange.bind(this)} value={tour.name} label="Tour Name" name="name"/>
             <EditableField update={this.textChange.bind(this)} value={tour.address_city} label="City" name="address_city"/>
             <EditableField update={this.textChange.bind(this)} value={tour.address_state} label="State" name="address_state"/>
             <EditableField update={this.textChange.bind(this)} value={tour.address_country} label="Country" name="address_country"/>

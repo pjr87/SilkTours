@@ -9,7 +9,7 @@ import Activities from './components/pages/Activities';
 import AvailableToursPage from './components/pages/AvailableToursPage';
 import Header from './components/header/Header';
 import Settings from './components/pages/Settings'
-import Profile from './components/pages/Profile'
+import MyTours from './components/pages/MyTours'
 import Sign from './components/pages/Sign';
 import SignUp from './components/pages/SignUp';
 import About from './components/pages/About';
@@ -25,7 +25,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/sign" component={Sign}/>
       <Route path='/signup' component={SignUp}/>
       <Route path="/explore" component={AvailableToursPage}/>
-      <Route path="/profile" component={Profile}/>
+      <Route path="/my-tours" component={MyTours}/>
       <Route path="/settings" component={Settings}/>
       <Route path='/tour-creation' component={TourCreation}/>
       <Route path='/tour-signup' component={TourSignup}/>

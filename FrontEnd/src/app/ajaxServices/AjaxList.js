@@ -24,10 +24,21 @@ export function newTour(data){
     if(authStore.signedIn()){
       console.log(data);
       var url = "http://34.197.42.24:5000/tours";
-      console.log("url: "+url);
+      console.log("url: " + url);
       //var t = JSON.stringify(data);
       return axios.post(url, data);
    }
+    return false;
+}
+
+export function updateUser(data){
+    if(authStore.signedIn()){
+      var url = "http://34.197.42.24:5000/users/"+data.id_users;
+      //console.log("url: "+url);
+      var d = JSON.stringify(data);
+      console.log("value of d: ",d);
+      return axios.put(url, d);
+    }
     return false;
 }
 

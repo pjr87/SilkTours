@@ -4,7 +4,7 @@ import style from '../../style/style.css';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 //import GetData from '../../databaseFunctions';
-import {ProfileHeader} from './Profile';
+import {ProfileHeader} from './MyTours';
 import * as service from '../../ajaxServices/AjaxList';
 //import authStore from "../../stores/AuthStore.js";
 import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../forms/Forms.js';
@@ -19,10 +19,34 @@ class SettingsPg extends React.Component {
      // initializes component state
      this.state = {
          fetching: false, // tells whether the request is waiting for response or not
-         user: {interests:[]},
+         user: {  address: {
+                  city: "",
+                  country: "",
+                  number: "",
+                  state_code: "",
+                  street: "",
+                  suffix: "",
+                  unit: "",
+                  unit_number: "",
+                  zip: ""
+                },
+                description: "",
+                dob: "",
+                email: "",
+                first_name: "",
+                id_users: -1,
+                interests: [],
+                last_name: "",
+                phone_number: "",
+                profile_picture: "",
+                tours_taking: [],
+                tours_teaching: [],
+                bypass:true
+              },
          warningVisibility: false,
          authProfile: authStore.getProfile()
      };
+     console.log("getProfile: ",authStore.getProfile());
   }
 
   //Before component mounts, check login state
@@ -55,8 +79,17 @@ class SettingsPg extends React.Component {
      );
   }
 
+  objectFixer(obj){
+     Object.keys(obj).forEach(key => obj[key] === null ? obj[key]="" : '');
+     return obj;
+  }
+
   onSubmitClick(){
-    console.log("submit clicked!")
+    var tempUser = this.state.user;
+    tempUser.bypass = true;
+    console.log("submit clicked!->",tempUser);
+
+    service.updateUser(tempUser);
   }
 
   getUserInfo = async (postId) => {
@@ -64,14 +97,16 @@ class SettingsPg extends React.Component {
        this.state.authProfile = authStore.getProfile();
 
         service.getUser(this.state.authProfile.id_user).then((function(response){
-          console.log("response: ");
-          console.log( response.data );
+console.log("userBefore: ",response.data);
+          var user = this.objectFixer(response.data);
+          user.address= this.objectFixer(user.address);
+
           //var test = {test:""};
           this.setState({
-              user:response.data,
+              user:user,
               fetching: false // done!
           });
-          //console.log("user: " + this.state.user);
+          console.log("userAfter: ",user);
         }).bind(this)).catch(function(error){
             console.log("There was a problem\n"+error);
         }).bi;
@@ -130,11 +165,11 @@ class SettingsPg extends React.Component {
         <DoubleEditableField update={this.textChange.bind(this)} label1="First Name" label2="Last Name" name1="first_name" name2="last_name" value2={user.last_name} value1={user.first_name} />
         <EditableField update={this.textChange.bind(this)} value={user.phone_number} name="phone_number" label="Phone Number" />
         <EditableField update={this.textChange.bind(this)} value={user.email} name="email" label="Email" />
-        <EditableField update={this.textChange.bind(this)} value={user.address_unit_number+" "+user.address_street+" "+user.address_suffix} name="address" label="Address" />
-        <EditableField update={this.textChange.bind(this)} value={user.address_unit+" "+user.address_unit_number} name="address2" label="Apartment / Suite / Unit" />
-        <EditableField update={this.textChange.bind(this)} value={user.address_city} name="address_city" label="City" />
-        <EditableField update={this.textChange.bind(this)} value={user.address_state} name="address_state" label="State" />
-        <EditableField update={this.textChange.bind(this)} value={user.address_zip} name="address_zip" label="Zip Code" />
+        <EditableField update={this.textChange.bind(this)} value={user.address.unit+" "+user.address.street+" "+user.address.suffix} name="address" label="Address" />
+        <EditableField update={this.textChange.bind(this)} value={user.address.unit+" "+user.address.unit} name="address2" label="Apartment / Suite / Unit" />
+        <EditableField update={this.textChange.bind(this)} value={user.address.city} name="address_city" label="City" />
+        <EditableField update={this.textChange.bind(this)} value={user.address.state_code} name="address_state" label="State" />
+        <EditableField update={this.textChange.bind(this)} value={user.address.zip} name="address_zip" label="Zip Code" />
 
 
           <div>Interests Information</div>
