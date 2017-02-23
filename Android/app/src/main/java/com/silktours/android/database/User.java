@@ -7,12 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Created by andrew on 2/2/17.
  */
-public class User extends Base {
+public class User extends Base implements Serializable {
     public static final String ID_USERS = "id_users";
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";

@@ -77,12 +77,14 @@ public class Common {
         httpcon.setRequestMethod(method);
         httpcon.connect();
 
-        //Write
-        OutputStream os = httpcon.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-        writer.write(json);
-        writer.close();
-        os.close();
+        if (json != null) {
+            //Write
+            OutputStream os = httpcon.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(json);
+            writer.close();
+            os.close();
+        }
 
         //Read
         BufferedReader br = new BufferedReader(new InputStreamReader(httpcon.getInputStream(),"UTF-8"));

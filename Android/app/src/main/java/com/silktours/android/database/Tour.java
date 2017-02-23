@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by andrew on 1/26/17.
  */
-public class Tour extends Base{
+public class Tour extends Base implements Serializable {
     public String additional_accomadation;
     public String additional_food;
     public String additional_transport;

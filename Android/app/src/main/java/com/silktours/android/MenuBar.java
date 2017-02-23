@@ -76,7 +76,7 @@ public class MenuBar {
         from.startActivity(intent);
     }
 
-    private void startFragment(Fragment fragment) {
+    public void startFragment(Fragment fragment) {
         visited.push(fragment);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 

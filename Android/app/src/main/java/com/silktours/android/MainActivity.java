@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String CURRENT_TAG = "CURRENT";
     private static final int REQUEST_CODE = 1;
     private static MainActivity instance = null;
+    private MenuBar menu;
 
     public static MainActivity getInstance() {
         return instance;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
-        MenuBar menu = new MenuBar();
+        this.menu = new MenuBar();
         menu.setupClickListeners(this, toolbar);
 
         Fragment currentFragment = new Search();
@@ -51,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.DefaultFrame, currentFragment, CURRENT_TAG)
                 .commit();
 
+    }
+
+    public MenuBar getMenu() {
+        return menu;
     }
 
     public void processPayment(User user, PaymentInfo paymentInfo) {

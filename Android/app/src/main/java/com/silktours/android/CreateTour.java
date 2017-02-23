@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.silktours.android.database.Tour;
+import com.silktours.android.database.User;
 import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONException;
@@ -65,11 +66,18 @@ public class CreateTour extends Fragment {
         createTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if (tour == null) return;
                 tour.set(Tour.name, tourName.getText().toString());
                 tour.set(Tour.description, tourDesc.getText().toString());
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
+                */
+                User user = new User();
+                user.set(User.FIRST_NAME, "Andrew");
+                user.set(User.LAST_NAME, "Shidel");
+                tour.set("id_tours", 1);
+                BookTourFragment.start(tour, user);
             }
         });
     }
