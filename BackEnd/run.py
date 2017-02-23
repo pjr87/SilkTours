@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from tour_event_mapped import TourEvent
 from interests_mapped import Interests
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
@@ -269,6 +270,12 @@ def edit_tour(tourid):
         return notAuthorizedResponse()
 
     return db.edit(tourid, data, 'Tour')
+
+
+@app.route('/tour/<tourid>/events', methods=['GET'])
+def get_tourevent(tourid):
+    events = session.query(TourEvent).filter(TourEvent.id_tour == tourid).all()
+    return jsonify([event.serialize() for event in events])
 
 
 @app.route('/tourevents/<tourid>', methods=['POST'])
