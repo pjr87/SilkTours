@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +20,14 @@ import com.roomorama.caldroid.CaldroidListener;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.TourEvent;
 import com.silktours.android.database.User;
+import com.silktours.android.utils.ListViewUtils;
 
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,10 +84,16 @@ public class BookTourFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         @Override
         public void onSelectDate(Date date, View view) {
-            if (eventMap.containsKey(dateFormatter.format(date))) {
+            ListView timeListView = (ListView) rootView.findViewById(R.id.bookTourTimes);
+            String df = dateFormatter.format(date);
+            if (eventMap.containsKey(df)) {
                 Toast.makeText(MainActivity.getInstance().getApplicationContext(), formatter.format(date),
                         Toast.LENGTH_SHORT).show();
+                timeListView.setAdapter(new TourEventsAdapter(MainActivity.getInstance(), eventMap.get(df)));
+            }else{
+                timeListView.setAdapter(new TourEventsAdapter(MainActivity.getInstance(), new ArrayList<TourEvent>()));
             }
+            ListViewUtils.setListViewHeightBasedOnChildren(timeListView);
         }
 
         @Override
@@ -135,6 +144,7 @@ public class BookTourFragment extends Fragment {
                     String date = dateFormatter.format(startDate);
                     List<TourEvent> eventList = eventMap.get(date);
                     if (eventList == null) {
+                        eventList = new ArrayList<>();
                         eventMap.put(date, eventList);
                     }
                     eventList.add(result);
