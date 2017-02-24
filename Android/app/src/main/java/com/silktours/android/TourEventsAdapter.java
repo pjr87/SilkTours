@@ -8,7 +8,9 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.TourEvent;
+import com.silktours.android.database.User;
 
 import org.w3c.dom.Text;
 
@@ -35,10 +37,27 @@ public class TourEventsAdapter extends ArrayAdapter<TourEvent> {
             v = vi.inflate(R.layout.tour_event_row, null);
         }
 
+
         TextView startTime = (TextView) v.findViewById(R.id.tourEventStartTime);
         TourEvent tourEvent = getItem(position);
+        v.setOnClickListener(new ItemClickListener(tourEvent));
         startTime.setText(tourEvent.get("start_date_time").toString());
         return v;
     }
 
+    private static class ItemClickListener implements View.OnClickListener{
+        private final TourEvent event;
+
+        public ItemClickListener(TourEvent event) {
+            this.event = event;
+        }
+
+        @Override
+        public void onClick(View v) {
+            PaymentInfo payment = new PaymentInfo();
+            payment.amount = 100.0;
+            payment.user = new User();
+            MainActivity.getInstance().processPayment(null);
+        }
+    }
 }
