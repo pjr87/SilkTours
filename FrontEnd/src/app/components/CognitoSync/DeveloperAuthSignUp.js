@@ -23,7 +23,7 @@ import {
 import Modal from 'react-modal';
 import appConfig from "./config";
 import * as service from '../../ajaxServices/AjaxList';
-import style from '../../style/style.css';
+import style from './style.css';
 
 // Modal style constructor
 const customStyles = {

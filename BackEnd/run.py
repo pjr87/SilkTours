@@ -1,20 +1,28 @@
 from flask import Flask, g
 from flask import jsonify
 from flask import request
-
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
 from stop_mapped import Stop
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import sessionmaker
+from flask_cors import CORS, cross_origin
+from user_mapped import User
+from ratings_mapped import Rating
+from tour_mapped import Tour
+from interests_mapped import Interests
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
 from flask_cors import CORS
 from sqlalchemy.orm import scoped_session
 import boto3
+from db_session import session, commitSession, createSession
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
+
 app = Flask(__name__)
 app.config['DEBUG'] = True
 CORS(app)
@@ -48,25 +56,19 @@ def notAuthorizedResponse():
 db = DbController()
 s3 = S3Controller()
 
+# engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
+#engine = create_engine(
+#    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+#engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-Session = scoped_session(sessionmaker(bind=engine))
-session = None
-
-
-def commitSession():
-    try:
-        session.commit()
-    except:
-        print ("INFO: session commit failed")
-        session.roolback()
+#Session = scoped_session(sessionmaker(bind=engine))
+#session = None
 
 
 @app.before_request
 def before_request():
-    global session
-    session = Session()
+    createSession()
 
 
 @app.after_request
@@ -119,15 +121,21 @@ def search():
             )
         )
     if rating is not None:
-        query = query.filter("Tour.average_rating>="+rating)
+        query = query.filter("Tour.average_rating>=" + rating)
     if priceMin is not None:
-        query = query.filter("Tour.price>="+priceMin)
+        query = query.filter("Tour.price>=" + priceMin)
     if priceMax is not None:
-        query = query.filter("Tour.price<="+priceMax)
+        query = query.filter("Tour.price<=" + priceMax)
     if city is not None:
         query = query.filter(Tour.address_city == city)
 
-    tours = query.all()
+    tours = []
+    try:
+        tours = query.all()
+    except:
+        session.rollback()
+        raise
+
     result = []
     for tour in tours:
         result.append(tour.serialize(True))
@@ -143,6 +151,9 @@ def get_user(id):
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
+    # if (not checkLogin(id)):
+    #     return notAuthorizedResponse()
+    # checkLogin(id)
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 
@@ -165,7 +176,7 @@ def set_user():
     if (not checkLogin(data)):
         return notAuthorizedResponse()
     user = User()
-    user.set_props(data)
+    user.set_props(request.get_json())
     session.add(user)
     session.commit()
     commitSession()
@@ -202,8 +213,8 @@ def add_rating():
     rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
     tour = session.query(Tour).get(int(id_tour_rated))
     tour.average_rating = ((tour.average_rating
-                           * tour.rating_count+rating_value)
-                           / (tour.rating_count+1))
+                            * tour.rating_count + rating_value)
+                           / (tour.rating_count + 1))
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
@@ -248,7 +259,7 @@ def set_tour():
     if (not checkLogin(data)):
         return notAuthorizedResponse()
 
-    return db.post(data, 'Tour')
+    return db.post(request.get_json(), 'Tour')
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])

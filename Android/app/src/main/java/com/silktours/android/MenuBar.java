@@ -31,7 +31,7 @@ public class MenuBar {
         Class<?> activityClass = activity.getClass();
         if (activityClass == Profile.class) {
             bottomNavigationView.getMenu().getItem(0).setChecked(true);
-        }else if (activityClass == MessageThreads.class) {
+        }else if (activityClass == CreateTour.class) {
             bottomNavigationView.getMenu().getItem(2).setChecked(true);
         }else if (activityClass == MyTours.class) {
             bottomNavigationView.getMenu().getItem(3).setChecked(true);
@@ -57,11 +57,11 @@ public class MenuBar {
                                 break;
                             case R.id.action_messages:
                                 //startActivity(activity, MessageThreads.class);
-                                startFragment(new MessageThreads());
+                                startFragment(new CreateTour());
                                 bottomNavigationView.getMenu().getItem(2).setChecked(true);
                                 break;
                             case R.id.action_my_tours:
-                                //startActivity(activity, MyTours.class);
+                                //startActivity(activity, Tours.class);
                                 startFragment(new MyTours());
                                 bottomNavigationView.getMenu().getItem(3).setChecked(true);
                                 break;
