@@ -4,6 +4,9 @@ import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import style from '../../style/style.css';
 
+import * as service from '../../ajaxServices/AjaxList';
+
+
 var htmlContent = require('../Messages/sample/fullview.html'); 
 
 
@@ -18,6 +21,7 @@ import InnerHTML from 'dangerously-set-inner-html';
 
 var newLines = "<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> ";
 
+import MessageBody from './MessageBody.js';
 
 //import js from '../Messages/newJS.js';
 
@@ -33,36 +37,40 @@ class Messages extends React.Component{
 
   render(){
 
-
-        
-
         function onButtonPress() {
             $applozic.fn.applozic('loadTab', 'meow');
         };
+
+        var indents = [];
+        for (var i = 0; i < 12; i++) {
+          indents.push(<span key={i}>{""}<br/></span>);
+        }
+
 
 
         return (
           <div className= {style.Main}>
             <Header fileName={logoImg}/>
 
+              <MessageBody />
 
-              {/*<div dangerouslySetInnerHTML={ {__html: htmlContent} } />*/}
-              <InnerHTML key="messagesUniqueKey" html={htmlContent} />
 
+
+              
+            {/*
               <button
                 onClick={onButtonPress}
                 title = 'Press to start Chat'
                 color='#841584'>
 
                 Press to Start Chat
-              </button>
+              </button>*/}
 
-            <Footer/>
+            <Footer className={style.FooterMessaging} />
           </div>
         );
       }
 
- 
   componentDidMount(props){
 
     function startConversation( username )
@@ -87,16 +95,9 @@ class Messages extends React.Component{
           }
         }
 
-    var nameUser ="";
-    if(AuthStore.signedIn()){
-          var profile = AuthStore.getProfile();
-          //GetData.getUser(1);
-          nameUser = "[INSERT NAME]";
-        }
 
 
-
-
+    
     var oModal = "";
 if (typeof $original !== 'undefined') {
   $ = $original;
@@ -121,13 +122,15 @@ if (typeof $original !== 'undefined') {
     }
     function onInitialize(response) {
       if (response === 'success') {
+        var nameUser ="Test123";
 
-        //write your logic exectute after plugin initialize.
-          if( nameUser != "")
-          {
+      if(AuthStore.signedIn()){
+
+          service.getUser(AuthStore.getProfile()["id_user"]).then((function(response){
             var temp = $("#mck-box-title")[0].innerHTML;
-            $("#mck-box-title")[0].innerHTML = nameUser + "'s " + temp;
-          } 
+            $("#mck-box-title")[0].innerHTML = response["data"]["first_name"] + " " + response["data"]["last_name"][0] + "'s " + temp;
+          }));    
+          }
             
       } else if (response === 'object' && response.status === 'error') {
         alert(response.errorMessage);
@@ -147,10 +150,11 @@ if (typeof $original !== 'undefined') {
                   .applozic({
                     userId : 'fakeID',
                     userName : 'notJoe',
-                    appId : 'live3e5c58454b51865daefc1d16ba47909d4',
+                   // appId : 'live3e5c58454b51865daefc1d16ba47909d4',
+                    appId: 'outlook3464d372342159e4b8c2adfb5f80fed2e',
                     ojq : $original,
                     obsm : oModal,
-                    accessToken :'000552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+                    accessToken :'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
                     authenticationTypeId: 0,    //1 for password verification from Applozic server and 0 for access Token verification from your server
                     autoTypeSearchEnabled : false,
                     loadOwnContacts : false,
@@ -167,10 +171,13 @@ if (typeof $original !== 'undefined') {
             });
 
                       {passUsername()}
+                      {window.scrollTo(0, 0)}
 
   }
-  
 
-}
+    }
+
+ 
+  
 
 export default Messages;

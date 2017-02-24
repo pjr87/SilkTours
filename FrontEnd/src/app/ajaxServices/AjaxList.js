@@ -31,6 +31,12 @@ export function newTour(data){
     return false;
 }
 
+export function getMessages(){
+  var url = 'https://demo5229068.mockable.io/messages';
+
+  return axios.get(url);
+}
+
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.
  The arguments should be put in the HTTP request's form, and the JSON structure
  of the params is the same as the result of "http://34.197.42.24:5000/users/1"

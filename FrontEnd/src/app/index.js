@@ -18,7 +18,8 @@ import TourSignup from './components/pages/TourSignup';
 
 import Messages from './components/pages/Messages';
 
-import ContactUs from './components/pages/ContactUs'
+import ContactUs from './components/pages/ContactUs';
+import MessageReact from './components/pages/MessageReact';
 
 
 const rootElement = document.getElementById('app');
@@ -27,6 +28,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/" component={ExplorePage2}/>
       <Route path="/activities" component={Activities}/>
       <Route path='/messages' component={Messages}/>
+      <Route path='/contactus' component={ContactUs} />
      {/*  <Route path="/about" component={About}/>*/}
       <Route path="/sign" component={Sign}/>
       <Route path='/signup' component={SignUp}/>
@@ -35,6 +37,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/settings" component={Settings}/>
       <Route path='/tour-creation' component={TourCreation}/>
       <Route path='/tour-signup' component={TourSignup}/>
+      <Route path='/messagereact' component={MessageReact}/>
       <Route path="*" component={ExplorePage2}/>
     </div>
   </Router>), rootElement);
