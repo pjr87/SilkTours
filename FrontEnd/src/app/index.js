@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 // Importing componenets
 
-import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage} from 'pages';
+import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage, ContactUsPage} from 'pages';
 
 import Settings from './components/pages/Settings'
 import Profile from './components/pages/Profile'
@@ -13,7 +13,7 @@ import TourSignup from './components/pages/TourSignup';
 
 import Messages from './components/pages/Messages';
 
-import ContactUs from './components/pages/ContactUs';
+
 import MessageReact from './components/pages/MessageReact';
 
 
@@ -25,7 +25,7 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/about" component={AboutUsPage}/>
       <Route path="/sign" component={SignInPage}/>
       <Route path='/signup' component={SignUpPage}/>
-      <Route path='/contactus' component={ContactUs} />
+      <Route path='/contactus' component={ContactUsPage}/>
       <Route path='/messages' component={Messages}/>
       <Route path="/profile" component={Profile}/>
       <Route path="/settings" component={Settings}/>

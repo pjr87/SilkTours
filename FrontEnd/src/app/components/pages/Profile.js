@@ -1,6 +1,6 @@
 import React from 'react';
 import style from '../../style/style.css';
-import Header from '../header/Header';
+import Header from '../Header/Header';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router'
 import GetData from '../../databaseFunctions';
 import TourContainer from '../Tours/TourContainer';

@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import style from '../../style/style.css';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 //import GetData from '../../databaseFunctions';
 import {ProfileHeader} from './Profile';
 import * as service from '../../ajaxServices/AjaxList';

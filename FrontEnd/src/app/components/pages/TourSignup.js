@@ -1,7 +1,7 @@
 import React from 'react';
 import style from '../../style/style.css';
 import {EditableField, FormTitle, FormButton} from '../forms/Forms.js';
-import Header from '../header/Header.js';
+import Header from '../Header/Header.js';
 import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
 import * as service from '../../ajaxServices/AjaxList';
 

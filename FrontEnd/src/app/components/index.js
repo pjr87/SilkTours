@@ -7,3 +7,4 @@ export TourContainer from './Tours/TourContainer';
 export AboutContents from './AboutContents/AboutContents';
 export SignInContents from './SignInContents/SignInContents';
 export SignUpContents from './SignUpContents/SignUpContents';
+export ContactUsContents from './ContactUsContents/ContactUsContents';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import style from '../../style/style.css';
 
 
