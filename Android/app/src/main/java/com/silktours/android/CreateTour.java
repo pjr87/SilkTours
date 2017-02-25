@@ -1,5 +1,6 @@
 package com.silktours.android;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -73,11 +74,29 @@ public class CreateTour extends Fragment {
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
                 */
-                User user = new User();
+                final User user = new User();
                 user.set(User.FIRST_NAME, "Andrew");
                 user.set(User.LAST_NAME, "Shidel");
-                tour.set("id_tours", 1);
-                BookTourFragment.start(tour, user);
+                new AsyncTask<Integer, Tour, Tour>() {
+                    @Override
+                    protected Tour doInBackground(Integer... params) {
+                        try {
+                            return Tour.getById(params[0]);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Tour tour) {
+                        if (tour != null) {
+                            BookTourFragment.start(tour, user);
+                        }
+                    }
+                }.execute(1);
             }
         });
     }

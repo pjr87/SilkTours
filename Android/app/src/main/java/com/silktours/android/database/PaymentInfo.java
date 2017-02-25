@@ -6,5 +6,7 @@ package com.silktours.android.database;
 public class PaymentInfo {
     public double amount;
     public User user;
+    public TourEvent event;
+    public Tour tour;
     //public TourEvent event;
 }

@@ -20,12 +20,18 @@ import java.util.List;
  * Created by andrew on 2/23/17.
  */
 public class TourEventsAdapter extends ArrayAdapter<TourEvent> {
+    private TourEventClicked listener;
+
     public TourEventsAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
     public TourEventsAdapter(Context context, List<TourEvent> items) {
         super(context, R.layout.tour_event_row, items);
+    }
+    
+    public void setClickListener(TourEventClicked listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -45,7 +51,7 @@ public class TourEventsAdapter extends ArrayAdapter<TourEvent> {
         return v;
     }
 
-    private static class ItemClickListener implements View.OnClickListener{
+    private class ItemClickListener implements View.OnClickListener{
         private final TourEvent event;
 
         public ItemClickListener(TourEvent event) {
@@ -54,10 +60,13 @@ public class TourEventsAdapter extends ArrayAdapter<TourEvent> {
 
         @Override
         public void onClick(View v) {
-            PaymentInfo payment = new PaymentInfo();
-            payment.amount = 100.0;
-            payment.user = new User();
-            MainActivity.getInstance().processPayment(null);
+            if (listener != null) {
+                listener.onClick(event);
+            }
         }
+    }
+
+    public interface TourEventClicked {
+        void onClick(TourEvent event);
     }
 }

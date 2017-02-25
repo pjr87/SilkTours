@@ -63,6 +63,12 @@ public class Tour extends Base implements Serializable {
         }
     }
 
+    public static Tour getById(int id) throws IOException, JSONException {
+        Tour tour = new Tour();
+        tour.JSON = Common.getJson(Common.SERVER_URL + "/tours/"+id);
+        return tour;
+    }
+
     public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
         URIBuilder uri = new URIBuilder(Common.SERVER_URL + "/search");
         if (params.query != null) {

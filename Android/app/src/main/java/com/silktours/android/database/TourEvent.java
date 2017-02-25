@@ -12,6 +12,7 @@ import java.util.List;
  * Created by andrew on 2/23/17.
  */
 public class TourEvent extends Base {
+    private Tour tour;
     public static List<TourEvent> getEvents(int tourId) throws IOException, JSONException {
         JSONArray jsonArray = Common.getJsonArray(Common.SERVER_URL + "/tour/" + tourId + "/events");
 
@@ -22,5 +23,18 @@ public class TourEvent extends Base {
             result.add(tourEvent);
         }
         return result;
+    }
+
+    public Tour getTour() {
+        if (tour != null) {
+            return tour;
+        }
+        try {
+            tour = Tour.getById(this.getInt("id_tour"));
+            return tour;
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

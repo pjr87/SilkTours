@@ -1,10 +1,14 @@
 package com.silktours.android;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +19,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
+import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.TourEvent;
 import com.silktours.android.database.User;
@@ -45,6 +54,8 @@ public class BookTourFragment extends Fragment {
     private CaldroidFragment caldroidFragment;
     SimpleDateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd");
     private Map<String, List<TourEvent>> eventMap = new HashMap<>();
+    private View confirmBookingView;
+    private AlertDialog confirmDialog;
 
     public static void start(Tour tour, User user) {
         Bundle args = new Bundle();
@@ -89,7 +100,21 @@ public class BookTourFragment extends Fragment {
             if (eventMap.containsKey(df)) {
                 Toast.makeText(MainActivity.getInstance().getApplicationContext(), formatter.format(date),
                         Toast.LENGTH_SHORT).show();
-                timeListView.setAdapter(new TourEventsAdapter(MainActivity.getInstance(), eventMap.get(df)));
+                TourEventsAdapter adapter = new TourEventsAdapter(MainActivity.getInstance(), eventMap.get(df));
+
+                adapter.setClickListener(new TourEventsAdapter.TourEventClicked() {
+                    @Override
+                    public void onClick(TourEvent event) {
+                        PaymentInfo payment = new PaymentInfo();
+                        payment.amount = (double) tour.get("price");
+                        payment.user = user;
+                        payment.tour = tour;
+                        payment.event = event;
+                        confirmBooking(payment);
+                    }
+                });
+
+                timeListView.setAdapter(adapter);
             }else{
                 timeListView.setAdapter(new TourEventsAdapter(MainActivity.getInstance(), new ArrayList<TourEvent>()));
             }
@@ -118,6 +143,47 @@ public class BookTourFragment extends Fragment {
         }
 
     };
+
+    private void confirmBooking(final PaymentInfo payment) {
+        Activity activity = MainActivity.getInstance();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        LayoutInflater inflater = activity.getLayoutInflater();
+        
+        if (confirmBookingView != null) {
+            ViewGroup parent = (ViewGroup) confirmBookingView.getParent();
+            if (parent != null)
+                parent.removeView(confirmBookingView);
+        }
+        try {
+            confirmBookingView = inflater.inflate(R.layout.confirm_booking, null);
+        }catch(InflateException e) {
+            e.printStackTrace();
+        }
+
+        builder.setView(confirmBookingView)
+                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+                        if (confirmDialog == null) {
+                            return;
+                        }
+                        MainActivity.getInstance().processPayment(payment);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        confirmDialog = null;
+                    }
+                });
+        confirmDialog = builder.create();
+        confirmDialog.show();
+        ((EditText)confirmDialog.findViewById(R.id.confirmName)).setText(payment.tour.getStr("name"));
+        ((EditText)confirmDialog.findViewById(R.id.confirmPrice)).setText(payment.tour.get("price").toString());
+        ((EditText)confirmDialog.findViewById(R.id.confirmStartTime)).setText(payment.event.getStr("start_date_time"));
+        ((EditText)confirmDialog.findViewById(R.id.confirmEndTime)).setText(payment.event.getStr("end_date_time"));
+    }
 
 
     private class GetEvents extends AsyncTask<Integer, Integer, List<TourEvent>> {
