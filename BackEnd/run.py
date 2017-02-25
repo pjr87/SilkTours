@@ -251,7 +251,8 @@ def get_tour_list():
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return db.list_tour_with_id(tourid)
+    tour = session.query(Tour).get(tourid)
+    return jsonify(tour.serialize(True))
 
 
 @app.route('/tours', methods=['POST'])
