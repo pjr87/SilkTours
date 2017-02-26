@@ -3,7 +3,7 @@ import _ from 'lodash';
 import style from '../../style/style.css';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
-//import GetData from '../../databaseFunctions';
+//import GetData from '../../utils/databaseFunctions';
 import {ProfileHeader} from './Profile';
 import * as service from '../../ajaxServices/AjaxList';
 //import authStore from "../../stores/AuthStore.js";

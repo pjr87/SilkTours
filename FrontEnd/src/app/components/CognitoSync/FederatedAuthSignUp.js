@@ -91,7 +91,7 @@ class FederatedAuthSignUp{
             var fullName = name[0] + " " + name[1];
 
             if(response.data.email == email){
-              authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Developer");
+              authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Facebook");
 
               config.credentials.clearCachedId();
 

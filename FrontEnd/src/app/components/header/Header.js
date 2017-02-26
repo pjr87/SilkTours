@@ -10,7 +10,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 
-import GetData from "../../databaseFunctions";
+import GetData from "../../utils/databaseFunctions";
 
 class Header extends React.Component {
   render(){

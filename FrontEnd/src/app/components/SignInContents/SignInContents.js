@@ -15,7 +15,6 @@
 import React from 'react';
 import FacebookLogin from 'react-facebook-login';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
-
 import {DeveloperAuthSignIn} from '../CognitoSync/DeveloperAuthSignIn.js';
 import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
 import appConfig from "../CognitoSync/config";
@@ -30,9 +29,6 @@ class SignInContents extends React.Component{
   //Define auth profile state
   constructor(){
     super();
-    this.state = {
-      authProfile: authStore.getProfile(), //Get current profile
-    };
   }
 
   //Before component mounts, check login state
