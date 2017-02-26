@@ -35,8 +35,10 @@ import { browserHistory } from 'react-router';
  * @param  {string} username The username of the user to be logged in
  * @param  {string} password The password of the user to be logged in
  */
-export function login(username, password) {
+export function login(/*username, password*/) {
   return (dispatch) => {
+    dispatch(setAuthState(success));
+    /*
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
@@ -80,7 +82,7 @@ export function login(username, password) {
               return;
           }
         }
-      });
+      });*/
   //  });
   }
 }

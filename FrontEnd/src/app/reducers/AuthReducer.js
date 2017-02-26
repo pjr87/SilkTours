@@ -28,7 +28,7 @@ const initialState = {
 };
 
 // Takes care of changing the application state
-export function homeReducer(state = initialState, action) {
+export default function AuthReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_FORM:
       return assign({}, state, {

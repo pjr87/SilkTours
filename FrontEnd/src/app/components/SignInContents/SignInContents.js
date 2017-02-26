@@ -20,6 +20,10 @@ import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
 import appConfig from "../CognitoSync/config";
 import FaFacebook from 'react-icons/lib/fa/facebook';
 
+
+import { connect } from 'react-redux';
+import { login } from '../../actions/AuthActions';
+
 const responseFacebook = (response) => {
   console.log(response);
   FederatedAuthSignIn.startAWS(response, "Facebook");
@@ -33,7 +37,7 @@ class SignInContents extends React.Component{
 
   //Before component mounts, check login state
   componentWillMount() {
-    authStore.on("login", () => {
+    /*authStore.on("login", () => {
       this.setState({
         authProfile: authStore.getProfile(),
       })
@@ -43,7 +47,7 @@ class SignInContents extends React.Component{
       this.setState({
         authProfile: authStore.getProfile(), //Will return 0
       })
-    })
+    })*/
   }
 
   render() {
@@ -71,6 +75,17 @@ class SignInContents extends React.Component{
       </div>
     );
   }
+  _login(username, password) {
+		this.props.dispatch(login(username, password));
+	}
 }
 
-export default SignInContents;
+// Which props do we want to inject, given the global state?
+function select(state) {
+  return {
+    data: state
+  };
+}
+
+// Wrap the component to inject dispatch and state into it
+export default connect(select)(SignInContents);
