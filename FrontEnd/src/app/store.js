@@ -1,14 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger'
 import promise from 'redux-promise-middleware'
 
 import reducer from './reducers';
-
-// Creates the Redux reducer with the redux-thunk middleware, which allows us
-// to do asynchronous things in the actions
-const middleware = applyMiddleware(promise(),thunk,logger());
 
 function checkAuth(nextState, replaceState) {
   let { loggedIn } = store.getState();
@@ -35,5 +32,12 @@ function checkAuth(nextState, replaceState) {
     }
   }
 }
+
+const composeEnhancers = composeWithDevTools({
+  //options
+});
+// Creates the Redux reducer with the redux-thunk middleware, which allows us
+// to do asynchronous things in the actions
+const middleware = composeEnhancers(applyMiddleware(promise(),thunk,logger()));
 
 export default createStore(reducer, middleware);

@@ -6,9 +6,7 @@ import style from './style.css';
 // Footer page in ES6
 const Footer = () => {
   return (
-    <div>
-      <p className = {style.Footer}>&#169;silk tours inc.</p>
-    </div>
+    <div> <p>Hello</p></div>
   );
 };
 

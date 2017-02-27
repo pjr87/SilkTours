@@ -23,67 +23,53 @@
  *    created in the second step
  */
 
-//import bcrypt from 'bcryptjs';
 import { SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE } from '../constants/AuthConstants';
 import * as errorMessages  from '../constants/MessageConstants';
-import auth from '../utils/auth';
-//import genSalt from '../utils/salt';
+import cognitoFunctions from '../utils/cognitoFunctions';
 import { browserHistory } from 'react-router';
 
 /**
  * Logs an user in
- * @param  {string} username The username of the user to be logged in
+ * @param  {string} email The email of the user to be logged in
  * @param  {string} password The password of the user to be logged in
  */
-export function login(/*username, password*/) {
+export function login(email, password) {
   return (dispatch) => {
-    dispatch(setAuthState(success));
-    /*
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
-    // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ username, password })) {
+    // If no email or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ email, password })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
-    // Generate salt for password encryption
-  //  const salt = genSalt(username);
 
-    // Encrypt password
-  //  bcrypt.hash(password, salt, (err, hash) => { TODO
-      // Something wrong while hashing
-      if (err) {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-        return;
-      }
-      // Use auth.js to fake a request
-      auth.login(username, hash, (success, err) => {
-        // When the request is finished, hide the loading indicator
-        dispatch(sendingRequest(false));
-        dispatch(setAuthState(success));
-        if (success === true) {
-          // If the login worked, forward the user to the dashboard and clear the form
-          forwardTo('/dashboard');
-          dispatch(changeForm({
-            username: "",
-            password: ""
-          }));
-        } else {
-          switch (err.type) {
-            case 'user-doesnt-exist':
-              dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
-              return;
-            case 'password-wrong':
-              dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
-              return;
-            default:
-              dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-              return;
-          }
+    // Use cognitoFunctions.js to submit login
+    cognitoFunctions.login(username, hash, (success, err) => {
+      // When the request is finished, hide the loading indicator
+      dispatch(sendingRequest(false));
+      dispatch(setAuthState(success));
+      if (success === true) {
+        // If the login worked, forward the user to the dashboard and clear the form
+        forwardTo('/dashboard');
+        dispatch(changeForm({
+          username: "",
+          password: ""
+        }));
+      } else {
+        switch (err.type) {
+          case 'user-doesnt-exist':
+            dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
+            return;
+          case 'password-wrong':
+            dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
+            return;
+          default:
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+            return;
         }
-      });*/
-  //  });
+      }
+    });
   }
 }
 
@@ -93,7 +79,7 @@ export function login(/*username, password*/) {
 export function logout() {
   return (dispatch) => {
     dispatch(sendingRequest(true));
-    auth.logout((success, err) => {
+    cognitoFunctions.logout((success, err) => {
       if (success === true) {
         dispatch(sendingRequest(false))
         dispatch(setAuthState(false));
@@ -129,8 +115,8 @@ export function register(username, password) {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
         return;
       }
-      // Use auth.js to fake a request
-      auth.register(username, hash, (success, err) => {
+      // Use cognitoFunctions.js to fake a request
+      cognitoFunctions.register(username, hash, (success, err) => {
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
         dispatch(setAuthState(success));

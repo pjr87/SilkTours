@@ -1,10 +1,8 @@
-//import request from './fakeRequest';
-
 /**
  * Authentication lib
  * @type {Object}
  */
-var auth = {
+var cognitoFunctions = {
   /**
    * Logs a user in
    * @param  {string}   username The username of the user
@@ -68,4 +66,4 @@ var auth = {
   onChange() {}
 }
 
-module.exports = auth;
+module.exports = cognitoFunctions;

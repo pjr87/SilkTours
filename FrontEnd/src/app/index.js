@@ -12,7 +12,7 @@ import store from "./store";
 import { Provider } from 'react-redux';
 
 // Import the CSS file, which webpack transfers to the build folder
-import '../../css/main.css';
+//import '../../css/main.css';
 
 // Importing componenets
 

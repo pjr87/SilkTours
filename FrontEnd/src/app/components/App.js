@@ -10,14 +10,8 @@
 import React, { Component } from 'react';
 import NavBar from './NavBar/NavBar';
 import { connect } from 'react-redux';
-import auth from '../utils/auth';
+import auth from '../utils/cognitoFunctions';
 
-
-/*@connect((store) => {
-  return {
-    loggedIn:
-  }
-})*/
 class App extends Component {
   render() {
     return(
@@ -28,6 +22,8 @@ class App extends Component {
                 dispatch={this.props.dispatch}
                 currentlySending={this.props.data.currentlySending} />
         { this.props.children }
+
+          <p>&#169;silk tours inc.</p>
       </div>
     )
   }

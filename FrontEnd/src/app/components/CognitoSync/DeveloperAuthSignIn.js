@@ -25,9 +25,12 @@ import * as service from '../../ajaxServices/AjaxList';
 import style from './style.css';
 //import { push } from 'react-router-redux';
 
+import { connect } from 'react-redux';
+import { login } from '../../actions/AuthActions'
+
 //React.Component is abstract base class
 //DeveloperAuthSignIn is a subclass of React.Component
-export class DeveloperAuthSignIn extends React.Component{
+class DeveloperAuthSignIn extends React.Component{
 
   //Mounting function, called when component is created and inserted into DOM
   //Called before component is mounted
@@ -42,13 +45,7 @@ export class DeveloperAuthSignIn extends React.Component{
     };
   }
 
-  handleEmailChange(e) {
-    this.setState({email: e.target.value});
-  }
 
-  handlePasswordChange(e) {
-    this.setState({password: e.target.value});
-  }
 
   //Fucntion called when the signIn form is submited by user
   handleSubmit(e) {
@@ -58,8 +55,6 @@ export class DeveloperAuthSignIn extends React.Component{
 
     console.log('email + ' + email);
     console.log('password + ' + password);
-
-    authStore.setEmail(email);
 
     // Step 1 - Define global AWS identity credentials
     //Config.region = appConfig.region;
@@ -144,8 +139,6 @@ export class DeveloperAuthSignIn extends React.Component{
 
                       //move to explore page
                       //window.location.assign('../Settings');
-                      //this.props.dispatch(push('../Settings'));
-
                     });
                   }
                 });
@@ -167,30 +160,20 @@ export class DeveloperAuthSignIn extends React.Component{
   //Should not modify component state
   render() {
     return (
-      <div>
-      <p className={style.signIn}>Sign in to your travel profile</p>
-      <br/>
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <label>
 
-          <p className = {style.signInContents}>User Name:</p>
-          <input type="text"
-            value={this.state.email}
-            placeholder="Email"
-            onChange={this.handleEmailChange.bind(this)}/>
-        </label>
-        <label>
-          <p className = {style.signInContents}>Password:</p>
-          <input type="password"
-            value={this.state.password}
-            placeholder="Password"
-            onChange={this.handlePasswordChange.bind(this)}/>
-          <br/>
-          <br/>
-            <input type="submit" value="Sign In"/>
-        </label>
-      </form>
-      </div>
     );
   }
+  _login(username, password) {
+    this.props.dispatch(login());
+  }
 }
+
+// Which props do we want to inject, given the global state?
+function select(state) {
+  return {
+    data: state
+  };
+}
+
+// Wrap the component to inject dispatch and state into it
+export default connect(select)(DeveloperAuthSignIn);
