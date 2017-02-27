@@ -162,7 +162,7 @@ public class BookTourFragment extends Fragment {
         }
 
         builder.setView(confirmBookingView)
-                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         if (confirmDialog == null) {

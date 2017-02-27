@@ -20,7 +20,9 @@ public class User extends Base implements Serializable {
     public static final String PHONE_NUMBER = "phone_number";
     public static final String EMAIL = "email";
     public static final String PROFILE_PICTURE = "profile_picture";
-    public static final String ADDRESS_CITY = "address_city";
+    public static final String ADDRESS = "address";
+
+    public static User current;
 
     public static User getByID(int id) throws IOException, JSONException {
         String url = Common.SERVER_URL + "/users/" + id;
