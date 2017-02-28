@@ -169,6 +169,16 @@ def login(id, accessKeyID):
     return jsonify(user.serialize())
 '''
 
+# Creates a new user
+@app.route('/check_auth', methods=['POST'])
+def check_auth():
+    try:
+        request.get_json()
+    except:
+        return "Invalid", 403
+    if (not checkLogin(data)):
+        return "Invalid", 403
+    return "OK", 200
 
 # Creates a new user
 @app.route('/users', methods=['POST'])
