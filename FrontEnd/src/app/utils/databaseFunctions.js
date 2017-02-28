@@ -1,10 +1,8 @@
 import axios from 'axios';
-import AuthStore from '../stores/AuthStore';
 
 /*
 Every call must use
   secretAccessKey and identityID - Used with all ajax calls
-  Can be seen from AuthStore
 */
 
 export function getAllTours() {
@@ -12,23 +10,17 @@ export function getAllTours() {
 }
 
 export function getUser(id){
-    if(authStore.signedIn()){
-      var url = "http://34.197.42.24:5000/users/"+id;
-      console.log("url: "+url);
-      return axios.get(url);
-    }
-    return false;
+    var url = "http://34.197.42.24:5000/users/"+id;
+    console.log("url: "+url);
+    return axios.get(url);
 }
 
 export function newTour(data){
-    if(authStore.signedIn()){
-      console.log(data);
-      var url = "http://34.197.42.24:5000/tours";
-      console.log("url: "+url);
-      //var t = JSON.stringify(data);
-      return axios.post(url, data);
-   }
-    return false;
+    console.log(data);
+    var url = "http://34.197.42.24:5000/tours";
+    console.log("url: "+url);
+    //var t = JSON.stringify(data);
+    return axios.post(url, data);
 }
 
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.

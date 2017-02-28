@@ -14,25 +14,25 @@ import { loadState } from '../localStorage';
 /* Fucntion used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
   let tmpState = loadState();
-  console.log("tmpState", tmpState);
   let loggedIn = tmpState.AuthReducer.loggedIn;
+  //TODO verify login isnt user added?
 
-    if (loggedIn) {
-      console.log("2");
-      if (nextState.location.state && nextState.location.pathname) {
-        replaceState(null, nextState.location.pathname);
-      } else {
-        replaceState(null, '/');
-      }
+  //If user is logged in allow them to
+  if (loggedIn) {
+    if (nextState.location.state && nextState.location.pathname) {
+      replaceState(null, nextState.location.pathname);
+    } else {
+      replaceState(null, '/');
     }
-    else {
-      console.log("3");
-      if (nextState.location.state && nextState.location.pathname) {
-        replaceState(null, nextState.location.pathname);
-      } else {
-        replaceState(null, '/');
-      }
+  }
+  else {
+    //User is not logged in so push them to signin
+    if (nextState.location.state && nextState.location.pathname) {
+      replaceState(null, nextState.location.pathname);
+    } else {
+      replaceState(null, '/sign');
     }
+  }
 }
 
 const Root = ({ store }) => (

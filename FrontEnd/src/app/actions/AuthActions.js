@@ -90,7 +90,7 @@ export function logout() {
         dispatch(sendingRequest(false))
         dispatch(setAuthState(false));
         localStorage.removeItem('token')
-        browserHistory.replace(null, '/');
+        browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
       }
@@ -151,10 +151,10 @@ export function register(username, password) {
 
 /**
  * Sets the authentication state of the application
- * @param {boolean} newState True means a user is logged in, false means no user is logged in
+ * @param {boolean} newAuthState True means a user is logged in, false means no user is logged in
  */
-export function setAuthState(newState) {
-  return { type: SET_AUTH, newState };
+export function setAuthState(newAuthState) {
+  return { type: SET_AUTH, newAuthState };
 }
 
 /**
@@ -186,7 +186,7 @@ function setErrorMessage(message) {
   return (dispatch) => {
     dispatch({ type: SET_ERROR_MESSAGE, message });
 
-    const form = document.querySelector('.form-page__form-wrapper');
+    /*const form = document.querySelector('.form-page__form-wrapper');
     if (form) {
       form.classList.add('js-form__err-animation');
       // Remove the animation class after the animation is finished, so it
@@ -199,7 +199,11 @@ function setErrorMessage(message) {
       setTimeout(() => {
         dispatch({ type: SET_ERROR_MESSAGE, message: '' });
       }, 3000);
-    }
+    }*/
+    // Remove the error message after 3 seconds
+    setTimeout(() => {
+      dispatch({ type: SET_ERROR_MESSAGE, message: '' });
+    }, 3000);
   }
 }
 

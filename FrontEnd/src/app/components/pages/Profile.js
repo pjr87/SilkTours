@@ -181,7 +181,7 @@ class Profile extends React.Component{
 }
 
 Profile.propTypes = {
-  data: React.PropTypes.object,
+  id_user: React.PropTypes.string,
   history: React.PropTypes.object,
   dispatch: React.PropTypes.func
 }
