@@ -13,59 +13,38 @@
 */
 
 import React from 'react';
-import FacebookLogin from 'react-facebook-login';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
-
-import {DeveloperAuthSignIn} from '../CognitoSync/DeveloperAuthSignIn.js';
-import FederatedAuthSignIn from "../CognitoSync/FederatedAuthSignIn.js";
-import appConfig from "../CognitoSync/config";
-import FaFacebook from 'react-icons/lib/fa/facebook';
-
-const responseFacebook = (response) => {
-  console.log(response);
-  FederatedAuthSignIn.startAWS(response, "Facebook");
-}
+import { connect } from 'react-redux';
+import LoginForm from './LoginForm';
+import auth from '../../utils/cognitoFunctions';
+import { login } from '../../actions/AuthActions';
+import LoadingIndicator from './LoadingIndicator';
 
 class SignInContents extends React.Component{
   //Define auth profile state
   constructor(){
     super();
-    this.state = {
-      authProfile: authStore.getProfile(), //Get current profile
-    };
-  }
-
-  //Before component mounts, check login state
-  componentWillMount() {
-    authStore.on("login", () => {
-      this.setState({
-        authProfile: authStore.getProfile(),
-      })
-    })
-
-    authStore.on("logout", () => {
-      this.setState({
-        authProfile: authStore.getProfile(), //Will return 0
-      })
-    })
   }
 
   render() {
+    const dispatch = this.props.dispatch;
+		const { formState, currentlySending } = this.props.data;
+
     return (
       <div>
         <br/>
         <br/>
-        <DeveloperAuthSignIn/>
+        <div className="form-page__wrapper">
+				  <div className="form-page__form-wrapper">
+					  <div className="form-page__form-header">
+						  <h2 className="form-page__form-heading">Login</h2>
+				    </div>
+  					{/* While the form is sending, show the loading indicator,
+  						otherwise show "Log in" on the submit button */}
+  		    	<LoginForm data={formState} dispatch={dispatch} location={location} history={this.props.history} onSubmit={::this._login} btnText={"Login"} currentlySending={currentlySending}/>
+				  </div>
+			  </div>
         <br/>
-        <FacebookLogin
-          appId={appConfig.facebookAppId}
-          autoLoad={false}
-          fields="name,email,picture"
-          callback={responseFacebook}
-          textButton=" Login"
-          size="medium"
-          icon={<FaFacebook />}
-          />
         <br/>
         <br/>
         <p>Don't have one?</p>
@@ -75,6 +54,19 @@ class SignInContents extends React.Component{
       </div>
     );
   }
+  _login(username, password) {
+    this.props.dispatch(login(username, password));
+  }
 }
 
-export default SignInContents;
+// Which props do we want to inject, given the global state?
+function select(state) {
+  return {
+    data: state
+  };
+}
+
+// Wrap the component to inject dispatch and state into it
+export default connect(select)(SignInContents);
+
+//export default SignInContents;

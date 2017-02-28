@@ -13,7 +13,7 @@ class AuthStore extends EventEmitter {
       /*
       Logins and identityID - Used with all ajax calls
       */
-      name: "", //User's name
+      fullName: "", //User's name
       email: "", //User's email
       Logins: "", //AWS value needed to request secured endpoints   MESSAGING
       identityID: "", //Unique identityID assigned to user by AWS   MESSAGING
@@ -28,8 +28,8 @@ class AuthStore extends EventEmitter {
   // ---------------
   //This function is called when a user signs up
   //This funciton will update those listening
-  signUp(name, email, identityID, id_user, logins, provider){
-    this.authProfile.name = name;
+  signUp(fullName, email, identityID, id_user, logins, provider){
+    this.authProfile.fullName = fullName;
     this.authProfile.email = email;
     this.authProfile.identityID = identityID;
     this.authProfile.id_user = id_user;
@@ -46,8 +46,8 @@ class AuthStore extends EventEmitter {
 
   //This function is called when a user signs in
   //This funciton will update those listening
-  login(name, identityID, id_user, logins, provider){
-    this.authProfile.name = name;
+  signIn(fullName, identityID, id_user, logins, provider){
+    this.authProfile.fullName = fullName;
     this.authProfile.identityID = identityID;
     this.authProfile.id_user = id_user;
     this.authProfile.Logins = logins;
@@ -59,7 +59,7 @@ class AuthStore extends EventEmitter {
 
   //This function is called when a user logs off
   //This funciton will update those listening
-  logout(){
+  signOut(){
     this.authProfile.identityID = 0;
     this.authProfile.provider = "";
     this.authProfile.signedin = 0;
@@ -81,10 +81,31 @@ class AuthStore extends EventEmitter {
   getProfile(){
     return this.authProfile;
   }
+
+  //fucntion that handles all actions
+  //This function looks for all dispatched events and only reacts to ones
+  //that it defines here
+  handleActions(action){
+    switch(action.type){
+      case "SIGNIN": {
+        this.signIn(action.fullName, action.identityID, action.id_user, action.logins, action.provider);
+      }
+      case "SIGNUP": {
+        this.signUp(action.fullName, action.email, action.identityID, action.id_user, action.logins, action.provider);
+      }
+      case "SIGNOUT": {
+        this.signOut();
+      }
+      case "SET_EMAIL": {
+        this.setEmail(action.email);
+      }
+    }
+  }
 }
 
 //Create new authStore
 const authStore = new AuthStore;
-//Whenever you import AuthStore you will get this above created AuthStore
+
 window.authStore = authStore; // Exposes AuthStore globally
+
 export default authStore;

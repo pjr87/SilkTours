@@ -13,7 +13,7 @@ class AboutUsPage extends React.Component{
         <br/>
         <PageTitle title= "introducing our team member"/>
         <AboutContents/>
-        <Footer/>
+
       </div>
     );
   }
