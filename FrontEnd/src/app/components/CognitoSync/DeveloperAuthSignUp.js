@@ -48,7 +48,6 @@ const userPool = new CognitoUserPool({
   ClientId: appConfig.clientId,
 });
 
-
 //React.Component is abstract base class
 //DeveloperAuth is a subclass of React.Component
 export class DeveloperAuthSignUp extends React.Component{
