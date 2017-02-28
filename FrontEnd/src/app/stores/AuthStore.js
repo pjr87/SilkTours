@@ -15,11 +15,11 @@ class AuthStore extends EventEmitter {
       */
       fullName: "", //User's name
       email: "", //User's email
-      Logins: "", //AWS value needed to request secured endpoints   MESSAGING
-      identityID: "", //Unique identityID assigned to user by AWS   MESSAGING
+      Logins: "", //AWS value needed to request secured endpoints
+      identityID: "", //Unique identityID assigned to user by AWS
       id_user: "", //Primary key of user in users table
       signedin: 0, //if signed in
-      provider: "", //What service signed in with (Facebook, Developer)
+      provider: "" //What service signed in with (Facebook, Developer)
     }
   }
 

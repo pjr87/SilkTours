@@ -9,34 +9,28 @@ import Profile from './pages/Profile'
 import TourCreation from './pages/TourCreation';
 import TourSignup from './pages/TourSignup';
 import App from './App';
+import { loadState } from '../localStorage';
 
 /* Fucntion used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
-  let { loggedIn } = store.getState();
+  let tmpState = loadState();
+  let loggedIn = tmpState.AuthReducer.loggedIn;
+  //TODO verify login isnt fake?
 
-  // check if the path isn't dashboard
-  // that way we can apply specific logic
-  // to display/render the path we want to
-  if (nextState.location.pathname !== '/dashboard') {
-    console.log("1");
-    if (loggedIn) {
-      console.log("2");
-      if (nextState.location.state && nextState.location.pathname) {
-        replaceState(null, nextState.location.pathname);
-      } else {
-        replaceState(null, '/');
-      }
+  //If user is logged in allow them to
+  if (loggedIn) {
+    if (nextState.location.state && nextState.location.pathname) {
+      replaceState(null, nextState.location.pathname);
+    } else {
+      replaceState(null, '/');
     }
-  } else {
-    console.log("3");
-    // If the user is not already logged in, forward them to the home
-    if (!loggedIn) {
-      console.log("4");
-      if (nextState.location.state && nextState.location.pathname) {
-        replaceState(null, nextState.location.pathname);
-      } else {
-        replaceState(null, '/');
-      }
+  }
+  else {
+    //User is not logged in so push them to signin
+    if (nextState.location.state && nextState.location.pathname) {
+      replaceState(null, nextState.location.pathname);
+    } else {
+      replaceState(null, '/sign');
     }
   }
 }

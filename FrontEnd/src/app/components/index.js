@@ -1,5 +1,3 @@
-export Header from './Header/Header';
-export Footer from './Footer/Footer';
 export SearchBar from './SearchBar/SearchBar';
 export PageTitle from './PageTitle/PageTitle';
 export BannerImage from './BannerImage/BannerImage';

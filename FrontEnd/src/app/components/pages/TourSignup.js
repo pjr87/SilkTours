@@ -1,7 +1,6 @@
 import React from 'react';
 import style from '../../style/style.css';
 import {EditableField, FormTitle, FormButton} from '../forms/Forms.js';
-import Header from '../Header/Header.js';
 import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
 import * as service from '../../utils/databaseFunctions';
 
@@ -185,7 +184,6 @@ export default class TourSignup extends React.Component{
   render(){
     var tour = this.state.tour;
     return ( <div>
-        <Header largeHeader={false}/>
         <div className={style.mainBody}>
           <div className={style.formSection} >
             <FormTitle title="Tour Signup" />

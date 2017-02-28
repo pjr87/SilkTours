@@ -1,14 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
 import style from '../../style/style.css';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
 import {ProfileHeader} from './Profile';
 import * as service from '../../utils/databaseFunctions';
-//import authStore from "../../stores/AuthStore.js";
 import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../forms/Forms.js';
 import logoImg from '../../style/images/logo2.png';
 import { WithContext as ReactTags } from 'react-tag-input';
+import {connect} from 'react-redux';
 
 class SettingsPg extends React.Component {
 
@@ -19,25 +17,12 @@ class SettingsPg extends React.Component {
      this.state = {
          fetching: false, // tells whether the request is waiting for response or not
          user: {interests:[]},
-         warningVisibility: false,
-         authProfile: authStore.getProfile()
+         warningVisibility: false
      };
   }
 
-  //Before component mounts, check login state
-  componentWillMount() {
-    authStore.on("login", () => {
-      this.state.authProfile = authStore.getProfile();
-    })
-
-    authStore.on("logout", () => {
-      this.state.authProfile = authStore.getProfile();
-    })
-  }
-
   componentDidMount() {
-    this.state.authProfile = authStore.getProfile();
-    this.getUserInfo(this.state.authProfile.id_user);
+    this.getUserInfo(this.props.id_user);
   }
 
   showWarning = () => {
@@ -60,9 +45,7 @@ class SettingsPg extends React.Component {
 
   getUserInfo = async (postId) => {
      try {
-       this.state.authProfile = authStore.getProfile();
-
-        service.getUser(this.state.authProfile.id_user).then((function(response){
+        service.getUser(this.props.id_user).then((function(response){
           console.log("response: ");
           console.log( response.data );
           //var test = {test:""};
@@ -119,7 +102,6 @@ class SettingsPg extends React.Component {
     const {fetching, user} = this.state;
 
     return (<div>
-        <Header largeHeader={false} fileName={logoImg} />
         <ProfileHeader profilePicture={user.profile_picture} name={user.first_name+" "+user.last_name}/>
 
       <div className={style.mainBody}>
@@ -168,4 +150,16 @@ const Settings = () => {
   return (<SettingsPg  />);
 }
 
-export default Settings;
+Settings.propTypes = {
+  id_user: React.PropTypes.string,
+  history: React.PropTypes.object,
+  dispatch: React.PropTypes.func
+}
+
+function select (state) {
+  return {
+    id_user: state.AuthReducer.user.id_user
+  };
+}
+
+export default connect(select)(Settings);

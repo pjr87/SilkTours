@@ -11,13 +11,12 @@ all
 */
 
 //import cognito libraries
-//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
-import appConfig from "./config";
+import appConfig from "../../utils/config";
 import * as service from '../../utils/databaseFunctions';
 
 import { connect } from 'react-redux';
@@ -80,7 +79,7 @@ class FederatedAuthSignIn{
 
                 var fullName = name[0] + " " + name[1];
 
-                authStore.login(fullName, id, response.data.id_users, loginsIdpData, "Facebook");
+                //authStore.login(fullName, id, response.data.id_users, loginsIdpData, "Facebook");
 
                 config.credentials.clearCachedId();
 

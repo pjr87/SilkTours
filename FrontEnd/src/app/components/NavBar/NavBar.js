@@ -18,7 +18,7 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { logout } from '../../actions/AuthActions';
+import { logout, clearError } from '../../actions/AuthActions';
 import Dropdown from './Dropdown';
 
 class NavBar extends Component {
@@ -30,6 +30,7 @@ class NavBar extends Component {
   render() {
     const dropDown = this.props.loggedIn ? (
       <Dropdown usersName={this.props.usersName}
+                currentlySending={this.props.currentlySending}
                 dispatch={this.props.dispatch}/>
     ) : (
       <LinkContainer to="/sign" onClick={this._clearError}>
@@ -39,7 +40,7 @@ class NavBar extends Component {
 
     return (
       <div>
-        <Navbar fixedTop collapseOnSelect style={{opacity:0.5}}>
+        <Navbar fixedTop collapseOnSelect style={{opacity:1}}>
           <Navbar.Header>
             <Navbar.Brand>
               <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>

@@ -15,34 +15,71 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import LoginForm from './LoginForm';
+import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+
 import auth from '../../utils/cognitoFunctions';
-import { login } from '../../actions/AuthActions';
-import LoadingIndicator from './LoadingIndicator';
+import { login, changeForm } from '../../actions/AuthActions';
+import ErrorMessage from '../common/ErrorMessage';
+
+// Object.assign is not yet fully supported in all browsers, so we fallback to
+// a polyfill
+const assign = Object.assign || require('object.assign');
+
 
 class SignInContents extends React.Component{
   constructor(){
     super();
+
+    this.loginSubmit = this.loginSubmit.bind(this)
+    this._changeUsername = this._changeUsername.bind(this)
+    this._changePassword = this._changePassword.bind(this)
+  }
+
+  _changeUsername (event) {
+    this._emitChange({...this.props.formState, username: event.target.value})
+  }
+
+  _changePassword (event) {
+    this._emitChange({...this.props.formState, password: event.target.value})
+  }
+
+  _emitChange (newFormState) {
+    this.props.dispatch(changeForm(newFormState))
+  }
+
+  loginSubmit(event) {
+    event.preventDefault()
+    this.props.dispatch(login(this.props.formState.username, this.props.formState.password));
   }
 
   render() {
-    const dispatch = this.props.dispatch;
-		const { formState, currentlySending } = this.props.data;
-
+    const {errorMessage} = this.props;
     return (
       <div>
         <br/>
         <br/>
-        <div className="form-page__wrapper">
-				  <div className="form-page__form-wrapper">
-					  <div className="form-page__form-header">
-						  <h2 className="form-page__form-heading">Login</h2>
-				    </div>
-  					{/* While the form is sending, show the loading indicator,
-  						otherwise show "Log in" on the submit button */}
-  		    	<LoginForm data={formState} dispatch={dispatch} location={location} history={this.props.history} onSubmit={::this._login} btnText={"Login"} currentlySending={currentlySending}/>
-				  </div>
-			  </div>
+        <Form inline>
+            <FormGroup controlId="formHorizontalEmail">
+                <ControlLabel>Email </ControlLabel>
+                <FormControl
+                  type="username"
+                  ref="username"
+                  onChange={this._changeUsername}
+                  placeholder="Email" />
+            </FormGroup>
+            <FormGroup controlId="formHorizontalPassword">
+                <ControlLabel>Password </ControlLabel>
+                <FormControl
+                  type="password"
+                  ref="password"
+                  onChange={this._changePassword}
+                  placeholder="Password" />
+            </FormGroup>
+            <Button onClick={this.loginSubmit}>Login</Button>
+            {errorMessage &&
+            <p style={{color:'red'}}>{errorMessage}</p>
+            }
+        </Form>
         <br/>
         <br/>
         <br/>
@@ -51,21 +88,23 @@ class SignInContents extends React.Component{
         <br/>
         <br/>
       </div>
-    );
-  }
-  _login(username, password) {
-    this.props.dispatch(login(username, password));
+    )
   }
 }
 
-// Which props do we want to inject, given the global state?
+SignInContents.propTypes = {
+  formState: React.PropTypes.object,
+  history: React.PropTypes.object,
+  dispatch: React.PropTypes.func
+}
+
+// select chooses which props to pull from store
 function select(state) {
   return {
-    data: state
+    formState: state.AuthReducer.formState,
+    currentlySending: state.AuthReducer.currentlySending
   };
 }
 
 // Wrap the component to inject dispatch and state into it
 export default connect(select)(SignInContents);
-
-//export default SignInContents;

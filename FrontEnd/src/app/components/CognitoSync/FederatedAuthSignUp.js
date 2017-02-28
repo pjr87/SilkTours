@@ -11,13 +11,12 @@ all
 */
 
 //import cognito libraries
-//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
-import appConfig from "./config";
+import appConfig from "../../utils/config";
 import * as service from '../../utils/databaseFunctions';
 
 //React.Component is abstract base class
@@ -91,7 +90,7 @@ class FederatedAuthSignUp{
             var fullName = name[0] + " " + name[1];
 
             if(response.data.email == email){
-              authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Facebook");
+              //authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Facebook");
 
               config.credentials.clearCachedId();
 

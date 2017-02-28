@@ -18,8 +18,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import FacebookLogin from 'react-facebook-login';
-import appConfig from "../CognitoSync/config";
-//import AuthStore from "../../stores/AuthStore.js";
+import appConfig from "../../utils/config";
 import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
 import FederatedAuthSignUp from "../CognitoSync/FederatedAuthSignUp.js";
 import FaFacebook from 'react-icons/lib/fa/facebook';
@@ -34,24 +33,6 @@ class SignUp extends React.Component{
   //Define auth profile state
   constructor(){
     super();
-    this.state = {
-      authProfile: authStore.getProfile(), //Get current profile
-    };
-  }
-
-  //Before component mounts, check login state
-  componentWillMount() {
-    authStore.on("login", () => {
-      this.setState({
-        authProfile: authStore.getProfile(),
-      })
-    })
-
-    authStore.on("logout", () => {
-      this.setState({
-        authProfile: authStore.getProfile(), //Will return 0
-      })
-    })
   }
 
   render() {

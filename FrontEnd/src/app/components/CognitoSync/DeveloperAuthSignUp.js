@@ -8,20 +8,19 @@
  AWS cognito sync using email and password
 
  TODO:
- Update AuthStore after successful sign up, send to signIn
+ Update after successful sign up, send to signIn
 */
 
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
 import Modal from 'react-modal';
-import appConfig from "./config";
+import appConfig from "../../utils/config";
 import * as service from '../../utils/databaseFunctions';
 import style from './style.css';
 
@@ -264,7 +263,7 @@ export class DeveloperAuthSignUp extends React.Component{
                   var fullName = name[0] + " " + name[1];
 
                   if(response.data.email == email){
-                    authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Developer");
+                    //authStore.signUp(fullName, email, id, response.data.id_users, loginsIdpData, "Developer");
 
                     config.credentials.clearCachedId();
 

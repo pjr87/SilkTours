@@ -1,11 +1,11 @@
 import React from 'react';
 import style from '../../style/style.css';
-import Header from '../Header/Header';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router'
 import TourContainer from '../Tours/TourContainer';
 import * as service from '../../utils/databaseFunctions';
 import logoImg from '../../style/images/logo2.png';
 
+import {connect} from 'react-redux';
 
 class ProfileHeader extends React.Component{
 
@@ -83,20 +83,8 @@ class Profile extends React.Component{
          fetching: false, // tells whether the request is waiting for response or not
          user: [],
          tab:'saves',
-         warningVisibility: false,
-         authProfile: authStore.getProfile()
+         warningVisibility: false
      };
-  }
-
-  //Before component mounts, check login state
-  componentWillMount() {
-    authStore.on("login", () => {
-      this.state.authProfile = authStore.getProfile();
-    })
-
-    authStore.on("logout", () => {
-      this.state.authProfile = authStore.getProfile();
-    })
   }
 
   componentDidMount() {
@@ -123,10 +111,9 @@ class Profile extends React.Component{
      });
 
      try {
-         this.state.authProfile = authStore.getProfile();
          // wait for two promises
          const info = await Promise.all([
-             service.getUser(this.state.authProfile.id_user)
+             service.getUser(this.props.id_user)
          ]);
 
          const user = info[0].data;
@@ -161,26 +148,48 @@ class Profile extends React.Component{
       var tabPage = <div> </div>;
     }
 
-    return (<div>
-      <Header largeHeader={false} fileName={logoImg} />
-      <ProfileHeader profilePicture={userData.profile_picture} name={userData.first_name+" "+userData.last_name} />
-      <div className={style.mainBody}>
-        <div className={style.profileButtonMenu}>
-          <button id="firstButton" className={style.profileButtons} onClick={this.buttonHandler.bind(this,"messages")}>messages</button>
-          <button className={style.profileButtons} onClick={this.buttonHandler.bind(this,'saves')}>saves</button>
-          <button className={style.profileButtons} onClick={this.buttonHandler.bind(this,'trips')}>trips</button>
-
-        </div>
-
-      <div className={style.formSection}>
-
+    return (
+      <div>
+        <ProfileHeader
+          profilePicture={userData.profile_picture}
+          name={userData.first_name+" "+userData.last_name} />
+        <div className={style.mainBody}>
+          <div className={style.profileButtonMenu}>
+            <button
+              id="firstButton"
+              className={style.profileButtons}
+              onClick={this.buttonHandler.bind(this,"messages")}>messages
+            </button>
+            <button
+              className={style.profileButtons}
+              onClick={this.buttonHandler.bind(this,'saves')}>saves
+            </button>
+            <button
+              className={style.profileButtons}
+              onClick={this.buttonHandler.bind(this,'trips')}>trips
+            </button>
+          </div>
+          <div className={style.formSection}>
             {tabPage}
+          </div>
         </div>
       </div>
-
-    </div>);
+    );
   }
 }
 
-export default Profile;
+Profile.propTypes = {
+  id_user: React.PropTypes.string,
+  history: React.PropTypes.object,
+  dispatch: React.PropTypes.func
+}
+
+function select (state) {
+  return {
+    id_user: state.AuthReducer.user.id_user
+  };
+}
+
+export default connect(select)(Profile);
+
 export {ProfileHeader};
