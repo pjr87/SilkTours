@@ -10,6 +10,7 @@
 import React, { Component } from 'react';
 import NavBar from './NavBar/NavBar';
 import { connect } from 'react-redux';
+import style from './style.css';
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
                 location={this.props.location}
                 dispatch={this.props.dispatch}/>
         { this.props.children }
+        <p className = {style.Footer}>&#169;silk tours inc.</p>
       </div>
     )
   }

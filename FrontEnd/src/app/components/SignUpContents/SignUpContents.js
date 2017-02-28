@@ -18,7 +18,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import FacebookLogin from 'react-facebook-login';
-import appConfig from "../CognitoSync/config";
+import appConfig from "../../utils/config";
 import {DeveloperAuthSignUp} from '../CognitoSync/DeveloperAuthSignUp.js';
 import FederatedAuthSignUp from "../CognitoSync/FederatedAuthSignUp.js";
 import FaFacebook from 'react-icons/lib/fa/facebook';

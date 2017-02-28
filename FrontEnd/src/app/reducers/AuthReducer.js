@@ -13,6 +13,7 @@
 import {
   CHANGE_FORM,
   SET_AUTH,
+  UPDATE_USER,
   SENDING_REQUEST,
   SET_ERROR_MESSAGE,
   CLEAR_ERROR
@@ -47,6 +48,8 @@ function AuthReducer(state = initialState, action) {
        return {...state, formState: action.newFormState};
     case SET_AUTH:
       return {...state, loggedIn: action.newAuthState};
+    case UPDATE_USER:
+      return {...state, user: action.newUserState};
     case SENDING_REQUEST:
       return {...state, currentlySending: action.sending};
     case SET_ERROR_MESSAGE:

@@ -20,7 +20,7 @@ const configureStore = () => {
   //This is the middleware that logs states to consol
   const Logger = logger({
     // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
-    predicate: (getState, action) => action.type !== 'CHANGE_FORM'
+    //predicate: (getState, action) => action.type !== 'CHANGE_FORM'
   })
 
   // Creates the Redux reducer with the redux-thunk middleware, which allows us

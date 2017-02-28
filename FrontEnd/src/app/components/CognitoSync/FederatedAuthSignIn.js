@@ -16,7 +16,7 @@ import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
-import appConfig from "./config";
+import appConfig from "../../utils/config";
 import * as service from '../../utils/databaseFunctions';
 
 import { connect } from 'react-redux';

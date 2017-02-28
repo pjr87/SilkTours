@@ -20,7 +20,7 @@ import {
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
 import Modal from 'react-modal';
-import appConfig from "./config";
+import appConfig from "../../utils/config";
 import * as service from '../../utils/databaseFunctions';
 import style from './style.css';
 
