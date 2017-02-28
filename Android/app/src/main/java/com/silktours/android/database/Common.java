@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Created by andrew on 1/26/17.
@@ -44,6 +45,11 @@ public class Common {
 
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        int responseCode = urlConnection.getResponseCode();
+        if (responseCode != 200) {
+            Log.d("Silk", "" + responseCode);
+            return "{'exists': false}";
+        }
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -57,8 +63,33 @@ public class Common {
         } finally {
             urlConnection.disconnect();
         }
+    }
 
+    public static boolean checkAuth(Map<String, String> logins, String identityId) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("Logins", new JSONObject(logins));
+            json.put("IdentityId", identityId);
+            String urlString = SERVER_URL + "/check_auth";
+            URL url = new URL(urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestMethod("POST");
 
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(json.toString());
+            writer.close();
+            os.close();
+
+            int responseCode = urlConnection.getResponseCode();
+            return responseCode == 200;
+        }catch (IOException e) {
+            return false;
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
     public static JSONObject getJson(String urlString) throws IOException, JSONException {

@@ -1,6 +1,7 @@
 package com.silktours.android.utils;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.silktours.android.database.User;
 
 /**
  * Created by andrew on 4/5/16.
@@ -8,6 +9,8 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 public class CredentialHandler {
     public static CognitoCachingCredentialsProvider credentialsProvider = null;
     public static String username = null;
+    public static String email = null;
+    public static User user;
 
     public static final String identityPoolId = "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349";
     public static final String userPoolId = "us-east-1_917Igx5Ld";

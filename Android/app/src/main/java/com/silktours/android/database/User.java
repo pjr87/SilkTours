@@ -31,6 +31,23 @@ public class User extends Base implements Serializable {
         return result;
     }
 
+    public static User getByEmail(String email) throws IOException, JSONException {
+        String url = Common.SERVER_URL + "/users/email/" + email;
+        User result = new User();
+        result.JSON = Common.getJson(url);
+        if (result.JSON.has("exists")) {
+            return null;
+        }
+        return result;
+    }
+
+
+    public void create() throws IOException {
+        String url = Common.SERVER_URL + "/users";
+        set("bypass", true); // Bypass auth
+        String result = Common.request(url, JSON.toString(), "POST");
+    }
+
     public void commit() throws IOException {
         String url = Common.SERVER_URL + "/users/" + getInt(ID_USERS);
         set("bypass", true); // Bypass auth

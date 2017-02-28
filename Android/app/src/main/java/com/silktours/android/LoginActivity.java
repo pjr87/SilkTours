@@ -3,6 +3,7 @@ package com.silktours.android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,17 +32,31 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.cognito.CognitoSyncManager;
 import com.amazonaws.mobileconnectors.cognito.Dataset;
 import com.amazonaws.mobileconnectors.cognito.DefaultSyncCallback;
+import com.amazonaws.mobileconnectors.cognito.internal.storage.CognitoSyncStorage;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.securitytoken.model.FederatedUser;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.silktours.android.database.Common;
+import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,6 +128,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,
+                resultCode, data);
+    }
     
     private void setupFacebook() {
         // Facebook SDK
@@ -119,69 +142,149 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile");
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            private ProfileTracker mProfileTracker;
-
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // AWS
                 credentialsProvider = new CognitoCachingCredentialsProvider(
-                        getApplication(), // Context
-                        CredentialHandler.identityPoolId, // Identity Pool ID
-                        Regions.US_EAST_1 // Region
+                        getApplication(),
+                        CredentialHandler.identityPoolId,
+                        Regions.US_EAST_1
                 );
+                final Map<String, String> logins = new HashMap<>();
+                String accessToken = loginResult.getAccessToken().getToken();
+                logins.put("graph.facebook.com", accessToken);
+                credentialsProvider.setLogins(logins);
                 CredentialHandler.credentialsProvider = credentialsProvider;
 
                 syncClient = new CognitoSyncManager(
-                        getApplication(), // Context
-                        Regions.US_EAST_1, // Region
+                        getApplication(),
+                        Regions.US_EAST_1,
                         credentialsProvider
                 );
 
-                if(com.facebook.Profile.getCurrentProfile() == null) {
-                    mProfileTracker = new ProfileTracker() {
-                        @Override
-                        protected void onCurrentProfileChanged(com.facebook.Profile profile, com.facebook.Profile profile2) {
-                            // profile2 is the new profile
-                            Map<String, String> logins = new HashMap<String, String>();
-                            logins.put("graph.facebook.com", AccessToken.getCurrentAccessToken().getToken());
-                            credentialsProvider.setLogins(logins);
-
-                            String name = profile2.getName();
-                            CredentialHandler.username = name;
-                            Dataset dataset = syncClient.openOrCreateDataset("FacebookUser");
-                            dataset.put("Name", name);
-                            dataset.synchronize(new DefaultSyncCallback());
-                            mProfileTracker.stopTracking();
-                            goHome();
+                getFBInfo(loginResult, new GetFBInfoCallback() {
+                    @Override
+                    public void done(String email, String name, String picture) {
+                        User user = null;
+                        try {
+                            user = User.getByEmail(email);
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
                         }
-                    };
-                    mProfileTracker.startTracking();
-                }
-                else {
-                    com.facebook.Profile profile = com.facebook.Profile.getCurrentProfile();
-                    String name = profile.getName();
-                    CredentialHandler.username = name;
-                    Dataset dataset = syncClient.openOrCreateDataset("FacebookUser");
-                    dataset.put("Name", name);
-                    dataset.synchronize(new DefaultSyncCallback());
-                    goHome();
-                }
+                        if (user == null) {
+                            String[] names = name.split(" ");
+                            user = new User();
+                            user.set(User.EMAIL, email);
+                            user.set(User.FIRST_NAME, names[0]);
+                            if (names.length > 1) {
+                                user.set(User.LAST_NAME, names[names.length - 1]);
+                            }
+                            user.set(User.PROFILE_PICTURE, picture);
+                            try {
+                                user.create();
+                                CredentialHandler.user = user;
+                                goHome();
+                                finish();
+                                return;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            credentialsProvider.refresh();
+                            CredentialHandler.user = user;
+                            if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
+                                goHome();
+                                finish();
+                                return;
+                            }
+                        }
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
 
             @Override
             public void onCancel() {
-
+                Log.d("Silk", "On cancel");
             }
 
             @Override
             public void onError(FacebookException e) {
-
+                Log.d("Silk", "On error");
             }
         });
     }
 
+    /*private void signUpCognito(String email) {
+        SignUpHandler signupCallback = new SignUpHandler() {
+            @Override
+            public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+                if(!userConfirmed) {
+                    // This user must be confirmed and a confirmation code was sent to the user
+                    // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
+                    // Get the confirmation code from user
+                }
+                else {
+                    // The user has already been confirmed
+                }
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // Sign-up failed, check exception for the cause
+            }
+        };
+        CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+        userAttributes.addAttribute("email", email);
+        CognitoUserPool userPool;
+        userPool.signUpInBackground(userId, password, userAttributes, null, signupCallback);
+    }*/
+
+    private void launchCreateUser(String email, String name, String picture) {
+        Intent intent = new Intent(this, SignUp.class);
+        this.startActivity(intent);
+    }
+
+    private interface GetFBInfoCallback {
+        void done(String email, String name, String picture);
+    }
+    private void getFBInfo(LoginResult result, final GetFBInfoCallback callback) {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, final GraphResponse response) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject json = response.getJSONObject();
+                        try {
+                            if(json != null){
+                                callback.done(
+                                        json.getString("email"),
+                                        json.getString("name"),
+                                        json.getString("picture")
+                                );
+                            }
+                        } catch (JSONException e) {
+                            callback.done(null, null, null);
+                        }
+                    }
+                }).start();
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link,email,picture");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
     private void goHome() {
-        Toast.makeText(this, "Go Home", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        finish();
     }
 
     private void populateAutoComplete() {
@@ -226,7 +329,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
