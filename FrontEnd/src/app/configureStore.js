@@ -17,7 +17,7 @@ const configureStore = () => {
     //options
   });
 
-  //This is the middleware that logs states to consol
+  //This is the middleware that logs states to console
   const Logger = logger({
     // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
     //predicate: (getState, action) => action.type !== 'CHANGE_FORM'
