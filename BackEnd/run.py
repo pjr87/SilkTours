@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from tour_event_mapped import TourEvent
 from interests_mapped import Interests
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
@@ -168,6 +169,17 @@ def login(id, accessKeyID):
     return jsonify(user.serialize())
 '''
 
+# Creates a new user
+@app.route('/check_auth', methods=['POST'])
+def check_auth():
+
+    try:
+        data = request.get_json()
+        if (not checkLogin(data)):
+            return "Invalid", 403
+    except:
+        return "Invalid JSON", 403
+    return "OK", 200
 
 # Creates a new user
 @app.route('/users', methods=['POST'])
@@ -250,7 +262,8 @@ def get_tour_list():
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return db.list_tour_with_id(tourid)
+    tour = session.query(Tour).get(tourid)
+    return jsonify(tour.serialize(True))
 
 
 @app.route('/tours', methods=['POST'])
@@ -269,6 +282,12 @@ def edit_tour(tourid):
         return notAuthorizedResponse()
 
     return db.edit(tourid, data, 'Tour')
+
+
+@app.route('/tour/<tourid>/events', methods=['GET'])
+def get_tourevent(tourid):
+    events = session.query(TourEvent).filter(TourEvent.id_tour == tourid).all()
+    return jsonify([event.serialize() for event in events])
 
 
 @app.route('/tourevents/<tourid>', methods=['POST'])
