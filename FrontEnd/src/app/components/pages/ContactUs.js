@@ -25,6 +25,8 @@ class ContactUs extends React.Component{
 
 
 	render() {
+
+    console.log("issue");
     var submitted;
     var buttonPlaceholder = <div></div>;
     if (this.state.submitted !== null) {
@@ -55,9 +57,7 @@ class ContactUs extends React.Component{
           {buttonPlaceholder}
 	        </div>
 	      </div>
-	      
-	    <Footer />
-    </div>
+	          </div>
 
    
     );

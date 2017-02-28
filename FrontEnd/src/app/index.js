@@ -14,4 +14,4 @@ const store = configureStore();
 
 ReactDOM.render(<Root store={store}/>, document.getElementById('app'));
 
-          <Route path='/messages' component={Messages}/>
+          
