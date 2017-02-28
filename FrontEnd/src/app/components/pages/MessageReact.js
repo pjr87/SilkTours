@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import style from '../../style/style.css';
+import style from './messageStyle.css';
 
 
 
@@ -13,6 +13,8 @@ import AuthStore from "../../stores/AuthStore.js";
 import ReactList from 'react-list';
 
 import ChatView from './ChatView';
+
+import PageTitle from '../PageTitle/PageTitle.js'
 
 //import js from '../Messages/newJS.js';
 
@@ -121,25 +123,26 @@ class MessageReact extends React.Component{
 
   render(){
         return (
-          <div className= {style.MainBody}>
-            <Header fileName={logoImg}/>
-              <div className={style.mainMessage}>
-                <div className = {style.messageContacts} style={{overflow: 'auto'}}>
-                    <ReactList
-                      itemRenderer={::this.renderItem}
-                      length={this.state.accounts.length}
-                      type='uniform'
-                    />
+            <div className= {style.MainBody}>
+              <Header fileName={logoImg}/>
+                <PageTitle title = "Conversations"/>
+                <div className={style.mainMessage}>
+                  <div className = {style.messageContacts} style={{overflow: 'auto'}}>
+                      <ReactList
+                        itemRenderer={::this.renderItem}
+                        length={this.state.accounts.length}
+                        type='uniform'
+                      />
+                  </div>
+
+                  <ChatView name={this.state.selected} />
+
                 </div>
 
-                <ChatView name={this.state.selected} />
 
-              </div>
-
-
-             
-            <Footer className={style.FooterMessaging} />
-          </div>
+               
+              <Footer className={style.FooterMessaging} />
+            </div>
         );
       }
 

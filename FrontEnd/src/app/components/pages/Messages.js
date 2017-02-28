@@ -65,8 +65,6 @@ class Messages extends React.Component{
 
                 Press to Start Chat
               </button>*/}
-
-            <Footer className={style.FooterMessaging} />
           </div>
         );
       }
@@ -113,9 +111,14 @@ if (typeof $original !== 'undefined') {
   }
 }
 
-    var temp = $("#mck-box-title").innerHTML;
-    console.log("test " + temp);
+    var Logins;
+    var profile=  AuthStore.getProfile();
+    Logins = profile.Logins;
 
+    console.log("logins:   ");
+    console.log(JSON.stringify(Logins));
+    console.log("");
+    console.dir(Logins);
 
     function readMessage() {
       //console.log("testing12" + userId);
@@ -125,8 +128,12 @@ if (typeof $original !== 'undefined') {
         var nameUser ="Test123";
 
       if(AuthStore.signedIn()){
+          
 
-          service.getUser(AuthStore.getProfile()["id_user"]).then((function(response){
+
+
+
+          service.getUser(profile["id_user"]).then((function(response){
             var temp = $("#mck-box-title")[0].innerHTML;
             $("#mck-box-title")[0].innerHTML = response["data"]["first_name"] + " " + response["data"]["last_name"][0] + "'s " + temp;
           }));    
@@ -151,10 +158,11 @@ if (typeof $original !== 'undefined') {
                     userId : 'fakeID',
                     userName : 'notJoe',
                    // appId : 'live3e5c58454b51865daefc1d16ba47909d4',
-                    appId: 'outlook3464d372342159e4b8c2adfb5f80fed2e',
+                   // appId: 'outlook3464d372342159e4b8c2adfb5f80fed2e',
+                    appId: '39dbafa82d712b9c4b91428bf91631707',
                     ojq : $original,
                     obsm : oModal,
-                    accessToken :'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+                    accessToken : JSON.stringify(Logins),//'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
                     authenticationTypeId: 0,    //1 for password verification from Applozic server and 0 for access Token verification from your server
                     autoTypeSearchEnabled : false,
                     loadOwnContacts : false,

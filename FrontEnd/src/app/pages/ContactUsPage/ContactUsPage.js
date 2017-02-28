@@ -7,7 +7,9 @@ class ContactUsPage extends React.Component{
     return(
       <div>
         <Header/>
-        <BannerImage/>
+        <br />
+        <br />
+        <br />
         <PageTitle title= "Contact Us"/>
         <br/>
         <br/>

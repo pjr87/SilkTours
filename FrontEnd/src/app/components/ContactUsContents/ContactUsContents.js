@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import {FormGroup, ControlLabel, FormControl, HelpBlock, Form, Button} from 'react-bootstrap/lib/';
 
+import * as service from '../../ajaxServices/AjaxList.js';
 
 
 class ContactUsContents extends React.Component{
@@ -52,24 +53,38 @@ class ContactUsContentsDiv extends React.Component{
     this.setState({form: vals})
   }
 
+
+
   handleSubmit() {
-    console.log("clicked");
     if( this.validateInput() )
     {
       console.log("Valid");
+      var form = this.state.form;
+
+      service.postSupportTicket(form['department'], form['fname'], form['lname'], form['email'], form['questionComment']);
+      this.clearForm();
     }
     else
     {
       console.log("inValid");
     }
-
-    //console.log("email: " + this.state.['email'].value);
   }
 
   handleChange(event) {
     let fieldName = event.target.id;
     let fleldVal = event.target.value;
-    this.setState({form: {...this.state.form, [fieldName]: fleldVal}})
+    this.setState({form: {...this.state.form, [fieldName]: fleldVal}});
+  }
+
+  clearForm(){
+
+    this.setState({form: {
+      'department': '',
+      'email': '',
+      'fname': '',
+      'lname':'',
+      'questionComment': ''
+    }});
   }
 
   validateInput()
@@ -95,8 +110,6 @@ class ContactUsContentsDiv extends React.Component{
 
     this.setState({errors: errors})
 
-    console.log("errors:\n"); console.dir(this.state.errors);
-
     var isValid = true;
 
     for( var c in errors ){
@@ -121,18 +134,18 @@ class ContactUsContentsDiv extends React.Component{
     }
 
     return(
-        <Form horizontal>
+        <Form horizontal >
           <FormGroup validationState = {'department' in this.state.errors && 'error' || !('department' in this.state.errors) && null} >
             <Col componentClass={ControlLabel} sm={2}>
             Department
             </Col>
             <Col sm={4}>
-              <FormControl componentClass="select" placeholder="select" id="department" onChange={this.handleChange}>
+              <FormControl componentClass="select" placeholder="select" id="department" onChange={this.handleChange} value={this.state.form['department'] || ''} >
                 <option value=""></option>
-                <option value="technical">Technical</option>
-                <option value="billing">Billing</option>
-                <option value="sales">Sales</option>
-                <option value="feedback">Feedback</option>
+                <option value="Technical">Technical</option>
+                <option value="Billing">Billing</option>
+                <option value="Sales">Sales</option>
+                <option value="Feedback">Feedback</option>
               </FormControl>
               <ErrorFunc error = {'department' in this.state.errors} errorText = {this.state.errors['department']} />
             </Col>
@@ -143,7 +156,7 @@ class ContactUsContentsDiv extends React.Component{
               First Name
             </Col>
             <Col sm={4}>
-              <FormControl type="text" placeholder="First Name" id="fname" onChange={this.handleChange} />
+              <FormControl type="text" placeholder="First Name" id="fname" onChange={this.handleChange} value={this.state.form['fname'] || ''} />
               <ErrorFunc error = {'fname' in this.state.errors} errorText = {this.state.errors['fname']} />
             </Col>
           </FormGroup>
@@ -153,7 +166,7 @@ class ContactUsContentsDiv extends React.Component{
               Last Name
             </Col>
             <Col sm={4}>
-              <FormControl type="text" placeholder="Last Name" id="lname" onChange={this.handleChange} />
+              <FormControl type="text" placeholder="Last Name" id="lname" onChange={this.handleChange} value={this.state.form['lname'] || ''}/>
               <ErrorFunc error = {'lname' in this.state.errors} errorText = {this.state.errors['lname']} />
             </Col>
           </FormGroup>
@@ -163,7 +176,7 @@ class ContactUsContentsDiv extends React.Component{
             Email
             </Col>
             <Col sm={4}>
-            <FormControl  type="email" placeholder="Email" id="email" onChange={this.handleChange} />
+            <FormControl  type="email" placeholder="Email" id="email" onChange={this.handleChange} value={this.state.form['email'] || ''}/>
             <ErrorFunc error = {'email' in this.state.errors} errorText = {this.state.errors['email']} />
             </Col>
           </FormGroup>
@@ -172,8 +185,8 @@ class ContactUsContentsDiv extends React.Component{
             <Col componentClass={ControlLabel} sm={2}>            
               <ControlLabel>Question / Comment</ControlLabel>
             </Col>
-            <Col sm={8}>
-              <FormControl componentClass="textarea" placeholder="Question/Comment" id="questionComment"  onChange={this.handleChange} />
+            <Col sm={8} >
+              <FormControl rows={6} componentClass="textarea" placeholder="Question/Comment" id="questionComment"  onChange={this.handleChange} value={this.state.form['questionComment'] || ''} />
               <ErrorFunc error = {'questionComment' in this.state.errors} errorText = {this.state.errors['questionComment']} />
             </Col>
           </FormGroup>

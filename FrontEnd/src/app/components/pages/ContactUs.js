@@ -69,6 +69,7 @@ class ContactUs extends React.Component{
     this.setState(nextState)
   }
 
+
   handleSubmit() {
     if (this.refs.contactForm.isValid()) {
       this.setState({submitted: this.refs.contactForm.getFormData()});
@@ -102,7 +103,7 @@ var ContactForm = React.createClass({
 
   var regex  = /^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
 
-  if ( regex.test( this.refs['email'].value ) )//regex.test('shouldFail@gmail.com') ) 
+  if ( regex.test( this.refs['email'].value ) )
   { 
     console.log("Success222  " + this.refs['email'].value);
     return true; 
