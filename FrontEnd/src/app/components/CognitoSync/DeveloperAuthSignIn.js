@@ -14,7 +14,6 @@
 //import cognito libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import AuthStore from "../../stores/AuthStore.js";
 import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
 import {
   CognitoUserPool,
@@ -133,7 +132,7 @@ class DeveloperAuthSignIn extends React.Component{
 
                       var name = response.data.first_name + " " + response.data.last_name;
 
-                      authStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
+                      //authStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
 
                       config.credentials.clearCachedId();
 

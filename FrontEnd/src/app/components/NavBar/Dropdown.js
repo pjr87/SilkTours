@@ -1,11 +1,13 @@
 import React from 'react';
-import style from '../../style/style.css';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 
 import Navbar from 'react-bootstrap/lib/Navbar';
 import {LinkContainer} from 'react-router-bootstrap';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
+import Button from 'react-bootstrap/lib/Button';
+
+import { logout, clearError } from '../../actions/AuthActions';
 
 class Dropdown extends React.Component {
   constructor (props) {
@@ -26,9 +28,12 @@ class Dropdown extends React.Component {
         <LinkContainer to="/tour-creation" onClick={this._clearError}>
           <MenuItem eventKey={4.3}>Create Tour</MenuItem>
         </LinkContainer>
-        <LinkContainer to="/" onClick={this._logout}>
-          <MenuItem eventKey={4.3}>Logout</MenuItem>
-        </LinkContainer>
+        <MenuItem
+          bsStyle="info"
+          disabled={this.props.currentlySending}
+          onClick={this._logout}>
+          {this.props.currentlySending ? 'Logging out...' : 'Logout'}
+        </MenuItem>
       </NavDropdown>
     );
   }
@@ -44,6 +49,7 @@ class Dropdown extends React.Component {
 
 Dropdown.propTypes = {
   usersName: React.PropTypes.string,
+  currentlySending: React.PropTypes.bool,
   dispatch: React.PropTypes.func
 }
 

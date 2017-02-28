@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import LoginForm from './LoginForm';
 import auth from '../../utils/cognitoFunctions';
 import { login } from '../../actions/AuthActions';
-import LoadingIndicator from './LoadingIndicator';
 
 class SignInContents extends React.Component{
   constructor(){

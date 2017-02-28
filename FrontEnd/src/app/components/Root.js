@@ -9,16 +9,14 @@ import Profile from './pages/Profile'
 import TourCreation from './pages/TourCreation';
 import TourSignup from './pages/TourSignup';
 import App from './App';
+import { loadState } from '../localStorage';
 
 /* Fucntion used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
-  let { loggedIn } = store.getState();
+  let tmpState = loadState();
+  console.log("tmpState", tmpState);
+  let loggedIn = tmpState.AuthReducer.loggedIn;
 
-  // check if the path isn't dashboard
-  // that way we can apply specific logic
-  // to display/render the path we want to
-  if (nextState.location.pathname !== '/dashboard') {
-    console.log("1");
     if (loggedIn) {
       console.log("2");
       if (nextState.location.state && nextState.location.pathname) {
@@ -27,18 +25,14 @@ function checkAuth(nextState, replaceState) {
         replaceState(null, '/');
       }
     }
-  } else {
-    console.log("3");
-    // If the user is not already logged in, forward them to the home
-    if (!loggedIn) {
-      console.log("4");
+    else {
+      console.log("3");
       if (nextState.location.state && nextState.location.pathname) {
         replaceState(null, nextState.location.pathname);
       } else {
         replaceState(null, '/');
       }
     }
-  }
 }
 
 const Root = ({ store }) => (

@@ -89,6 +89,7 @@ export function logout() {
       if (success === true) {
         dispatch(sendingRequest(false))
         dispatch(setAuthState(false));
+        localStorage.removeItem('token')
         browserHistory.replace(null, '/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));

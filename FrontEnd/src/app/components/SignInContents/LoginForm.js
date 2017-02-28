@@ -8,8 +8,7 @@
 
 import React, { Component } from 'react';
 import { changeForm } from '../../actions/AuthActions';
-import LoadingButton from './LoadingButton';
-import ErrorMessage from './ErrorMessage';
+import ErrorMessage from '../common/ErrorMessage';
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign');
