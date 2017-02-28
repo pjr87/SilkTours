@@ -39,16 +39,17 @@ ReactDOM.render((
         <Route path="/activities" component={ActivitiesPage}/>
         <Route path="/about" component={AboutUsPage}/>
         <Route path="/sign" component={SignInPage}/>
+        <Route path='/contactus' component={ContactUsPage}/>
         <Route onEnter={store.checkAuth}>
           <Route path='/signup' component={SignUpPage}/>
           <Route path="/profile" component={Profile}/>
           <Route path="/settings" component={Settings}/>
           <Route path='/tour-creation' component={TourCreation}/>
           <Route path='/tour-signup' component={TourSignup}/>
+          <Route path='/messages' component={Messages}/>
         </Route>
         <Route path="*" component={NotFound}/>
       </Route>
     </Router>
   </Provider>),rootElement);
-      <Route path='/messages' component={Messages}/>
-      <Route path='/contactus' component={ContactUsPage}/>
+      
