@@ -4,3 +4,4 @@ export AboutUsPage from './AboutUsPage/AboutUsPage';
 export SignInPage from './SignInPage/SignInPage';
 export SignUpPage from './SignUpPage/SignUpPage';
 export NotFound from './NotFound/NotFound';
+export ContactUsPage from './ContactUsPage/ContactUsPage';
