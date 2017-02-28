@@ -10,33 +10,39 @@
 import React, { Component } from 'react';
 import NavBar from './NavBar/NavBar';
 import { connect } from 'react-redux';
-import auth from '../utils/cognitoFunctions';
 
 class App extends Component {
   render() {
     return(
       <div className="wrapper">
-        <NavBar loggedIn={this.props.data.loggedIn}
+        <NavBar loggedIn={this.props.loggedIn}
+                usersName={this.props.usersName}
+                currentlySending={this.props.currentlySending}
                 history={this.props.history}
                 location={this.props.location}
-                dispatch={this.props.dispatch}
-                currentlySending={this.props.data.currentlySending} />
+                dispatch={this.props.dispatch}/>
         { this.props.children }
-
-          <p>&#169;silk tours inc.</p>
       </div>
     )
   }
 }
 
-//export default App;
+App.propTypes = {
+  loggedIn: React.PropTypes.bool.isRequired,
+  currentlySending: React.PropTypes.bool,
+  usersName: React.PropTypes.string,
+  history: React.PropTypes.object,
+  location: React.PropTypes.object,
+  children: React.PropTypes.object,
+  dispatch: React.PropTypes.func
+}
 
-// REDUX STUFF
-
-// Which props do we want to inject, given the global state?
+// select chooses which props to pull from store
 function select(state) {
   return {
-    data: state
+    loggedIn: state.AuthReducer.loggedIn,
+    currentlySending: state.AuthReducer.currentlySending,
+    usersName: state.AuthReducer.user.fullName
   };
 }
 

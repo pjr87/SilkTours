@@ -23,7 +23,13 @@
  *    created in the second step
  */
 
-import { SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE } from '../constants/AuthConstants';
+import {
+  SET_AUTH,
+  CHANGE_FORM,
+  SENDING_REQUEST,
+  SET_ERROR_MESSAGE,
+  CLEAR_ERROR
+} from '../constants/AuthConstants';
 import * as errorMessages  from '../constants/MessageConstants';
 import cognitoFunctions from '../utils/cognitoFunctions';
 import { browserHistory } from 'react-router';
@@ -218,4 +224,11 @@ function anyElementsEmpty(elements) {
     }
   }
   return false;
+}
+
+/**
+ * Sets the `error` state as empty
+ */
+export function clearError () {
+  return {type: CLEAR_ERROR}
 }

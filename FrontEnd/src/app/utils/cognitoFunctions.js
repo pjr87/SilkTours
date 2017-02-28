@@ -16,6 +16,7 @@ var cognitoFunctions = {
       callback(true);
       return;
     }
+
     // Post a fake request (see below)
     /*request.post('/login', { username, password }, (response) => {
       // If the user was authenticated successfully, save a random token to the
@@ -43,7 +44,13 @@ var cognitoFunctions = {
    * @return {boolean} True if there is a logged in user, false if there isn't
    */
   loggedIn() {
-    return !!localStorage.token;
+    console.log("Is logged in? ", localStorage.token);
+    if( localStorage.token == null) {
+      return false;
+    }
+    else {
+      return true;
+    }
   },
   /**
    * Registers a user in the system

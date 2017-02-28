@@ -21,7 +21,7 @@ import {
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
 import appConfig from "./config";
-import * as service from '../../ajaxServices/AjaxList';
+import * as service from '../../utils/databaseFunctions';
 import style from './style.css';
 //import { push } from 'react-router-redux';
 
