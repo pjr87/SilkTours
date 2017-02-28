@@ -172,12 +172,13 @@ def login(id, accessKeyID):
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
+
     try:
-        request.get_json()
+        data = request.get_json()
+        if (not checkLogin(data)):
+            return "Invalid", 403
     except:
-        return "Invalid", 403
-    if (not checkLogin(data)):
-        return "Invalid", 403
+        return "Invalid JSON", 403
     return "OK", 200
 
 # Creates a new user
