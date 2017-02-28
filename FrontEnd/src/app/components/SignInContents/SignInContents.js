@@ -92,11 +92,6 @@ class SignInContents extends React.Component{
   }
 }
 
-SignInContents.propTypes = {
-  formState: React.PropTypes.object,
-  history: React.PropTypes.object,
-  dispatch: React.PropTypes.func
-}
 
 // select chooses which props to pull from store
 function select(state) {

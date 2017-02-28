@@ -1,5 +1,8 @@
 .Footer{
   font: bold 34px Helvetica, Sans-Serif;
 	color: #A9A9A9;
-  text-align: center;
+}
+
+.centerStuff{
+	text-align: center;
 }

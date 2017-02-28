@@ -28,6 +28,10 @@ class Dropdown extends React.Component {
         <LinkContainer to="/tour-creation" onClick={this._clearError}>
           <MenuItem eventKey={4.3}>Create Tour</MenuItem>
         </LinkContainer>
+        <LinkContainer to="/messages" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Messages</MenuItem>
+        </LinkContainer>
+
         <MenuItem
           bsStyle="info"
           disabled={this.props.currentlySending}
