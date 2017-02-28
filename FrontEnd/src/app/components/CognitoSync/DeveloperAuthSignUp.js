@@ -22,7 +22,7 @@ import {
 } from "amazon-cognito-identity-js";
 import Modal from 'react-modal';
 import appConfig from "./config";
-import * as service from '../../ajaxServices/AjaxList';
+import * as service from '../../utils/databaseFunctions';
 import style from './style.css';
 
 // Modal style constructor

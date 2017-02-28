@@ -1,5 +1,5 @@
 import AuthStore from './AuthStore';
-import * as service from '../../ajaxServices/AjaxList';
+import * as service from '../../utils/databaseFunctions';
 
 authStore.on("login", () => {
   //ObjectStore.setState();

@@ -18,7 +18,7 @@ import {
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
 import appConfig from "./config";
-import * as service from '../../ajaxServices/AjaxList';
+import * as service from '../../utils/databaseFunctions';
 
 //React.Component is abstract base class
 class FederatedAuthSignUp{

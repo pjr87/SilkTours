@@ -21,7 +21,6 @@ import { login } from '../../actions/AuthActions';
 import LoadingIndicator from './LoadingIndicator';
 
 class SignInContents extends React.Component{
-  //Define auth profile state
   constructor(){
     super();
   }

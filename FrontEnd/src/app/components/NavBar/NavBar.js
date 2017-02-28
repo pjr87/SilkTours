@@ -16,19 +16,23 @@ import {LinkContainer} from 'react-router-bootstrap';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 
-import GetData from "../../utils/databaseFunctions";
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { logout } from '../../actions/AuthActions';
 import Dropdown from './Dropdown';
 
-
 class NavBar extends Component {
+  constructor (props) {
+    super(props)
+    this._clearError = this._clearError.bind(this)
+  }
+
   render() {
     const dropDown = this.props.loggedIn ? (
-      <DropDown name={"TEST"}/>
+      <Dropdown usersName={this.props.usersName}
+                dispatch={this.props.dispatch}/>
     ) : (
-      <LinkContainer to="/sign">
+      <LinkContainer to="/sign" onClick={this._clearError}>
         <NavItem eventKey={4}>sign in</NavItem>
       </LinkContainer>
     );
@@ -47,13 +51,13 @@ class NavBar extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              <LinkContainer to="/">
+              <LinkContainer to="/" onClick={this._clearError}>
                 <NavItem eventKey={1}>home</NavItem>
               </LinkContainer>
-              <LinkContainer to="/activities">
+              <LinkContainer to="/activities" onClick={this._clearError}>
                 <NavItem eventKey={2}>activities</NavItem>
               </LinkContainer>
-              <LinkContainer to="/about">
+              <LinkContainer to="/about" onClick={this._clearError}>
                 <NavItem eventKey={3}>about us</NavItem>
               </LinkContainer>
               {dropDown}
@@ -64,11 +68,17 @@ class NavBar extends Component {
       </div>
     )
   }
+
+  _clearError () {
+    this.props.dispatch(clearError())
+  }
 }
 
 NavBar.propTypes = {
   loggedIn: React.PropTypes.bool.isRequired,
-  currentlySending: React.PropTypes.bool.isRequired
+  usersName: React.PropTypes.string,
+  currentlySending: React.PropTypes.bool,
+  dispatch: React.PropTypes.func
 }
 
 export default NavBar;

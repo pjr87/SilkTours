@@ -10,11 +10,14 @@
  *   });
  */
 
-import { CHANGE_FORM, SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE } from '../constants/AuthConstants';
-// Object.assign is not yet fully supported in all browsers, so we fallback to
-// a polyfill
-const assign = Object.assign || require('object.assign');
-import auth from '../utils/cognitoFunctions';
+import {
+  CHANGE_FORM,
+  SET_AUTH,
+  SENDING_REQUEST,
+  SET_ERROR_MESSAGE,
+  CLEAR_ERROR
+} from '../constants/AuthConstants';
+import cognitoFunctions from '../utils/cognitoFunctions';
 
 // The initial application state
 const initialState = {
@@ -22,34 +25,37 @@ const initialState = {
     username: '',
     password: ''
   },
+  user: {
+    fullName: 'Test', //User's name
+    email: 'test@email.com', //User's email
+    id_user: '1', //Primary key of user in users table
+    provider: 'testProvider' //What service signed in with (Facebook, Developer)
+  },
+  auth: {
+    Logins: 'testLogins', //AWS value needed to request secured endpoints
+    identityID: 'testID' //Unique identityID assigned to user by AWS
+  },
   currentlySending: false,
-  loggedIn: auth.loggedIn(),
+  loggedIn: cognitoFunctions.loggedIn(),
   errorMessage: ''
 };
 
 // Takes care of changing the application state
-export default function AuthReducer(state = initialState, action) {
+function AuthReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_FORM:
-      return assign({}, state, {
-        formState: action.newState
-      });
-      break;
+       return {...state, formState: action.newFormState};
     case SET_AUTH:
-      return assign({}, state, {
-        loggedIn: action.newState
-      });
-      break;
+      return {...state, loggedIn: action.newAuthState};
     case SENDING_REQUEST:
-      return assign({}, state, {
-        currentlySending: action.sending
-      });
-      break;
+      return {...state, currentlySending: action.sending};
     case SET_ERROR_MESSAGE:
-      return assign({}, state, {
-        errorMessage: action.message
-      });
+      return {...state, errorMessage: action.message};
+    case CLEAR_ERROR:
+      return {...state, errorMessage: ''}
     default:
       return state;
   }
 }
+
+export default AuthReducer;
