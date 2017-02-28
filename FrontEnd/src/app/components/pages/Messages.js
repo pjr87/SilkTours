@@ -22,7 +22,8 @@ var newLines = "<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <
 
 import MessageBody from './MessageBody.js';
 
-//import js from '../Messages/newJS.js';
+import { connect } from 'react-redux';
+
 
 class Messages extends React.Component{
 
@@ -49,21 +50,7 @@ class Messages extends React.Component{
 
         return (
           <div className= {style.Main}>
-            <Header fileName={logoImg}/>
-
               <MessageBody />
-
-
-
-              
-            {/*
-              <button
-                onClick={onButtonPress}
-                title = 'Press to start Chat'
-                color='#841584'>
-
-                Press to Start Chat
-              </button>*/}
           </div>
         );
       }
