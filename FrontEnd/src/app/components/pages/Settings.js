@@ -1,8 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import style from '../../style/style.css';
-import Header from '../header/Header';
-import Footer from '../footer/Footer';
 import {ProfileHeader} from './Profile';
 import * as service from '../../utils/databaseFunctions';
 import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../forms/Forms.js';
@@ -104,7 +102,6 @@ class SettingsPg extends React.Component {
     const {fetching, user} = this.state;
 
     return (<div>
-        <Header largeHeader={false} fileName={logoImg} />
         <ProfileHeader profilePicture={user.profile_picture} name={user.first_name+" "+user.last_name}/>
 
       <div className={style.mainBody}>

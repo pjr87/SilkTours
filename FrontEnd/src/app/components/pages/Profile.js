@@ -1,6 +1,5 @@
 import React from 'react';
 import style from '../../style/style.css';
-import Header from '../header/Header';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router'
 import TourContainer from '../Tours/TourContainer';
 import * as service from '../../utils/databaseFunctions';
@@ -151,7 +150,6 @@ class Profile extends React.Component{
 
     return (
       <div>
-        <Header largeHeader={false} fileName={logoImg} />
         <ProfileHeader
           profilePicture={userData.profile_picture}
           name={userData.first_name+" "+userData.last_name} />
