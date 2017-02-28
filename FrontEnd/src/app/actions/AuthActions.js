@@ -27,6 +27,7 @@ import {
   SET_AUTH,
   UPDATE_USER,
   CHANGE_FORM,
+  UPDATE_AUTH,
   SENDING_REQUEST,
   SET_ERROR_MESSAGE,
   CLEAR_ERROR
@@ -143,7 +144,6 @@ export function login(username, password) {
 
                       var name = response.data.first_name + " " + response.data.last_name;
 
-                      //authStore.login(name, id, response.data.id_users, loginsIdpData, "Developer");
                       var user = {
                         fullName: name,
                         email: username,
@@ -152,6 +152,7 @@ export function login(username, password) {
                       };
                       console.log("user", user);
                       dispatch(updateUserState(user));
+                      dispatch(updateLoginsState(user1));
 
                       config.credentials.clearCachedId();
 
@@ -274,6 +275,15 @@ export function register(username, password) {
 export function updateUserState(newUserState) {
   console.log("newUserState", newUserState);
   return { type: UPDATE_USER, newUserState };
+}
+
+/**
+ * Updates a user's information
+ * @param  {object} newLoginsState //The user json
+ */
+export function updateLoginsState(newLoginsState) {
+  console.log("newLoginsState", newLoginsState);
+  return { type: UPDATE_AUTH, newLoginsState };
 }
 
 /**
