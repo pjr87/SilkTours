@@ -30,7 +30,7 @@ class S3Controller:
         return 1
 
     def parse(self, data):
-        if isinstance(data, datetime.date):
+        if isinstance(data, datetime.date):f
             return data.strftime(self.f)
 
         return data
