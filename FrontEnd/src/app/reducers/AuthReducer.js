@@ -23,7 +23,7 @@ import cognitoFunctions from '../utils/cognitoFunctions';
 
 // The initial application state
 const initialState = {
-  formState: {
+  loginFormState: {
     username: '',
     password: ''
   },
@@ -46,7 +46,7 @@ const initialState = {
 function AuthReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_FORM:
-       return {...state, formState: action.newFormState};
+       return {...state, loginFormState: action.newLoginFormState};
     case SET_AUTH:
       return {...state, loggedIn: action.newAuthState};
     case UPDATE_USER:

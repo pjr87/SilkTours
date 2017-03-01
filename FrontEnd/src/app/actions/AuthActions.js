@@ -296,13 +296,13 @@ export function setAuthState(newAuthState) {
 
 /**
  * Sets the form state
- * @param  {object} newFormState          The new state of the form
+ * @param  {object} newLoginFormState          The new state of the form
  * @param  {string} newState.username The new text of the username input field of the form
  * @param  {string} newState.password The new text of the password input field of the form
  * @return {object}                   Formatted action for the reducer to handle
  */
-export function changeForm(newFormState) {
-  return { type: CHANGE_FORM, newFormState };
+export function changeForm(newLoginFormState) {
+  return { type: CHANGE_FORM, newLoginFormState };
 }
 
 /**

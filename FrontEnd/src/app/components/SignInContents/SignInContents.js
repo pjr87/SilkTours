@@ -36,20 +36,20 @@ class SignInContents extends React.Component{
   }
 
   _changeUsername (event) {
-    this._emitChange({...this.props.formState, username: event.target.value})
+    this._emitChange({...this.props.loginFormState, username: event.target.value})
   }
 
   _changePassword (event) {
-    this._emitChange({...this.props.formState, password: event.target.value})
+    this._emitChange({...this.props.loginFormState, password: event.target.value})
   }
 
-  _emitChange (newFormState) {
-    this.props.dispatch(changeForm(newFormState))
+  _emitChange (newLoginFormState) {
+    this.props.dispatch(changeForm(newLoginFormState))
   }
 
   loginSubmit(event) {
     event.preventDefault()
-    this.props.dispatch(login(this.props.formState.username, this.props.formState.password));
+    this.props.dispatch(login(this.props.loginFormState.username, this.props.loginFormState.password));
   }
 
   render() {
@@ -96,7 +96,7 @@ class SignInContents extends React.Component{
 // select chooses which props to pull from store
 function select(state) {
   return {
-    formState: state.AuthReducer.formState,
+    loginFormState: state.AuthReducer.loginFormState,
     currentlySending: state.AuthReducer.currentlySending
   };
 }
