@@ -6,12 +6,9 @@ export TourModify from './Tours/TourModify';
 export AboutContents from './AboutContents/AboutContents';
 export SignInContents from './SignInContents/SignInContents';
 export SignUpContents from './SignUpContents/SignUpContents';
-<<<<<<< HEAD
 export ContactUsContents from './ContactUsContents/ContactUsContents';
-=======
 export UserInfo from './UserInfo/UserInfo';
 export Interests from './Interests/Interests';
 export Forms from './Forms/Forms';
 export Map from './Map/Map';
 export StopDisplay from './StopDisplay/StopDisplay';
->>>>>>> troy

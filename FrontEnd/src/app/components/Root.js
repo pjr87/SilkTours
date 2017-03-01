@@ -3,10 +3,9 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
 // Importing componenets
-import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage, ContactUsPage, NotFound} from '../pages';
-import Settings from './pages/Settings'
-import Profile from './pages/Profile'
-import TourCreation from './pages/TourCreation';
+import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage,TourCreationPage, ContactUsPage,SettingsPage, NotFound} from '../pages';
+import MyTours from './pages/MyTours';
+//import TourCreation from './pages/TourCreation';
 import TourSignup from './pages/TourSignup';
 import App from './App';
 import { loadState } from '../localStorage';
@@ -48,9 +47,9 @@ const Root = ({ store }) => (
         <Route path='/contactus' component={ContactUsPage}/>
         <Route onEnter={checkAuth}>
           <Route path='/signup' component={SignUpPage}/>
-          <Route path="/profile" component={Profile}/>
-          <Route path="/settings" component={Settings}/>
-          <Route path='/tour-creation' component={TourCreation}/>
+          <Route path="/my-tours" component={MyTours}/>
+          <Route path="/settings" component={SettingsPage}/>
+          <Route path='/tour-creation' component={TourCreationPage}/>
           <Route path='/tour-signup' component={TourSignup}/>
           <Route path='/messages' component={Messages}/>
         </Route>

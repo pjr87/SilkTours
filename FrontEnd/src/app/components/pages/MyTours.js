@@ -178,8 +178,8 @@ class MyTours extends React.Component{
   }
 }
 
-<<<<<<< HEAD:FrontEnd/src/app/components/pages/Profile.js
-Profile.propTypes = {
+
+MyTours.propTypes = {
   id_user: React.PropTypes.string,
   history: React.PropTypes.object,
   dispatch: React.PropTypes.func
@@ -191,9 +191,6 @@ function select (state) {
   };
 }
 
-export default connect(select)(Profile);
+export default connect(select)(MyTours);
 
-=======
-export default MyTours;
->>>>>>> troy:FrontEnd/src/app/components/pages/MyTours.js
 export {ProfileHeader};

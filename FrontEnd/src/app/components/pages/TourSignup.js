@@ -1,6 +1,6 @@
 import React from 'react';
 import style from '../../style/style.css';
-import {EditableField, FormTitle, FormButton} from '../forms/Forms.js';
+import {EditableField, FormTitle, FormButton} from '../Forms/Forms.js';
 import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
 import * as service from '../../utils/databaseFunctions';
 
