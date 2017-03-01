@@ -11,7 +11,7 @@ import TourSignup from './pages/TourSignup';
 import App from './App';
 import { loadState } from '../localStorage';
 import Messages from './pages/Messages';
-
+import MessagesReact from './pages/MessageReact.js';
 
 /* Fucntion used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
@@ -46,6 +46,7 @@ const Root = ({ store }) => (
         <Route path="/about" component={AboutUsPage}/>
         <Route path="/sign" component={SignInPage}/>
         <Route path='/contactus' component={ContactUsPage}/>
+        <Route path='/messagereact' component={MessagesReact} />
         <Route onEnter={checkAuth}>
           <Route path='/signup' component={SignUpPage}/>
           <Route path="/profile" component={Profile}/>

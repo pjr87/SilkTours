@@ -88,10 +88,13 @@ if (typeof $original !== 'undefined') {
       }
     }
 
+      console.log("logins:\n" + this.props.auth['Logins']);
+      console.log("Identity:\n" + this.props.auth['IdentityId']);
+
       //Function to initialize plugin
       $applozic.fn
           .applozic({
-            userId : 'fakeID',
+            userId : this.props.auth['IdentityId'],
             userName : 'notJoe',
            // appId : 'live3e5c58454b51865daefc1d16ba47909d4',
            // appId: 'outlook3464d372342159e4b8c2adfb5f80fed2e',
