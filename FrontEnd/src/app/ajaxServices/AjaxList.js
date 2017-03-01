@@ -35,9 +35,9 @@ export function updateUser(data){
     if(authStore.signedIn()){
       var url = "http://34.197.42.24:5000/users/"+data.id_users;
       //console.log("url: "+url);
-      var d = JSON.stringify(data);
-      console.log("value of d: ",d);
-      return axios.put(url, d);
+      //var d = JSON.stringify(data);
+      //console.log("value of d: ",d);
+      return axios.put(url, data);
     }
     return false;
 }

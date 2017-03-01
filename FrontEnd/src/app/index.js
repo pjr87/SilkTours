@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 // Importing componenets
 
-import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage} from 'pages';
+import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage, SettingsPage, TourCreationPage} from 'pages';
 
 import Settings from './components/pages/Settings'
 import MyTours from './components/pages/MyTours'
@@ -22,8 +22,8 @@ ReactDOM.render((<Router history={browserHistory}>
       <Route path="/sign" component={SignInPage}/>
       <Route path='/signup' component={SignUpPage}/>
 
-      <Route path="/settings" component={Settings}/>
-      <Route path='/tour-creation' component={TourCreation}/>
+      <Route path="/settings" component={SettingsPage}/>
+      <Route path='/tour-creation' component={TourCreationPage}/>
       <Route path='/tour-signup' component={TourSignup}/>
       <Route path="*" component={ExplorePage}/>
     </div>
