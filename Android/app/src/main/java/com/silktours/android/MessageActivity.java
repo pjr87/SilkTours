@@ -17,7 +17,9 @@ public class MessageActivity extends ConversationActivity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         this.menu = new MenuBar();
+        menu.setIsMessaging(true);
         menu.setupClickListeners(this, null);
+        menu.bottomNavigationView.getMenu().getItem(2).setChecked(true);
     }
 
     @Override

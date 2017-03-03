@@ -63,7 +63,7 @@ public class BookTourFragment extends Fragment {
         args.putSerializable("user", user);
         BookTourFragment fragment = new BookTourFragment();
         fragment.setArguments(args);
-        MainActivity.getInstance().getMenu().startFragment(fragment);
+        MainActivity.getInstance().getMenu().startFragment(fragment, 2);
     }
 
     @Override

@@ -22,8 +22,9 @@ public class MenuBar {
     BottomNavigationView bottomNavigationView;
     private static final String CURRENT_TAG = "CURRENT";
     private int currentID;
+    private boolean isMessaging;
 
-    public void setupClickListeners(AppCompatActivity activity, Toolbar toolbar) {
+    public void setupClickListeners(final AppCompatActivity activity, Toolbar toolbar) {
         this.activity = activity;
         currentID = R.id.DefaultFrame;
         bottomNavigationView = (BottomNavigationView)
@@ -47,23 +48,22 @@ public class MenuBar {
                         switch (item.getItemId()) {
                             case R.id.action_profile:
                                 //startActivity(activity, Profile.class);
-                                startFragment(new Profile());
-                                bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                                startFragment(new Profile(), 0);
                                 break;
                             case R.id.action_search:
                                 //startActivity(activity, search.class);
-                                startFragment(new Search());
-                                bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                                startFragment(new Search(), 1);
                                 break;
                             case R.id.action_messages:
                                 //startActivity(activity, MessageThreads.class);
-                                startFragment(new CreateTour());
-                                bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                                //startFragment(new CreateTour(), 2);
+                                if (!(activity instanceof MessageActivity)) {
+                                    startActivity(activity, MessageActivity.class);
+                                }
                                 break;
                             case R.id.action_my_tours:
                                 //startActivity(activity, Tours.class);
-                                startFragment(new MyTours());
-                                bottomNavigationView.getMenu().getItem(3).setChecked(true);
+                                startFragment(new MyTours(), 3);
                                 break;
                         }
                         return false;
@@ -76,13 +76,24 @@ public class MenuBar {
         from.startActivity(intent);
     }
 
-    public void startFragment(Fragment fragment) {
+    public void startFragment(Fragment fragment, int index) {
+        if (isMessaging) {
+            activity.finish();
+            MainActivity.getInstance().getMenu().startFragment(fragment, index);
+            return;
+        }
+        bottomNavigationView.getMenu().getItem(index).setChecked(true);
+
         visited.push(fragment);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
                 .replace(currentID, fragment, CURRENT_TAG)
-                .commit();
+                .commitAllowingStateLoss();
         currentID = fragment.getId();
+    }
+
+    public void setIsMessaging(boolean isMessaging) {
+        this.isMessaging = isMessaging;
     }
 }
