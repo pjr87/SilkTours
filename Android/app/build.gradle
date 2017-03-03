@@ -7,6 +7,7 @@ android {
         applicationId "com.silktours.android"
         minSdkVersion 16
         targetSdkVersion 25
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -17,11 +18,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ECLIPSE_.SF'
+        exclude 'META-INF/ECLIPSE_.RSA'
+    }
 }
 
 
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -29,9 +40,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.roomorama:caldroid:3.0.1'
     compile 'com.braintreepayments.api:drop-in:3.+'
+    compile 'com.applozic.communication.uiwidget:mobicomkitui:4.78'
     compile 'com.google.android.gms:play-services-places:10.2.0'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
     compile 'org.apmem.tools:layouts:1.10@aar'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.test.espresso:espresso-core:2.2.2'

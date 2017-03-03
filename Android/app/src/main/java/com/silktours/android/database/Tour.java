@@ -99,6 +99,7 @@ public class Tour extends Base implements Serializable {
         for (int i=0; i<resultsJSON.length(); i++) {
             JSONObject tourJSON = resultsJSON.getJSONObject(i);
             Tour tour = new Tour();
+            tour.JSON = tourJSON;
             Iterator<String> keysIt = tourJSON.keys();
             while(keysIt.hasNext()) {
                 String key = keysIt.next();

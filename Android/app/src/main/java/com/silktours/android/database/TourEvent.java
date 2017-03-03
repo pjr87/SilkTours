@@ -1,5 +1,7 @@
 package com.silktours.android.database;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,5 +38,16 @@ public class TourEvent extends Base {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void commit() throws IOException {
+        String url = Common.SERVER_URL + "/tourevents/" + getInt("id_tourEvent");
+        set("bypass", true); // Bypass auth
+        String result = Common.request(url, JSON.toString(), "PUT");
+    }
+
+    public void book() throws IOException {
+        set("state", "B");
+        commit();
     }
 }

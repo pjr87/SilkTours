@@ -1,6 +1,12 @@
 package com.silktours.android.database;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.silktours.android.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,5 +60,18 @@ public class User extends Base implements Serializable {
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "PUT");
         Log.d("Server", result);
+    }
+
+    public static User getFromSharedPrefs(Activity context) throws IOException, JSONException {
+        SharedPreferences sharedPref = context.getPreferences(Context.MODE_PRIVATE);
+        int user_id = sharedPref.getInt("user_id", -1);
+        long expire_time = sharedPref.getLong("expire_time", -1);
+        if (System.currentTimeMillis() < expire_time && user_id > -1) {
+            User user = getByID(user_id);
+            //SharedPreferences.Editor editor = sharedPref.edit();
+            return user;
+        }
+        return null;
+
     }
 }

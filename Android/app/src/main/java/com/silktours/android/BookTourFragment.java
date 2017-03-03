@@ -168,7 +168,16 @@ public class BookTourFragment extends Fragment {
                         if (confirmDialog == null) {
                             return;
                         }
-                        MainActivity.getInstance().processPayment(payment);
+                        MainActivity.getInstance().processPayment(payment, new MainActivity.PaymentListener() {
+                            @Override
+                            public void done(boolean success) {
+                                if (success) {
+                                    bookTour(payment);
+                                } else {
+
+                                }
+                            }
+                        });
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -185,6 +194,18 @@ public class BookTourFragment extends Fragment {
         ((EditText)confirmDialog.findViewById(R.id.confirmEndTime)).setText(payment.event.getStr("end_date_time"));
     }
 
+    private void bookTour(final PaymentInfo info) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    info.event.book();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     private class GetEvents extends AsyncTask<Integer, Integer, List<TourEvent>> {
         protected List<TourEvent> doInBackground(Integer... id) {
