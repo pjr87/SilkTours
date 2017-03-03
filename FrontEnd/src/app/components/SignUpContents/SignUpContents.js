@@ -7,8 +7,6 @@
  Calls functions from CognitoSync folder to display login functions
  Displayed when Signup is click
 
-
-
  TODO:
   Link back to the home page afer sign up
   Todo phone number verification
@@ -21,7 +19,7 @@ import { connect } from 'react-redux';
 import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 import auth from '../../utils/cognitoFunctions';
-import { signup, changeForm } from '../../actions/AuthActions';
+import { signUp, changeSignUpForm } from '../../actions/AuthActions';
 import ErrorMessage from '../common/ErrorMessage';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
@@ -29,30 +27,39 @@ import ErrorMessage from '../common/ErrorMessage';
 const assign = Object.assign || require('object.assign');
 
 class SignUpContents extends React.Component{
-  //Define auth profile state
   constructor(){
     super();
 
     this.signUpSubmit = this.signUpSubmit.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
+    this._changePhoneNumber = this._changePhoneNumber.bind(this)
   }
 
   _changeUsername (event) {
-    this._emitChange({...this.props.loginFormState, username: event.target.value})
+    this._emitChange({...this.props.signUpFormState, username: event.target.value})
   }
 
   _changePassword (event) {
-    this._emitChange({...this.props.loginFormState, password: event.target.value})
+    this._emitChange({...this.props.signUpFormState, password: event.target.value})
   }
 
-  _emitChange (newLoginFormState) {
-    this.props.dispatch(changeForm(newLoginFormState))
+  _changePhoneNumber (event) {
+    this._emitChange({...this.props.signUpFormState, phoneNumber: event.target.value})
+  }
+
+  _emitChange (newSignUpFormState) {
+    this.props.dispatch(changeSignUpForm(newSignUpFormState))
   }
 
   signUpSubmit(event) {
     event.preventDefault()
-    this.props.dispatch(login(this.props.loginFormState.username, this.props.loginFormState.password));
+
+    this.props.dispatch(
+      signUp(this.props.signUpFormState.username,
+            this.props.signUpFormState.password,
+            this.props.signUpFormState.phoneNumber)
+    );
   }
 
   render() {
@@ -78,7 +85,15 @@ class SignUpContents extends React.Component{
                   onChange={this._changePassword}
                   placeholder="Password" />
             </FormGroup>
-            <Button onClick={this.signUpSubmit}>Login</Button>
+            <FormGroup controlId="formHorizontalPhoneNumber">
+                <ControlLabel>Phone Number </ControlLabel>
+                <FormControl
+                  type="phoneNumber"
+                  ref="phoneNumber"
+                  onChange={this._changePhoneNumber}
+                  placeholder="Phone Number" />
+            </FormGroup>
+            <Button onClick={this.signUpSubmit}>Sign Up</Button>
             {errorMessage &&
             <p style={{color:'red'}}>{errorMessage}</p>
             }
@@ -90,4 +105,18 @@ class SignUpContents extends React.Component{
   }
 }
 
-export default SignUpContents;
+SignUpContents.propTypes = {
+  currentlySending: React.PropTypes.bool,
+  signUpFormState: React.PropTypes.object
+}
+
+// select chooses which props to pull from store
+function select(state) {
+  return {
+    signUpFormState: state.AuthReducer.signUpFormState,
+    currentlySending: state.AuthReducer.currentlySending
+  };
+}
+
+// Wrap the component to inject dispatch and state into it
+export default connect(select)(SignUpContents);

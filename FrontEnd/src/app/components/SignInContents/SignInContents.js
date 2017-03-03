@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 import auth from '../../utils/cognitoFunctions';
-import { login, changeForm } from '../../actions/AuthActions';
+import { login, changeLoginForm } from '../../actions/AuthActions';
 import ErrorMessage from '../common/ErrorMessage';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
@@ -44,7 +44,7 @@ class SignInContents extends React.Component{
   }
 
   _emitChange (newLoginFormState) {
-    this.props.dispatch(changeForm(newLoginFormState))
+    this.props.dispatch(changeLoginForm(newLoginFormState))
   }
 
   loginSubmit(event) {
@@ -92,6 +92,10 @@ class SignInContents extends React.Component{
   }
 }
 
+SignInContents.propTypes = {
+  currentlySending: React.PropTypes.bool,
+  loginFormState: React.PropTypes.object
+}
 
 // select chooses which props to pull from store
 function select(state) {

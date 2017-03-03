@@ -26,7 +26,8 @@
 import {
   SET_AUTH,
   UPDATE_USER,
-  CHANGE_FORM,
+  CHANGE_LOGIN_FORM,
+  CHANGE_SIGNUP_FORM,
   UPDATE_AUTH,
   SENDING_REQUEST,
   SET_ERROR_MESSAGE,
@@ -43,6 +44,12 @@ import {
 } from "amazon-cognito-identity-js";
 import appConfig from "../utils/config";
 import * as service from '../utils/databaseFunctions';
+
+
+const userPool = new CognitoUserPool({
+  UserPoolId: appConfig.userPoolId,
+  ClientId: appConfig.clientId,
+});
 
 /**
  * Logs an user in
@@ -164,7 +171,7 @@ export function login(username, password) {
                       dispatch(setAuthState(true));
 
                       // If the login worked, forward the user to home and clear the form
-                      dispatch(changeForm({
+                      dispatch(changeLoginForm({
                         username: "",
                         password: ""
                       }));
@@ -221,49 +228,82 @@ export function logout() {
  * Registers a user
  * @param  {string} username The username of the new user
  * @param  {string} password The password of the new user
+ * @param  {string} phoneNumber The phoneNumber of the new user
  */
-export function register(username, password) {
+export function signUp(username, password, phoneNumber) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ username, password })) {
+    if (anyElementsEmpty({ username, password, phoneNumber })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
-    // Generate salt for password encryption
-    const salt = genSalt(username);
-    // Encrypt password
-    bcrypt.hash(password, salt, (err, hash) => {
-      // Something wrong while hashing
+
+    //Remove all non-digit characters except + for international numbers
+    phoneNumber = phoneNumber.replace(/[^\d\+]/g,"");
+
+    //Add proper format to phone number
+    if(phoneNumber.length == 10){
+      var tmp = '+1' + phoneNumber;
+      phoneNumber = tmp;
+      console.log("Phone number is " + phoneNumber);
+    }
+    else if (phoneNumber.length == 12){
+      console.log("Phone number is " + phoneNumber);
+    }
+    else{
+      dispatch(setErrorMessage(errorMessages.PHONE_NUMBER_INVALID));
+      return;
+    }
+
+    //Step 2 - Signing up Users to the User Pool for Silk
+
+    //attributeList represents the reqiured or optional
+    //attributes a user can use to sign up for an account
+    const attributeList = [];
+
+    var attributeEmail = new CognitoUserAttribute({
+        Name: 'email',
+        Value: username,
+      });
+    var attributePhoneNumber = new CognitoUserAttribute({
+        Name: 'phone_number',
+        Value: phoneNumber,
+      });
+
+    attributeList.push(attributeEmail);
+    attributeList.push(attributePhoneNumber);
+
+    var err;
+
+    userPool.signUp(username, password, attributeList, null, (err, result) => {
       if (err) {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+        console.log(err);
+        dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
         return;
       }
-      // Use cognitoFunctions.js to fake a request
-      cognitoFunctions.register(username, hash, (success, err) => {
-        // When the request is finished, hide the loading indicator
+      else{
+        //this.cognitoUser = result.user;
+        console.log('user name is ' + result.user.getUsername());
+        console.log('call result: ' + result.user);
+
+        //Opens the modal which allows user to input conirmationCode
         dispatch(sendingRequest(false));
-        dispatch(setAuthState(success));
-        if (success) {
-          // If the register worked, forward the user to the homepage and clear the form
-          forwardTo('/dashboard');
-          dispatch(changeForm({
-            username: "",
-            password: ""
-          }));
-        } else {
-          switch (err.type) {
-            case 'username-exists':
-              dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
-              return;
-            default:
-              dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-              return;
-          }
-        }
-      });
+        //TODO dispatch ready for confirmation
+        //TODO foward to confirmation page
+        //TODO dispatch clear sign up form
+        /*
+        switch (err.type) {
+          case 'username-exists':
+            dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
+            return;
+          default:
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+            return;
+        }*/
+      }
     });
   }
 }
@@ -301,8 +341,19 @@ export function setAuthState(newAuthState) {
  * @param  {string} newState.password The new text of the password input field of the form
  * @return {object}                   Formatted action for the reducer to handle
  */
-export function changeForm(newLoginFormState) {
-  return { type: CHANGE_FORM, newLoginFormState };
+export function changeLoginForm(newLoginFormState) {
+  return { type: CHANGE_LOGIN_FORM, newLoginFormState };
+}
+
+/**
+ * Sets the form state
+ * @param  {object} newSignUpFormState          The new state of the form
+ * @param  {string} newState.username The new text of the username input field of the form
+ * @param  {string} newState.password The new text of the password input field of the form
+ * @return {object}                   Formatted action for the reducer to handle
+ */
+export function changeSignUpForm(newSignUpFormState) {
+  return { type: CHANGE_SIGNUP_FORM, newSignUpFormState };
 }
 
 /**
