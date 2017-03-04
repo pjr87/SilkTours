@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.setReadPermissions("public_profile");
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
                 credentialsProvider = new CognitoCachingCredentialsProvider(
                         getApplication(),
                         CredentialHandler.identityPoolId,
@@ -170,7 +170,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 logins.put("graph.facebook.com", accessToken);
                 credentialsProvider.setLogins(logins);
                 CredentialHandler.credentialsProvider = credentialsProvider;
-
                 syncClient = new CognitoSyncManager(
                         getApplication(),
                         Regions.US_EAST_1,
@@ -197,7 +196,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             user.set(User.PROFILE_PICTURE, picture);
                             try {
                                 user.create();
-                                CredentialHandler.user = user;
+                                CredentialHandler.setUser(LoginActivity.this,
+                                        user,
+                                        loginResult.getAccessToken().getExpires().getTime());
                                 goHome();
                                 finish();
                                 return;
@@ -206,7 +207,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             }
                         } else {
                             credentialsProvider.refresh();
-                            CredentialHandler.user = user;
+                            CredentialHandler.setUser(LoginActivity.this,
+                                    user,
+                                    loginResult.getAccessToken().getExpires().getTime());
                             if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
                                 goHome();
                                 finish();
@@ -501,7 +504,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         public void onSuccess(CognitoUserSession userSession) {
             try {
-                CredentialHandler.user = User.getByEmail(mEmail);
+                CredentialHandler.setUser(
+                        LoginActivity.this,
+                        User.getByEmail(mEmail),
+                        userSession.getAccessToken().getExpiration().getTime());
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -543,7 +549,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             user.set(User.EMAIL, mEmail);
             try {
                 user.create();
-                CredentialHandler.user = user;
+                cognitoUser.getSession(authHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

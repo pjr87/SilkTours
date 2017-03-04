@@ -1,6 +1,7 @@
 package com.silktours.android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +12,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
+import com.applozic.mobicomkit.api.account.user.UserLoginTask;
+import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
 import com.silktours.android.database.PaymentInfo;
+import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String CURRENT_TAG = "CURRENT";
@@ -38,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish();*/
-                launchMessaging();
+                finish();
             }
         });
 
@@ -57,30 +66,49 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    public void launchMessaging(final User to) {
+        User user = CredentialHandler.getUser(this);
+        if (user == null) {
+            Toast.makeText(this, "Please login to continue.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            launchMessaging(user, null);
+        }
+    }
 
-    public void launchMessaging() {
-        /*UserLoginTask.TaskListener listener = new UserLoginTask.TaskListener() {
 
+    public void launchMessaging(final User from, final User to) {
+        UserLoginTask.TaskListener listener = new UserLoginTask.TaskListener() {
             @Override
             public void onSuccess(RegistrationResponse registrationResponse, Context context) {
                 // After successful registration with Applozic server the callback will come here
+                //Intent intent = new Intent(this, MessageActivity.class);
+                //startActivity(intent);
+                Log.d("SilkSuccess", registrationResponse.getMessage());
+                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                if (to != null) {
+                    intent.putExtra(ConversationUIService.USER_ID, Integer.toString(to.getInt(User.ID_USERS)));
+                    intent.putExtra(ConversationUIService.DISPLAY_NAME, (to.getStr(User.FIRST_NAME) + " " + to.getStr(User.LAST_NAME))); //put it for displaying the title.
+                }
+                startActivity(intent);
             }
 
             @Override
             public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
                 // If any failure in registration the callback  will come here
+                Log.d("SilkError", "Unknown Error");
             }};
         new com.applozic.mobicomkit.api.account.user.User();
         com.applozic.mobicomkit.api.account.user.User user = new com.applozic.mobicomkit.api.account.user.User();
-        user.setUserId("1"); //userId it can be any unique user identifier
-        user.setDisplayName("AndrewShidel"); //displayName is the name of the user which will be shown in chat messages
-        user.setEmail("andrew@shidel.com"); //optional
+
+        user.setUserId(Integer.toString(from.getInt(User.ID_USERS))); //userId it can be any unique user identifier
+        user.setDisplayName(from.getStr(User.FIRST_NAME) + " " + from.getStr(User.LAST_NAME));
+        user.setEmail(from.getStr(User.EMAIL));
         user.setAuthenticationTypeId(com.applozic.mobicomkit.api.account.user.User.AuthenticationType.APPLOZIC.getValue());  //User.AuthenticationType.APPLOZIC.getValue() for password verification from Applozic server and User.AuthenticationType.CLIENT.getValue() for access Token verification from your server set access token as password
-        user.setPassword(""); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
-        user.setImageLink("");//optional,pass your image link
-        new UserLoginTask(user, listener, this).execute((Void) null);*/
-        Intent intent = new Intent(this, MessageActivity.class);
-        startActivity(intent);
+        user.setPassword("silkpassword"); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+        user.setImageLink(from.getStr(User.PROFILE_PICTURE));
+        new UserLoginTask(user, listener, this).execute((Void) null);
     }
 
     public MenuBar getMenu() {

@@ -58,7 +58,7 @@ public class MenuBar {
                                 //startActivity(activity, MessageThreads.class);
                                 //startFragment(new CreateTour(), 2);
                                 if (!(activity instanceof MessageActivity)) {
-                                    startActivity(activity, MessageActivity.class);
+                                    MainActivity.getInstance().launchMessaging(null);
                                 }
                                 break;
                             case R.id.action_my_tours:

@@ -27,6 +27,7 @@ public class User extends Base implements Serializable {
     public static final String EMAIL = "email";
     public static final String PROFILE_PICTURE = "profile_picture";
     public static final String ADDRESS = "address";
+    public static final String EXPIRE_TIME = "expire_time";
 
     public static User current;
 

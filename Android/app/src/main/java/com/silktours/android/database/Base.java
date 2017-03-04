@@ -7,7 +7,7 @@ import org.json.JSONObject;
  * Created by andrew on 2/16/17.
  */
 public class Base {
-    protected JSONObject JSON;
+    public JSONObject JSON;
 
     public Base() {
         JSON = new JSONObject();
