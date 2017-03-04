@@ -3,13 +3,19 @@ package com.silktours.android.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.silktours.android.MainActivity;
 import com.silktours.android.R;
 
@@ -18,13 +24,25 @@ import com.silktours.android.R;
  */
 public class LocationPrompt {
     private AlertDialog filterDialog;
+    private String selection = null;
+    private static View view;
+
 
     public LocationPrompt(Activity activity, final OnLocationSetListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-
-        builder.setView(inflater.inflate(R.layout.location_select, null))
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.location_select, null);
+        }catch(InflateException e) {
+            e.printStackTrace();
+        }
+        builder.setView(view)
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
@@ -32,8 +50,7 @@ public class LocationPrompt {
                             listener.onLocationSet(null);
                             return;
                         }
-                        EditText filterLocation = (EditText) filterDialog.findViewById(R.id.filterLocation);
-                        listener.onLocationSet(filterLocation.getText().toString());
+                        listener.onLocationSet(selection);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -44,6 +61,18 @@ public class LocationPrompt {
                     }
                 });
         filterDialog = builder.create();
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                selection = place.getAddress().toString();
+            }
+
+            @Override
+            public void onError(Status status) {
+            }
+        });
         filterDialog.show();
 
         /*CheckBox useGPS = (CheckBox) filterDialog.findViewById(R.id.useGPS);
