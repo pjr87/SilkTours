@@ -51,13 +51,11 @@ public class User extends Base implements Serializable {
 
     public void create() throws IOException {
         String url = Common.SERVER_URL + "/users";
-        set("bypass", true); // Bypass auth
         String result = Common.request(url, JSON.toString(), "POST");
     }
 
     public void commit() throws IOException {
         String url = Common.SERVER_URL + "/users/" + getInt(ID_USERS);
-        set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "PUT");
         Log.d("Server", result);
