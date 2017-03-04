@@ -14,7 +14,11 @@ public class Base {
     }
 
     public String getStr(String key) {
-        return (String) get(key);
+        try {
+            return (String) get(key);
+        } catch (ClassCastException e) {
+            return "";
+        }
     }
 
     public Integer getInt(String key) {

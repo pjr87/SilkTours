@@ -69,7 +69,7 @@ public class Profile extends Fragment {
                     profileImage = Drawable.createFromStream(thumb_u.openStream(), "src");
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return;
+                    profileImage = null;
                 }
                 updateFieldsOnURThread(profileImage);
             }
@@ -100,7 +100,8 @@ public class Profile extends Fragment {
         MainActivity.getInstance().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                profileImage.setImageDrawable(profileImageDrawable);
+                if (profileImageDrawable != null)
+                    profileImage.setImageDrawable(profileImageDrawable);
                 firstName.setText(user.getStr(user.FIRST_NAME));
                 lastName.setText(user.getStr(user.LAST_NAME));
                 phoneNumber.setText(user.getStr(user.PHONE_NUMBER));
