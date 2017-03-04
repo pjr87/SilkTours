@@ -48,9 +48,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                CredentialHandler.logout(MainActivity.this);
             }
         });
 
@@ -64,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.DefaultFrame, currentFragment, CURRENT_TAG)
                 .commit();
+    }
+
+    public void login() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     public void launchMessaging(final User to) {

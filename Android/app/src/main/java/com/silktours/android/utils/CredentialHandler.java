@@ -2,9 +2,12 @@ package com.silktours.android.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.silktours.android.LoginActivity;
+import com.silktours.android.MainActivity;
 import com.silktours.android.database.User;
 
 import org.json.JSONException;
@@ -26,6 +29,18 @@ public class CredentialHandler {
     public static String email = null;
     private static User user;
     private static long expireDate = 0;
+
+
+    public static void logout(Activity context) {
+        expireDate = 0;
+        if (user == null)
+            user = new User();
+        user.set(User.EXPIRE_TIME, expireDate);
+        persist(context);
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+        context.finish();
+    }
 
     public static void persist(Activity context) {
         if (user == null) return;
@@ -53,7 +68,7 @@ public class CredentialHandler {
                 expireDate = 0;
                 return;
             }
-            expireDate = (Long) o_exireDate;
+            expireDate = ((Number) o_exireDate).longValue();
             if (expireDate < System.currentTimeMillis()) {
                 user = null;
             }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
 import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONException;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Profile extends Fragment {
@@ -46,9 +48,32 @@ public class Profile extends Fragment {
         email = (EditText) rootView.findViewById(R.id.email);
         location = (TextView) rootView.findViewById(R.id.locationTextView);
         profileImage = (ImageView) rootView.findViewById(R.id.profileImage);
-        filloutFields(1);
+        filloutFields();
         setUpListeners();
         return rootView;
+    }
+
+    private void filloutFields() {
+        user = CredentialHandler.getUser(MainActivity.getInstance());
+        if (user == null) {
+            MainActivity.getInstance().login();
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL thumb_u = null;
+                Drawable profileImage;
+                try {
+                    thumb_u = new URL(user.getStr(user.PROFILE_PICTURE));
+                    profileImage = Drawable.createFromStream(thumb_u.openStream(), "src");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                updateFieldsOnURThread(profileImage);
+            }
+        }).start();
     }
 
     private void filloutFields(final int userID) {
