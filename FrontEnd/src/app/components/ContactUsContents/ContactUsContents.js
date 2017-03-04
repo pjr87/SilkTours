@@ -1,21 +1,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
+import {Grid, Row, Col} from 'react-bootstrap/lib';
+
 import {FormGroup, ControlLabel, FormControl, HelpBlock, Form, Button} from 'react-bootstrap/lib/';
 
 import * as service from '../../ajaxServices/AjaxList.js';
 
 
+
 class ContactUsContents extends React.Component{
+
+  constructor(props)
+  {
+    super(props);
+  }
+
+
+
+
   render(){
+
+
+
     return(
       <div>
         <br/>
         <Grid>
-            <ContactUsContentsDiv />
+            <ContactUsContentsDiv submitted={this.submitted} />
         </Grid>
       </div>
     );
@@ -40,9 +52,12 @@ class ContactUsContentsDiv extends React.Component{
 
 
 
+
+
   }
 
   componentDidMount(){
+
     var vals = {};
     var fields = ['department', 'fname', 'lname', 'questionComment', 'email'];
 
@@ -53,7 +68,10 @@ class ContactUsContentsDiv extends React.Component{
     this.setState({form: vals})
   }
 
-
+  componentWillMount()
+  {
+    console.log("mounted");
+  }
 
   handleSubmit() {
     if( this.validateInput() )
@@ -134,7 +152,7 @@ class ContactUsContentsDiv extends React.Component{
     }
 
     return(
-        <Form horizontal >
+        <Form horizontal>
           <FormGroup validationState = {'department' in this.state.errors && 'error' || !('department' in this.state.errors) && null} >
             <Col componentClass={ControlLabel} sm={2}>
             Department
@@ -204,4 +222,7 @@ class ContactUsContentsDiv extends React.Component{
   }
 }
 
+
+
+// Wrap the component to inject dispatch and state into it
 export default ContactUsContents;
