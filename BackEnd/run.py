@@ -168,7 +168,7 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
-    if not checkLogin(None):
+    if not checkLogin():
         return notAuthorizedResponse()
 
     user = session.query(User).get(id)
