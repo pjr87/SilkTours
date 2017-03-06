@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.silktours.android.database.User;
+import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
 import com.silktours.android.utils.LocationPrompt;
 
@@ -26,6 +27,7 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class Profile extends Fragment {
     private View rootView;

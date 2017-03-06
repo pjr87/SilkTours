@@ -60,6 +60,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.silktours.android.database.Common;
 import com.silktours.android.database.User;
+import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
 import com.silktours.android.utils.StringPrompt;
 
@@ -527,32 +528,50 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         public void onFailure(Exception exception) {
             AmazonServiceException serviceException = (AmazonServiceException) exception;
-            if (serviceException.getErrorCode().equals("UserNotFoundException")
-                    || serviceException.getErrorCode().toLowerCase().contains("confirm")) {
+            if (serviceException.getErrorCode().equals("UserNotFoundException")) {
                 CognitoUserAttributes userAttributes = new CognitoUserAttributes();
                 userAttributes.addAttribute("email", mEmail);
                 userPool.signUp(mEmail, mPassword, userAttributes, null, signupCallback);
+            }else if (serviceException.getErrorCode().toLowerCase().contains("confirm")) {
+                confirmUser(userPool.getUser(mEmail));
             }
         }
     };
 
     SignUpHandler signupCallback = new SignUpHandler() {
         @Override
-        public void onSuccess(final CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-            if(!userConfirmed) {
-                confirmUser(cognitoUser);
-            }
-            else {
-                loginDone(true);
-            }
-            User user = new User();
-            user.set(User.EMAIL, mEmail);
-            try {
-                user.create();
-                cognitoUser.getSession(authHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        public void onSuccess(final CognitoUser cognitoUser, final boolean userConfirmed, final CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+            CreateUserPrompt prompt = new CreateUserPrompt();
+            prompt.promptUIThread(LoginActivity.this, new CreateUserPrompt.CreateUserPromptListener() {
+                @Override
+                public void onResult(List<String> keys, List<String> values) {
+                    Log.d("SilkKeys", keys.toString());
+                    Log.d("SilkValues", values.toString());
+                    User user = new User();
+                    user.set(User.EMAIL, mEmail);
+                    user.set(User.FIRST_NAME, values.get(0));
+                    user.set(User.LAST_NAME, values.get(1));
+                    user.set(User.PHONE_NUMBER, values.get(2));
+                    user.set(User.ADDRESS + ":" + "street", values.get(3));
+                    try {
+                        user.create();
+                        if (!userConfirmed) {
+                            confirmUser(cognitoUser);
+                        } else {
+                            loginDone(true);
+                            cognitoUser.getSession(authHandler);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
 
         @Override
@@ -570,7 +589,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         cognitoUser.confirmSignUpInBackground(result, false, new GenericHandler() {
                             @Override
                             public void onSuccess() {
-                                loginDone(true);
+                                cognitoUser.getSession(authHandler);
                             }
 
                             @Override

@@ -53,6 +53,9 @@ public class Base {
         try {
             if (key.contains(":")) {
                 String[] pair = key.split(":", 2);
+                if (!obj.has(pair[0])) {
+                    obj.put(pair[0], new JSONObject());
+                }
                 set(obj.getJSONObject(pair[0]), pair[1], value);
                 return;
             }
