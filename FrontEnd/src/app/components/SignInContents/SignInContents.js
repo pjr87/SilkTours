@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 import auth from '../../utils/cognitoFunctions';
-import { login, changeForm } from '../../actions/AuthActions';
+import { login, changeLoginForm } from '../../actions/AuthActions';
 import ErrorMessage from '../common/ErrorMessage';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
@@ -36,20 +36,20 @@ class SignInContents extends React.Component{
   }
 
   _changeUsername (event) {
-    this._emitChange({...this.props.formState, username: event.target.value})
+    this._emitChange({...this.props.loginFormState, username: event.target.value})
   }
 
   _changePassword (event) {
-    this._emitChange({...this.props.formState, password: event.target.value})
+    this._emitChange({...this.props.loginFormState, password: event.target.value})
   }
 
-  _emitChange (newFormState) {
-    this.props.dispatch(changeForm(newFormState))
+  _emitChange (newLoginFormState) {
+    this.props.dispatch(changeLoginForm(newLoginFormState))
   }
 
   loginSubmit(event) {
     event.preventDefault()
-    this.props.dispatch(login(this.props.formState.username, this.props.formState.password));
+    this.props.dispatch(login(this.props.loginFormState.username, this.props.loginFormState.password));
   }
 
   render() {
@@ -92,11 +92,15 @@ class SignInContents extends React.Component{
   }
 }
 
+SignInContents.propTypes = {
+  currentlySending: React.PropTypes.bool,
+  loginFormState: React.PropTypes.object
+}
 
 // select chooses which props to pull from store
 function select(state) {
   return {
-    formState: state.AuthReducer.formState,
+    loginFormState: state.AuthReducer.loginFormState,
     currentlySending: state.AuthReducer.currentlySending
   };
 }

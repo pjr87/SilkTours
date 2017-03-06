@@ -6,7 +6,8 @@
  * Follow this format:
  * export const YOUR_ACTION_CONSTANT = 'YOUR_ACTION_CONSTANT';
  */
-export const CHANGE_FORM = 'CHANGE_FORM';
+export const CHANGE_LOGIN_FORM = 'CHANGE_LOGIN_FORM';
+export const CHANGE_SIGNUP_FORM = 'CHANGE_SIGNUP_FORM';
 export const SET_AUTH = 'SET_AUTH';
 export const UPDATE_AUTH = 'UPDATE_AUTH';
 export const UPDATE_USER = 'UPDATE_USER';
