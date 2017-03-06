@@ -89,6 +89,7 @@ export function login(username, password) {
         // form
         //TODO error handling
         //TODO implement error types
+        dispatch(sendingRequest(false));
         switch (response.error) {
           case 'user-doesnt-exist':
             dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
@@ -123,6 +124,7 @@ export function logout() {
         browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+        dispatch(sendingRequest(false));
       }
     });
   }
@@ -159,6 +161,7 @@ export function signUp(username, password, phoneNumber) {
     }
     else{
       dispatch(setErrorMessage(errorMessages.PHONE_NUMBER_INVALID));
+      dispatch(sendingRequest(false));
       return;
     }
 
@@ -176,6 +179,7 @@ export function signUp(username, password, phoneNumber) {
       }
       else{
         dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+        dispatch(sendingRequest(false));
         // If there was a problem authenticating the user, show an error on the
         // form
         //TODO error handling
@@ -250,7 +254,7 @@ function setErrorMessage(message) {
   return (dispatch) => {
     dispatch({ type: SET_ERROR_MESSAGE, message });
 
-    /*const form = document.querySelector('.form-page__form-wrapper');
+    const form = document.querySelector('.form-page__form-wrapper');
     if (form) {
       form.classList.add('js-form__err-animation');
       // Remove the animation class after the animation is finished, so it
@@ -260,14 +264,14 @@ function setErrorMessage(message) {
       }, 150);
 
       // Remove the error message after 3 seconds
-      setTimeout(() => {
+      /*setTimeout(() => {
         dispatch({ type: SET_ERROR_MESSAGE, message: '' });
-      }, 3000);
-    }*/
+      }, 3000);*/
+    }
     // Remove the error message after 3 seconds
-    setTimeout(() => {
+    /*setTimeout(() => {
       dispatch({ type: SET_ERROR_MESSAGE, message: '' });
-    }, 3000);
+    }, 3000);*/
   }
 }
 

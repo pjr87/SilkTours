@@ -118,7 +118,11 @@ var cognitoFunctions = {
         //Get credentials to retrieve identityID
         config.credentials.get(function(err){
           if (err) {
-              alert(err);
+            console.log("err", err);
+            if (callback) callback({
+              authenticated: false,
+              error: "General Database Error"
+            });
           }
           else{
             //Get the actual IdentityID
