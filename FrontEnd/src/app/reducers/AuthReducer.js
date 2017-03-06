@@ -11,7 +11,8 @@
  */
 
 import {
-  CHANGE_FORM,
+  CHANGE_LOGIN_FORM,
+  CHANGE_SIGNUP_FORM,
   SET_AUTH,
   UPDATE_USER,
   UPDATE_AUTH,
@@ -23,9 +24,14 @@ import cognitoFunctions from '../utils/cognitoFunctions';
 
 // The initial application state
 const initialState = {
-  formState: {
+  loginFormState: {
     username: '',
     password: ''
+  },
+  signUpFormState: {
+    username: '',
+    password: '',
+    phoneNumber: ''
   },
   user: {
     fullName: 'Test', //User's name
@@ -39,19 +45,22 @@ const initialState = {
   },
   currentlySending: false,
   loggedIn: cognitoFunctions.loggedIn(),
+  //cognitoUser: ,
   errorMessage: ''
 };
 
 // Takes care of changing the application state
 function AuthReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_FORM:
-       return {...state, formState: action.newFormState};
+    case CHANGE_LOGIN_FORM:
+      return {...state, loginFormState: action.newLoginFormState};
+    case CHANGE_SIGNUP_FORM:
+      return {...state, signUpFormState: action.newSignUpFormState};
     case SET_AUTH:
       return {...state, loggedIn: action.newAuthState};
     case UPDATE_USER:
       return {...state, user: action.newUserState};
-    case UPDATE_AUTH:
+    case UPDATE_AUTH: //TODO remove
       return {...state, auth: action.newLoginsState};
     case SENDING_REQUEST:
       return {...state, currentlySending: action.sending};

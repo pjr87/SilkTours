@@ -70,7 +70,7 @@ class ToursTab extends React.Component{
   }
 }
 
-class Profile extends React.Component{
+class MyTours extends React.Component{
 
   buttonHandler(val){
     this.setState( {tab:val} );
@@ -178,7 +178,8 @@ class Profile extends React.Component{
   }
 }
 
-Profile.propTypes = {
+
+MyTours.propTypes = {
   id_user: React.PropTypes.string,
   history: React.PropTypes.object,
   dispatch: React.PropTypes.func
@@ -190,6 +191,6 @@ function select (state) {
   };
 }
 
-export default connect(select)(Profile);
+export default connect(select)(MyTours);
 
 export {ProfileHeader};

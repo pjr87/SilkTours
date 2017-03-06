@@ -80,7 +80,11 @@ public class Profile extends Fragment {
                 lastName.setText(user.getStr(user.LAST_NAME));
                 phoneNumber.setText(user.getStr(user.PHONE_NUMBER));
                 email.setText(user.getStr(user.EMAIL));
-                location.setText(user.getStr(user.ADDRESS_CITY));
+                try {
+                    location.setText(user.getStr("address:street"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -107,7 +111,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 if (user == null) return;
-                user.set(User.ADDRESS_CITY, location.getText().toString());
+                user.set("address:street", location.getText().toString());
                 user.set(User.EMAIL, email.getText().toString());
                 user.set(User.PHONE_NUMBER, phoneNumber.getText().toString());
                 user.set(User.LAST_NAME, lastName.getText().toString());

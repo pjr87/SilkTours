@@ -58,7 +58,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         final Tour tour = tourList.get(position);
         View convertView = holder.itemView;
         TextView title = (TextView) convertView.findViewById(R.id.searchResultTitle);
-        title.setText(tour.name);
+        title.setText(tour.getStr("name"));
 
         final ImageView image = (ImageView) convertView.findViewById(R.id.searchResultImage);
         image.getLayoutParams().width = parentWidth/2;

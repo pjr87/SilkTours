@@ -24,7 +24,7 @@ export function newTour(data){
     if(authStore.signedIn()){
       console.log(data);
       var url = "http://34.197.42.24:5000/tours";
-      console.log("url: "+url);
+      console.log("url: " + url);
       //var t = JSON.stringify(data);
       return axios.post(url, data);
    }
@@ -35,6 +35,16 @@ export function getMessages(){
   var url = 'https://demo5229068.mockable.io/messages';
 
   return axios.get(url);
+}
+export function updateUser(data){
+    if(authStore.signedIn()){
+      var url = "http://34.197.42.24:5000/users/"+data.id_users;
+      //console.log("url: "+url);
+      //var d = JSON.stringify(data);
+      //console.log("value of d: ",d);
+      return axios.put(url, data);
+    }
+    return false;
 }
 
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.
@@ -62,7 +72,7 @@ export function postSupportTicket(department, fname, lname, email, textBody) {
 	});
 
 	var namee = fname + " "  + lname;
-	
+
 
 	var desc = JSON.stringify(textBody);
 	var desc2 = desc.replace(/&/gm, "&amp;")
@@ -72,12 +82,11 @@ export function postSupportTicket(department, fname, lname, email, textBody) {
 
 
 
-	
-	var dataa = '{ "description": ' + desc2 + ', "subject": "Silk Contact Form", '+ 
+
+	var dataa = '{ "description": ' + desc2 + ', "subject": "Silk Contact Form", '+
 								 '"email": "' + email + '", "type": "' + department + '", "priority": 1, "status": 2, "name": "' + namee + '"}';
-	
+
 
 	return instance.post('', dataa, instance);
 
 }
-

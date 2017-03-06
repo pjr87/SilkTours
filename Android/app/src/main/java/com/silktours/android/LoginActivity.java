@@ -3,6 +3,9 @@ package com.silktours.android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,9 +32,46 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.cognito.CognitoSyncManager;
+import com.amazonaws.mobileconnectors.cognito.Dataset;
+import com.amazonaws.mobileconnectors.cognito.DefaultSyncCallback;
+import com.amazonaws.mobileconnectors.cognito.internal.storage.CognitoSyncStorage;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.securitytoken.model.FederatedUser;
+import com.facebook.*;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.silktours.android.database.Common;
+import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.StringPrompt;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -61,11 +102,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private CallbackManager callbackManager;
+    private CognitoCachingCredentialsProvider credentialsProvider;
+    private CognitoSyncManager syncClient;
+    private String mEmail;
+    private String mPassword;
+    private CognitoUserPool userPool;
+    private boolean authSuccess = false;
+    private CountDownLatch loginLatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+        setupFacebook();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -92,6 +143,167 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,
+                resultCode, data);
+    }
+    
+    private void setupFacebook() {
+        // Facebook SDK
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile");
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(final LoginResult loginResult) {
+                credentialsProvider = new CognitoCachingCredentialsProvider(
+                        getApplication(),
+                        CredentialHandler.identityPoolId,
+                        Regions.US_EAST_1
+                );
+                final Map<String, String> logins = new HashMap<>();
+                String accessToken = loginResult.getAccessToken().getToken();
+                logins.put("graph.facebook.com", accessToken);
+                credentialsProvider.setLogins(logins);
+                CredentialHandler.credentialsProvider = credentialsProvider;
+                syncClient = new CognitoSyncManager(
+                        getApplication(),
+                        Regions.US_EAST_1,
+                        credentialsProvider
+                );
+
+                getFBInfo(loginResult, new GetFBInfoCallback() {
+                    @Override
+                    public void done(String email, String name, String picture) {
+                        User user = null;
+                        try {
+                            user = User.getByEmail(email);
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (user == null) {
+                            String[] names = name.split(" ");
+                            user = new User();
+                            user.set(User.EMAIL, email);
+                            user.set(User.FIRST_NAME, names[0]);
+                            if (names.length > 1) {
+                                user.set(User.LAST_NAME, names[names.length - 1]);
+                            }
+                            user.set(User.PROFILE_PICTURE, picture);
+                            try {
+                                user.create();
+                                CredentialHandler.setUser(LoginActivity.this,
+                                        user,
+                                        loginResult.getAccessToken().getExpires().getTime());
+                                goHome();
+                                finish();
+                                return;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            credentialsProvider.refresh();
+                            CredentialHandler.setUser(LoginActivity.this,
+                                    user,
+                                    loginResult.getAccessToken().getExpires().getTime());
+                            if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
+                                goHome();
+                                finish();
+                                return;
+                            }
+                        }
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("Silk", "On cancel");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Log.d("Silk", "On error");
+            }
+        });
+    }
+
+    /*private void signUpCognito(String email) {
+        SignUpHandler signupCallback = new SignUpHandler() {
+            @Override
+            public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+                if(!userConfirmed) {
+                    // This user must be confirmed and a confirmation code was sent to the user
+                    // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
+                    // Get the confirmation code from user
+                }
+                else {
+                    // The user has already been confirmed
+                }
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                // Sign-up failed, check exception for the cause
+            }
+        };
+        CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+        userAttributes.addAttribute("email", email);
+        CognitoUserPool userPool;
+        userPool.signUpInBackground(userId, password, userAttributes, null, signupCallback);
+    }*/
+
+    private void launchCreateUser(String email, String name, String picture) {
+        Intent intent = new Intent(this, SignUp.class);
+        this.startActivity(intent);
+    }
+
+    private interface GetFBInfoCallback {
+        void done(String email, String name, String picture);
+    }
+    private void getFBInfo(LoginResult result, final GetFBInfoCallback callback) {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, final GraphResponse response) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject json = response.getJSONObject();
+                        try {
+                            if(json != null){
+                                callback.done(
+                                        json.getString("email"),
+                                        json.getString("name"),
+                                        json.getString("picture")
+                                );
+                            }
+                        } catch (JSONException e) {
+                            callback.done(null, null, null);
+                        }
+                    }
+                }).start();
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link,email,picture");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void goHome() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        finish();
     }
 
     private void populateAutoComplete() {
@@ -137,7 +349,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -160,7 +371,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -191,13 +402,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.length() >= 5 && email.contains("@") && email.contains(".");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        // Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number
+        return true;//password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
     }
 
     /**
@@ -290,15 +500,98 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
+    AuthenticationHandler authHandler = new AuthenticationHandler() {
+        @Override
+        public void onSuccess(CognitoUserSession userSession) {
+            try {
+                CredentialHandler.setUser(
+                        LoginActivity.this,
+                        User.getByEmail(mEmail),
+                        userSession.getAccessToken().getExpiration().getTime());
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            loginDone(true);
+        }
+
+        @Override
+        public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String UserId) {
+
+        }
+
+        @Override
+        public void getMFACode(MultiFactorAuthenticationContinuation continuation) {
+
+        }
+
+        @Override
+        public void onFailure(Exception exception) {
+            AmazonServiceException serviceException = (AmazonServiceException) exception;
+            if (serviceException.getErrorCode().equals("UserNotFoundException")
+                    || serviceException.getErrorCode().toLowerCase().contains("confirm")) {
+                CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+                userAttributes.addAttribute("email", mEmail);
+                userPool.signUp(mEmail, mPassword, userAttributes, null, signupCallback);
+            }
+        }
+    };
+
+    SignUpHandler signupCallback = new SignUpHandler() {
+        @Override
+        public void onSuccess(final CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+            if(!userConfirmed) {
+                confirmUser(cognitoUser);
+            }
+            else {
+                loginDone(true);
+            }
+            User user = new User();
+            user.set(User.EMAIL, mEmail);
+            try {
+                user.create();
+                cognitoUser.getSession(authHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(Exception exception) {
+            loginDone(false);
+        }
+    };
+
+    private void confirmUser(final CognitoUser cognitoUser) {
+        StringPrompt.promptInUIThread("A confirmation code has been sent to " + mEmail + ". Please enter the code below.",
+                LoginActivity.this,
+                new StringPrompt.StringPromptListener() {
+                    @Override
+                    public void onResult(String result) {
+                        cognitoUser.confirmSignUpInBackground(result, false, new GenericHandler() {
+                            @Override
+                            public void onSuccess() {
+                                loginDone(true);
+                            }
+
+                            @Override
+                            public void onFailure(Exception exception) {
+                                confirmUser(cognitoUser);
+                            }
+                        });
+                    }
+                });
+    }
+
+    void loginDone(boolean status) {
+        authSuccess = status;
+        loginLatch.countDown();
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -306,25 +599,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
+            loginLatch = new CountDownLatch (1);
+            ClientConfiguration clientConfiguration = new ClientConfiguration();
+            userPool = new CognitoUserPool(
+                    LoginActivity.this,
+                    CredentialHandler.userPoolId,
+                    CredentialHandler.clientId,
+                    null,
+                    clientConfiguration);
+            userPool.getUser(mEmail).authenticateUser(new AuthenticationDetails(mEmail, mPassword, null), authHandler);
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
+                loginLatch.await();
             } catch (InterruptedException e) {
-                return false;
+                e.printStackTrace();
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
+            return authSuccess;
         }
 
         @Override
@@ -333,7 +622,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                goHome();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -343,6 +632,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onCancelled() {
             mAuthTask = null;
+            loginDone(false);
             showProgress(false);
         }
     }

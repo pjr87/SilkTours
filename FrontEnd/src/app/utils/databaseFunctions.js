@@ -36,6 +36,6 @@ export function updateExistingUser(id, json) {
   return axios.put('http://34.197.42.24:5000/users/' + id, json);
 }
 
-export function getUserByEmail(email, json) {
-  return axios.get('http://34.197.42.24:5000/users/email/' + email, json);
+export function getUserByEmail(email) {
+  return axios.get('http://34.197.42.24:5000/users/email/' + email);
 }

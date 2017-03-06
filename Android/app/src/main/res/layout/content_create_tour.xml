@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:layout_weight="1"
-            android:text="Enter tour name" />
+            android:hint="Enter tour name"/>
     </LinearLayout>
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:text="Enter tour description"/>
+        android:hint="Enter tour description"/>
 
     <TextView
         android:id="@+id/mapText"
@@ -92,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:text="Search for a location"/>
+        android:hint="Search for a location"/>
 
     <TextView
         android:id="@+id/additionalPicText"
@@ -127,6 +127,7 @@
     </CalendarView>
 
     <Button
+        android:id="@+id/createTour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
