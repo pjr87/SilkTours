@@ -60,7 +60,7 @@ function AuthReducer(state = initialState, action) {
       return {...state, loggedIn: action.newAuthState};
     case UPDATE_USER:
       return {...state, user: action.newUserState};
-    case UPDATE_AUTH:
+    case UPDATE_AUTH: //TODO remove
       return {...state, auth: action.newLoginsState};
     case SENDING_REQUEST:
       return {...state, currentlySending: action.sending};

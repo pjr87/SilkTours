@@ -53,7 +53,7 @@ class SignInContents extends React.Component{
   }
 
   render() {
-    const {errorMessage} = this.props;
+    let isLoading = this.props.currentlySending;
     return (
       <div>
         <br/>
@@ -75,10 +75,12 @@ class SignInContents extends React.Component{
                   onChange={this._changePassword}
                   placeholder="Password" />
             </FormGroup>
-            <Button onClick={this.loginSubmit}>Login</Button>
-            {errorMessage &&
-            <p style={{color:'red'}}>{errorMessage}</p>
-            }
+            <Button
+              disabled={isLoading}
+              onClick={!isLoading ? this.loginSubmit : null}>
+              {isLoading ? 'Logging in...' : 'Login'}
+            </Button>
+            <ErrorMessage />
         </Form>
         <br/>
         <br/>

@@ -37,20 +37,6 @@ import * as errorMessages  from '../constants/MessageConstants';
 import cognitoFunctions from '../utils/cognitoFunctions';
 import { browserHistory } from 'react-router';
 
-import { config, CognitoIdentityCredentials, CognitoIdentityServiceProvider } from "aws-sdk";
-import {
-  CognitoUserPool,
-  CognitoUserAttribute
-} from "amazon-cognito-identity-js";
-import appConfig from "../utils/config";
-import * as service from '../utils/databaseFunctions';
-
-
-const userPool = new CognitoUserPool({
-  UserPoolId: appConfig.userPoolId,
-  ClientId: appConfig.clientId,
-});
-
 /**
  * Logs an user in
  * @param  {string} username The username of the user to be logged in
@@ -71,136 +57,53 @@ export function login(username, password) {
       return;
     }
 
-    console.log('username + ' + username);
-    console.log('password + ' + password);
+    // Do a login
+    cognitoFunctions.login(username, password, (response) => {
+      // If the user was authenticated successfully, save a random token to the
+      // localStorage
+      if (response.authenticated) {
+        localStorage.token = response.token;
+        //TODO use cookie as logged in state
 
-    // Step 1 - Define global AWS identity credentials
-    //Config.region = appConfig.region;
-    config.update({region:'us-east-1'});
+        console.log("user", user);
+        dispatch(updateUserState(response.user));
+        //dispatch(updateLoginsState(user1)); TODO
 
-    //Step 2 - A confirmed user signs in to obtain a session.
-    //The session contains:
-    // 1. ID token that contains user claims
-    // 2. Access token that is used internally to perform authenticated calls
-    // 3. Refresh token that is used internally to refresh the session after it expires each hour.
+        config.credentials.clearCachedId();
 
-    //authData represents the reqiured userName and password
-    const authData = {
-      Username: username,
-      Password: password,
-    };
+        //move to explore page
+        localStorage.token = response.token;
 
-    var authDetails = new CognitoIdentityServiceProvider.AuthenticationDetails(authData);
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
+        dispatch(setAuthState(true));
 
-    const poolData = {
-      UserPoolId: appConfig.userPoolId,
-      ClientId: appConfig.clientId,
-    };
-
-    var userPool = new CognitoIdentityServiceProvider.CognitoUserPool(poolData);
-
-    var userData = {
-        Username : username,
-        Pool : userPool
-    };
-
-    var cognitoUser = new CognitoIdentityServiceProvider.CognitoUser(userData);
-
-    cognitoUser.authenticateUser(authDetails, {
-        onSuccess: function (result) {
-            console.log('access token + ' + result.getAccessToken().getJwtToken());
-
-            let loginsIdpData = {};
-            let loginsCognitoKey = 'cognito-idp.us-east-1.amazonaws.com/' + appConfig.userPoolId
-            loginsIdpData[loginsCognitoKey] = result.getIdToken().getJwtToken();
-
-            config.credentials = new CognitoIdentityCredentials({
-              IdentityPoolId: appConfig.identityPoolId,
-              Logins: loginsIdpData
-            });
-
-            // set region if not set (as not set by the SDK by default)
-            config.update({
-              credentials: config.credentials,
-              region: appConfig.region
-            });
-
-            config.credentials.get(function(err){
-              if (err) {
-                  alert(err);
-              }
-              else{
-                var id = config.credentials._identityId;
-                var user1 = {
-                  Logins: loginsIdpData,
-                  IdentityId: id
-                };
-
-                var response;
-
-                service.getUserByEmail(username, user1).then(function(response){
-                  console.log("RESPONSE ");
-                  console.log(response.data);
-                  console.log(response.status);
-
-                  if(response.data.email == username){
-                    service.updateExistingUser(response.data.id_users, user1).then(function(response){
-                      console.log("RESPONSE ");
-                      console.log(response.data);
-                      console.log(response.status);
-
-                      var name = response.data.first_name + " " + response.data.last_name;
-
-                      var user = {
-                        fullName: name,
-                        email: username,
-                        id_user: response.data.id_users,
-                        provider: "Developer"
-                      };
-                      console.log("user", user);
-                      dispatch(updateUserState(user));
-                      dispatch(updateLoginsState(user1));
-
-                      config.credentials.clearCachedId();
-
-                      //move to explore page
-                      localStorage.token = response.token;
-
-                      // When the request is finished, hide the loading indicator
-                      dispatch(sendingRequest(false));
-                      dispatch(setAuthState(true));
-
-                      // If the login worked, forward the user to home and clear the form
-                      dispatch(changeLoginForm({
-                        username: "",
-                        password: ""
-                      }));
-                      forwardTo('/');
-                    });
-                  }
-                });
-              }
-            });
-        },
-        onFailure: function(err) {
-            alert(err);
-            //TODO implement error types
-            switch (err.type) {
-              case 'user-doesnt-exist':
-                dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
-                return;
-              case 'password-wrong':
-                dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
-                return;
-              default:
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-                return;
-            }
-        },
-        mfaRequired: function(codeDeliveryDetails) {
-            var verificationCode = prompt('Please input verification code' ,'');
-            cognitoUser.sendMFACode(verificationCode, this);
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeLoginForm({
+          username: "",
+          password: ""
+        }));
+        forwardTo('/');
+      } else {
+        // If there was a problem authenticating the user, show an error on the
+        // form
+        //TODO error handling
+        //TODO implement error types
+        switch (response.error) {
+          case 'user-doesnt-exist':
+            dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
+            return;
+          case 'password-wrong':
+            dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
+            return;
+          case 'database-error':
+            dispatch(setErrorMessage(errorMessages.DATABASE_ERROR));
+            return;
+          default:
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+            return;
         }
+      }
     });
   }
 }
@@ -215,7 +118,8 @@ export function logout() {
       if (success === true) {
         dispatch(sendingRequest(false))
         dispatch(setAuthState(false));
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
+        eraseCookie();
         browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
@@ -258,51 +162,24 @@ export function signUp(username, password, phoneNumber) {
       return;
     }
 
-    //Step 2 - Signing up Users to the User Pool for Silk
-
-    //attributeList represents the reqiured or optional
-    //attributes a user can use to sign up for an account
-    const attributeList = [];
-
-    var attributeEmail = new CognitoUserAttribute({
-        Name: 'email',
-        Value: username,
-      });
-    var attributePhoneNumber = new CognitoUserAttribute({
-        Name: 'phone_number',
-        Value: phoneNumber,
-      });
-
-    attributeList.push(attributeEmail);
-    attributeList.push(attributePhoneNumber);
-
-    var err;
-
-    userPool.signUp(username, password, attributeList, null, (err, result) => {
-      if (err) {
-        console.log(err);
-        dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
-        return;
-      }
-      else{
+    cognitoFunctions.signup(username, password, phoneNumber, (response) => {
+      // If the user was signed up successfully
+      if (response.authenticated) {
         //this.cognitoUser = result.user;
         console.log('user name is ' + result.user.getUsername());
         console.log('call result: ' + result.user);
 
-        //Opens the modal which allows user to input conirmationCode
         dispatch(sendingRequest(false));
         //TODO dispatch ready for confirmation
         //TODO foward to confirmation page
         //TODO dispatch clear sign up form
-        /*
-        switch (err.type) {
-          case 'username-exists':
-            dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
-            return;
-          default:
-            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
-            return;
-        }*/
+      }
+      else{
+        dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+        // If there was a problem authenticating the user, show an error on the
+        // form
+        //TODO error handling
+        //TODO implement error types
       }
     });
   }
@@ -318,7 +195,7 @@ export function updateUserState(newUserState) {
 }
 
 /**
- * Updates a user's information
+ * Updates a user's information TODO remove this
  * @param  {object} newLoginsState //The user json
  */
 export function updateLoginsState(newLoginsState) {
@@ -365,7 +242,6 @@ export function sendingRequest(sending) {
   return { type: SENDING_REQUEST, sending };
 }
 
-
 /**
  * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
  * @param message
@@ -403,7 +279,6 @@ function forwardTo(location) {
   console.log('forwardTo(' + location + ')');
   browserHistory.push(location);
 }
-
 
 /**
  * Checks if any elements of a JSON object are empty
