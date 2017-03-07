@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 CORS(app)
 
-client = boto3.client('cognito-identity')
+#client = boto3.client('cognito-identity')
 
 
 def checkLogin(data):
