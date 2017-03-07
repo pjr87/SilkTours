@@ -12,3 +12,5 @@ export Interests from './Interests/Interests';
 export Forms from './Forms/Forms';
 export Map from './Map/Map';
 export StopDisplay from './StopDisplay/StopDisplay';
+export ProfileHeader from './Profile/ProfileHeader';
+export MultiDateSelect from './Date/MultiDateSelect';

@@ -2,38 +2,21 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 
 import style from '../../style/style.css';
-
 import * as service from '../../ajaxServices/AjaxList';
-
-
-var htmlContent = require('../Messages/sample/fullview.html'); 
-
-
+var htmlContent = require('../Messages/sample/fullview.html');
 import logoImg from '../../style/images/logo5.png';
-
 import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
-
 import AuthStore from "../../stores/AuthStore.js";
-import GetData from "../../databaseFunctions";
-
 import InnerHTML from 'dangerously-set-inner-html';
-
 var newLines = "<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> ";
-
 import MessageBody from './MessageBody.js';
-
 import { connect } from 'react-redux';
 
-
 class Messages extends React.Component{
-
-  
 
   constructor(props) {
   super(props);
   }
-
-  
 
   render(){
 
@@ -45,8 +28,6 @@ class Messages extends React.Component{
         for (var i = 0; i < 12; i++) {
           indents.push(<span key={i}>{""}<br/></span>);
         }
-
-
 
         return (
           <div className= {style.Main}>
@@ -64,9 +45,9 @@ class Messages extends React.Component{
             $applozic.fn.applozic('loadTab', username);
          }
         }
-        
 
-        
+
+
         function passUsername(){
           if( loadState() != null ){
             startConversation(loadState());
@@ -81,7 +62,7 @@ class Messages extends React.Component{
 
 
 
-    
+
     var oModal = "";
 if (typeof $original !== 'undefined') {
   $ = $original;
@@ -114,7 +95,7 @@ if (typeof $original !== 'undefined') {
         var nameUser ="Test123";
 
       if(AuthStore.signedIn()){
-          
+
 
 
 
@@ -122,9 +103,9 @@ if (typeof $original !== 'undefined') {
           service.getUser(profile["id_user"]).then((function(response){
             var temp = $("#mck-box-title")[0].innerHTML;
             $("#mck-box-title")[0].innerHTML = response["data"]["first_name"] + " " + response["data"]["last_name"][0] + "'s " + temp;
-          }));    
+          }));
           }
-            
+
       } else if (response === 'object' && response.status === 'error') {
         alert(response.errorMessage);
       }
@@ -171,7 +152,7 @@ if (typeof $original !== 'undefined') {
 
     }
 
- 
-  
+
+
 
 export default Messages;

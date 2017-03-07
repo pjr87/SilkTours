@@ -19,8 +19,9 @@ class TourCreationPage extends React.Component{
       address:{
         city:"Shanghai",
         country:"China",
+        state_code:"State",
         street:"NanJing Rd",
-        unit:"the unit",
+        unit:"The Unit",
         zip:"07760"},
       average_rating: 3.0,
       description: "Tour to Shanghai",
@@ -36,11 +37,12 @@ class TourCreationPage extends React.Component{
       profile_image: "https://s-media-cache-ak0.pinimg.com/736x/cf/b7/8c/cfb78c43479fa5f515444b9f857ea8ec.jpg",
       profile_image_height: 726,
       profile_image_width: 500,
+      date: 500,
+      time: 500,
       rating_count: 4,
       interests:[],
       stops: []
      }
-
      };
      //console.log("getProfile: ",authStore.getProfile());
   }
@@ -55,8 +57,6 @@ class TourCreationPage extends React.Component{
       this.state.authProfile = authStore.getProfile();
     })
   }
-
-
 
 objectFixer(obj){
    Object.keys(obj).forEach(key => obj[key] === null ? obj[key]="" : '');
@@ -80,43 +80,35 @@ onSubmitClick(){
   }
 
   onAddressChange(val, fieldName){
-      console.log("text changed!, " + fieldName);
-      var u = this.state.tour;
-      u.address[fieldName] = val;
-      this.setState({tour:u});
+      console.log("address text changed!, " + fieldName);
+      var t = this.state.tour;
+      t.address[fieldName] = val;
+      this.setState({tour:t});
       console.log("tour.address", this.state.tour.address)
   }
 
-  tagDelete(i) {
-        var tour = this.state.tour;
-        tour.interests.splice(i, 1);
-        this.setState({tour:tour});
+    updateStops(s){
+      var t = this.state.tour;
+      t.stops = s;
+      this.setState({tour: t});
     }
 
-    tagAddition(tag) {
-        let tour = this.state.tour;
-        tour.interests.push({
-            id: tour.interests.length+1,
-            text: tag
-        });
-        this.setState({tour: tour});
+    updateInterests(i){
+        var tour = this.state.tour;
+        tour.interests = i;
+        this.setState({tour});
     }
 
   render(){
     return (
       <div>
-        <Header/>
         <br />
         <br />
         <div className={style.mainBody}>
           <PageTitle title= "tour creation"/>
-
-          <TourModify formTitle="Tour Creation" tour={this.state.tour} />
-          <Interests title="Tags" interests={this.state.tour.interests} onTagDelete={this.tagDelete.bind(this)} onTagAdd={this.tagAddition.bind(this)}  />
-
+          <TourModify updateInterests={this.updateInterests.bind(this)} updateStops={this.updateStops.bind(this)} onTourChange={this.onChange.bind(this)} onAddressChange={this.onAddressChange.bind(this)} formTitle="Tour Creation" tour={this.state.tour} />
           <FormButton action={this.onSubmitClick.bind(this)}></FormButton>
         </div>
-        <Footer/>
       </div>
     );
   }

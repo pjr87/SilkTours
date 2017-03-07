@@ -18,14 +18,11 @@ export default class StopDisplay extends React.Component{
 
   addStop(val){
     var stops = this.props.stops;
-    //console.log("addstop, tour:",this.props.stops;
+    console.log("addstop, tour:",this.props.stops);
     var k=stops.length;
     var stop = {data:val, key:k};
     stops.push(stop);
     this.props.updateStops(stops);
-    // this.setState({
-    //     tour:tour
-    // });
   }
 
   removeStop(key){
@@ -53,7 +50,7 @@ export default class StopDisplay extends React.Component{
   }
 
   swapStops(s1, s2){
-    var stops = this.props.stop;
+    var stops = this.props.stops;
     var temp = stops[s1];
     temp.key=s2;
     stops[s2].key=s1;
@@ -63,10 +60,18 @@ export default class StopDisplay extends React.Component{
     this.props.updateStops(stops);
   }
 
+  onDragMarkerEnd(k, e){
+    var stops = this.props.stops;
+
+    var stop = {data:e, key:k};
+    stops[k]=stop;
+    this.props.updateStops(stops);
+  }
+
   render(){
     return(
       <div>
-        <Map markers={this.props.stops} onMapClicked={this.addStop.bind(this)} />
+        <Map markers={this.props.stops} onMarkerDragged={this.onDragMarkerEnd.bind(this)} onMapClicked={this.addStop.bind(this)} />
         {this.renderStops()}
       </div>
     );

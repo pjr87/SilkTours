@@ -1,8 +1,10 @@
 import React from 'react';
 
-import {Header, Footer, SearchBar, PageTitle, BannerImage, UserInfo, Interests} from 'components';
-import * as service from '../../ajaxServices/AjaxList';
+import {Header, Footer, SearchBar, PageTitle, BannerImage, UserInfo, ProfileHeader,
+  Interests} from 'components';
+import * as service from '../../utils/databaseFunctions';
 import {FormButton} from '../../components/Forms/Forms.js';
+import {connect} from 'react-redux';
 
 class SettingsPage extends React.Component{
 
@@ -28,19 +30,17 @@ class SettingsPage extends React.Component{
                 phone_number: "",
                 profile_picture: "",
                 tours_taking: [],
-                tours_teaching: [],
-                bypass:true
+                tours_teaching: []
               },
-         warningVisibility: false,
-         authProfile: authStore.getProfile()
+         warningVisibility: false
      };
      //console.log("getProfile: ",authStore.getProfile());
   }
 
 
   componentDidMount() {
-    this.state.authProfile = authStore.getProfile();
-    this.getUserInfo(this.state.authProfile.id_user);
+    console.log("test",this.props.id_user);
+    this.getUserInfo(1);
   }
 
   showWarning = () => {
@@ -62,12 +62,12 @@ objectFixer(obj){
    return obj;
 }
 
-getUserInfo = async (postId) => {
+getUserInfo(){
    try {
-     this.state.authProfile = authStore.getProfile();
-
-      service.getUser(this.state.authProfile.id_user).then((function(response){
+     console.log("userBeforetest ");
+      service.getUser(this.props.id_user, this.props.auth).then((function(response){
         console.log("userBefore: ",response.data);
+
         var user = this.objectFixer(response.data);
         user.address= this.objectFixer(user.address);
 
@@ -89,12 +89,13 @@ getUserInfo = async (postId) => {
        this.showWarning();
    }
 }
+
 onSubmitClick(){
   var tempUser = this.state.user;
-  tempUser.bypass = true;
+  tempUser.Logins = this.props.auth.Logins;
+  tempUser.identityID = this.props.auth.identityID;
   console.log("submit clicked!->", tempUser);
-
-  service.updateUser(tempUser);
+  service.updateExistingUser(this.props.id_user, tempUser);
 }
 
   onChange(val, fieldName){
@@ -108,42 +109,59 @@ onSubmitClick(){
   onAddressChange(val, fieldName){
       var u = this.state.user;
       console.log("text changed!, " + u.address[fieldName]);
-      u.address[fieldName] = val;
+      var a = this.state.user.address;
+      a[fieldName] = val;
+      u.address = a;
       this.setState({user:u});
       console.log("user.address", this.state.user.address)
   }
 
-  tagDelete(i) {
-        var user = this.state.user;
-        user.interests.splice(i, 1);
-        this.setState({user:user});
-    }
+  // tagDelete(i) {
+  //       var user = this.state.user;
+  //       user.interests.splice(i, 1);
+  //       this.setState({user:user});
+  //   }
+  //
+  //   tagAddition(tag) {
+  //       var user = this.state.user;
+  //       user.interests.push({
+  //           id: user.interests.length+1,
+  //           text: tag
+  //       });
+  //       this.setState({user: user});
+  //   }
 
-    tagAddition(tag) {
+    updateInterests(i){
         var user = this.state.user;
-        user.interests.push({
-            id: user.interests.length+1,
-            text: tag
-        });
-        this.setState({user: user});
+        user.interests = i;
+        this.setState({user});
     }
 
   render(){
     return (
       <div>
-        <Header/>
+        <BannerImage/>
         <br />
         <br />
         <div>
-          <PageTitle title= "settings"/>
+          <ProfileHeader  name={this.state.first_name+" "+this.state.last_name} profilePicture={this.state.profile_picture}/>
+          <PageTitle title= "settings" />
           <UserInfo user={this.state.user} onUserChange={this.onChange.bind(this)} onAddressChange={this.onAddressChange.bind(this)} formTitle="User Information" />
-          <Interests title="Interests" interests={this.state.user.interests} onTagDelete={this.tagDelete.bind(this)} onTagAdd={this.tagAddition.bind(this)}  />
+          <Interests title="Interests" interests={this.state.user.interests} onChange={this.updateInterests.bind(this)} />
           <FormButton action={this.onSubmitClick.bind(this)}> </FormButton>
         </div>
-        <Footer/>
+
       </div>
     );
   }
 }
 
-export default SettingsPage;
+function select (state) {
+  return {
+    id_user: state.AuthReducer.user.id_user,
+    auth:state.AuthReducer.auth
+  };
+}
+
+
+export default connect(select)(SettingsPage);

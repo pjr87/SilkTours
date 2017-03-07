@@ -9,10 +9,10 @@ export function getAllTours() {
     return axios.get("http://34.197.42.24:5000/search");
 }
 
-export function getUser(id){
+export function getUser(id,json){
     var url = "http://34.197.42.24:5000/users/"+id;
     console.log("url: "+url);
-    return axios.get(url);
+    return axios.get(url, json);
 }
 
 export function newTour(data){

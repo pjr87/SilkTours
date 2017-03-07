@@ -1,12 +1,6 @@
 import axios from 'axios';
 import AuthStore from '../stores/AuthStore';
 
-/*
-Every call must use
-  secretAccessKey and identityID - Used with all ajax calls
-  Can be seen from AuthStore
-*/
-
 export function getAllTours() {
     return axios.get("http://34.197.42.24:5000/search");
 }

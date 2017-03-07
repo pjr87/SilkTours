@@ -1,4 +1,5 @@
-import { EventEmitter } from "events"
+import { EventEmitter } from "events";
+//EventEmitter.setMaxListeners(0) ;
 
 class AuthStore extends EventEmitter {
   constructor () {
