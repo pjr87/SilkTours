@@ -1,15 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
 import style from './messageStyle.css';
-
-
 
 import * as service from '../../ajaxServices/AjaxList';
 import logoImg from '../../style/images/logo5.png';
-import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
-//import AuthStore from "../../stores/AuthStore.js";
 import ReactList from 'react-list';
 
 import ChatView from './ChatView';
@@ -124,7 +118,6 @@ class MessageReact extends React.Component{
   render(){
         return (
             <div className= {style.MainBody}>
-              <Header fileName={logoImg}/>
                 <PageTitle title = "Conversations"/>
                 <div className={style.mainMessage}>
                   <div className = {style.messageContacts} style={{overflow: 'auto'}}>
@@ -138,10 +131,6 @@ class MessageReact extends React.Component{
                   <ChatView name={this.state.selected} />
 
                 </div>
-
-
-
-              <Footer className={style.FooterMessaging} />
             </div>
         );
       }

@@ -1,6 +1,9 @@
 import React from 'react';
 
-import {BannerImage, PageTitle, ContactUsContents} from 'components'
+import {BannerImage, PageTitle, ContactUsContents} from 'components';
+import { connect } from 'react-redux';
+
+
 
 class ContactUsPage extends React.Component{
   render(){
@@ -13,10 +16,19 @@ class ContactUsPage extends React.Component{
         <PageTitle title= "Contact Us"/>
         <br/>
         <br/>
-        <ContactUsContents/>
+        <ContactUsContents fullName={this.props.name} loggedIn={this.props.loggedIn} email={this.props.email} />
       </div>
     );
   }
 }
 
-export default ContactUsPage;
+// select chooses which props to pull from store
+function select(state) {
+  return {
+    name: state.AuthReducer.user.fullName,
+    email: state.AuthReducer.user.email,
+    loggedIn: state.AuthReducer.loggedIn
+  };
+}
+
+export default connect(select)(ContactUsPage);

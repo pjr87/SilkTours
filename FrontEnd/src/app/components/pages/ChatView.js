@@ -2,11 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 
 import style from '../../style/style.css';
-
-import * as service from '../../ajaxServices/AjaxList';
 import logoImg from '../../style/images/logo5.png';
-import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
-//import AuthStore from "../../stores/AuthStore.js";
 import ReactList from 'react-list';
 
 

@@ -14,13 +14,14 @@ import{
   ContactUsPage,
   SettingsPage,
   NotFound } from '../pages';
+import {ContactUsRedux} from '../pages';
 import MyTours from './pages/MyTours';
 //import TourCreation from './pages/TourCreation';
 import TourSignup from './pages/TourSignup';
 import App from './App';
 import { loadState } from '../localStorage';
 import Messages from './pages/Messages';
-
+import MessagesReact from './pages/MessageReact.js';
 
 /* Fucntion used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
@@ -56,6 +57,8 @@ const Root = ({ store }) => (
         <Route path='/contactus' component={ContactUsPage}/>
         <Route path='/signup' component={SignUpPage}/>
         <Route path='/confirmationpage' component={ConfirmationPage}/>
+        <Route path='/messagereact' component={MessagesReact} />
+        <Route path='/contactusredux' component ={ContactUsRedux} />
         <Route onEnter={checkAuth}>
           <Route path="/my-tours" component={MyTours}/>
           <Route path="/settings" component={SettingsPage}/>

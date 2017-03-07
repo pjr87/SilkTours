@@ -8,6 +8,7 @@ export SignInContents from './SignInContents/SignInContents';
 export SignUpContents from './SignUpContents/SignUpContents';
 export ConfirmationContents from './SignUpContents/ConfirmationContents';
 export ContactUsContents from './ContactUsContents/ContactUsContents';
+export FieldFormControl from './FieldFormControl/FieldFormControl';
 export UserInfo from './UserInfo/UserInfo';
 export Interests from './Interests/Interests';
 export Forms from './Forms/Forms';
