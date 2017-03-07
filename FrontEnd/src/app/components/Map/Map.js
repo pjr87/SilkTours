@@ -12,7 +12,7 @@ export default class Map extends React.Component{
            lat={ marker.data.latLng.lat() }
            lng={ marker.data.latLng.lng() }
            draggable={ true }
-           onDragEnd={ this.onDragMarkerEnd.bind(this, marker.key) }
+           onDragEnd={ this.props.onMarkerDragged.bind(this, marker.key) }
            label={(marker.key+1)+""}
            />
       )}, this);

@@ -32,7 +32,7 @@ const originalTour = {
       min_group_size: 0,
       price: 0.0,
       profile_image: "http://english.tw/wp-content/themes/qaengine/img/default-thumbnail.jpg",
-    profile_image_height: 480,
+      profile_image_height: 480,
       profile_image_width: 640,
       rating_count: 0,
       stops: []

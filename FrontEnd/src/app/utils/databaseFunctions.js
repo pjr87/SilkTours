@@ -38,6 +38,7 @@ export function getUser(id){
     var url = SERVER_URL + "/users/"+id;
     console.log("url: "+url);
     return axios.get(url, data);
+
 }
 
 export function newTour(data){
