@@ -5,8 +5,7 @@ import {Grid, Row, Col} from 'react-bootstrap/lib';
 
 import {FormGroup, ControlLabel, FormControl, HelpBlock, Form, Button} from 'react-bootstrap/lib/';
 
-import * as service from '../../ajaxServices/AjaxList.js';
-
+import * as service from '../../utils/databaseFunctions';
 
 
 class ContactUsContents extends React.Component{

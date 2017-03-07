@@ -3,7 +3,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
 // Importing componenets
-import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage, ContactUsPage, NotFound, ContactUsRedux} from '../pages';
+import {ContactUsRedux} from '../pages';
 import {ExplorePage, ActivitiesPage, AboutUsPage, SignInPage, SignUpPage,TourCreationPage, ContactUsPage,SettingsPage, NotFound} from '../pages';
 import MyTours from './pages/MyTours';
 //import TourCreation from './pages/TourCreation';

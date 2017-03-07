@@ -6,8 +6,6 @@ var htmlContent = require('../Messages/sample/fullview.html');
 
 
 import AuthStore from "../../stores/AuthStore.js";
-import GetData from "../../databaseFunctions";
-
 import InnerHTML from 'dangerously-set-inner-html';
 
 

@@ -74,6 +74,50 @@ class GetData{
     });
     return user1;
   }
+
+
+
+
+
+    static getMessages(){
+        var url = 'https://demo5229068.mockable.io/messages';
+
+        return axios.get(url);
+    }
+
+
+    static postSupportTicket(department, fname, lname, email, textBody) {
+        var instance = axios.create({
+          baseURL: 'https://testtingsilk123.freshdesk.com/api/v2/tickets',
+          headers: {'Content-Type': 'application/json'},
+          auth: { username: 'KgANyaywWNjVCyUyQCe', password: 'x'}
+        });
+
+        var namee = fname + " "  + lname;
+
+
+        var desc = JSON.stringify(textBody);
+        var desc2 = desc.replace(/&/gm, "&amp;")
+             .replace(/</gm, "&lt;")
+             .replace(/>/gm, "&gt;")
+             .replace(/'/gm, "&#039;").replace(/\\n|\\r\\n|\\r/gm, "<br />");
+
+
+
+
+        var dataa = '{ "description": ' + desc2 + ', "subject": "Silk Contact Form", '+
+                                     '"email": "' + email + '", "type": "' + department + '", "priority": 1, "status": 2, "name": "' + namee + '"}';
+
+
+        return instance.post('', dataa, instance);
+
+    }
+
+
+
+
+
+
 }
 
 export default GetData;

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {Header, Footer, PageTitle, BannerImage, Interests, TourModify} from 'components';
-import * as service from '../../ajaxServices/AjaxList';
 import {FormButton} from '../../components/Forms/Forms.js';
 import style from './style.css';
+import * as service from '../../utils/databaseFunctions';
 
 class TourCreationPage extends React.Component{
 
