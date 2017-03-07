@@ -14,7 +14,7 @@ import logoImg from '../../style/images/logo5.png';
 import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
 
 //import AuthStore from "../../stores/AuthStore.js";
-import GetData from "../../databaseFunctions";
+//import GetData from "../../databaseFunctions";
 
 import InnerHTML from 'dangerously-set-inner-html';
 
