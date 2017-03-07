@@ -1,6 +1,7 @@
 from flask import Flask, g
 from flask import jsonify
 from flask import request
+import json
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -12,12 +13,14 @@ from flask_cors import CORS, cross_origin
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
+from tour_event_mapped import TourEvent
 from interests_mapped import Interests
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm.session import sessionmaker
 from flask_cors import CORS
 from sqlalchemy.orm import scoped_session
 import boto3
+from db_session import session, commitSession, createSession
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
@@ -29,14 +32,46 @@ CORS(app)
 #client = boto3.client('cognito-identity')
 
 
-def checkLogin(data):
-    if "bypass" in data and data["bypass"]:
+def checkLogin():
+    print(request.headers.get("Silk-Bypass") == 'true')
+    print(request.data)
+    data = None
+    try:
+        data = request.get_json(force=True)
+    except:
+        print("No JSON data")
+        if (request.headers.get('Silk-Bypass') != 'true'
+                and "IdentityId" not in request.headers):
+            return False
+    print(data)
+    logins = None
+    identityId = None
+    if request.headers is None:
+        request.headers = {}
+    if data is None:
+        data = {}
+    if request.headers.get('Silk-Bypass') == 'true' or data.get("bypass") is True:
         return True
+
+    if (data is None
+            or data.get("IdentityId") is None
+            or data.get("Logins") is None):
+        if (request.headers.get('Silk-Logins') is None
+                or request.headers.get('Silk-Identity-Id') is None):
+            return False
+        identityId = request.headers.get('Silk-Identity-Id')
+        logins = json.loads(request.headers.get('Silk-Logins'))
+    else:
+        logins = data["Logins"]
+        identityId = data["IdentityId"]
+
+    if logins is None or identityId is None:
+        return False
 
     try:
         result = client.get_credentials_for_identity(
-            IdentityId=data["IdentityId"],
-            Logins=data["Logins"]
+            IdentityId=identityId,
+            Logins=logins
         )
         print ("Success")
         print(result)
@@ -48,35 +83,26 @@ def checkLogin(data):
 
 
 def notAuthorizedResponse():
-    return "<h1>403: Not Authorized. Click <a"
-    + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
+    return """<h1>403: Not Authorized. Click <a
+    href='http://localhost:5000/login'>here</a> to login.</h1>""", 403
 
 
 db = DbController()
 s3 = S3Controller()
 
 # engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
-engine = create_engine(
-    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+#engine = create_engine(
+#    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
+#engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
-Session = scoped_session(sessionmaker(bind=engine))
-session = None
-
-
-def commitSession():
-    try:
-        session.commit()
-    except:
-        print("INFO: session commit failed")
-        session.roolback()
+#Session = scoped_session(sessionmaker(bind=engine))
+#session = None
 
 
 @app.before_request
 def before_request():
-    global session
-    session = Session()
+    createSession()
 
 
 @app.after_request
@@ -95,10 +121,8 @@ def internal_server_error(e):
 
 @app.route("/")
 def hello():
-    checkLogin({
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld": "eyJraWQiOiJCZTVyY2oraXJUclNvdHVMRGhSc1JGemVudzdyelwvTVNDR0ZzaFVTYXZTND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhOGE3MjYwNy0yOTZlLTQxMWUtOWYzOC00ZTYwZjRmM2NlMGYiLCJhdWQiOiIyYnM5bDl0NW9sNG0wOWZnZm1hZGszam1oNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTQ4NzAzODM1NCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOTE3SWd4NUxkIiwicGhvbmVfbnVtYmVyX3ZlcmlmaWVkIjpmYWxzZSwiY29nbml0bzp1c2VybmFtZSI6ImFuZHJld3NoaWRlbEBnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIrMTQxMjY1MTA0OTgiLCJleHAiOjE0ODcwNDE5NTQsImlhdCI6MTQ4NzAzODM1NCwiZW1haWwiOiJhbmRyZXdzaGlkZWxAZ21haWwuY29tIn0.WrfAVkJ7dsb2DBK2pdVZl3mz4DUg-bxdtej83Oq9SQpe5Qzw61o6rcHorVQwwuOfrGva3Ckg2mq9Cl8Nt9ATsUalhdo0J_RC3LENrue17bW7ubVQ_WA1if1xac-mqmyCN_KO7FlZ6iFNRRP2nAaoQtvs3i6_SLrEWaMg_yoY9NA-zcOLKwr78emWhY1vo5lIlyR0evtuL3FJqUh27c6eocDXdc5Cfo4kpSRw8ixx-3Lvcd65WnIL_5QNVfya8qabd-pKYyKQNrpBIMsT1b6xh-WUKQqUCouJAb0DD4t_RclFrDUwK1kMTZDvlkTVKtEVfICMjQVCw6oZocrpb5nZHw"
-    }, "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349")
-
+    if not checkLogin():
+        return notAuthorizedResponse()
     user = session.query(User).get(1)
     return "Hello " + user.first_name
 
@@ -153,15 +177,18 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
+    print("Get User")
+    if not checkLogin():
+        return notAuthorizedResponse()
+
     user = session.query(User).get(id)
     return jsonify(user.serialize())
 
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
-    # if (not checkLogin(id)):
-    #     return notAuthorizedResponse()
-    # checkLogin(id)
+    if not checkLogin():
+        return notAuthorizedResponse()
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 
@@ -178,10 +205,19 @@ def login(id, accessKeyID):
 
 
 # Creates a new user
+@app.route('/check_auth', methods=['POST'])
+def check_auth():
+    try:
+        if not checkLogin():
+            return "false"
+    except:
+        return "false"
+    return "true"
+
+# Creates a new user
 @app.route('/users', methods=['POST'])
 def set_user():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
     user = User()
     user.set_props(request.get_json())
@@ -194,10 +230,9 @@ def set_user():
 # Edits a user
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
-
+    data = request.get_json()
     user = session.query(User).get(id)
     user.set_props(data)
     session.add(user)
@@ -209,9 +244,9 @@ def edit_user(id):
 # Adds a new rating
 @app.route('/ratings', methods=['POST'])
 def add_rating():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
     rating = Rating()
     id_user_rated = data["id_user_rated"]
@@ -234,9 +269,9 @@ def add_rating():
 # Adds a new rating
 @app.route('/stops', methods=['POST'])
 def add_stop():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
     stop = Stop()
     id_tour = data["id_tour"]
@@ -258,43 +293,55 @@ def get_tour_list():
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return db.list_tour_with_id(tourid)
+    tour = session.query(Tour).get(tourid)
+    return jsonify(tour.serialize(True))
 
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
-    return db.post(request.get_json(), 'Tour')
+    return db.post(data, 'Tour')
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
     return db.edit(tourid, data, 'Tour')
 
 
+@app.route('/tour/<tourid>/events', methods=['GET'])
+def get_tourevent(tourid):
+    events = session.query(TourEvent).filter(TourEvent.id_tour == tourid).all()
+    return jsonify([event.serialize() for event in events])
+
+
 @app.route('/tourevents/<tourid>', methods=['POST'])
 def set_tourevent(tourid):
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
-    return db.edit(tourid, request.get_json(), 'TourEvent')
+    return db.edit(tourid, data, 'TourEvent')
 
 
 @app.route('/tourevents/<tourid>', methods=['PUT'])
 def edit_tourevent(tourid):
-    return db.edit(tourid, request.get_json(), 'TourEvent')
+    if not checkLogin():
+        return notAuthorizedResponse()
+    data = request.get_json()
+    return db.edit(tourid, data, 'TourEvent')
 
 
 @app.route('/tours/image/<tourid>', methods=['POST'])
 def upload(tourid):
+    if not checkLogin():
+        return notAuthorizedResponse()
     file = request.files['file']
     return s3.upload(file, tourid)
 

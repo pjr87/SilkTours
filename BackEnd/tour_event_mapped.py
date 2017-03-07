@@ -29,7 +29,8 @@ class TourEvent(Base):
 
         return {
             "id_tourEvent": self.id_tourEvent,
-            "tour": self.tour.serialize(False),
+            # "tour": self.tour.serialize(False),
+            "id_tour": self.id_tour,
             "start_date_time": start_date_time,
             "end_date_time": end_date_time
         }

@@ -11,14 +11,16 @@ all
 */
 
 //import cognito libraries
-//import AuthStore from "../../stores/AuthStore.js";
 import { config, Config, CognitoIdentityCredentials, CognitoIdentityServiceProvider  } from "aws-sdk";
 import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
-import appConfig from "./config";
-import * as service from '../../ajaxServices/AjaxList';
+import appConfig from "../../utils/config";
+import * as service from '../../utils/databaseFunctions';
+
+import { connect } from 'react-redux';
+import { login } from '../../actions/AuthActions';
 
 //React.Component is abstract base class
 class FederatedAuthSignIn{
@@ -63,8 +65,6 @@ class FederatedAuthSignIn{
             alert(err);
         }
         else{
-          console.log("DATA");
-          console.log(config.credentials._identityId);
           var id = config.credentials._identityId;
           var user1 = {
             Logins: loginsIdpData,
@@ -73,24 +73,13 @@ class FederatedAuthSignIn{
 
           var response;
 
-          console.log("HERE");
-          console.log(email);
-
           service.getUserByEmail(email, user1).then(function(response){
-            console.log("RESPONSE 1");
-            console.log(response.data);
-            console.log(response.status);
-
             if(response.data.email == email){
               service.updateExistingUser(response.data.id_users, user1).then(function(response){
-                console.log("RESPONSE 2");
-                console.log(response.data);
-                console.log(response.status);
 
                 var fullName = name[0] + " " + name[1];
-                console.log(fullName);
 
-                authStore.login(fullName, id, response.data.id_users, loginsIdpData, "Developer");
+                //authStore.login(fullName, id, response.data.id_users, loginsIdpData, "Facebook");
 
                 config.credentials.clearCachedId();
 
@@ -109,7 +98,19 @@ class FederatedAuthSignIn{
     return;
   }
 }
-const federatedAuthSignIn = new FederatedAuthSignIn;
+
+
+// Which props do we want to inject, given the global state?
+function select(state) {
+  return {
+    data: state
+  };
+}
+
+// Wrap the component to inject dispatch and state into it
+export default connect(select)(FederatedAuthSignIn);
+
+/*const federatedAuthSignIn = new FederatedAuthSignIn;
 //Whenever you import FederatedAuthSignIn you will get this above created FederatedAuthSignIn
 window.federatedAuthSignIn = federatedAuthSignIn; // Exposes FederatedAuthSignIn globally
-export default federatedAuthSignIn;
+export default federatedAuthSignIn;*/

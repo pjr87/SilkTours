@@ -18,18 +18,28 @@
             android:id="@+id/profileImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_toLeftOf="@+id/locationTextView"
             android:src="@mipmap/ic_launcher"/>
-        <TextView
-            android:textSize="20sp"
-            android:id="@+id/locationTextView"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location"/>
-        <ImageButton
-            android:id="@+id/locationEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="20sp"
-            android:background="@android:drawable/ic_menu_edit"/>
+            android:gravity="left">
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/locationTextView"
+                android:layout_toLeftOf="@+id/locationEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Location"/>
+            <ImageButton
+                android:id="@+id/locationEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="20sp"
+                android:layout_alignParentRight="true"
+                android:background="@android:drawable/ic_menu_edit"/>
+        </RelativeLayout>
+
     </LinearLayout>
     <TextView
         android:id="@+id/nameTextView"
