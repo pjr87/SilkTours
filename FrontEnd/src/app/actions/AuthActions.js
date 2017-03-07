@@ -59,6 +59,7 @@ export function login(username, password) {
         dispatch(updateIDState(response.user.id_user));
         dispatch(updateProviderState("Developer"));
         dispatch(updateAuthState(response.user.auth));
+        dispatch(updateUserState(response.data));
 
         //move to explore page
         localStorage.token = response.token;
