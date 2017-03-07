@@ -54,7 +54,8 @@ export function getUserByEmail(email, json) {
   return axios.get(url, {
     headers:{
       'Silk-Logins': JSON.stringify(json.Logins),
-      'Silk-Identity-Id': json.IdentityId
+      'Silk-Identity-Id': json.IdentityId,
+      'Silk-Bypass': true
     }
   });
 }

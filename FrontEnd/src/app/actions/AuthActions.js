@@ -56,12 +56,9 @@ export function login(username, password) {
         localStorage.token = response.token;
         //TODO use cookie as logged in state
 
-        console.log("user", response.user);
         dispatch(updateIDState(response.user.id_user));
         dispatch(updateProviderState("Developer"));
         dispatch(updateAuthState(response.user.auth));
-
-        config.credentials.clearCachedId();
 
         //move to explore page
         localStorage.token = response.token;
@@ -77,6 +74,7 @@ export function login(username, password) {
         }));
         forwardTo('/');
       } else {
+        console.log("5");
         // If there was a problem authenticating the user, show an error on the
         // form
         //TODO error handling
@@ -112,7 +110,6 @@ export function logout() {
         dispatch(sendingRequest(false))
         dispatch(setAuthState(false));
         localStorage.removeItem('token');
-        eraseCookie();
         browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
@@ -186,7 +183,7 @@ export function signUp(username, password, phoneNumber) {
  * @param  {object} newUserState //The user json
  */
 export function updateUserState(newUserState) {
-  return { type: authConstant.UPDATE_USER, newUserState };
+  return { type: authConstants.UPDATE_USER, newUserState };
 }
 
 /**
@@ -194,7 +191,7 @@ export function updateUserState(newUserState) {
  * @param  {object} newIDState //The user json
  */
 export function updateIDState(newIDState) {
-  return { type: authConstant.UPDATE_ID, newIDState };
+  return { type: authConstants.UPDATE_ID, newIDState };
 }
 
 /**
@@ -202,7 +199,7 @@ export function updateIDState(newIDState) {
  * @param  {object} newProviderState //The user json
  */
 export function updateProviderState(newProviderState) {
-  return { type: authConstant.UPDATE_PROVIDER, newProviderState };
+  return { type: authConstants.UPDATE_PROVIDER, newProviderState };
 }
 
 /**

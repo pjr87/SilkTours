@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 
 
-var htmlContent = require('../Messages/sample/fullview.html'); 
+var htmlContent = require('../Messages/sample/fullview.html');
 
 
-import AuthStore from "../../stores/AuthStore.js";
-import GetData from "../../databaseFunctions";
+//import AuthStore from "../../stores/AuthStore.js";
+//import GetData from "../../databaseFunctions";
 
 import InnerHTML from 'dangerously-set-inner-html';
 
@@ -18,7 +18,7 @@ class MessageBody extends React.Component{
   super(props);
   }
 
-  
+
 
   render(){
 
@@ -31,8 +31,8 @@ class MessageBody extends React.Component{
 
 
 
-      
-   
+
+
 
 }
 

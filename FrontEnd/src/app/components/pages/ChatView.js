@@ -6,7 +6,7 @@ import style from '../../style/style.css';
 import * as service from '../../ajaxServices/AjaxList';
 import logoImg from '../../style/images/logo5.png';
 import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
-import AuthStore from "../../stores/AuthStore.js";
+//import AuthStore from "../../stores/AuthStore.js";
 import ReactList from 'react-list';
 
 
@@ -14,7 +14,7 @@ import ReactList from 'react-list';
 
 class ChatView extends React.Component{
 
-  
+
 
   constructor(props) {
   super(props);
@@ -41,7 +41,7 @@ class ChatView extends React.Component{
   }
 
   renderItemChat(index, key){
-    return ( 
+    return (
       <div key={key}>{this.state.messages[index]}</div> );
   }
 
@@ -68,7 +68,7 @@ class ChatView extends React.Component{
 
     }
 
- 
-  
+
+
 
 export default ChatView;

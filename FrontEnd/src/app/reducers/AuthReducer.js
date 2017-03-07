@@ -45,11 +45,11 @@ const initialState = {
     tours_teaching: [],
   },
   auth: {
-    Logins: 'testLogins', //AWS value needed to request secured endpoints
-    identityID: 'testID' //Unique identityID assigned to user by AWS
+    Logins: '', //AWS value needed to request secured endpoints, is stringified
+    identityID: '' //Unique identityID assigned to user by AWS
   },
-  id_user: '1', //Primary key of user in users table
-  provider: 'testProvider', //What service signed in with
+  id_user: '', //Primary key of user in users table
+  provider: '', //What service signed in with
   currentlySending: false,
   loggedIn: cognitoFunctions.loggedIn(),
   errorMessage: ''

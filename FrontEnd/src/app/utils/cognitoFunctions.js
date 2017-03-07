@@ -20,7 +20,7 @@
 * Sets the cookies for authentication
 * param: Logins, identityId, days
 */
-function setCookie(Logins, identityId, days){
+/*function setCookie(Logins, identityId, days){
  var expires = "";
  if (days) {
      var date = new Date();
@@ -29,14 +29,7 @@ function setCookie(Logins, identityId, days){
  }
  document.cookie = "Logins=" + JSON.stringify(Logins) + expires + "; path=/";
  document.cookie = "IdentityId=" + identityId + expires + "; path=/";
-}
-
-/**
-* Removes the cookies for authentication
-*/
-function eraseCookie() {
-   createCookie(null,null,-1);
-}
+}*/
 
 var cognitoFunctions = {
   /**
@@ -111,22 +104,23 @@ var cognitoFunctions = {
           else{
             //Get the actual IdentityID
             var id = config.credentials._identityId;
-            var auth = {
+            var user1 = {
               Logins: loginsIdpData,
               IdentityId: id
             };
-
-            //Set the cookie used to authenticate with server
-            setCookie(loginsIdpData, id, 1);
+            var auth = {
+              Logins: JSON.stringify(loginsIdpData),
+              IdentityId: id
+            };
 
             var response;
 
             //Get the user that is tyring to login from database
-            service.getUserByEmail(username, auth).then(function(response){
+            service.getUserByEmail(username, user1).then(function(response){
               //If the user matches then proceed
               if(response.data.email == username){
                 //Update database table with new login information TODO not neccesary
-                service.updateExistingUser(response.data.id_users, auth).then(function(response){
+                service.updateExistingUser(response.data.id_users, user1).then(function(response){
                   var name = response.data.first_name + " " + response.data.last_name;
 
                   var user = {
@@ -174,6 +168,7 @@ var cognitoFunctions = {
   logout(callback) {
     //TODO call logout stuff
     //config.credentials.clearCachedId();
+    //eraseCookie();
     callback(true);
   },
   /**
