@@ -33,25 +33,34 @@ client = boto3.client('cognito-identity')
 
 
 def checkLogin():
-    data = request.get_json()
+    print(request.headers.get("Silk-Bypass") == 'true')
+    print(request.data)
+    data = None
+    try:
+        data = request.get_json(force=True)
+    except:
+        print("No JSON data")
+        if (request.headers.get('Silk-Bypass') != 'true'
+                and "IdentityId" not in request.headers):
+            return False
+    print(data)
     logins = None
     identityId = None
-
-    if request.cookies is None:
-        request.cookies = {}
+    if request.headers is None:
+        request.headers = {}
     if data is None:
         data = {}
-    if request.cookies.get('bypass') == 'true' or data.get("bypass") is True:
+    if request.headers.get('Silk-Bypass') == 'true' or data.get("bypass") is True:
         return True
 
     if (data is None
             or data.get("IdentityId") is None
             or data.get("Logins") is None):
-        if (request.cookies.get('Login') is None
-                or request.cookies.get('IdentityId') is None):
+        if (request.headers.get('Silk-Logins') is None
+                or request.headers.get('Silk-Identity-Id') is None):
             return False
-        identityId = request.cookies.get('IdentityId')
-        logins = json.loads(request.cookies.get('Login'))
+        identityId = request.headers.get('Silk-Identity-Id')
+        logins = json.loads(request.headers.get('Silk-Logins'))
     else:
         logins = data["Logins"]
         identityId = data["IdentityId"]
@@ -168,6 +177,7 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
+    print("Get User")
     if not checkLogin():
         return notAuthorizedResponse()
 
