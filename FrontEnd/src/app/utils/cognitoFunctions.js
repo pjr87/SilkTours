@@ -127,10 +127,10 @@ var cognitoFunctions = {
           else{
             //Get the actual IdentityID
             var id = config.credentials._identityId;
-            /*var user1 = {
+            var user1 = {
               Logins: loginsIdpData,
               IdentityId: id
-            };*/
+            };
 
             //Set the cookie used to authenticate with server
             setCookie(loginsIdpData, id, 1);
@@ -138,28 +138,28 @@ var cognitoFunctions = {
             var response;
 
             //Get the user that is tyring to login from database
-            service.getUserByEmail(username).then(function(response){
+            service.getUserByEmail(username, user1).then(function(response){
               console.log("response", response);
               //If the user matches then proceed
               if(response.data.email == username){
                 //Update database table with new login information TODO not neccesary
-                //service.updateExistingUser(response.data.id_users).then(function(response){
-                var name = response.data.first_name + " " + response.data.last_name;
+                service.updateExistingUser(response.data.id_users, user1).then(function(response){
+                  var name = response.data.first_name + " " + response.data.last_name;
 
-                var user = {
-                  fullName: name,
-                  email: username,
-                  id_user: response.data.id_users,
-                  provider: "Developer"
-                };
+                  var user = {
+                    fullName: name,
+                    email: username,
+                    id_user: response.data.id_users,
+                    provider: "Developer"
+                  };
 
-                //Pass callback information to calling function
-                if (callback) callback({
-                  authenticated: true,
-                  user: user,
-                  error: ""
+                  //Pass callback information to calling function
+                  if (callback) callback({
+                    authenticated: true,
+                    user: user,
+                    error: ""
+                  });
                 });
-                //});
               }
               else{
                 console.log("database-error");

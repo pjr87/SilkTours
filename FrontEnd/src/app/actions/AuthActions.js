@@ -36,6 +36,7 @@ import {
 import * as errorMessages  from '../constants/MessageConstants';
 import cognitoFunctions from '../utils/cognitoFunctions';
 import { browserHistory } from 'react-router';
+import style from '../components/common/style.css';
 
 /**
  * Logs an user in
@@ -253,25 +254,6 @@ export function sendingRequest(sending) {
 function setErrorMessage(message) {
   return (dispatch) => {
     dispatch({ type: SET_ERROR_MESSAGE, message });
-
-    const form = document.querySelector('.form-page__form-wrapper');
-    if (form) {
-      form.classList.add('js-form__err-animation');
-      // Remove the animation class after the animation is finished, so it
-      // can play again on the next error
-      setTimeout(() => {
-        form.classList.remove('js-form__err-animation');
-      }, 150);
-
-      // Remove the error message after 3 seconds
-      /*setTimeout(() => {
-        dispatch({ type: SET_ERROR_MESSAGE, message: '' });
-      }, 3000);*/
-    }
-    // Remove the error message after 3 seconds
-    /*setTimeout(() => {
-      dispatch({ type: SET_ERROR_MESSAGE, message: '' });
-    }, 3000);*/
   }
 }
 
