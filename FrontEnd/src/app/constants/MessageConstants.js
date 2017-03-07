@@ -12,4 +12,5 @@ export const DATABASE_ERROR = 'Error encountered when connecting to database.';
 export const PHONE_NUMBER_INVALID = 'Phone number must contain 10 or 12 digits.';
 export const SIGNUP_FAILED = 'Sign Up Failed.';
 export const USERNAME_TAKEN = 'Sorry, but this username is already taken';
+export const OTHER_PROVIDER = 'Sorry, user account is logged in with another provider';
 export const GENERAL_ERROR = 'Something went wrong, please try again';

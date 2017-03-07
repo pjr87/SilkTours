@@ -10,6 +10,7 @@
  } from "amazon-cognito-identity-js";
  import appConfig from "../utils/config";
  import * as service from '../utils/databaseFunctions';
+ import { loadState, saveState } from '../localStorage';
 
  const userPool = new CognitoUserPool({
    UserPoolId: appConfig.userPoolId,
@@ -167,9 +168,7 @@ var cognitoFunctions = {
    * Logs the current user out
    */
   logout(callback) {
-    //TODO call logout stuff
-    //config.credentials.clearCachedId();
-    //eraseCookie();
+    //TODO logout stuff
     callback(true);
   },
   /**
@@ -177,12 +176,21 @@ var cognitoFunctions = {
    * @return {boolean} True if there is a logged in user, false if there isn't
    */
   loggedIn() {
-    //TODO use cookie for login
-    if( localStorage.token == null) {
+
+    const persistedState = loadState();
+    if(persistedState == null){
+      console.log("Set False");
       return false;
     }
-    else {
-      return true;
+    else{
+      if( persistedState.AuthReducer.auth.IdentityId == ""){
+        console.log("Set false 1");
+        return false;
+      }
+      else {
+        console.log("Set true");
+        return true;
+      }
     }
   },
   /**
@@ -193,10 +201,7 @@ var cognitoFunctions = {
    * @param  {Function} callback Called after a user was registered on the remote server
    */
   signup(username, password, phoneNumber, callback) {
-    //TODO check to see if username(email) already exists
-
     //Step 2 - Signing up Users to the User Pool for Silk
-
     //attributeList represents the reqiured or optional
     //attributes a user can use to sign up for an account
     const attributeList = [];
@@ -240,8 +245,6 @@ var cognitoFunctions = {
    * @param  {Function} callback Called after a user was registered on the remote server
    */
   confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber, callback) {
-    //TODO check to see if username(email) already exists
-
     cognitoUser.confirmRegistration(confirmationNumber, true, function(err, result) {
       if (err) {
         if (callback) callback({
@@ -250,7 +253,6 @@ var cognitoFunctions = {
         });
       }
       else{
-        //TODO get initial tokens
         // Step 1 - Define global AWS identity credentials
         //Config.region = appConfig.region;
         config.update({region:'us-east-1'});
@@ -328,26 +330,43 @@ var cognitoFunctions = {
                     IdentityId: id
                   };
                   var response;
-                  //TODO check if user already exists, then user already signed in
+                  // TODO check if user already exists, then user already signed in
                   //with another provider
+                  var user = {
+                    Logins: loginsIdpData,
+                    IdentityId: id
+                  };
 
-                  service.registerNewUser(user1).then(function(response){
-                    console.log("RESPONSE ");
-                    console.log(response.data);
-                    console.log(response.status);
-
+                  //Get the user that is tyring to login from database TODO
+                  /*service.getUserByEmail(username, user).then(function(response){
+                    //If the user matches then proceed
                     if(response.data.email == username){
-                      //config.credentials.clearCachedId();
-
+                      //TODO clear user from cognito
                       if (callback) callback({
-                        authenticated: true,
-                        auth: auth,
-                        id_user: response.data.id_users,
-                        data: response.data,
-                        error: ''
+                        authenticated: false,
+                        error: 'User account logged in with another provider'
                       });
                     }
-                  });
+                    else{*/
+                      service.registerNewUser(user1).then(function(response){
+                        console.log("RESPONSE ");
+                        console.log(response.data);
+                        console.log(response.status);
+
+                        if(response.data.email == username){
+                          //config.credentials.clearCachedId();
+
+                          if (callback) callback({
+                            authenticated: true,
+                            auth: auth,
+                            id_user: response.data.id_users,
+                            data: response.data,
+                            error: ''
+                          });
+                        }
+                      });
+                  //  } TODO
+                //  });
                 }
             });
           }

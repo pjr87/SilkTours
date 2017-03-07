@@ -45,17 +45,14 @@ export function login(username, password) {
     }
 
     if (cognitoFunctions.loggedIn()) {
+      console.log("Logged In");
       return;
     }
 
     // Do a login
     cognitoFunctions.login(username, password, (response) => {
-      // If the user was authenticated successfully, save a random token to the
-      // localStorage
+      // If the user was authenticated successfully set states
       if (response.authenticated) {
-        localStorage.token = response.token;
-        //TODO use Logins and IdentityId as logged in state
-
         //Update the store with relevant information
         dispatch(updateIDState(response.user.id_user));
         dispatch(updateProviderState("Developer"));
@@ -106,9 +103,52 @@ export function logout() {
     dispatch(sendingRequest(true));
     cognitoFunctions.logout((success, err) => {
       if (success === true) {
-        dispatch(sendingRequest(false))
+        //Update the store with relevant information
+        dispatch(updateIDState(""));
+        dispatch(updateProviderState(""));
+        dispatch(updateAuthState({
+          Logins: '',
+          IdentityId: ''
+        }));
+        dispatch(updateUserState({
+          address: {
+            city: "",
+            country: "",
+            state_code: "",
+            street: "",
+            unit: "",
+            zip: ""
+          },
+          description: "",
+          dob: "",
+          email: "",
+          first_name: "",
+          interests: [],
+          last_name: "",
+          phone_number: "",
+          profile_picture: "",
+          tours_taking: [],
+          tours_teaching: [],
+        }));
+
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
         dispatch(setAuthState(false));
-        localStorage.removeItem('token');
+
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeLoginForm({
+          username: "",
+          password: ""
+        }));
+        dispatch(changeSignUpForm({
+          firstname: '',
+          lastname: '',
+          username: '',
+          password: '',
+          phoneNumber: '',
+          confirmationCode: ''
+        }));
+        dispatch(clearError());
         browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
@@ -236,6 +276,10 @@ export function confirmSignUp(cognitoUser, firstname, lastname, username, passwo
         dispatch(sendingRequest(false));
         if(response.error == "UsernameExistsException: User already exists"){
           dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
+          return;
+        }
+        else if(response.error == "User account logged in with another provider"){
+          dispatch(setErrorMessage(errorMessages.OTHER_PROVIDER));
           return;
         }
         else{

@@ -26,7 +26,6 @@ import Messages from './pages/Messages';
 function checkAuth(nextState, replaceState) {
   let tmpState = loadState();
   let loggedIn = tmpState.AuthReducer.loggedIn;
-  //TODO verify login isnt fake?
 
   //If user is logged in allow them to
   if (loggedIn) {
