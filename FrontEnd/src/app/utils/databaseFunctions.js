@@ -62,7 +62,7 @@ export function updateExistingUser(id, json) {
 }
 
 export function getUserByEmail(email, json) {
-  let url = SERVER_URL + email;
+  let url = SERVER_URL + '/users/email/' + email;
   return axios.get(url, {
     headers:{
       'Silk-Logins': JSON.stringify(json.Logins),

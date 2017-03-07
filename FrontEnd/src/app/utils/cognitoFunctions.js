@@ -122,6 +122,7 @@ var cognitoFunctions = {
                 //Update database table with new login information TODO not neccesary
                 service.updateExistingUser(response.data.id_users, user1).then(function(response){
                   var name = response.data.first_name + " " + response.data.last_name;
+                  console.log("response.data", response.data);
 
                   var user = {
                     id_user: response.data.id_users,
@@ -133,6 +134,7 @@ var cognitoFunctions = {
                   if (callback) callback({
                     authenticated: true,
                     user: user,
+                    data: data,
                     error: ""
                   });
                 });
