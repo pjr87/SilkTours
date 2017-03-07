@@ -5,7 +5,6 @@ import style from '../../style/style.css';
 
 var htmlContent = require('../Messages/sample/fullview.html');
 import logoImg from '../../style/images/logo5.png';
-import GetData from "../../databaseFunctions";
 import InnerHTML from 'dangerously-set-inner-html';
 import MessageBody from './MessageBody.js';
 

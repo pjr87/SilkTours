@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 
 var htmlContent = require('../Messages/sample/fullview.html');
 
-
-import AuthStore from "../../stores/AuthStore.js";
 import InnerHTML from 'dangerously-set-inner-html';
 
 
