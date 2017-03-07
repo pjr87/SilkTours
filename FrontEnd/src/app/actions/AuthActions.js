@@ -54,15 +54,13 @@ export function login(username, password) {
       // localStorage
       if (response.authenticated) {
         localStorage.token = response.token;
-        //TODO use cookie as logged in state
+        //TODO use Logins and IdentityId as logged in state
 
+        //Update the store with relevant information
         dispatch(updateIDState(response.user.id_user));
         dispatch(updateProviderState("Developer"));
         dispatch(updateAuthState(response.user.auth));
         dispatch(updateUserState(response.data));
-
-        //move to explore page
-        localStorage.token = response.token;
 
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
@@ -73,9 +71,9 @@ export function login(username, password) {
           username: "",
           password: ""
         }));
+        dispatch(clearError());
         forwardTo('/');
       } else {
-        console.log("5");
         // If there was a problem authenticating the user, show an error on the
         // form
         //TODO error handling
@@ -122,16 +120,18 @@ export function logout() {
 
 /**
  * Registers a user
+ * @param  {string} firstname The username of the new user
+ * @param  {string} lastname The password of the new user
  * @param  {string} username The username of the new user
  * @param  {string} password The password of the new user
  * @param  {string} phoneNumber The phoneNumber of the new user
  */
-export function signUp(username, password, phoneNumber) {
+export function signUp(firstname, lastname, username, password, phoneNumber) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ username, password, phoneNumber })) {
+    if (anyElementsEmpty({ firstname, lastname, username, password, phoneNumber })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
@@ -158,22 +158,90 @@ export function signUp(username, password, phoneNumber) {
     cognitoFunctions.signup(username, password, phoneNumber, (response) => {
       // If the user was signed up successfully
       if (response.authenticated) {
-        //this.cognitoUser = result.user;
-        console.log('user name is ' + result.user.getUsername());
-        console.log('call result: ' + result.user);
+        //Update the store with relevant information
+        dispatch(updateProviderState("Developer"));
+        //dispatch(updateUserState(response.data));
+        dispatch(setCognitoUser(response.cognitoUser));
 
+        // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
-        //TODO dispatch ready for confirmation
-        //TODO foward to confirmation page
-        //TODO dispatch clear sign up form
+        dispatch(setConfirmed(true));
+
+        dispatch(clearError());
+        forwardTo('/confirmationpage');
       }
       else{
-        dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+        // If there was a problem signin up the user, show an error
         dispatch(sendingRequest(false));
-        // If there was a problem authenticating the user, show an error on the
-        // form
-        //TODO error handling
-        //TODO implement error types
+        console.log('response.error:', String(response.error));
+        if(response.error == "UsernameExistsException: User already exists"){
+          dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
+          return;
+        }
+        else{
+          dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+          return;
+        }
+      }
+    });
+  }
+}
+
+/**
+ * Registers a user
+ * @param  {object} cognitoUser The user to do confirmation of
+ * @param  {string} confirmationNumber The confirmation number
+ */
+export function confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ cognitoUser, firstname, lastname, username, phoneNumber, confirmationNumber })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+
+    cognitoFunctions.confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
+      // If the user was signed up successfully
+      if (response.authenticated) {
+        //Update the store with relevant information
+        dispatch(updateProviderState("Developer"));
+        dispatch(updateAuthState(response.auth));
+        dispatch(updateIDState(response.id_user));
+        dispatch(updateUserState(response.data));
+
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
+        dispatch(setConfirmed(false));
+        dispatch(setAuthState(true));
+
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeSignUpForm({
+          firstname: '',
+          lastname: '',
+          username: '',
+          password: '',
+          phoneNumber: '',
+          confirmationCode: ''
+        }));
+
+        dispatch(clearError());
+        forwardTo('/');
+      }
+      else{
+        // If there was a problem signin up the user, show an error
+        console.log('response.error: ' + response.error);
+        dispatch(sendingRequest(false));
+        if(response.error == "UsernameExistsException: User already exists"){
+          dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
+          return;
+        }
+        else{
+          dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+          return;
+        }
       }
     });
   }
@@ -220,6 +288,14 @@ export function setAuthState(newAuthState) {
 }
 
 /**
+ * Sets the cognito user object
+ * @param {object} newCognitoUserState Cognito User used to confirm signup
+ */
+export function setCognitoUser(newCognitoUserState) {
+  return { type: authConstants.SET_COGNITO_USER, newCognitoUserState };
+}
+
+/**
  * Sets the form state
  * @param  {object} newLoginFormState          The new state of the form
  * @param  {string} newState.username The new text of the username input field of the form
@@ -248,6 +324,15 @@ export function changeSignUpForm(newSignUpFormState) {
  */
 export function sendingRequest(sending) {
   return { type: authConstants.SENDING_REQUEST, sending };
+}
+
+/**
+ * Sets the newConfirmedState state, which allows user to enter confirmation info
+ * @param  {boolean} newConfirmedState The new state of confirmation
+ * @return {object}          Formatted action for the reducer to handle
+ */
+export function setConfirmed(newConfirmedState) {
+  return { type: authConstants.SET_CONFIRMED, newConfirmedState };
 }
 
 /**

@@ -20,9 +20,12 @@ const initialState = {
     password: ''
   },
   signUpFormState: {
+    firstname: '',
+    lastname: '',
     username: '',
     password: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    confirmationCode: ''
   },
   user: {
     address: {
@@ -46,11 +49,13 @@ const initialState = {
   },
   auth: {
     Logins: '', //AWS value needed to request secured endpoints, is stringified
-    identityID: '' //Unique identityID assigned to user by AWS
+    IdentityId: '' //Unique identityID assigned to user by AWS
   },
   id_user: '', //Primary key of user in users table
   provider: '', //What service signed in with
   currentlySending: false,
+  readyToConfirm: false,
+  cognitoUser: {},
   loggedIn: cognitoFunctions.loggedIn(),
   errorMessage: ''
 };
@@ -64,6 +69,10 @@ function AuthReducer(state = initialState, action) {
       return {...state, signUpFormState: action.newSignUpFormState};
     case authConstants.SET_AUTH:
       return {...state, loggedIn: action.newAuthState};
+    case authConstants.SET_COGNITO_USER:
+      return {...state, cognitoUser: action.newCognitoUserState};
+    case authConstants.SET_CONFIRMED:
+      return {...state, readyToConfirm: action.newConfirmedState};
     case authConstants.UPDATE_USER:
       return {...state, user: action.newUserState};
     case authConstants.UPDATE_ID:

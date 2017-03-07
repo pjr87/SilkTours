@@ -1,15 +1,8 @@
 /*
- Sign.js
+ SignInContents.js
 
  User sign in page, integration with FB, AWS
  Written by: Phillip Ryan
-
- Calls functions from CognitoSync folder to display login functions
- Displayed when Signin is click
-
- TODO:
-  Link back to the home page after sign up
-  Add Signin from exisiting user account sequence for (devAuth, Facebook, other)
 */
 
 import React from 'react';
@@ -21,7 +14,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
 import auth from '../../utils/cognitoFunctions';
-import { login, changeLoginForm } from '../../actions/AuthActions';
+import { login, changeLoginForm, clearError } from '../../actions/AuthActions';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -35,6 +28,7 @@ class SignInContents extends React.Component{
     this.loginSubmit = this.loginSubmit.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
+    this._clearError = this._clearError.bind(this)
   }
 
   _changeUsername (event) {
@@ -107,12 +101,15 @@ class SignInContents extends React.Component{
             </FormGroup>
             <Col sm={4}>
               <p>Don't have a travel profile?</p>
-              <Link to='/signup'>Sign up!</Link>
+              <Link to='/signup' onClick={this._clearError}>Sign up!</Link>
             </Col>
           </Form>
         </Grid>
       </div>
     )
+  }
+  _clearError () {
+    this.props.dispatch(clearError())
   }
 }
 
