@@ -15,11 +15,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, HelpBlock, FormGroup } from 'react-bootstrap';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import auth from '../../utils/cognitoFunctions';
 import { login, changeLoginForm } from '../../actions/AuthActions';
-import ErrorMessage from '../common/ErrorMessage';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -54,42 +56,61 @@ class SignInContents extends React.Component{
 
   render() {
     let isLoading = this.props.currentlySending;
+    function ErrorFunc(props){
+
+      if( props.errorText ){
+        return (<HelpBlock>{props.errorText}</HelpBlock>);
+      }
+
+      return <div></div>
+    }
+
     return (
       <div>
-        <br/>
-        <br/>
-        <br/>
-        <Form inline>
-            <FormGroup controlId="formHorizontalEmail">
-                <ControlLabel>Email </ControlLabel>
+        <Grid>
+          <br/>
+          <Form horizontal>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                Email
+              </Col>
+              <Col sm={4}>
                 <FormControl
                   type="username"
                   ref="username"
                   onChange={this._changeUsername}
                   placeholder="Email" />
+              </Col>
             </FormGroup>
-            <FormGroup controlId="formHorizontalPassword">
-                <ControlLabel>Password </ControlLabel>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                Password
+              </Col>
+              <Col sm={4}>
                 <FormControl
                   type="password"
                   ref="password"
                   onChange={this._changePassword}
                   placeholder="Password" />
+              </Col>
             </FormGroup>
-            <Button
-              disabled={isLoading}
-              onClick={!isLoading ? this.loginSubmit : null}>
-              {isLoading ? 'Logging in...' : 'Login'}
-            </Button>
-            <ErrorMessage />
-        </Form>
-        <br/>
-        <br/>
-        <br/>
-        <p>Don't have one?</p>
-        <Link to='/signup'>CREATE ONE</Link>
-        <br/>
-        <br/>
+            <FormGroup
+              validationState = {this.props.errorMessage ? "error" : "success"}>
+              <Col smOffset={2} sm={10}>
+                <ErrorFunc errorText = {this.props.errorMessage} />
+                <Button
+                  disabled={isLoading}
+                  onClick={!isLoading ? this.loginSubmit : null}>
+                  {isLoading ? 'Logging in...' : 'Login'}
+                </Button>
+              </Col>
+            </FormGroup>
+            <Col sm={4}>
+              <p>Don't have a travel profile?</p>
+              <Link to='/signup'>Sign up!</Link>
+            </Col>
+          </Form>
+        </Grid>
       </div>
     )
   }
@@ -97,14 +118,16 @@ class SignInContents extends React.Component{
 
 SignInContents.propTypes = {
   currentlySending: React.PropTypes.bool,
-  loginFormState: React.PropTypes.object
+  loginFormState: React.PropTypes.object,
+  errorMessage: React.PropTypes.string
 }
 
 // select chooses which props to pull from store
 function select(state) {
   return {
     loginFormState: state.AuthReducer.loginFormState,
-    currentlySending: state.AuthReducer.currentlySending
+    currentlySending: state.AuthReducer.currentlySending,
+    errorMessage: state.AuthReducer.errorMessage
   };
 }
 

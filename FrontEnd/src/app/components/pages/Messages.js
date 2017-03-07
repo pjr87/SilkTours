@@ -14,13 +14,13 @@ import { connect } from 'react-redux';
 
 class Messages extends React.Component{
 
-  
+
 
   constructor(props) {
   super(props);
   }
 
-  
+
 
   render(){
 
@@ -40,15 +40,15 @@ class Messages extends React.Component{
             $applozic.fn.applozic('loadTab', username);
          }
         }
-        
 
-        
+
+
         function passUsername(){
         }
 
 
 
-    
+
     var oModal = "";
 if (typeof $original !== 'undefined') {
   $ = $original;
@@ -128,7 +128,5 @@ function select(state) {
 }
 
 
- 
-  
 
 export default connect(select)(Messages);

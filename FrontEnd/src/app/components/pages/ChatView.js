@@ -10,7 +10,7 @@ import ReactList from 'react-list';
 
 class ChatView extends React.Component{
 
-  
+
 
   constructor(props) {
   super(props);
@@ -37,7 +37,7 @@ class ChatView extends React.Component{
   }
 
   renderItemChat(index, key){
-    return ( 
+    return (
       <div key={key}>{this.state.messages[index]}</div> );
   }
 
@@ -64,7 +64,7 @@ class ChatView extends React.Component{
 
     }
 
- 
-  
+
+
 
 export default ChatView;

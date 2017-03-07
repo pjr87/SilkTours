@@ -23,20 +23,10 @@
  *    created in the second step
  */
 
-import {
-  SET_AUTH,
-  UPDATE_USER,
-  CHANGE_LOGIN_FORM,
-  CHANGE_SIGNUP_FORM,
-  UPDATE_AUTH,
-  SENDING_REQUEST,
-  SET_ERROR_MESSAGE,
-  CLEAR_ERROR
-} from '../constants/AuthConstants';
-import * as errorMessages  from '../constants/MessageConstants';
+import * as authConstants from '../constants/AuthConstants';
+import * as errorMessages from '../constants/MessageConstants';
 import cognitoFunctions from '../utils/cognitoFunctions';
 import { browserHistory } from 'react-router';
-import style from '../components/common/style.css';
 
 /**
  * Logs an user in
@@ -66,11 +56,9 @@ export function login(username, password) {
         localStorage.token = response.token;
         //TODO use cookie as logged in state
 
-        console.log("user", user);
-        dispatch(updateUserState(response.user));
-        //dispatch(updateLoginsState(user1)); TODO
-
-        config.credentials.clearCachedId();
+        dispatch(updateIDState(response.user.id_user));
+        dispatch(updateProviderState("Developer"));
+        dispatch(updateAuthState(response.user.auth));
 
         //move to explore page
         localStorage.token = response.token;
@@ -86,6 +74,7 @@ export function login(username, password) {
         }));
         forwardTo('/');
       } else {
+        console.log("5");
         // If there was a problem authenticating the user, show an error on the
         // form
         //TODO error handling
@@ -121,7 +110,6 @@ export function logout() {
         dispatch(sendingRequest(false))
         dispatch(setAuthState(false));
         localStorage.removeItem('token');
-        eraseCookie();
         browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
@@ -195,17 +183,31 @@ export function signUp(username, password, phoneNumber) {
  * @param  {object} newUserState //The user json
  */
 export function updateUserState(newUserState) {
-  console.log("newUserState", newUserState);
-  return { type: UPDATE_USER, newUserState };
+  return { type: authConstants.UPDATE_USER, newUserState };
+}
+
+/**
+ * Updates a user's information
+ * @param  {object} newIDState //The user json
+ */
+export function updateIDState(newIDState) {
+  return { type: authConstants.UPDATE_ID, newIDState };
+}
+
+/**
+ * Updates a user's information
+ * @param  {object} newProviderState //The user json
+ */
+export function updateProviderState(newProviderState) {
+  return { type: authConstants.UPDATE_PROVIDER, newProviderState };
 }
 
 /**
  * Updates a user's information TODO remove this
- * @param  {object} newLoginsState //The user json
+ * @param  {object} newAuthState //The auth json
  */
-export function updateLoginsState(newLoginsState) {
-  console.log("newLoginsState", newLoginsState);
-  return { type: UPDATE_AUTH, newLoginsState };
+export function updateAuthState(newAuthState) {
+  return { type: authConstants.UPDATE_AUTH, newAuthState };
 }
 
 /**
@@ -213,7 +215,7 @@ export function updateLoginsState(newLoginsState) {
  * @param {boolean} newAuthState True means a user is logged in, false means no user is logged in
  */
 export function setAuthState(newAuthState) {
-  return { type: SET_AUTH, newAuthState };
+  return { type: authConstants.SET_AUTH, newAuthState };
 }
 
 /**
@@ -224,7 +226,7 @@ export function setAuthState(newAuthState) {
  * @return {object}                   Formatted action for the reducer to handle
  */
 export function changeLoginForm(newLoginFormState) {
-  return { type: CHANGE_LOGIN_FORM, newLoginFormState };
+  return { type: authConstants.CHANGE_LOGIN_FORM, newLoginFormState };
 }
 
 /**
@@ -235,7 +237,7 @@ export function changeLoginForm(newLoginFormState) {
  * @return {object}                   Formatted action for the reducer to handle
  */
 export function changeSignUpForm(newSignUpFormState) {
-  return { type: CHANGE_SIGNUP_FORM, newSignUpFormState };
+  return { type: authConstants.CHANGE_SIGNUP_FORM, newSignUpFormState };
 }
 
 /**
@@ -244,7 +246,7 @@ export function changeSignUpForm(newSignUpFormState) {
  * @return {object}          Formatted action for the reducer to handle
  */
 export function sendingRequest(sending) {
-  return { type: SENDING_REQUEST, sending };
+  return { type: authConstants.SENDING_REQUEST, sending };
 }
 
 /**
@@ -253,7 +255,7 @@ export function sendingRequest(sending) {
  */
 function setErrorMessage(message) {
   return (dispatch) => {
-    dispatch({ type: SET_ERROR_MESSAGE, message });
+    dispatch({ type: authConstants.SET_ERROR_MESSAGE, message });
   }
 }
 
@@ -262,7 +264,6 @@ function setErrorMessage(message) {
  * @param {string} location The route the user should be forwarded to
  */
 function forwardTo(location) {
-  console.log('forwardTo(' + location + ')');
   browserHistory.push(location);
 }
 
@@ -284,5 +285,5 @@ function anyElementsEmpty(elements) {
  * Sets the `error` state as empty
  */
 export function clearError () {
-  return {type: CLEAR_ERROR}
+  return {type: authConstants.CLEAR_ERROR}
 }

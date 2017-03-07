@@ -20,7 +20,7 @@
 * Sets the cookies for authentication
 * param: Logins, identityId, days
 */
-function setCookie(Logins, identityId, days){
+/*function setCookie(Logins, identityId, days){
  var expires = "";
  if (days) {
      var date = new Date();
@@ -29,30 +29,7 @@ function setCookie(Logins, identityId, days){
  }
  document.cookie = "Logins=" + JSON.stringify(Logins) + expires + "; path=/";
  document.cookie = "IdentityId=" + identityId + expires + "; path=/";
- //document.cookie="Logins="+JSON.stringify(Logins);
- //document.cookie="IdentityId="+identityId;
-}
-
-/**
-* Gets the cookies for authentication
-*/
-function getCookie(name){
- var nameEQ = name + "=";
- var ca = document.cookie.split(';');
- for(var i=0;i < ca.length;i++) {
-     var c = ca[i];
-     while (c.charAt(0)==' ') c = c.substring(1,c.length);
-     if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
- }
- return null;
-}
-
-/**
-* Removes the cookies for authentication
-*/
-function eraseCookie() {
-   createCookie(null,null,-1);
-}
+}*/
 
 var cognitoFunctions = {
   /**
@@ -131,15 +108,15 @@ var cognitoFunctions = {
               Logins: loginsIdpData,
               IdentityId: id
             };
-
-            //Set the cookie used to authenticate with server
-            setCookie(loginsIdpData, id, 1);
+            var auth = {
+              Logins: JSON.stringify(loginsIdpData),
+              IdentityId: id
+            };
 
             var response;
 
             //Get the user that is tyring to login from database
             service.getUserByEmail(username, user1).then(function(response){
-              console.log("response", response);
               //If the user matches then proceed
               if(response.data.email == username){
                 //Update database table with new login information TODO not neccesary
@@ -147,10 +124,9 @@ var cognitoFunctions = {
                   var name = response.data.first_name + " " + response.data.last_name;
 
                   var user = {
-                    fullName: name,
-                    email: username,
                     id_user: response.data.id_users,
-                    provider: "Developer"
+                    provider: "Developer",
+                    auth: auth
                   };
 
                   //Pass callback information to calling function
@@ -192,6 +168,7 @@ var cognitoFunctions = {
   logout(callback) {
     //TODO call logout stuff
     //config.credentials.clearCachedId();
+    //eraseCookie();
     callback(true);
   },
   /**
