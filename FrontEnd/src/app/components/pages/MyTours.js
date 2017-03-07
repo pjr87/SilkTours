@@ -187,7 +187,7 @@ MyTours.propTypes = {
 
 function select (state) {
   return {
-    id_user: state.AuthReducer.user.id_user
+    id_user: state.AuthReducer.id_user
   };
 }
 

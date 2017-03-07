@@ -7,7 +7,7 @@ class SignUpPage extends React.Component{
     return(
       <div>
         <BannerImage/>
-        <PageTitle title = "create a travel profile"/>
+        <PageTitle title = "Create a travel profile!"/>
         <SignUpContents/>
       </div>
     );

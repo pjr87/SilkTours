@@ -29,22 +29,6 @@ function setCookie(Logins, identityId, days){
  }
  document.cookie = "Logins=" + JSON.stringify(Logins) + expires + "; path=/";
  document.cookie = "IdentityId=" + identityId + expires + "; path=/";
- //document.cookie="Logins="+JSON.stringify(Logins);
- //document.cookie="IdentityId="+identityId;
-}
-
-/**
-* Gets the cookies for authentication
-*/
-function getCookie(name){
- var nameEQ = name + "=";
- var ca = document.cookie.split(';');
- for(var i=0;i < ca.length;i++) {
-     var c = ca[i];
-     while (c.charAt(0)==' ') c = c.substring(1,c.length);
-     if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
- }
- return null;
 }
 
 /**
@@ -127,7 +111,7 @@ var cognitoFunctions = {
           else{
             //Get the actual IdentityID
             var id = config.credentials._identityId;
-            var user1 = {
+            var auth = {
               Logins: loginsIdpData,
               IdentityId: id
             };
@@ -138,19 +122,17 @@ var cognitoFunctions = {
             var response;
 
             //Get the user that is tyring to login from database
-            service.getUserByEmail(username, user1).then(function(response){
-              console.log("response", response);
+            service.getUserByEmail(username, auth).then(function(response){
               //If the user matches then proceed
               if(response.data.email == username){
                 //Update database table with new login information TODO not neccesary
-                service.updateExistingUser(response.data.id_users, user1).then(function(response){
+                service.updateExistingUser(response.data.id_users, auth).then(function(response){
                   var name = response.data.first_name + " " + response.data.last_name;
 
                   var user = {
-                    fullName: name,
-                    email: username,
                     id_user: response.data.id_users,
-                    provider: "Developer"
+                    provider: "Developer",
+                    auth: auth
                   };
 
                   //Pass callback information to calling function

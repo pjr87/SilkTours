@@ -1,5 +1,19 @@
 import axios from 'axios';
 
+/**
+* Gets the cookies for authentication
+*/
+function getCookie(name){
+ var nameEQ = name + "=";
+ var ca = document.cookie.split(';');
+ for(var i=0;i < ca.length;i++) {
+     var c = ca[i];
+     while (c.charAt(0)==' ') c = c.substring(1,c.length);
+     if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+ }
+ return null;
+}
+
 /*
 Every call must use
   secretAccessKey and identityID - Used with all ajax calls
@@ -36,5 +50,11 @@ export function updateExistingUser(id, json) {
 }
 
 export function getUserByEmail(email, json) {
-  return axios.get('http://34.197.42.24:5000/users/email/' + email, json);
+  let url = 'http://34.197.42.24:5000/users/email/' + email;
+  return axios.get(url, {
+    headers:{
+      'Silk-Logins': JSON.stringify(json.Logins),
+      'Silk-Identity-Id': json.IdentityId
+    }
+  });
 }
