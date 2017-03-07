@@ -3,6 +3,7 @@ export ActivitiesPage from './ActivitiesPage/ActivitiesPage';
 export AboutUsPage from './AboutUsPage/AboutUsPage';
 export SignInPage from './SignInPage/SignInPage';
 export SignUpPage from './SignUpPage/SignUpPage';
+export ConfirmationPage from './ConfirmationPage/ConfirmationPage';
 export NotFound from './NotFound/NotFound';
 export ContactUsPage from './ContactUsPage/ContactUsPage';
 export SettingsPage from './SettingsPage/SettingsPage';

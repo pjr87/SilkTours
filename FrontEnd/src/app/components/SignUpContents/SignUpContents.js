@@ -1,22 +1,14 @@
 /*
- SignUp.js
+ SignUpContents.js
 
  User sign up page, integration with FB, AWS
  Written by: Phillip Ryan
-
- Calls functions from CognitoSync folder to display login functions
- Displayed when Signup is click
-
- TODO:
-  Link back to the home page afer sign up
-  Todo phone number verification
-  Add SignUp from new user account sequence for (Facebook, other)
 */
 
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, HelpBlock, FormGroup } from 'react-bootstrap';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -33,9 +25,19 @@ class SignUpContents extends React.Component{
     super();
 
     this.signUpSubmit = this.signUpSubmit.bind(this)
+    this._changeFirstName = this._changeFirstName.bind(this)
+    this._changeLastName = this._changeLastName.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
     this._changePhoneNumber = this._changePhoneNumber.bind(this)
+  }
+
+  _changeFirstName (event) {
+    this._emitChange({...this.props.signUpFormState, firstname: event.target.value})
+  }
+
+  _changeLastName (event) {
+    this._emitChange({...this.props.signUpFormState, lastname: event.target.value})
   }
 
   _changeUsername (event) {
@@ -58,9 +60,12 @@ class SignUpContents extends React.Component{
     event.preventDefault()
 
     this.props.dispatch(
-      signUp(this.props.signUpFormState.username,
-            this.props.signUpFormState.password,
-            this.props.signUpFormState.phoneNumber)
+      signUp(
+        this.props.signUpFormState.firstname,
+        this.props.signUpFormState.lastname,
+        this.props.signUpFormState.username,
+        this.props.signUpFormState.password,
+        this.props.signUpFormState.phoneNumber)
     );
   }
 
@@ -80,6 +85,30 @@ class SignUpContents extends React.Component{
         <Grid>
           <br/>
           <Form horizontal>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                First Name
+              </Col>
+              <Col sm={4}>
+                <FormControl
+                  type="firstName"
+                  ref="firstName"
+                  onChange={this._changeFirstName}
+                  placeholder="First Name" />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                Last Name
+              </Col>
+              <Col sm={4}>
+                <FormControl
+                  type="lastName"
+                  ref="lastName"
+                  onChange={this._changeLastName}
+                  placeholder="Last Name" />
+              </Col>
+            </FormGroup>
             <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
                 Email
@@ -122,7 +151,7 @@ class SignUpContents extends React.Component{
                 <ErrorFunc errorText = {this.props.errorMessage} />
                 <Button
                   disabled={isLoading}
-                  onClick={!isLoading ? this.loginSubmit : null}>
+                  onClick={!isLoading ? this.signUpSubmit : null}>
                   {isLoading ? 'Signing up...' : 'Sign up!'}
                 </Button>
               </Col>

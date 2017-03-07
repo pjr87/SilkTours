@@ -27,8 +27,11 @@ const configureStore = () => {
   // to do asynchronous calls in actions, implemented as callbacks
   const middleware = composeEnhancers(applyMiddleware(promise(),thunk,Logger));
 
+  //Get the persisted state if one exists
+  const persistedState = loadState();
+
   //Create the store
-  const store = createStore(reducer, middleware);
+  const store = createStore(reducer, persistedState, middleware);
 
   //This function subscribes the saveState function to the store so that
   //every 1000 ms there is a change the store is saved
