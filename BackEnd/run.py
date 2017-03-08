@@ -29,7 +29,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 CORS(app)
 
-#client = boto3.client('cognito-identity')
+client = boto3.client('cognito-identity')
 
 
 def checkLogin():
@@ -67,7 +67,10 @@ def checkLogin():
 
     if logins is None or identityId is None:
         return False
+    return checkLoginWithArgs(logins, identityId)
 
+
+def checkLoginWithArgs(logins, identityId):
     try:
         result = client.get_credentials_for_identity(
             IdentityId=identityId,
@@ -208,7 +211,7 @@ def login(id, accessKeyID):
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
     try:
-        if not checkLogin():
+        if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username')):
             return "false"
     except:
         return "false"
