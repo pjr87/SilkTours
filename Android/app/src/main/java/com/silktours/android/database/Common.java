@@ -1,6 +1,5 @@
 package com.silktours.android.database;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -15,10 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
@@ -28,17 +24,14 @@ import java.util.Map;
 public class Common {
     public static final String SERVER_URL = "http://34.197.42.24:5000";
 
-    private static void addAuthCookie(HttpURLConnection conn) {
-        java.net.CookieManager msCookieManager = new java.net.CookieManager();
-        msCookieManager.getCookieStore().add(null, new HttpCookie("bypass", "true"));
-        conn.setRequestProperty("Cookie",
-                TextUtils.join(";", msCookieManager.getCookieStore().getCookies()));
+    private static void addAuth(HttpURLConnection conn) {
+        conn.setRequestProperty("Silk-Bypass", "true");
     }
 
     public static String httpRequest(String urlString) throws IOException, JSONException {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        addAuthCookie(urlConnection);
+        addAuth(urlConnection);
         int responseCode = urlConnection.getResponseCode();
         if (responseCode != 200) {
             Log.d("Silk", "" + responseCode);
@@ -67,7 +60,7 @@ public class Common {
             String urlString = SERVER_URL + "/check_auth";
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            addAuthCookie(urlConnection);
+            addAuth(urlConnection);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestMethod("POST");
@@ -97,7 +90,7 @@ public class Common {
 
     public static String request(String uri, String json, String method) throws IOException {
         HttpURLConnection httpcon = (HttpURLConnection) ((new URL (uri).openConnection()));
-        addAuthCookie(httpcon);
+        addAuth(httpcon);
         httpcon.setDoOutput(true);
         httpcon.setRequestProperty("Content-Type", "application/json");
         httpcon.setRequestProperty("Accept", "application/json");
