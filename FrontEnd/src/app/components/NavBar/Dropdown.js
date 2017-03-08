@@ -17,8 +17,9 @@ class Dropdown extends React.Component {
   }
 
   renderGuideTab(){
-    if(this.props.isTourGuide){
-      return(<LinkContainer to="/trou-creation" onClick={this._clearError}>
+    //if(this.props.isTourGuide){
+    if(true){
+      return(<LinkContainer to="/tour-creation" onClick={this._clearError}>
           <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
         </LinkContainer>);
     }
@@ -30,6 +31,29 @@ class Dropdown extends React.Component {
   }
 
   render(){
+    const renderGuideTab = true ? (
+      <LinkContainer to="/tour-creation" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
+        </LinkContainer>
+    ) : (
+      <LinkContainer to="/become-guide" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
+        </LinkContainer>
+    );
+    /*const renderGuideTab(){
+      //if(this.props.isTourGuide){
+      if(true){
+        return(<LinkContainer to="/tour-creation" onClick={this._clearError}>
+            <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
+          </LinkContainer>);
+      }
+
+      return (<LinkContainer to="/become-guide" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
+        </LinkContainer>);
+
+    }*/
+
     return (
       <NavDropdown eventKey={4} title = {this.props.usersName} id="nav-dropdown">
         <LinkContainer to="/messages" onClick={this._clearError}>
@@ -41,7 +65,7 @@ class Dropdown extends React.Component {
         <LinkContainer to="/settings" onClick={this._clearError}>
           <MenuItem eventKey={4.2}>Settings</MenuItem>
         </LinkContainer>
-        {renderGuideTab} 
+        {renderGuideTab}
 
         <MenuItem
           bsStyle="info"

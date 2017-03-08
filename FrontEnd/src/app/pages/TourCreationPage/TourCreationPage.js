@@ -13,36 +13,36 @@ class TourCreationPage extends React.Component{
      this.state = {
          fetching: false,
          tour: {
-      additional_accomadation: "hotel",
-      additional_food: "seafood",
-      additional_transport: "cars",
-      address:{
-        city:"Shanghai",
-        country:"China",
-        state_code:"State",
-        street:"NanJing Rd",
-        unit:"The Unit",
-        zip:"07760"},
-      average_rating: 3.0,
-      description: "Tour to Shanghai",
-      firstStart_date: "2016-05-03",
-      guides: [],
-      id_rating: null,
-      is_deleted: false,
-      lastEnd_date: "2016-10-24",
-      max_group_size: 10,
-      min_group_size: 1,
-      name: "Shanghai Tour",
-      price: 50.0,
-      profile_image: "https://s-media-cache-ak0.pinimg.com/736x/cf/b7/8c/cfb78c43479fa5f515444b9f857ea8ec.jpg",
-      profile_image_height: 726,
-      profile_image_width: 500,
-      date: 500,
-      time: 500,
-      rating_count: 4,
-      interests:[],
-      stops: []
-     }
+        additional_accomadation: "hotel",
+        additional_food: "seafood",
+        additional_transport: "cars",
+        address:{
+          city:"Shanghai",
+          country:"China",
+          state_code:"State",
+          street:"NanJing Rd",
+          unit:"The Unit",
+          zip:"07760"},
+        average_rating: 3.0,
+        description: "Tour to Shanghai",
+        firstStart_date: "2016-05-03",
+        guides: [],
+        id_rating: null,
+        is_deleted: false,
+        lastEnd_date: "2016-10-24",
+        max_group_size: 10,
+        min_group_size: 1,
+        name: "Shanghai Tour",
+        price: 50.0,
+        profile_image: "https://s-media-cache-ak0.pinimg.com/736x/cf/b7/8c/cfb78c43479fa5f515444b9f857ea8ec.jpg",
+        profile_image_height: 726,
+        profile_image_width: 500,
+        date: 500,
+        time: 500,
+        rating_count: 4,
+        interests:[],
+        stops: []
+       }
      };
      //console.log("getProfile: ",authStore.getProfile());
   }
@@ -66,10 +66,11 @@ objectFixer(obj){
 
 onSubmitClick(){
   var tempTour = this.state.tour;
+
   tempTour.bypass = true;
   console.log("submit clicked!->",tempTour);
 
-  //service.updateUser(tempUser);
+  service.newTour(tempTour);
 }
 
   onChange(val, fieldName){
