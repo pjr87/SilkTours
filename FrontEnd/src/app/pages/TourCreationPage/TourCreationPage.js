@@ -44,18 +44,6 @@ class TourCreationPage extends React.Component{
         stops: []
        }
      };
-     //console.log("getProfile: ",authStore.getProfile());
-  }
-
-
-  componentWillMount() {
-    authStore.on("login", () => {
-      this.state.authProfile = authStore.getProfile();
-    })
-
-    authStore.on("logout", () => {
-      this.state.authProfile = authStore.getProfile();
-    })
   }
 
 objectFixer(obj){

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 import style from './messageStyle.css';
 
-import * as service from '../../ajaxServices/AjaxList';
 import logoImg from '../../style/images/logo5.png';
 import ReactList from 'react-list';
 

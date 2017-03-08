@@ -32,7 +32,6 @@ class SettingsPage extends React.Component{
               },
          warningVisibility: false
      };
-     //console.log("getProfile: ",authStore.getProfile());
   }
 
 

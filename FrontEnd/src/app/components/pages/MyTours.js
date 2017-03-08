@@ -149,7 +149,7 @@ class MyTours extends React.Component{
 
 
 MyTours.propTypes = {
-  id_user: React.PropTypes.string
+  id_user: React.PropTypes.number
 }
 
 function select (state) {
