@@ -29,6 +29,9 @@ public class CredentialHandler {
     public static String email = null;
     private static User user;
     private static long expireDate = 0;
+    public static String logins = "";
+    public static String identityId = "";
+
 
 
     public static void logout(Activity context) {
@@ -36,6 +39,8 @@ public class CredentialHandler {
         if (user == null)
             user = new User();
         user.set(User.EXPIRE_TIME, expireDate);
+        user.set(User.LOGINS, logins);
+        user.set(User.IDENTITY_ID, identityId);
         persist(context);
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
@@ -68,6 +73,8 @@ public class CredentialHandler {
                 expireDate = 0;
                 return;
             }
+            logins = user.getStr(User.LOGINS);
+            identityId = user.getStr(User.IDENTITY_ID);
             expireDate = ((Number) o_exireDate).longValue();
             if (expireDate < System.currentTimeMillis()) {
                 user = null;

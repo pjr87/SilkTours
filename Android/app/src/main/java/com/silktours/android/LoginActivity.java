@@ -144,6 +144,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplication(),
+                CredentialHandler.identityPoolId,
+                Regions.US_EAST_1
+        );
+        credentialsProvider.clear();
     }
 
     @Override
@@ -161,11 +168,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                credentialsProvider = new CognitoCachingCredentialsProvider(
-                        getApplication(),
-                        CredentialHandler.identityPoolId,
-                        Regions.US_EAST_1
-                );
                 final Map<String, String> logins = new HashMap<>();
                 String accessToken = loginResult.getAccessToken().getToken();
                 logins.put("graph.facebook.com", accessToken);
@@ -181,6 +183,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void done(String email, String name, String picture) {
                         User user = null;
+                        CredentialHandler.logins = new JSONObject(logins).toString();
+                        CredentialHandler.identityId = credentialsProvider.getIdentityId();
                         try {
                             user = User.getByEmail(email);
                         } catch (IOException | JSONException e) {
@@ -200,7 +204,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 CredentialHandler.setUser(LoginActivity.this,
                                         user,
                                         loginResult.getAccessToken().getExpires().getTime());
-                                goHome();
+                                        goHome();
                                 finish();
                                 return;
                             } catch (IOException e) {
@@ -505,10 +509,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         public void onSuccess(CognitoUserSession userSession) {
             try {
+                Map<String, String> logins = new HashMap<>();
+                logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld", userSession.getIdToken().getJWTToken());
+                credentialsProvider.clear();
+                credentialsProvider.setLogins(logins);
+                CredentialHandler.identityId = credentialsProvider.getIdentityId();
+                CredentialHandler.logins = new JSONObject(logins).toString();
                 CredentialHandler.setUser(
                         LoginActivity.this,
                         User.getByEmail(mEmail),
-                        userSession.getAccessToken().getExpiration().getTime());
+                        userSession.getAccessToken().getExpiration().getTime()
+                );
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -527,6 +538,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         public void onFailure(Exception exception) {
+            if (! (exception instanceof AmazonServiceException)) {
+                exception.printStackTrace();
+                return;
+            }
             AmazonServiceException serviceException = (AmazonServiceException) exception;
             if (serviceException.getErrorCode().equals("UserNotFoundException")) {
                 CognitoUserAttributes userAttributes = new CognitoUserAttributes();
@@ -627,6 +642,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     null,
                     clientConfiguration);
             userPool.getUser(mEmail).authenticateUser(new AuthenticationDetails(mEmail, mPassword, null), authHandler);
+
             try {
                 loginLatch.await();
             } catch (InterruptedException e) {

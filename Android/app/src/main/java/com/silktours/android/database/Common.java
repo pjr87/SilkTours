@@ -2,6 +2,8 @@ package com.silktours.android.database;
 
 import android.util.Log;
 
+import com.silktours.android.utils.CredentialHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,14 @@ public class Common {
     public static final String SERVER_URL = "http://34.197.42.24:5000";
 
     private static void addAuth(HttpURLConnection conn) {
-        conn.setRequestProperty("Silk-Bypass", "true");
+
+        if (!CredentialHandler.logins.isEmpty() && !CredentialHandler.identityId.isEmpty()) {
+            Log.d("Logins", CredentialHandler.logins);
+            Log.d("identityPoolId", CredentialHandler.identityId);
+            conn.setRequestProperty("Silk-Logins", CredentialHandler.logins);
+            conn.setRequestProperty("Silk-Identity-Id", CredentialHandler.identityId);
+        }
+        //conn.setRequestProperty("Silk-Bypass", "true");
     }
 
     public static String httpRequest(String urlString) throws IOException, JSONException {
