@@ -33,7 +33,7 @@ client = boto3.client('cognito-identity')
 
 
 def checkLogin():
-    print(request.headers.get("Silk-Bypass") == 'true')
+    print(request.headers)
     print(request.data)
     data = None
     try:
@@ -41,7 +41,7 @@ def checkLogin():
     except:
         print("No JSON data")
         if (request.headers.get('Silk-Bypass') != 'true'
-                and "IdentityId" not in request.headers):
+                and "Silk-Identity-Id" not in request.headers):
             return False
     print(data)
     logins = None
@@ -71,6 +71,8 @@ def checkLogin():
 
 
 def checkLoginWithArgs(logins, identityId):
+    print("Logins:")
+    print(logins)
     try:
         result = client.get_credentials_for_identity(
             IdentityId=identityId,
