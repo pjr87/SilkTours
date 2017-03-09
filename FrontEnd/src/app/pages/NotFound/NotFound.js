@@ -8,7 +8,6 @@ class NotFound extends React.Component{
       <div>
         <BannerImage/>
         <PageTitle title = "Page Not Found!"/>
-        <SignInContents/>
       </div>
     );
   }

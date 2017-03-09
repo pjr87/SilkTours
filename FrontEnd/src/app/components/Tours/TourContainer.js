@@ -34,7 +34,7 @@ class TourContainer extends Component {
 
       // Object destructuring Syntax,
       // takes out required values and create references to them
-      const tours = info[0].data.data
+      const tours = info[0].data.data;
       this.setState({
         tours,
         fetching: false // done!

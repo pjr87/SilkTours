@@ -11,16 +11,20 @@ import style from './style.css';
 export default class Interests extends React.Component{
 
 
-  deleteTag(i) {
-        //var user = this.state.user;
-        //user.interests.splice(i, 1);
-        //this.setState({user:user});
-        console.log("t");
+    deleteTag(i) {
+      var interests = this.props.interests;
+      interests.splice(i, 1);
+      console.log("t");
+      this.props.onChange(interests);
     }
 
     addTag(tag) {
-        //this.props.tagAddition(tag)
-        console.log("t");
+      var interests = this.props.interests;
+      interests.push({
+          id: interests.length+1,
+          text: tag
+      });
+      this.props.onChange(interests);
     }
 
   render(){
@@ -43,8 +47,8 @@ export default class Interests extends React.Component{
               suggestions: style.ReactTags__suggestions
             }}
               tags={this.props.interests}
-              handleDelete={this.props.onTagDelete.bind(this)}
-              handleAddition={this.props.onTagAdd.bind(this)}/>
+              handleDelete={this.deleteTag.bind(this)}
+              handleAddition={this.addTag.bind(this)}/>
              <br />
            </Col>
          </Row>

@@ -4,40 +4,9 @@ import { BrowserRouter as Router, Link, Match, Miss } from 'react-router'
 import TourContainer from '../Tours/TourContainer';
 import * as service from '../../utils/databaseFunctions';
 import logoImg from '../../style/images/logo2.png';
-
 import {connect} from 'react-redux';
+import {SearchBar, PageTitle, BannerImage, ProfileHeader} from 'components';
 
-class ProfileHeader extends React.Component{
-
-  render(){
-    return (<div className={style.profileHeader}>
-      <div className={style.profileBox}>
-        <div className={style.profileText}>
-          profile
-        </div>
-        <img className={style.imgCircle} src={this.props.profilePicture} width="100px" height="100px" />
-      </div>
-      <div className={style.profileNameText}>{this.props.name}</div>
-    </div>);
-  }
-}
-
-class TourTile extends React.Component{
-
-  render(){
-    return (
-      <div>
-        <img src={this.props.tourPic} width="100px" height="100px" />
-        <div className={style.tourName}>
-          {this.props.tourName}this is the name of the tour.
-        </div>
-        <div>
-          This is the tour discription!
-        </div>
-      </div>
-    );
-  }
-}
 
 class ToursTab extends React.Component{
   render(){
@@ -180,9 +149,7 @@ class MyTours extends React.Component{
 
 
 MyTours.propTypes = {
-  id_user: React.PropTypes.string,
-  history: React.PropTypes.object,
-  dispatch: React.PropTypes.func
+  id_user: React.PropTypes.number
 }
 
 function select (state) {

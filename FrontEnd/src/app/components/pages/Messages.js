@@ -2,27 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 
 import style from '../../style/style.css';
-
 var htmlContent = require('../Messages/sample/fullview.html');
 import logoImg from '../../style/images/logo5.png';
 import InnerHTML from 'dangerously-set-inner-html';
 import MessageBody from './MessageBody.js';
-
 import { connect } from 'react-redux';
 
-
 class Messages extends React.Component{
-
-
 
   constructor(props) {
   super(props);
   }
 
-
-
   render(){
-
         return (
           <div className= {style.Main}>
               <MessageBody />
@@ -74,9 +66,10 @@ if (typeof $original !== 'undefined') {
 
       if (response === 'success') {
         var nameUser ="Test123";
+
         var temp = $("#mck-box-title")[0].innerHTML;
         $("#mck-box-title")[0].innerHTML = this.props.fullName + "'s " + temp;
-            
+
       } else if (response === 'object' && response.status === 'error') {
         alert(response.errorMessage);
         console.log(response.errorMessage);
@@ -125,7 +118,6 @@ function select(state) {
     fullName: state.AuthReducer.user.fullName
   };
 }
-
 
 
 export default connect(select)(Messages);

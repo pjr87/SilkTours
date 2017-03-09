@@ -16,21 +16,56 @@ class Dropdown extends React.Component {
     this._clearError = this._clearError.bind(this)
   }
 
+  renderGuideTab(){
+    //if(this.props.isTourGuide){
+    if(true){
+      return(<LinkContainer to="/tour-creation" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
+        </LinkContainer>);
+    }
+
+    return (<LinkContainer to="/become-guide" onClick={this._clearError}>
+        <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
+      </LinkContainer>);
+
+  }
+
   render(){
+    const renderGuideTab = true ? (
+      <LinkContainer to="/tour-creation" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
+        </LinkContainer>
+    ) : (
+      <LinkContainer to="/become-guide" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
+        </LinkContainer>
+    );
+    /*const renderGuideTab(){
+      //if(this.props.isTourGuide){
+      if(true){
+        return(<LinkContainer to="/tour-creation" onClick={this._clearError}>
+            <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
+          </LinkContainer>);
+      }
+
+      return (<LinkContainer to="/become-guide" onClick={this._clearError}>
+          <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
+        </LinkContainer>);
+
+    }*/
+
     return (
       <NavDropdown eventKey={4} title = {this.props.usersName} id="nav-dropdown">
-        <LinkContainer to="/profile" onClick={this._clearError}>
-          <MenuItem eventKey={4.1}>profile</MenuItem>
-        </LinkContainer>
-        <LinkContainer to="/settings" onClick={this._clearError}>
-          <MenuItem eventKey={4.2}>settings</MenuItem>
-        </LinkContainer>
-        <LinkContainer to="/tour-creation" onClick={this._clearError}>
-          <MenuItem eventKey={4.3}>Create Tour</MenuItem>
-        </LinkContainer>
         <LinkContainer to="/messages" onClick={this._clearError}>
           <MenuItem eventKey={4.4}>Messages</MenuItem>
         </LinkContainer>
+        <LinkContainer to="/my-tours" onClick={this._clearError}>
+          <MenuItem eventKey={4.1}>My Tours</MenuItem>
+        </LinkContainer>
+        <LinkContainer to="/settings" onClick={this._clearError}>
+          <MenuItem eventKey={4.2}>Settings</MenuItem>
+        </LinkContainer>
+        {renderGuideTab}
 
         <MenuItem
           bsStyle="info"

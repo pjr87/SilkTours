@@ -29,6 +29,9 @@ const configureStore = () => {
 
   //Get the persisted state if one exists
   const persistedState = loadState();
+  if(persistedState){
+    persistedState.AuthReducer.currentlySending = false;
+  }
 
   //Create the store
   const store = createStore(reducer, persistedState, middleware);
