@@ -26,6 +26,7 @@
 import * as authConstants from '../constants/AuthConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import cognitoFunctions from '../utils/cognitoFunctions';
+import * as service from '../utils/databaseFunctions';
 import { browserHistory } from 'react-router';
 
 /**
@@ -292,11 +293,50 @@ export function confirmSignUp(cognitoUser, firstname, lastname, username, passwo
 }
 
 /**
+ * Updates a user in database
+ * @param  {object} user The user to update
+ */
+export function updateUser(id_user, user, auth) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ id_user, user, auth })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+
+    service.updateExistingUser(id_user, user, auth).then(function(response){
+      if(response.data){
+        console.log("response.data", response.data);
+        dispatch(updateUserState(response.data));
+        dispatch(sendingRequest(false));
+      }
+      else{
+        // If there was a problem, show an error
+        console.log('response.error: ' + response.error);
+        dispatch(sendingRequest(false));
+        dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+      }
+    });
+  }
+}
+
+/**
  * Updates a user's information
  * @param  {object} newUserState //The user json
  */
 export function updateUserState(newUserState) {
   return { type: authConstants.UPDATE_USER, newUserState };
+}
+
+/**
+ * Updates a user's address information
+ * @param  {object} newAddressState //The user json
+ */
+export function updateAddressState(newAddressState) {
+  return { type: authConstants.UPDATE_ADDRESS, newAddressState };
 }
 
 /**

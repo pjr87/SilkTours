@@ -6,6 +6,7 @@ export TourModify from './Tours/TourModify';
 export AboutContents from './AboutContents/AboutContents';
 export SignInContents from './SignInContents/SignInContents';
 export SignUpContents from './SignUpContents/SignUpContents';
+export SettingsContents from './SettingsContents/SettingsContents';
 export ConfirmationContents from './SignUpContents/ConfirmationContents';
 export ContactUsContents from './ContactUsContents/ContactUsContents';
 export FieldFormControl from './FieldFormControl/FieldFormControl';
