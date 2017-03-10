@@ -58,17 +58,24 @@ export function registerNewUser(json) {
   return axios.post(SERVER_URL + '/users', json);
 }
 
-export function updateExistingUser(id, json) {
-  return axios.put(SERVER_URL + '/users/' + id, json);
+export function updateExistingUser(id, json, auth) {
+  let url = SERVER_URL + '/users/' + id;
+  return axios.put(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId,
+        'Silk-Bypass': true
+      },
+    });
 }
 
 export function getUserByEmail(email, json) {
   let url = SERVER_URL + '/users/email/' + email;
   return axios.get(url, {
     headers:{
-      'Silk-Logins': JSON.stringify(json.Logins),
-      'Silk-Identity-Id': json.IdentityId,
-      'Silk-Bypass': true
+      'Silk-Logins': json.Logins,
+      'Silk-Identity-Id': json.IdentityId
     }
   });
 }

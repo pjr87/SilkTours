@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
+from db_session import commitSession, session
 
 
 class TourEvent(Base):
@@ -17,6 +18,23 @@ class TourEvent(Base):
     tour = relationship("Tour", foreign_keys=[id_tour])
     start_date_time = Column(DateTime)
     end_date_time = Column(DateTime)
+
+    # TODO parse datetime strings before setting
+    def set_props(self, data):
+        for key in data:
+            setattr(self, key, data[key])
+
+    def create(data, id_tour=None, id_user=None):
+        result = session.query(TourEvent).get(data["id_tourEvent"])
+        if result is None:
+            result = TourEvent()
+        result.set_props(data)
+        if id_tour is not None:
+            result.id_tour = id_tour
+        if id_user is not None:
+            result.id_user = id_user
+        commitSession(result)
+        return result
 
     def serialize(self):
         start_date_time = None

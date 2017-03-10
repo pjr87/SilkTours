@@ -12,6 +12,7 @@ export const SET_AUTH = 'SET_AUTH';
 export const SET_COGNITO_USER = 'SET_COGNITO_USER';
 export const UPDATE_AUTH = 'UPDATE_AUTH';
 export const UPDATE_USER = 'UPDATE_USER';
+export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 export const UPDATE_ID = 'UPDATE_ID';
 export const SET_CONFIRMED = 'SET_CONFIRMED';
 export const UPDATE_PROVIDER = 'UPDATE_PROVIDER';

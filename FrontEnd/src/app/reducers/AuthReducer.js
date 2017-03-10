@@ -75,6 +75,14 @@ function AuthReducer(state = initialState, action) {
       return {...state, readyToConfirm: action.newConfirmedState};
     case authConstants.UPDATE_USER:
       return {...state, user: action.newUserState};
+    case authConstants.UPDATE_ADDRESS:
+      return {
+          ...state,
+          user : {
+            ...state.user,
+            address : action.newAddressState
+          }
+        };
     case authConstants.UPDATE_ID:
       return {...state, id_user: action.newIDState};
     case authConstants.UPDATE_PROVIDER:

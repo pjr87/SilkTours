@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Header, Footer, PageTitle, BannerImage, Interests, TourModify} from 'components';
+import {PageTitle, BannerImage, Interests, TourModify} from 'components';
 import {FormButton} from '../../components/Forms/Forms.js';
 import style from './style.css';
 import * as service from '../../utils/databaseFunctions';
