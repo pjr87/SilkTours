@@ -213,7 +213,7 @@ def login(id, accessKeyID):
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
     try:
-        if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username')):
+        if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username').replace(' ', ':')):
             return "false"
     except:
         return "false"
