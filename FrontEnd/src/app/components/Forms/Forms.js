@@ -10,7 +10,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 class EditableField extends React.Component{
 
   onChangeHandler(e){
-    this.props.onChange(e.target.value, this.props.id);
+    this.props.onChange(e);
   }
 
   render(){
@@ -65,7 +65,6 @@ class DoubleEditableField extends React.Component{
 
 export default class Form extends React.Component{
   render(){
-
     return (<div className={style.formSection}> </div>);
   }
 }

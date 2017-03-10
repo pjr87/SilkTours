@@ -104,10 +104,6 @@ var cognitoFunctions = {
           else{
             //Get the actual IdentityId
             var id = config.credentials._identityId;
-            var user1 = {
-              Logins: loginsIdpData,
-              IdentityId: id
-            };
             var auth = {
               Logins: JSON.stringify(loginsIdpData),
               IdentityId: id
@@ -116,27 +112,21 @@ var cognitoFunctions = {
             var response;
 
             //Get the user that is tyring to login from database
-            service.getUserByEmail(username, user1).then(function(response){
+            service.getUserByEmail(username, auth).then(function(response){
               //If the user matches then proceed
               if(response.data.email == username){
-                //Update database table with new login information TODO not neccesary
-                service.updateExistingUser(response.data.id_users, user1).then(function(response){
-                  var name = response.data.first_name + " " + response.data.last_name;
-                  console.log("response.data", response.data);
+                var user = {
+                  id_user: response.data.id_users,
+                  provider: "Developer",
+                  auth: auth
+                };
 
-                  var user = {
-                    id_user: response.data.id_users,
-                    provider: "Developer",
-                    auth: auth
-                  };
-
-                  //Pass callback information to calling function
-                  if (callback) callback({
-                    authenticated: true,
-                    user: user,
-                    data: response.data,
-                    error: ""
-                  });
+                //Pass callback information to calling function
+                if (callback) callback({
+                  authenticated: true,
+                  user: user,
+                  data: response.data,
+                  error: ""
                 });
               }
               else{
