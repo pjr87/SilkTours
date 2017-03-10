@@ -1,6 +1,7 @@
 package com.silktours.android;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
@@ -145,5 +148,21 @@ public class MainActivity extends AppCompatActivity {
             paymentListener.done(resultCode == Activity.RESULT_OK);
         }
     }
+
+    public boolean googleServicesAvailable() {
+        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+        int isAvailable = api.isGooglePlayServicesAvailable(this);
+        if (isAvailable == ConnectionResult.SUCCESS) {
+            return true;
+        } else if (api.isUserResolvableError(isAvailable)) {
+            Dialog dialog = api.getErrorDialog(this, isAvailable, 0);
+            dialog.show();
+        } else {
+            Toast.makeText(this, "Cant connect to play services", Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
+
+
 
 }

@@ -23,6 +23,14 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="com.google.android.providers.gsf.permissions.READ_GSERVICES" />
+
+    <permission
+        android:name="com.silktours.android.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-feature android:glEsVersion="0x00020000"
+        android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -68,14 +76,20 @@
                 <data android:scheme="${applicationId}.braintree" />
             </intent-filter>
         </activity>
-
+<!-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCph6cUMyfMWhAbKksVxhmPVLVR1hajjEE"/>
-
+</!-->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAFPQBuN56KfD_rDTWDx6ePNFDfibT0zFI"/>
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
 
 
         <activity android:name="com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity"
@@ -210,7 +224,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
 
         <meta-data android:name="com.applozic.application.key"
             android:value="208f30b543b13fdfba85ce3c442e217ad" /> <!-- Applozic Application Key -->
