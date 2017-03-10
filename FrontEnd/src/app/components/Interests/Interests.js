@@ -24,23 +24,20 @@ export default class Interests extends React.Component{
     this.props.dispatch(updateUserState(newUserState))
   }
 
-    deleteTag(i) {
-      var interests = this.props.user.interests;;
-      interests.splice(i, 1);
-      console.log("t");
-      //this.props.onChange(interests);
-      this._changeInterest(interests);
-    }
+  deleteTag(i) {
+    var interests = this.props.user.interests;;
+    interests.splice(i, 1);
+    this._changeInterest(interests);
+  }
 
-    addTag(tag) {
-      var interests = this.props.user.interests;
-      interests.push({
-          id: interests.length+1,
-          text: tag
-      });
-      //this.props.onChange(interests);
-      this._changeInterest(interests);
-    }
+  addTag(tag) {
+    var interests = this.props.user.interests;
+    interests.push({
+        id: interests.length+1,
+        text: tag
+    });
+    this._changeInterest(interests);
+  }
 
   render(){
     return (

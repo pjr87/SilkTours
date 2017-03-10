@@ -14,22 +14,42 @@ class EditableField extends React.Component{
   }
 
   render(){
-    return (
-      <FormGroup controlId={this.props.id}>
-        <Col xs={12} md={2} lg={2}>
-          <div />
-        </Col>
-        <Col xs={12} md={2} lg={2}>
-          <ControlLabel> {this.props.label} </ControlLabel>
-        </Col>
-        <Col xs={12} md={6} lg={6}>
-              <FormControl type="input" onChange={this.onChangeHandler.bind(this)} value={this.props.value} />
-        </Col>
-        <Col xs={12} md={2} lg={2}>
-          <div />
-        </Col>
-      </FormGroup>
-    );
+    if(this.props.value == null){
+      return (
+        <FormGroup controlId={this.props.id}>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <ControlLabel> {this.props.label} </ControlLabel>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+                <FormControl type="input" onChange={this.onChangeHandler.bind(this)} value='' />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+        </FormGroup>
+      );
+    }
+    else{
+      return (
+        <FormGroup controlId={this.props.id}>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <ControlLabel> {this.props.label} </ControlLabel>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+                <FormControl type="input" onChange={this.onChangeHandler.bind(this)} value={this.props.value} />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+        </FormGroup>
+      );
+    }
   }
 }
 

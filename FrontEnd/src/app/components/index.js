@@ -17,3 +17,4 @@ export Map from './Map/Map';
 export StopDisplay from './StopDisplay/StopDisplay';
 export ProfileHeader from './Profile/ProfileHeader';
 export MultiDateSelect from './Date/MultiDateSelect';
+export MyToursContents from './MyToursContents/MyToursContents';
