@@ -21,27 +21,6 @@ class SettingsContents extends React.Component{
     this.props.dispatch(updateUser(this.props.id_user, this.props.user, this.props.auth));
   }
 
-  // tagDelete(i) {
-  //       var user = this.state.user;
-  //       user.interests.splice(i, 1);
-  //       this.setState({user:user});
-  //   }
-  //
-  //   tagAddition(tag) {
-  //       var user = this.state.user;
-  //       user.interests.push({
-  //           id: user.interests.length+1,
-  //           text: tag
-  //       });
-  //       this.setState({user: user});
-  //   }
-
-  updateInterests(i){
-      var user = this.state.user;
-      user.interests = i;
-      this.setState({user});
-  }
-
   render(){
     let isLoading = this.props.currentlySending;
 
@@ -58,7 +37,7 @@ class SettingsContents extends React.Component{
           <ProfileHeader name={this.props.user.first_name+" "+this.props.user.last_name} profilePicture={this.props.user.profile_picture}/>
           <PageTitle title= "settings" />
           <UserInfo user={this.props.user} dispatch={this.props.dispatch} formTitle="User Information" />
-          <Interests title="Interests" interests={this.props.user.interests} onChange={this.updateInterests.bind(this)} />
+          <Interests title="Interests" user={this.props.user} dispatch={this.props.dispatch} />
           <FormGroup
             validationState = {this.props.errorMessage ? "error" : "success"}>
             <Col smOffset={2} sm={10}>

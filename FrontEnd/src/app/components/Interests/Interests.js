@@ -5,26 +5,41 @@ import Col from 'react-bootstrap/lib/Col';
 
 import { WithContext as ReactTags } from 'react-tag-input';
 import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../Forms/Forms.js';
+import { updateUserState } from '../../actions/AuthActions';
 
 import style from './style.css';
 
 export default class Interests extends React.Component{
+  constructor(){
+    super();
 
+    this._changeInterest = this._changeInterest.bind(this)
+  }
+
+  _changeInterest(interest) {
+    this._emitUserChange({...this.props.user, interests: interest});
+  }
+
+  _emitUserChange (newUserState) {
+    this.props.dispatch(updateUserState(newUserState))
+  }
 
     deleteTag(i) {
-      var interests = this.props.interests;
+      var interests = this.props.user.interests;;
       interests.splice(i, 1);
       console.log("t");
-      this.props.onChange(interests);
+      //this.props.onChange(interests);
+      this._changeInterest(interests);
     }
 
     addTag(tag) {
-      var interests = this.props.interests;
+      var interests = this.props.user.interests;
       interests.push({
           id: interests.length+1,
           text: tag
       });
-      this.props.onChange(interests);
+      //this.props.onChange(interests);
+      this._changeInterest(interests);
     }
 
   render(){
@@ -46,7 +61,7 @@ export default class Interests extends React.Component{
               remove: style.ReactTags__remove,
               suggestions: style.ReactTags__suggestions
             }}
-              tags={this.props.interests}
+              tags={this.props.user.interests}
               handleDelete={this.deleteTag.bind(this)}
               handleAddition={this.addTag.bind(this)}/>
              <br />
