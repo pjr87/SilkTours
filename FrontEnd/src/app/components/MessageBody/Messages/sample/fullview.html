@@ -544,16 +544,6 @@
 	<script type="text/javascript" src="../js/applozic.emojis.min.js"></script>
 	<script type="text/javascript" src="../js/applozic.socket.min.js"></script>
 
-	<!-- JS for location sharing plugin, remove it if location sharing not required -->
-	<script type="text/javascript"
-		src="https://maps.google.com/maps/api/js?key=AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4&libraries=places"></script>
-	<script type="text/javascript" src="../js/locationpicker.jquery.min.js"></script>
-
-	<!--JS for auto suggest plugin, use it if auto suggestions required -->
-	<!-- 	<script type="text/javascript" src="autosuggest/js/jquery.caret.min.js"></script>
-	    <script type="text/javascript" src="autosuggest/js/jquery.atwho.min.js"></script> -->
-
-
 	<script type="text/javascript" src="../js/app/applozic.common.js"></script>
 	<script type="text/javascript"
 		src="../js/app/fullview/applozic.fullview.js"></script>
@@ -573,40 +563,5 @@
 			}
 		}
 	</script>
-	<script type="text/javascript">
-		var $applozic = jQuery.noConflict(true);
-
-		function readMessage() {
-			//console.log(userId);
-		}
-		//Callback Function to return display name by userId
-		/*  function displayName(userId) {
-		      //Todo: replace this with users display name
-		      var contact = contacts[userId];   // contacts sample given above
-		      if (typeof contact !== 'undefined') {
-		          return contact.displayName;
-		      }
-		  }*/
-		//Callback Function to return contact image url by userId
-		/*  function contactImageSrc(userId) {
-		      var contact = contacts[userId]; // contacts sample given above
-		      if (typeof contact !== 'undefined') {
-		          return contact.imageLink;
-		      }
-		  }*/
-		//callback function execute after plugin initialize.
-		function onInitialize(response) {
-			if (response.status === 'success') {
-				console.dir(response);
-				// $applozic.fn.applozic('loadContacts', {'contacts':contactsJSON});
-				// $applozic.fn.applozic('loadTab', 'shanki.connect');
-				//write your logic exectute after plugin initialize.
-			} else {
-				alert(response.errorMessage);
-			}
-		}
-		
-	</script>
-
 </body>
 </html>
