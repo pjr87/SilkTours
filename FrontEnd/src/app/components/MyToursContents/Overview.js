@@ -9,19 +9,19 @@ class Overview extends React.Component{
         <Grid>
           <PageTitle title="Overview"/>
           <Row>
-            <Col md={6} mdPush={6}>
+            <Col md={6} mdPull={0}>
               <Panel header="Upcoming Tours">
                 No Tours
               </Panel>
             </Col>
-            <Col md={6} mdPull={6}>
+            <Col md={6} mdPush={0}>
               <Panel header="Pending Reviews">
                 No Tours
               </Panel>
             </Col>
           </Row>
           <Row>
-            <Col md={6} mdPush={0}>
+            <Col md={6} mdPull={0}>
               <Panel header="New Messages">
                 No Tours
               </Panel>
