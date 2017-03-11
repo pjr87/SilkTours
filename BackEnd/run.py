@@ -326,21 +326,26 @@ def get_tourevent(tourid):
     return jsonify([event.serialize() for event in events])
 
 
-@app.route('/tourevents/<tourid>', methods=['POST'])
-def set_tourevent(tourid):
+@app.route('/tourevents', methods=['POST'])
+def set_tourevent():
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
+    event = TourEvent()
+    event.set_props(data)
+    commitSession(event)
+    return jsonify(event.serialize())
 
-    return db.edit(tourid, data, 'TourEvent')
 
-
-@app.route('/tourevents/<tourid>', methods=['PUT'])
-def edit_tourevent(tourid):
+@app.route('/tourevents/<eventid>', methods=['PUT'])
+def edit_tourevent(eventid):
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-    return db.edit(tourid, data, 'TourEvent')
+    event = session.query(TourEvent).get(eventid)
+    event.set_props(data)
+    commitSession(event)
+    return jsonify(event.serialize())
 
 
 @app.route('/tours/image/<tourid>', methods=['POST'])

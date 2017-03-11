@@ -18,6 +18,7 @@ class TourEvent(Base):
     tour = relationship("Tour", foreign_keys=[id_tour])
     start_date_time = Column(DateTime)
     end_date_time = Column(DateTime)
+    state = Column(String)
 
     # TODO parse datetime strings before setting
     def set_props(self, data):
@@ -52,5 +53,6 @@ class TourEvent(Base):
             # "tour": self.tour.serialize(False),
             "id_tour": self.id_tour,
             "start_date_time": start_date_time,
-            "end_date_time": end_date_time
+            "end_date_time": end_date_time,
+            "state": self.state
         }
