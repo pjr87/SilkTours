@@ -1,5 +1,5 @@
 import React from 'react';
-import {BannerImage, SettingsContents} from 'components';
+import {SettingsContents} from 'components';
 
 class SettingsPage extends React.Component{
   render(){

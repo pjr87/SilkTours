@@ -1,17 +1,14 @@
 import React from 'react';
 import {TourCreationContents} from 'components';
 
-class TourCreationPage extends React.Component{
+class MyToursPage extends React.Component{
   render(){
     return(
       <div>
-        <br/>
-        <br/>
-        <br/>
         <TourCreationContents/>
       </div>
     );
   }
 }
 
-export default TourCreationPage;
+export default MyToursPage;

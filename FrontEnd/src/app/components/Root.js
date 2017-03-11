@@ -11,12 +11,11 @@ import{
   SignUpPage,
   ConfirmationPage,
   TourCreationPage,
+  MyToursPage,
   ContactUsPage,
   SettingsPage,
   NotFound } from '../pages';
 import {ContactUsRedux} from '../pages';
-import MyTours from './pages/MyTours';
-//import TourCreation from './pages/TourCreation';
 import TourSignup from './pages/TourSignup';
 import App from './App';
 import { loadState } from '../localStorage';
@@ -60,7 +59,7 @@ const Root = ({ store }) => (
         <Route path='/messagereact' component={MessagesReact} />
         <Route path='/contactusredux' component ={ContactUsRedux} />
         <Route onEnter={checkAuth}>
-          <Route path="/my-tours" component={MyTours}/>
+          <Route path="/my-tours" component={MyToursPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route path='/tour-creation' component={TourCreationPage}/>
           <Route path='/tour-signup' component={TourSignup}/>
