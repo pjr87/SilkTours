@@ -10,3 +10,4 @@ export SettingsPage from './SettingsPage/SettingsPage';
 export TourCreationPage from './TourCreationPage/TourCreationPage';
 export ContactUsRedux from './ContactUsRedux/ContactUsRedux';
 export MyToursPage from './MyToursPage/MyToursPage';
+export MessagesPage from './MessagesPage/MessagesPage';
