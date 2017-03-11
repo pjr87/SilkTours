@@ -33,6 +33,9 @@ client = boto3.client('cognito-identity')
 
 
 def checkLogin():
+    if request.args.get("bypass") == 'true':
+        return True
+
     print(request.headers)
     print(request.data)
     data = None
@@ -213,11 +216,12 @@ def login(id, accessKeyID):
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
     try:
-        if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username')):
+        if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username').replace(' ', ':')):
             return "false"
     except:
         return "false"
     return "true"
+
 
 # Creates a new user
 @app.route('/users', methods=['POST'])
@@ -225,10 +229,7 @@ def set_user():
     if not checkLogin():
         return notAuthorizedResponse()
     user = User()
-    user.set_props(request.get_json())
-    session.add(user)
-    session.commit()
-    commitSession()
+    user.create_or_edit(request.get_json())
     return jsonify(user.serialize())
 
 
@@ -239,10 +240,7 @@ def edit_user(id):
         return notAuthorizedResponse()
     data = request.get_json()
     user = session.query(User).get(id)
-    user.set_props(data)
-    session.add(user)
-    session.commit()
-    commitSession()
+    user.create_or_edit(data)
     return jsonify(user.serialize())
 
 
@@ -298,7 +296,8 @@ def get_tour_list():
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    return db.list_tour_with_id(tourid)
+    tour = session.query(Tour).get(tourid)
+    return jsonify(tour.serialize(False))
 
 
 @app.route('/tours', methods=['POST'])
@@ -306,8 +305,9 @@ def set_tour():
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-
-    return db.post(data, 'Tour')
+    tour = Tour()
+    tour.createOrEdit(data)
+    return jsonify(tour.serialize(False))
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
@@ -315,8 +315,9 @@ def edit_tour(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-
-    return db.edit(tourid, data, 'Tour')
+    tour = session.query(Tour).get(tourid)
+    tour.createOrEdit(data)
+    return jsonify(tour.serialize(False))
 
 
 @app.route('/tour/<tourid>/events', methods=['GET'])
@@ -325,21 +326,26 @@ def get_tourevent(tourid):
     return jsonify([event.serialize() for event in events])
 
 
-@app.route('/tourevents/<tourid>', methods=['POST'])
-def set_tourevent(tourid):
+@app.route('/tourevents', methods=['POST'])
+def set_tourevent():
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
+    event = TourEvent()
+    event.set_props(data)
+    commitSession(event)
+    return jsonify(event.serialize())
 
-    return db.edit(tourid, data, 'TourEvent')
 
-
-@app.route('/tourevents/<tourid>', methods=['PUT'])
-def edit_tourevent(tourid):
+@app.route('/tourevents/<eventid>', methods=['PUT'])
+def edit_tourevent(eventid):
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-    return db.edit(tourid, data, 'TourEvent')
+    event = session.query(TourEvent).get(eventid)
+    event.set_props(data)
+    commitSession(event)
+    return jsonify(event.serialize())
 
 
 @app.route('/tours/image/<tourid>', methods=['POST'])

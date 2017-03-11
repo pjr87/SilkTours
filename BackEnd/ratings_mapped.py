@@ -25,3 +25,14 @@ class Rating(Base):
         self.comments = comment
         self.date_time_created = datetime.datetime.now()
         self.id_rating = None
+
+    def serialize(self):
+        result = {}
+
+        for c in self.__table__.columns:
+            key = c.name
+            value = getattr(self, c.name)
+            if type(value) is datetime.date:
+                value = str(value)
+            result[key] = value
+        return result

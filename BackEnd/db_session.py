@@ -14,9 +14,13 @@ def createSession():
         session = Session()
 
 
-def commitSession():
+def commitSession(obj=None):
+    createSession()
+    if obj is not None:
+        session.add(obj)
     try:
         session.commit()
-    except:
+    except Exception as e:
         print("INFO: session commit failed")
+        print(e)
         session.rollback()
