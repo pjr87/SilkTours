@@ -21,7 +21,9 @@ class Interests(Base):
             setattr(self, key, data[key])
 
     def create(data, id_tour=None, id_user=None):
-        result = session.query(Interests).get(data["id_interestList"])
+        result = None
+        if "id_interestList" in data:
+            result = session.query(Interests).get(data["id_interestList"])
         if result is None:
             result = Interests()
         result.set_props(data)

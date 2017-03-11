@@ -20,7 +20,9 @@ class Stop(Base):
         self.id_stop = None
 
     def create(data, id_tour=None):
-        result = session.query(Stop).get(data["id_stop"])
+        result = None
+        if "id_stop" in data:
+            result = session.query(Stop).get(data["id_stop"])
         if result is None:
             result = Stop()
         result.set_props(data.get("id_tour"), data.get("lat"), data.get("lon"))

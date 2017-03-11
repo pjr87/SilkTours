@@ -44,11 +44,17 @@ class Tour(Base):
     def create_extras(self, data):
         for key in data:
             if key == "stops":
-                self.stops = [Stop.create(item, self.id_tour) for item in data[key]]
+                for item in data[key]:
+                    Stop.create(item, self.id_tour)
+                # self.stops = [Stop.create(item, self.id_tour) for item in data[key]]
             elif key == "interests":
-                self.interests = [Interests.create(item, self.id_tour) for item in data[key]]
+                for item in data[key]:
+                    Interests.create(item, self.id_tour)
+                # self.interests = [Interests.create(item, self.id_tour) for item in data[key]]
             elif key == "guides":
-                self.guides = [TourGuides.create(item, self.id_tour) for item in data[key]]
+                for item in data[key]:
+                    TourGuides.create(item, self.id_tour)
+                # self.guides = [TourGuides.create(item, self.id_tour) for item in data[key]]
 
     def createOrEdit(self, data):
         self.set_props(data)

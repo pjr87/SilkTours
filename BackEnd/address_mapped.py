@@ -25,7 +25,11 @@ class Address(Base):
         }
 
     def create(data):
-        result = Address()
+        result = None
+        if "id_address" in data:
+            result = session.query(Address).get(data["id_address"])
+        if result is None:
+            result = Address()
         result.setProps(data)
         return result
 

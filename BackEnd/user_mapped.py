@@ -63,11 +63,17 @@ class User(Base):
     def create_extras(self, data):
         for key in data:
             if key == "interests":
-                self.interests = [Interests.create(item, id_user=self.id_users) for item in data[key]]
+                for item in data[key]:
+                    Interests.create(item, id_user=self.id_users)
+                # self.interests = [Interests.create(item, id_user=self.id_users) for item in data[key]]
             elif key == "tours_taking":
-                self.tours_taking = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
+                for item in data[key]:
+                    TourEvent.create(item, id_user=self.id_users)
+                # self.tours_taking = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
             elif key == "tours_teaching":
-                self.tours_teaching = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
+                for item in data[key]:
+                    TourEvent.create(item, id_user=self.id_users)
+                # self.tours_teaching = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
 
     def create_or_edit(self, data):
         self.set_props(data)

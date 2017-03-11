@@ -25,7 +25,9 @@ class TourEvent(Base):
             setattr(self, key, data[key])
 
     def create(data, id_tour=None, id_user=None):
-        result = session.query(TourEvent).get(data["id_tourEvent"])
+        result = None
+        if "id_tourEvent" in data:
+            result = session.query(TourEvent).get(data["id_tourEvent"])
         if result is None:
             result = TourEvent()
         result.set_props(data)
