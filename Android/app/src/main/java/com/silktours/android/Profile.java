@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONException;
@@ -38,11 +39,14 @@ public class Profile extends Fragment {
     private EditText phoneNumber;
     private EditText email;
     private TextView location;
+    private int id_user;
+    private boolean editable = false;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.id_user = this.getArguments().getInt("id_user", -1);
         rootView = inflater.inflate(R.layout.content_profile, container, false);
         firstName = (EditText) rootView.findViewById(R.id.firstName);
         lastName = (EditText) rootView.findViewById(R.id.lastName);
@@ -56,14 +60,25 @@ public class Profile extends Fragment {
     }
 
     private void filloutFields() {
-        user = CredentialHandler.getUser(MainActivity.getInstance());
-        if (user == null) {
-            MainActivity.getInstance().login();
-            return;
+        if (id_user == -1) {
+            user = CredentialHandler.getUser(MainActivity.getInstance());
+            if (user == null) {
+                MainActivity.getInstance().login();
+                return;
+            }
+            editable = true;
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
+                if (id_user != -1) {
+                    try {
+                        user = User.getByID(id_user);
+                    } catch (IOException | JSONException e) {
+                        ErrorDisplay.show("Could not get user.", MainActivity.getInstance());
+                        return;
+                    }
+                }
                 URL thumb_u = null;
                 Drawable profileImage;
                 try {
@@ -139,6 +154,10 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 if (user == null) return;
+                if (!editable) {
+                    ErrorDisplay.show("You can not edit this user.", MainActivity.getInstance());
+                    return;
+                }
                 user.set("address:street", location.getText().toString());
                 user.set(User.EMAIL, email.getText().toString());
                 user.set(User.PHONE_NUMBER, phoneNumber.getText().toString());
