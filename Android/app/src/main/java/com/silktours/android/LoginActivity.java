@@ -214,7 +214,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 CredentialHandler.setUser(LoginActivity.this,
                                         user,
                                         loginResult.getAccessToken().getExpires().getTime());
-                                        goHome();
+                                applozicSignup(user);
+                                goHome();
                                 finish();
                                 return;
                             } catch (IOException e) {
@@ -226,6 +227,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     user,
                                     loginResult.getAccessToken().getExpires().getTime());
                             if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
+                                applozicSignup(user);
                                 goHome();
                                 finish();
                                 return;
