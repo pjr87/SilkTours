@@ -20,7 +20,7 @@ class TourDetailPage extends React.Component{
 // select chooses which props to pull from store
 function select(state) {
   return {
-    selectedTourId: state.TourReducer.selectedTourId,
+    selectedTourId: state.TourDetailReducer.selectedTourId,
   };
 }
 

@@ -1,7 +1,7 @@
 /*
  * The reducer takes care of our data
  * Using actions, we can change our application state
- * To add a new action, add it to the switch statement in the tourReducer function
+ * To add a new action, add it to the switch statement in the TourDetailReducer function
  *
  * Example:
  * case YOUR_ACTION_CONSTANT:
@@ -10,7 +10,7 @@
  *   });
  */
 
-import * as tourConstants from '../constants/TourDetailConstants';
+import * as tourDetailConstants from '../constants/TourDetailConstants';
 
 // The initial application state
 const initialState = {
@@ -42,17 +42,17 @@ const initialState = {
 };
 
 // Takes care of changing the application state
-function TourReducer(state = initialState, action) {
+function TourDetailReducer(state = initialState, action) {
   switch (action.type) {
-    case tourConstants.UPDATE_TOUR_ID:
+    case tourDetailConstants.UPDATE_TOUR_ID:
       return {...state, selectedTourId: action.newTourIdFormState};
-    case tourConstants.UPDATE_SELECTED_TOUR:
+    case tourDetailConstants.UPDATE_SELECTED_TOUR:
       return {...state, selectedTour: action.newTourFormState};
-    case tourConstants.UPDATE_SELECTED_TOUR_DATE:
+    case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE:
       return {...state, selectedTourDate: action.newTourDateFormState};
     default:
       return state;
   }
 }
 
-export default TourReducer;
+export default TourDetailReducer;
