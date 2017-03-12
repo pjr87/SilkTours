@@ -165,11 +165,11 @@ class TourDetailContents extends React.Component{
                     <p className={style.contentTitle}>About: {this.props.selectedTour.name}</p>
                     <p className={style.content}>Description: {this.props.selectedTour.description}</p>
                     <p className={style.content}>Price: ${this.props.selectedTour.price}</p>
-                    <p className={style.content}>Review: {this.props.selectedTour.rating} out of 5</p>
-                    <p className={style.content}>Max Group Size: {this.props.selectedTour.maxGroupSize}</p>
-                    <p className={style.content}>Min Group Size: {this.props.selectedTour.minGroupSize}</p>
-                    <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStartDate}</p>
-                    <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEndDate}</p>
+                    <p className={style.content}>Review: {this.props.selectedTour.average_rating} out of 5</p>
+                    <p className={style.content}>Max Group Size: {this.props.selectedTour.max_group_size}</p>
+                    <p className={style.content}>Min Group Size: {this.props.selectedTour.min_group_size}</p>
+                    <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStart_date}</p>
+                    <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEnd_date}</p>
                     <p className={style.contentSubTitle}>Stops: </p>
                     {this.props.selectedTour.stops.map((stops, i) => {
                       return (
@@ -185,10 +185,10 @@ class TourDetailContents extends React.Component{
                       return (
                         <li key={i} className={style.content}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</li>);
                       })}
-                    <p className={style.contentSubTitle}>Addtional:</p>
-                    <li className={style.content}>Accomodation: {this.props.selectedTour.additionalAccomadation}</li>
-                    <li className={style.content}>Food: {this.props.selectedTour.additionalFood}</li>
-                    <li className={style.content}>Transport: {this.props.selectedTour.additionalTransport}</li>
+                    <p className={style.contentSubTitle}>Additional:</p>
+                    <li className={style.content}>Accomodation: {this.props.selectedTour.additional_accomadation}</li>
+                    <li className={style.content}>Food: {this.props.selectedTour.additional_food}</li>
+                    <li className={style.content}>Transport: {this.props.selectedTour.additional_transport}</li>
                   </Col>
                   <Col sm={12} md={7} lg={7}>
                     <br/>
@@ -293,7 +293,7 @@ TourDetailContents.propTypes = {
   selectedTourId: React.PropTypes.string,
   selectedTour: React.PropTypes.object,
   selectedTourDate: React.PropTypes.string,
-  selectedTourDates: React.PropTypes.object,
+  selectedTourDates: React.PropTypes.array,
   isLoaded: React.PropTypes.bool
 }
 
