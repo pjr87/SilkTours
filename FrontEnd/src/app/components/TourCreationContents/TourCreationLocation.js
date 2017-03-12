@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.css';
 import {EditableField} from '../Forms/Forms.js';
-import { updateAddressState } from '../../actions/TourActions';
+import { updateAddressState } from '../../actions/TourCreationActions';
 import { Pager } from 'react-bootstrap';
 
 

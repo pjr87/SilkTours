@@ -282,9 +282,9 @@ TourDetailContents.propTypes = {
 function select (state) {
   return {
     auth: state.AuthReducer.auth,
-    selectedTourId: state.TourReducer.selectedTourId,
-    selectedTour: state.TourReducer.selectedTour,
-    selectedTourDate: state.TourReducer.selectedTourDate
+    selectedTourId: state.TourDetailReducer.selectedTourId,
+    selectedTour: state.TourDetailReducer.selectedTour,
+    selectedTourDate: state.TourDetailReducer.selectedTourDate
   };
 }
 

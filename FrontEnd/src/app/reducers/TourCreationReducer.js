@@ -10,7 +10,7 @@
  *   });
  */
 
-import * as tourConstants from '../constants/TourConstants';
+import * as tourCreationConstants from '../constants/TourCreationConstants';
 
 // The initial application state
 const initialState = {
@@ -50,11 +50,11 @@ const initialState = {
 };
 
 // Takes care of changing the application state
-function TourReducer(state = initialState, action) {
+function TourCreationReducer(state = initialState, action) {
   switch (action.type) {
-    case tourConstants.UPDATE_TOUR:
+    case tourCreationConstants.UPDATE_TOUR:
       return {...state, tour: action.tour};
-    case tourConstants.UPDATE_TOUR_ADDRESS:
+    case tourCreationConstants.UPDATE_TOUR_ADDRESS:
       return {
           ...state,
           tour : {
@@ -62,15 +62,15 @@ function TourReducer(state = initialState, action) {
             address : action.newAddressState
           }
         };
-    case tourConstants.SENDING_REQUEST:
+    case tourCreationConstants.SENDING_REQUEST:
       return {...state, currentlySending: action.sending};
-    case tourConstants.SET_ERROR_MESSAGE:
+    case tourCreationConstants.SET_ERROR_MESSAGE:
       return {...state, errorMessage: action.message};
-    case tourConstants.CLEAR_ERROR:
+    case tourCreationConstants.CLEAR_ERROR:
       return {...state, errorMessage: ''}
     default:
       return state;
   }
 }
 
-export default TourReducer;
+export default TourCreationReducer;

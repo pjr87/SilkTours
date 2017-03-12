@@ -23,7 +23,7 @@
  *    created in the second step
  */
 
-import * as tourConstants from '../constants/TourConstants';
+import * as tourCreationConstants from '../constants/TourCreationConstants';
 import * as errorMessages from '../constants/MessageConstants';
 import * as service from '../utils/databaseFunctions';
 import { browserHistory } from 'react-router';
@@ -82,7 +82,7 @@ export function createTour(tour, auth) {
  * @param  {object} newTourState //The user json
  */
 export function updateTourState(newTourState) {
-  return { type: tourConstants.UPDATE_USER, newUserState };
+  return { type: tourCreationConstants.UPDATE_USER, newUserState };
 }
 
 /**
@@ -90,7 +90,7 @@ export function updateTourState(newTourState) {
  * @param  {object} newAddressState //The user json
  */
 export function updateAddressState(newAddressState) {
-  return { type: tourConstants.UPDATE_TOUR_ADDRESS, newAddressState };
+  return { type: tourCreationConstants.UPDATE_TOUR_ADDRESS, newAddressState };
 }
 
 /**
@@ -99,7 +99,7 @@ export function updateAddressState(newAddressState) {
  * @return {object}          Formatted action for the reducer to handle
  */
 export function sendingRequest(sending) {
-  return { type: tourConstants.SENDING_REQUEST, sending };
+  return { type: tourCreationConstants.SENDING_REQUEST, sending };
 }
 
 /**
@@ -108,7 +108,7 @@ export function sendingRequest(sending) {
  * @return {object}          Formatted action for the reducer to handle
  */
 export function setConfirmed(newConfirmedState) {
-  return { type: tourConstants.SET_CONFIRMED, newConfirmedState };
+  return { type: tourCreationConstants.SET_CONFIRMED, newConfirmedState };
 }
 
 /**
@@ -117,7 +117,7 @@ export function setConfirmed(newConfirmedState) {
  */
 function setErrorMessage(message) {
   return (dispatch) => {
-    dispatch({ type: tourConstants.SET_ERROR_MESSAGE, message });
+    dispatch({ type: tourCreationConstants.SET_ERROR_MESSAGE, message });
   }
 }
 
@@ -147,5 +147,5 @@ function anyElementsEmpty(elements) {
  * Sets the `error` state as empty
  */
 export function clearError () {
-  return {type: tourConstants.CLEAR_ERROR}
+  return {type: tourCreationConstants.CLEAR_ERROR}
 }
