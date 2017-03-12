@@ -47,7 +47,7 @@ export function selectTour(tourId) {
           service.getTourEventById(tourId).then(function(response){
             if(response.data){
               console.log("getTourEventById", response.data);
-              dispatch(updateTourDate(response.data));
+              dispatch(updateTourDates(response.data));
               dispatch(setLoadedState(true));
             }
             else{
@@ -113,6 +113,14 @@ export function setLoadedState(newLoadedState) {
  */
 export function updateTour(newTourFormState) {
   return { type: tourDetailConstants.UPDATE_SELECTED_TOUR, newTourFormState };
+}
+
+/**
+ * Updates a selected tour dates
+ * @param  {object} tour
+ */
+export function updateTourDates(newTourDatesState) {
+  return { type: tourDetailConstants.UPDATE_TOUR_DATES, newTourDatesState };
 }
 
 /**
