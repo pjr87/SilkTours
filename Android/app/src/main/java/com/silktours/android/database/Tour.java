@@ -20,6 +20,7 @@ import java.util.List;
  * Created by andrew on 1/26/17.
  */
 public class Tour extends Base implements Serializable {
+    private static List<Tour> defaultSearch;
     public String additional_accomadation;
     public String additional_food;
     public String additional_transport;
@@ -67,6 +68,14 @@ public class Tour extends Base implements Serializable {
         Tour tour = new Tour();
         tour.JSON = Common.getJson(Common.SERVER_URL + "/tours/"+id);
         return tour;
+    }
+
+    public static List<Tour> getDefaultSearch() throws IOException, JSONException {
+        if (defaultSearch == null) {
+            FilterParams defaultParams = new FilterParams();
+            defaultSearch = getBySearch(defaultParams);
+        }
+        return defaultSearch;
     }
 
     public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
