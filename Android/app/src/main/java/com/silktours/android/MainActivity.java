@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
+import com.applozic.mobicomkit.api.conversation.service.ConversationService;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
+import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
+import com.applozic.mobicommons.people.contact.Contact;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         } else {
-            launchMessaging(user, null);
+            launchMessaging(user, to);
         }
     }
 
@@ -93,10 +96,15 @@ public class MainActivity extends AppCompatActivity {
                 //startActivity(intent);
                 Log.d("SilkSuccess", registrationResponse.getMessage());
                 Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                //Bundle bundle = new Bundle();
                 if (to != null) {
+                    Contact contact = new Contact(MainActivity.this, Integer.toString(to.getInt(User.ID_USERS)));
+                    //intent.putExtra(ConversationActivity.CONTACT, contact);
+                    //bundle.putSerializable(ConversationActivity.CONTACT, contact);
                     intent.putExtra(ConversationUIService.USER_ID, Integer.toString(to.getInt(User.ID_USERS)));
                     intent.putExtra(ConversationUIService.DISPLAY_NAME, (to.getStr(User.FIRST_NAME) + " " + to.getStr(User.LAST_NAME))); //put it for displaying the title.
                 }
+                //intent.putExtras(bundle);
                 startActivity(intent);
             }
 

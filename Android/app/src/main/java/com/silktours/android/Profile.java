@@ -39,14 +39,15 @@ public class Profile extends Fragment {
     private EditText phoneNumber;
     private EditText email;
     private TextView location;
-    private int id_user;
+    private int id_user = -1;
     private boolean editable = false;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.id_user = this.getArguments().getInt("id_user", -1);
+        if (getArguments() != null)
+            this.id_user = this.getArguments().getInt("id_user", -1);
         rootView = inflater.inflate(R.layout.content_profile, container, false);
         firstName = (EditText) rootView.findViewById(R.id.firstName);
         lastName = (EditText) rootView.findViewById(R.id.lastName);
@@ -67,6 +68,9 @@ public class Profile extends Fragment {
                 return;
             }
             editable = true;
+        }else{
+            Button button = (Button) rootView.findViewById(R.id.saveProfile);
+            button.setText("Message");
         }
         new Thread(new Runnable() {
             @Override
@@ -155,15 +159,15 @@ public class Profile extends Fragment {
             public void onClick(View v) {
                 if (user == null) return;
                 if (!editable) {
-                    ErrorDisplay.show("You can not edit this user.", MainActivity.getInstance());
-                    return;
+                    MainActivity.getInstance().launchMessaging(user);
+                }else {
+                    user.set("address:street", location.getText().toString());
+                    user.set(User.EMAIL, email.getText().toString());
+                    user.set(User.PHONE_NUMBER, phoneNumber.getText().toString());
+                    user.set(User.LAST_NAME, lastName.getText().toString());
+                    user.set(User.FIRST_NAME, firstName.getText().toString());
+                    commitUser();
                 }
-                user.set("address:street", location.getText().toString());
-                user.set(User.EMAIL, email.getText().toString());
-                user.set(User.PHONE_NUMBER, phoneNumber.getText().toString());
-                user.set(User.LAST_NAME, lastName.getText().toString());
-                user.set(User.FIRST_NAME, firstName.getText().toString());
-                commitUser();
             }
         });
     }

@@ -49,7 +49,11 @@ public class MenuBar {
                         switch (item.getItemId()) {
                             case R.id.action_profile:
                                 //startActivity(activity, Profile.class);
-                                startFragment(new Profile(), 0);
+                                Profile profile = new Profile();
+                                //Bundle args = new Bundle();
+                                //args.putInt("id_user", 41);
+                                //profile.setArguments(args);
+                                startFragment(profile, 0);
                                 break;
                             case R.id.action_search:
                                 //startActivity(activity, search.class);
