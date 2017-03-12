@@ -38,6 +38,7 @@ const initialState = {
     reviews: [],
     ratingCount: ''
   },
+  tourDates: '',
   selectedTourDate: '',
   isLoaded: false
 };
@@ -53,6 +54,8 @@ function TourDetailReducer(state = initialState, action) {
       return {...state, selectedTour: action.newTourFormState};
     case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE:
       return {...state, selectedTourDate: action.newTourDateFormState};
+    case tourDetailConstants.UPDATE_TOUR_DATES:
+      return {...state, tourDates: action.newTourDatesState};
     default:
       return state;
   }

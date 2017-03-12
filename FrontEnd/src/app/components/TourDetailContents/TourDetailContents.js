@@ -143,7 +143,7 @@ class TourDetailContents extends React.Component{
       )
     }
     else{
-      const availableDates = this.props.selectedTourDate;
+      const availableDates = this.props.selectedTourDates;
       const guides = this.props.selectedTour.guides;
       const interests = this.props.selectedTour.interests;
       const reviews = this.props.selectedTour.ratings;
@@ -181,7 +181,7 @@ class TourDetailContents extends React.Component{
                         <li key={i} className={style.content}>{guides.first_name} {guides.last_name}</li>);
                       })}
                     <p className={style.contentSubTitle}>Available Date: </p>
-                    {this.props.selectedTourDate.map((availableDates, i) => {
+                    {this.props.selectedTourDates.map((availableDates, i) => {
                       return (
                         <li key={i} className={style.content}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</li>);
                       })}
@@ -263,7 +263,7 @@ class TourDetailContents extends React.Component{
                 {'  '}
                 <FormControl componentClass="select" placeholder="select" value={this.state.selectedDate}
                   onChange={this.handleSelectedDateChange}>
-                  {this.props.selectedTourDate.map((availableDates, i) => {
+                  {this.props.selectedTourDates.map((availableDates, i) => {
                     return (
                       <option value={availableDates.id_tourEvent} key={i}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</option>);
                     })}
@@ -292,7 +292,8 @@ TourDetailContents.propTypes = {
   auth: React.PropTypes.object,
   selectedTourId: React.PropTypes.string,
   selectedTour: React.PropTypes.object,
-  selectedTourDate: React.PropTypes.object,
+  selectedTourDate: React.PropTypes.string,
+  selectedTourDates: React.PropTypes.object,
   isLoaded: React.PropTypes.bool
 }
 
@@ -302,6 +303,7 @@ function select (state) {
     selectedTourId: state.TourDetailReducer.selectedTourId,
     selectedTour: state.TourDetailReducer.selectedTour,
     selectedTourDate: state.TourDetailReducer.selectedTourDate,
+    selectedTourDates: state.TourDetailReducer.tourDates,
     isLoaded: state.TourDetailReducer.isLoaded
   };
 }
