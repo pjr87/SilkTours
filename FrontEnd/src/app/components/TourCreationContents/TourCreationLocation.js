@@ -25,8 +25,7 @@ class TourCreationLocation extends React.Component{
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>Ready to create a tour?</p>
-          <p className={style.BodyStyle}>We will be begin by selecting a city</p>
+          <p className={style.HeaderStyle}>We will be begin by selecting a city</p>
           <br/>
           <EditableField label="City" onChange={this._changeLocation} value={this.props.tour.address.city}/>
           <Pager>

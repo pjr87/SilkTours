@@ -5,8 +5,10 @@ import style from './style.css';
 import { Button, HelpBlock, FormGroup, Col, Row, Tab, Nav, NavItem, Image } from 'react-bootstrap';
 import * as service from '../../utils/databaseFunctions';
 import {connect} from 'react-redux';
+import TourCreationInfo from './TourCreationInfo';
 import TourCreationLocation from './TourCreationLocation';
 import TourCreationLanguage from './TourCreationLanguage';
+
 
 class TourCreationContents extends React.Component{
   constructor() {
@@ -21,8 +23,11 @@ class TourCreationContents extends React.Component{
             <Row className="clearfix">
               <Col sm={4}>
                 <Nav stacked>
-                  <NavItem eventKey="location">
+                  <NavItem eventKey="info">
                     <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
+                  </NavItem>
+                  <NavItem eventKey="location">
+                    <p className={style.TabStyle}>Location</p>
                   </NavItem>
                   <NavItem eventKey="language">
                     <p className={style.TabStyle}>Language</p>
@@ -31,6 +36,9 @@ class TourCreationContents extends React.Component{
               </Col>
               <Col sm={8}>
                 <Tab.Content animation>
+                  <Tab.Pane eventKey="info">
+                    <TourCreationInfo/>
+                  </Tab.Pane>
                   <Tab.Pane eventKey="location">
                     <TourCreationLocation
                       currentlySending={this.props.currentlySending}
