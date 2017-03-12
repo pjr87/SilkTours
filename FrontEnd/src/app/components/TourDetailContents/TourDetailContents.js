@@ -38,12 +38,12 @@ class TourDetailContents extends React.Component{
     this.handleSelectedDateChange = this.handleSelectedDateChange.bind(this);
   }
 
-  componentDidMount(){
+  /*componentDidMount(){
     console.log("selected Tour Id " + this.props.selectedTourId)
     this.fetchPostInfo(this.props.selectedTourId);
-  }
+  }*/
 
-  fetchPostInfo = async (tourId) => {
+  /*fetchPostInfo = async (tourId) => {
     try {
       const info = await Promise.all([
         service.getTourById(tourId),
@@ -85,7 +85,7 @@ class TourDetailContents extends React.Component{
     } catch(e) {
       console.log("error occured pulling tour data");
     }
-  }
+  }*/
 
   closeModal() {
     this.setState({ showModal: false, validationState: null });
@@ -135,148 +135,165 @@ class TourDetailContents extends React.Component{
         console.log('Error; check your card information');
       }
     };
-    return(
-      <div>
-
-        <div className={style.boxed}>
-          <p className={style.tourTitle}>{this.props.selectedTour.name}</p>
-          <p className={style.tourSubTitle}>review: {this.props.selectedTour.rating}</p>
+    if(this.props.isLoaded == false){
+      return(
+        <div>
+          <p className={style.tourTitle}>"Tour is loading"</p>
         </div>
-        <div className = {style.thumbnailContainer}>
-          <Thumbnail>
-            <div className={style.imageContainer}>
-              <Image src={this.props.selectedTour.profileImage}/>
-            </div>
+      )
+    }
+    else{
+      const availableDates = this.props.selectedTourDate;
+      const guides = this.props.selectedTour.guides;
+      const interests = this.props.selectedTour.interests;
+      const reviews = this.props.selectedTour.ratings;
+      const stops = this.props.selectedTour.stops;
+      return(
+        <div>
+          <div className={style.boxed}>
+            <p className={style.tourTitle}>{this.props.selectedTour.name}</p>
+            <p className={style.tourSubTitle}>review: {this.props.selectedTour.rating}</p>
+          </div>
+          <div className = {style.thumbnailContainer}>
+            <Thumbnail>
+              <div className={style.imageContainer}>
+                <Image src={this.props.selectedTour.profileImage}/>
+              </div>
+              <Grid>
+                <Row>
+                  <Col sm={12} md={5} lg={5}>
+                    <p className={style.contentTitle}>About: {this.props.selectedTour.name}</p>
+                    <p className={style.content}>Description: {this.props.selectedTour.description}</p>
+                    <p className={style.content}>Price: ${this.props.selectedTour.price}</p>
+                    <p className={style.content}>Review: {this.props.selectedTour.rating} out of 5</p>
+                    <p className={style.content}>Max Group Size: {this.props.selectedTour.maxGroupSize}</p>
+                    <p className={style.content}>Min Group Size: {this.props.selectedTour.minGroupSize}</p>
+                    <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStartDate}</p>
+                    <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEndDate}</p>
+                    <p className={style.contentSubTitle}>Stops: </p>
+                    {this.props.selectedTour.stops.map((stops, i) => {
+                      return (
+                        <li key={i} className={style.content}>{i+1}</li>);
+                      })}
+                    <p className={style.contentSubTitle}>Guide: </p>
+                    {this.props.selectedTour.guides.map((guides, i) => {
+                      return (
+                        <li key={i} className={style.content}>{guides.first_name} {guides.last_name}</li>);
+                      })}
+                    <p className={style.contentSubTitle}>Available Date: </p>
+                    {this.props.selectedTourDate.map((availableDates, i) => {
+                      return (
+                        <li key={i} className={style.content}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</li>);
+                      })}
+                    <p className={style.contentSubTitle}>Addtional:</p>
+                    <li className={style.content}>Accomodation: {this.props.selectedTour.additionalAccomadation}</li>
+                    <li className={style.content}>Food: {this.props.selectedTour.additionalFood}</li>
+                    <li className={style.content}>Transport: {this.props.selectedTour.additionalTransport}</li>
+                  </Col>
+                  <Col sm={12} md={7} lg={7}>
+                    <br/>
+                    <div className={style.mapContainer}>
+                    <Gmaps
+                      width={'94%'}
+                      height={'400px'}
+                      lat={this.props.selectedTour.stops[0].lat}
+                      lng={this.props.selectedTour.stops[0].lon}
+                      zoom={12}
+                      loadingMessage={'Be happy'}
+                      params={{v: '3.exp', key: 'AIzaSyA7hW-zSFPnfDssD8pXPbfS6ePP3j0xq98'}}
+                      onMapCreated={this.onMapCreated}>
+                      {this.props.selectedTour.stops.map((stops, i) => {
+                        return (
+                          <Marker
+                            lat={stops.lat}
+                            lng={stops.lon}
+                            draggable={true}
+                            onDragEnd={this.onDragEnd}
+                            key={i}/>
+                        );
+                      })}
+                      {this.props.selectedTour.stops.map((stops, i) => {
+                        return (
+                          <InfoWindow
+                            lat={stops.lat}
+                            lng={stops.lon}
+                            content={'Stop: '+ (i+1)}
+                            onCloseClick={this.onCloseClick}
+                            key={i}/>
+                          );
+                      })}
+                    </Gmaps>
+                  </div>
+                </Col>
+              </Row>
+            </Grid>
+            <br/>
             <Grid>
               <Row>
-                <Col sm={12} md={5} lg={5}>
-                  <p className={style.contentTitle}>About: {this.props.selectedTour.name}</p>
-                  <p className={style.content}>Description: {this.props.selectedTour.description}</p>
-                  <p className={style.content}>Price: ${this.props.selectedTour.price}</p>
-                  <p className={style.content}>Review: {this.props.selectedTour.rating} out of 5</p>
-                  <p className={style.content}>Max Group Size: {this.props.selectedTour.maxGroupSize}</p>
-                  <p className={style.content}>Min Group Size: {this.props.selectedTour.minGroupSize}</p>
-                  <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStartDate}</p>
-                  <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEndDate}</p>
-                  <p className={style.contentSubTitle}>Stops: </p>
-                  {this.props.selectedTour.stops.map((stops, i) => {
-                    return (
-                      <li key={i} className={style.content}>{i+1}</li>);
-                    })}
-                  <p className={style.contentSubTitle}>Guide: </p>
-                  {this.props.selectedTour.guides.map((guides, i) => {
-                    return (
-                      <li key={i} className={style.content}>{guides.first_name} {guides.last_name}</li>);
-                    })}
-                  <p className={style.contentSubTitle}>Available Date: </p>
-                  {this.props.selectedTour.availableDates.map((availableDates, i) => {
-                    return (
-                      <li key={i} className={style.content}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</li>);
-                    })}
-                  <p className={style.contentSubTitle}>Addtional:</p>
-                  <li className={style.content}>Accomodation: {this.props.selectedTour.additionalAccomadation}</li>
-                  <li className={style.content}>Food: {this.props.selectedTour.additionalFood}</li>
-                  <li className={style.content}>Transport: {this.props.selectedTour.additionalTransport}</li>
+                <Col sm={12} md={12} lg={12}>
+                  <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
+                  <Button bsStyle="default">Message</Button>
                 </Col>
-                <Col sm={12} md={7} lg={7}>
-                  <br/>
-                  <div className={style.mapContainer}>
-                  <Gmaps
-                    width={'94%'}
-                    height={'400px'}
-                    lat={this.props.selectedTour.stops[0].lat}
-                    lng={this.props.selectedTour.stops[0].lon}
-                    zoom={12}
-                    loadingMessage={'Be happy'}
-                    params={{v: '3.exp', key: 'AIzaSyA7hW-zSFPnfDssD8pXPbfS6ePP3j0xq98'}}
-                    onMapCreated={this.onMapCreated}>
-                    {this.props.selectedTour.stops.map((stops, i) => {
-                      return (
-                        <Marker
-                          lat={stops.lat}
-                          lng={stops.lon}
-                          draggable={true}
-                          onDragEnd={this.onDragEnd}
-                          key={i}/>
-                      );
-                    })}
-                    {this.props.selectedTour.stops.map((stops, i) => {
-                      return (
-                        <InfoWindow
-                          lat={stops.lat}
-                          lng={stops.lon}
-                          content={'Stop: '+ (i+1)}
-                          onCloseClick={this.onCloseClick}
-                          key={i}/>
-                        );
-                    })}
-                  </Gmaps>
-                </div>
-              </Col>
-            </Row>
-          </Grid>
-          <br/>
-          <Grid>
+              </Row>
+            </Grid>
+          </Thumbnail>
+          <Thumbnail>
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
-                <Button bsStyle="default">Message</Button>
+                <p className={style.contentSubTitle}>Reviews:</p>
+                {this.props.selectedTour.ratings.map((reviews, i) => {
+                  return (
+                    <div key={i}>
+                      <p className={style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
+                      <p className={style.reviewContent}>{reviews.comments}</p>
+                    </div>);
+                  })}
               </Col>
             </Row>
-          </Grid>
-        </Thumbnail>
-        <Thumbnail>
-          <Row>
-            <Col sm={12} md={12} lg={12}>
-              <p className={style.contentSubTitle}>Reviews:</p>
-              {this.props.selectedTour.reviews.map((reviews, i) => {
-                return (
-                  <div key={i}>
-                    <p className={style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
-                    <p className={style.reviewContent}>{reviews.comments}</p>
-                  </div>);
-                })}
-            </Col>
-          </Row>
-        </Thumbnail>
-      </div>
-      <Modal show={this.state.showModal} onHide={this.closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Reserve {this.props.selectedTour.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <FormGroup controlId="priceMin">
-              <ControlLabel>Select Available Date:</ControlLabel>
-              {'  '}
-              <FormControl componentClass="select" placeholder="select" value={this.state.selectedDate}
-                onChange={this.handleSelectedDateChange}>
-                {this.props.selectedTour.availableDates.map((availableDates, i) => {
-                  return (
-                    <option value={availableDates.id_tourEvent} key={i}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</option>);
-                  })}
-              </FormControl>
+          </Thumbnail>
+        </div>
+        <Modal show={this.state.showModal} onHide={this.closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Reserve {this.props.selectedTour.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <FormGroup controlId="priceMin">
+                <ControlLabel>Select Available Date:</ControlLabel>
+                {'  '}
+                <FormControl componentClass="select" placeholder="select" value={this.state.selectedDate}
+                  onChange={this.handleSelectedDateChange}>
+                  {this.props.selectedTourDate.map((availableDates, i) => {
+                    return (
+                      <option value={availableDates.id_tourEvent} key={i}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</option>);
+                    })}
+                </FormControl>
+              </FormGroup>
+            </Form>
+            <hr />
+            <FormGroup controlId="cardValidationError" validationState={this.state.validationState}>
+              <ControlLabel>Please check your card information</ControlLabel>
             </FormGroup>
-          </Form>
-          <hr />
-          <FormGroup controlId="cardValidationError" validationState={this.state.validationState}>
-            <ControlLabel>Please check your card information</ControlLabel>
-          </FormGroup>
-          <div>
-            <HostedField fetchToken={getToken} onTokenization={onTokenization} />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.closeModal}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-    );
+            <div>
+              <HostedField fetchToken={getToken} onTokenization={onTokenization} />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.closeModal}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      );
+    }
   }
 }
 
 TourDetailContents.propTypes = {
-  auth: React.PropTypes.object
+  auth: React.PropTypes.object,
+  selectedTourId: React.PropTypes.string,
+  selectedTour: React.PropTypes.object,
+  selectedTourDate: React.PropTypes.object,
+  isLoaded: React.PropTypes.bool
 }
 
 function select (state) {
@@ -284,7 +301,8 @@ function select (state) {
     auth: state.AuthReducer.auth,
     selectedTourId: state.TourDetailReducer.selectedTourId,
     selectedTour: state.TourDetailReducer.selectedTour,
-    selectedTourDate: state.TourDetailReducer.selectedTourDate
+    selectedTourDate: state.TourDetailReducer.selectedTourDate,
+    isLoaded: state.TourDetailReducer.isLoaded
   };
 }
 

@@ -25,19 +25,49 @@
 
 import * as tourDetailConstants from '../constants/TourDetailConstants';
 import * as errorMessages from '../constants/MessageConstants';
+import * as service from '../utils/databaseFunctions';
 import { browserHistory } from 'react-router';
 
 /**
  * Selects a tour
  * @param  {Integer} tourId The selected tour id
  */
-export function selectTour(newTourIdFormState) {
+export function selectTour(tourId) {
   return (dispatch) => {
-    if (newTourIdFormState == "" || newTourIdFormState == undefined || newTourIdFormState == null) {
+    if (tourId == "" || tourId == undefined || tourId == null) {
       browserHistory.push('/notfound');
       return;
     }
-    dispatch(updateTourId(newTourIdFormState));
+    dispatch(updateTourId(tourId));
+    try {
+      service.getTourById(tourId).then(function(response){
+        if(response.data){
+          console.log("getTourById", response.data);
+          dispatch(setSelectedTour(response.data));
+          service.getTourEventById(tourId).then(function(response){
+            if(response.data){
+              console.log("getTourEventById", response.data);
+              dispatch(updateTourDate(response.data));
+              dispatch(setLoadedState(true));
+            }
+            else{
+              // If there was a problem, show an error
+              console.log('response.error: ' + response.error);
+              //dispatch(sendingRequest(false));
+              //dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+            }
+          });
+        }
+        else{
+          // If there was a problem, show an error
+          console.log('response.error: ' + response.error);
+          //dispatch(sendingRequest(false));
+          //dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+        }
+      });
+    } catch(e) {
+      console.log("error occured pulling tour data");
+    }
   };
 }
 
@@ -67,6 +97,14 @@ export function setSelectedDate(newTourDateFormState) {
  */
 export function updateTourId(newTourIdFormState) {
   return { type: tourDetailConstants.UPDATE_TOUR_ID, newTourIdFormState };
+}
+
+/**
+ * Sets the loaded state for the tour
+ * @param  {Integer} newLoadedState
+ */
+export function setLoadedState(newLoadedState) {
+  return { type: tourDetailConstants.SET_LOADED, newLoadedState };
 }
 
 /**

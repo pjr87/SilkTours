@@ -90,7 +90,6 @@ export function updateExistingUser(id, json, auth) {
       headers:{
         'Silk-Logins': auth.Logins,
         'Silk-Identity-Id': auth.IdentityId
-        //'Silk-Bypass': true
       },
     });
 }

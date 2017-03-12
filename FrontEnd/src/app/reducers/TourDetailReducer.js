@@ -38,7 +38,8 @@ const initialState = {
     reviews: [],
     ratingCount: ''
   },
-  selectedTourDate: ''
+  selectedTourDate: '',
+  isLoaded: false
 };
 
 // Takes care of changing the application state
@@ -46,6 +47,8 @@ function TourDetailReducer(state = initialState, action) {
   switch (action.type) {
     case tourDetailConstants.UPDATE_TOUR_ID:
       return {...state, selectedTourId: action.newTourIdFormState};
+    case tourDetailConstants.SET_LOADED:
+      return {...state, isLoaded: action.newLoadedState};
     case tourDetailConstants.UPDATE_SELECTED_TOUR:
       return {...state, selectedTour: action.newTourFormState};
     case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE:
