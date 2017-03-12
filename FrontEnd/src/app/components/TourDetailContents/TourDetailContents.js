@@ -152,7 +152,7 @@ class TourDetailContents extends React.Component{
         <div>
           <div className={style.boxed}>
             <p className={style.tourTitle}>{this.props.selectedTour.name}</p>
-            <p className={style.tourSubTitle}>review: {this.props.selectedTour.rating}</p>
+            <p className={style.tourSubTitle}>review: {this.props.selectedTour.average_rating}</p>
           </div>
           <div className = {style.thumbnailContainer}>
             <Thumbnail>
