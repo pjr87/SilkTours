@@ -134,6 +134,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        SharedPreferences sp = LoginActivity.this.getPreferences(MODE_PRIVATE);
+        mEmail = sp.getString("email", "");
+        mPassword = sp.getString("password", "");
+        mEmailView.setText(mEmail);
+        mPasswordView.setText(mPassword);
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -641,6 +647,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     CredentialHandler.clientId,
                     null,
                     clientConfiguration);
+            SharedPreferences sp = LoginActivity.this.getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("email", mEmail);
+            editor.putString("password", mPassword);
+            editor.apply();
             userPool.getUser(mEmail).authenticateUser(new AuthenticationDetails(mEmail, mPassword, null), authHandler);
 
             try {
