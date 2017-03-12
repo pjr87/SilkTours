@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {SearchBar, PageTitle, BannerImage, TourContainer} from 'components';
+import {SearchBar, PageTitle, BannerImage} from 'components';
 
 // Explore page in ES6. Link has a location parameter.
 class ExplorePage extends React.Component{
@@ -10,7 +10,6 @@ class ExplorePage extends React.Component{
         <BannerImage/>
         <PageTitle title= "available tours"/>
         <SearchBar/>
-        <TourContainer/>
       </div>
     );
   }

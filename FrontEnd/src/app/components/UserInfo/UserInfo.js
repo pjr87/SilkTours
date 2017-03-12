@@ -105,3 +105,9 @@ export default class UserInfo extends React.Component {
     }
   }
 }
+
+UserInfo.propTypes = {
+  formTitle: React.PropTypes.string,
+  user: React.PropTypes.object,
+  dispatch: React.PropTypes.func,
+}

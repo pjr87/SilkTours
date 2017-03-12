@@ -1,4 +1,6 @@
 export ExplorePage from './ExplorePage/ExplorePage';
+export TourDetailPage from './TourDetailPage/TourDetailPage';
+export TourConfirmationPage from './TourConfirmationPage/TourConfirmationPage';
 export ActivitiesPage from './ActivitiesPage/ActivitiesPage';
 export AboutUsPage from './AboutUsPage/AboutUsPage';
 export SignInPage from './SignInPage/SignInPage';
@@ -10,3 +12,4 @@ export SettingsPage from './SettingsPage/SettingsPage';
 export TourCreationPage from './TourCreationPage/TourCreationPage';
 export ContactUsRedux from './ContactUsRedux/ContactUsRedux';
 export MyToursPage from './MyToursPage/MyToursPage';
+export MessagesPage from './MessagesPage/MessagesPage';
