@@ -5,21 +5,29 @@ import style from './style.css';
 import { Button, HelpBlock, FormGroup, Col, Row, Tab, Nav, NavItem, Image } from 'react-bootstrap';
 import * as service from '../../utils/databaseFunctions';
 import {connect} from 'react-redux';
+import { setTabKey } from '../../actions/TourCreationActions';
+
 import TourCreationInfo from './TourCreationInfo';
 import TourCreationLocation from './TourCreationLocation';
 import TourCreationLanguage from './TourCreationLanguage';
-
+import TourCreationTitle from './TourCreationTitle';
+import TourCreationTime from './TourCreationTime';
 
 class TourCreationContents extends React.Component{
   constructor() {
     super();
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleSelect(key){
+    this.props.dispatch(setTabKey(key));
   }
 
   render(){
     return (
       <div>
         <div className={style.mainBody}>
-          <Tab.Container id="left-tabs-example" defaultActiveKey="location">
+          <Tab.Container activeKey={this.props.tabKey} onSelect={this.handleSelect} id="left-tabs-example" defaultActiveKey="location">
             <Row className="clearfix">
               <Col sm={4}>
                 <Nav stacked>
@@ -32,28 +40,60 @@ class TourCreationContents extends React.Component{
                   <NavItem eventKey="language">
                     <p className={style.TabStyle}>Language</p>
                   </NavItem>
+                  <NavItem eventKey="title">
+                    <p className={style.TabStyle}>Title</p>
+                  </NavItem>
+                  <NavItem eventKey="time">
+                    <p className={style.TabStyle}>Set Time</p>
+                  </NavItem>
+                  <NavItem eventKey="photos">
+                    <p className={style.TabStyle}>Photos</p>
+                  </NavItem>
+                  <NavItem eventKey="description">
+                    <p className={style.TabStyle}>Description</p>
+                  </NavItem>
+                  <NavItem eventKey="interests">
+                    <p className={style.TabStyle}>Interests</p>
+                  </NavItem>
+                  <NavItem eventKey="stops">
+                    <p className={style.TabStyle}>Stops</p>
+                  </NavItem>
+                  <NavItem eventKey="additional">
+                    <p className={style.TabStyle}>Additional Services</p>
+                  </NavItem>
+                  <NavItem eventKey="price">
+                    <p className={style.TabStyle}>Price</p>
+                  </NavItem>
+                  <NavItem eventKey="review">
+                    <p className={style.TabStyle}>Review and Submit</p>
+                  </NavItem>
                 </Nav>
               </Col>
               <Col sm={8}>
                 <Tab.Content animation>
                   <Tab.Pane eventKey="info">
-                    <TourCreationInfo/>
+                    <TourCreationInfo
+                      dispatch={this.props.dispatch}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="location">
                     <TourCreationLocation
-                      currentlySending={this.props.currentlySending}
-                      auth={this.props.auth}
                       tour={this.props.tour}
-                      dispatch={this.props.dispatch}
-                      errorMessage={this.props.errorMessage}/>
+                      dispatch={this.props.dispatch}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="language">
                     <TourCreationLanguage
-                      currentlySending={this.props.currentlySending}
-                      auth={this.props.auth}
                       tour={this.props.tour}
-                      dispatch={this.props.dispatch}
-                      errorMessage={this.props.errorMessage}/>
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="title">
+                    <TourCreationTitle
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="time">
+                    <TourCreationTime
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
@@ -70,7 +110,8 @@ TourCreationContents.propTypes = {
   auth: React.PropTypes.object,
   dispatch: React.PropTypes.func,
   tour: React.PropTypes.object,
-  errorMessage: React.PropTypes.string
+  errorMessage: React.PropTypes.string,
+  tabKey: React.PropTypes.string
 }
 
 function select (state) {
@@ -78,7 +119,8 @@ function select (state) {
     auth: state.AuthReducer.auth,
     currentlySending: state.TourCreationReducer.currentlySending,
     errorMessage: state.TourCreationReducer.errorMessage,
-    tour: state.TourCreationReducer.tour
+    tour: state.TourCreationReducer.tour,
+    tabKey: state.TourCreationReducer.tabKey
   };
 }
 

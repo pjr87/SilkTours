@@ -82,7 +82,31 @@ export function createTour(tour, auth) {
  * @param  {object} newTourState //The user json
  */
 export function updateTourState(newTourState) {
-  return { type: tourCreationConstants.UPDATE_USER, newUserState };
+  return { type: tourCreationConstants.UPDATE_TOUR, newTourState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateLanguageState(newLanguageState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_LANGUAGE, newLanguageState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateNameState(newNameState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_NAME, newNameState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateTimeState(newTimeState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_TIME, newTimeState };
 }
 
 /**
@@ -115,11 +139,20 @@ export function setConfirmed(newConfirmedState) {
  * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
  * @param message
  */
+export function setTabKey(newTabKeyState) {
+  return { type: tourCreationConstants.UPDATE_TAB_KEY, newTabKeyState };
+}
+
+/**
+ * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
+ * @param message
+ */
 function setErrorMessage(message) {
   return (dispatch) => {
     dispatch({ type: tourCreationConstants.SET_ERROR_MESSAGE, message });
   }
 }
+
 
 /**
  * Forwards the user
