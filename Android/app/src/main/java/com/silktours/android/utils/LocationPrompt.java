@@ -27,6 +27,7 @@ public class LocationPrompt {
     private AlertDialog filterDialog;
     public String selection = null;
     private static View view;
+    private Place placeSelected;
 
     public LocationPrompt(Activity activity) {
         this.activity = activity;
@@ -37,7 +38,7 @@ public class LocationPrompt {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Enter Your Location");
         build(builder)
-                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         if (filterDialog == null) {
@@ -86,6 +87,7 @@ public class LocationPrompt {
             @Override
             public void onPlaceSelected(Place place) {
                 selection = place.getAddress().toString();
+                placeSelected = place;
             }
 
             @Override
@@ -98,4 +100,8 @@ public class LocationPrompt {
     public interface OnLocationSetListener {
         void onLocationSet(String location);
     }
+    public interface getLocationListener{
+        public Place getPlace();
+    }
+
 }

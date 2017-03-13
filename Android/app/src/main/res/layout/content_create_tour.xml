@@ -77,19 +77,14 @@
           android:layout_height="wrap_content"
           android:text="Locations"/>
 
-        <!-->
-        TODO make maps better and implement addedLocations
-        </-->
-
       <fragment
           android:id="@+id/mapFragment"
           android:layout_marginTop="10dp"
           android:layout_below="@+id/mapText"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="600px"
           android:orientation="horizontal"
           android:name="com.google.android.gms.maps.SupportMapFragment"
-          android:minHeight="500px"
           android:padding="5dp"/>
 
       <TextView
