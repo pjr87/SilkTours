@@ -35,8 +35,10 @@ public class MenuBar {
     private static final String CURRENT_TAG = "CURRENT";
     private int currentID;
     private boolean isMessaging;
+    private Stack<Integer> indexStack = new Stack<>();
 
     public void setupClickListeners(final AppCompatActivity activity, Toolbar toolbar) {
+        indexStack.push(1);
         this.activity = activity;
         currentID = R.id.DefaultFrame;
         bottomNavigationView = (BottomNavigationView)
@@ -106,12 +108,23 @@ public class MenuBar {
 
         fragmentManager.beginTransaction()
                 .replace(currentID, fragment, CURRENT_TAG)
-                .commitAllowingStateLoss();
+                .addToBackStack( null ).commit();
+        indexStack.push(index);
+        //.commitAllowingStateLoss();
         currentID = fragment.getId();
     }
 
     public void setIsMessaging(boolean isMessaging) {
         this.isMessaging = isMessaging;
+    }
+
+    public void backPressed() {
+        if (indexStack.size() <= 1) {
+            return;
+        }
+        indexStack.pop();
+        int index = indexStack.peek();
+        bottomNavigationView.getMenu().getItem(index).setChecked(true);
     }
 
     private void setProfile() {
