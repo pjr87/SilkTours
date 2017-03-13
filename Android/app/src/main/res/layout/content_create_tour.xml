@@ -88,7 +88,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="horizontal"
-          android:name="com.google.android.gms.maps.MapFragment"
+          android:name="com.google.android.gms.maps.SupportMapFragment"
           android:minHeight="500px"
           android:padding="5dp"/>
 

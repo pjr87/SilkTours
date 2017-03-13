@@ -2,6 +2,7 @@ package com.silktours.android;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +33,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -70,6 +75,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private Calendar start = Calendar.getInstance();
     private Calendar end = Calendar.getInstance();
     private GoogleMap mGoogleMap;
+    private MapView mMapView;
     private DateFormat formatDate = DateFormat.getDateInstance();
 
 
@@ -78,8 +84,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     Polygon shape;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.content_create_tour, container, false);
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
@@ -89,88 +94,50 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         //addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
 
+        initMap();
         setUpListeners();
-        //initMap();
         return rootView;
     }
 
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(this);
+        if(mGoogleMap == null) {
+            SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
+            mapFrag.getMapAsync(this);
+        }
+        else
+            setUpMap();
     }
 
+
+    private void setUpMap(){
+        LatLng sydney = new LatLng(-34, 151);
+        mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+/*
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        mMapView = (MapView) rootView.findViewById(R.id.mapFragment);
+        if(mMapView != null){
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
+    }
+*/
     @Override
     public void onMapReady(GoogleMap googleMap) {
+       // MapsInitializer.initialize((getContext()));
+
         mGoogleMap = googleMap;
-
-        if(mGoogleMap != null){
-
-            mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(LatLng latLng) {
-                    CreateTour.this.setMarker("Local", latLng.latitude, latLng.longitude);
-                }
-            });
-        }
-    }
-
-    private void setMarker(String locality, double lat, double lng) {
-//        if(marker != null){
-//            removeEverything();
-//        }
-
-        if(markers.size() == POLYGON_POINTS){
-            removeEverything();
-        }
-
-        MarkerOptions options = new MarkerOptions()
-                .title(locality)
-                .draggable(true)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
-                .position(new LatLng(lat, lng))
-                .snippet("I am Here");
-
-        markers.add(mGoogleMap.addMarker(options));
-
-        if(markers.size() == POLYGON_POINTS){
-            drawPolygon();
-        }
-
-//        if(marker1 == null) {
-//            marker1 = mGoogleMap.addMarker(options);
-//        } else if(marker2 == null) {
-//            marker2 = mGoogleMap.addMarker(options);
-//            drawLine();
-//        } else {
-//            removeEverything();
-//            marker1 = mGoogleMap.addMarker(options);
-//        }
-
-//        circle = drawCircle(new LatLng(lat, lng));
-
-    }
-
-    private void drawPolygon() {
-        PolygonOptions options = new PolygonOptions()
-                .fillColor(0x330000FF)
-                .strokeWidth(3)
-                .strokeColor(Color.RED);
-
-        for(int i=0; i<POLYGON_POINTS;i++){
-            options.add(markers.get(i).getPosition());
-        }
-        shape = mGoogleMap.addPolygon(options);
-
-    }
-
-    private void removeEverything() {
-        for(Marker marker : markers) {
-            marker.remove();
-        }
-        markers.clear();
-        shape.remove();
-        shape = null;
-
+        //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        //LatLng sydney = new LatLng(-34, 151);
+        //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        setUpMap();
     }
 
 

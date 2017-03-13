@@ -86,7 +86,7 @@
             android:value="@string/facebook_app_id" />
 
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAFPQBuN56KfD_rDTWDx6ePNFDfibT0zFI"/>
+            android:value="AIzaSyCuVkLnHiaB_R0djgRvMoz-UmaK07oYkC0"/>
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
