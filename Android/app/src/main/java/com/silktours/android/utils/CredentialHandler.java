@@ -90,9 +90,11 @@ public class CredentialHandler {
         if (user == null) {
             load(context);
         }
-        if (System.currentTimeMillis() < expireDate)
+        if (System.currentTimeMillis() < expireDate) {
+            refresh(context);
             return user;
-
+        }
+        refresh(context);
         return null;
     }
 
@@ -102,7 +104,13 @@ public class CredentialHandler {
         persist(context);
     }
 
-
+    public static void refresh(Activity context) {
+        if (credentialsProvider == null)
+            return;
+        credentialsProvider.refresh();
+        expireDate = credentialsProvider.getSessionCredentitalsExpiration().getTime();
+        persist(context);
+    }
 
     public static final String identityPoolId = "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349";
     public static final String userPoolId = "us-east-1_917Igx5Ld";
