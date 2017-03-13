@@ -2,8 +2,12 @@ package com.silktours.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.RoundedImageView;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Stack;
 
 /**
@@ -101,5 +112,47 @@ public class MenuBar {
 
     public void setIsMessaging(boolean isMessaging) {
         this.isMessaging = isMessaging;
+    }
+
+    private void setProfile() {
+        // Set the profile icon
+        final User user = CredentialHandler.getUser(activity);
+        if (user != null) {
+            final BottomNavigationItemView item = (BottomNavigationItemView) activity.findViewById(R.id.action_profile);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    URL thumb_u = null;
+                    try {
+                        thumb_u = new URL(user.getStr(User.PROFILE_PICTURE));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    final Drawable icon;
+                    try {
+                        Drawable thumb_d = Drawable.createFromStream(thumb_u.openStream(), "src");
+                        Bitmap b = ((BitmapDrawable)thumb_d).getBitmap();
+
+                        b = RoundedImageView.getCroppedBitmap(b, b.getWidth());
+
+                        icon = new BitmapDrawable(activity.getResources(),Bitmap.createScaledBitmap(b, 250, 250, false));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            item.setScaleX((float) 1.5);
+                            item.setScaleY((float) 1.5);
+                            item.setIconTintList(null);
+                            item.setIcon(icon);
+                            // item.setBackground(icon);
+                        }
+                    });
+                }
+            }).start();
+        }
     }
 }
