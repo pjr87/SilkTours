@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -56,20 +57,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+import static com.silktours.android.R.id.status;
+
 public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private View rootView;
     private Tour tour = new Tour();
     private EditText tourName, tourDesc;
-    TextView startDateText, endDateText;
+    private TextView startDateText, endDateText, addedLocationText;
     private Button startDateBtn, endDateBtn;
-
+    private Calendar start = Calendar.getInstance();
+    private Calendar end = Calendar.getInstance();
     private GoogleMap mGoogleMap;
-    Calendar start = Calendar.getInstance();
-    Calendar end = Calendar.getInstance();
+    private DateFormat formatDate = DateFormat.getDateInstance();
 
-    private int year, month, date;
-    DateFormat formatDate = DateFormat.getDateInstance();
 
     ArrayList<Marker> markers = new ArrayList<Marker>();
     static final int POLYGON_POINTS = 5;
@@ -85,11 +87,10 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         endDateBtn = (Button) rootView.findViewById(R.id.endDate);
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
+        //addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
 
         setUpListeners();
         //initMap();
-       // SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
-        //mapFragment.getMapAsync(this);
         return rootView;
     }
 
@@ -103,7 +104,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         mGoogleMap = googleMap;
 
         if(mGoogleMap != null){
-
 
             mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                 @Override
@@ -184,8 +184,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                     @Override
                     public void onLocationSet(String location) {
                         if (location != null) {
-                            TextView locationView = (TextView) rootView.findViewById(R.id.locationTextView);
-                            locationView.setText(location);
+                            TextView locationView = (TextView) rootView.findViewById(R.id.addedLocations);
+                            locationView.setText(addedLocationText.getText()+location+"\n");
                         }
                     }
                 });
@@ -270,7 +270,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             else
                 endDateText.setText(formatDate.format(end.getTime()));
     }};
-
 
     private void commitTour() {
         new Thread(new Runnable() {

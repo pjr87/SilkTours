@@ -104,9 +104,7 @@
           android:layout_below="@+id/addedLocations"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:inputType="text"
           android:hint="Add a location"/>
-
 
       <TextView
           android:id="@+id/additionalPicText"
@@ -114,14 +112,14 @@
           android:layout_marginTop="10dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Add Pictures"/>
+          android:hint="Add Pictures"/>
       <Button
           android:id="@+id/additionalPicButton"
           android:layout_marginTop="10dp"
           android:layout_below="@+id/additionalPicText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Upload"/>
+          android:hint="Upload"/>
 
       <TextView
           android:id="@+id/addDateText"
@@ -136,7 +134,7 @@
           android:layout_below="@+id/addDateText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Start Date"
+          android:hint="Start Date"
           android:onClick=" "/>
       <TextView
           android:id="@+id/startDateTextView"
@@ -155,7 +153,7 @@
           android:layout_below="@+id/startDate"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="End Date"
+          android:hint="End Date"
           android:onClick=" "
           android:layout_marginBottom="50dp"/>
       <TextView
