@@ -131,14 +131,44 @@
           android:layout_height="wrap_content"
           android:text="Add Dates"/>
 
-      <CalendarView
-          android:id="@+id/calender"
+      <Button
+          android:id="@+id/startDate"
+          android:layout_below="@+id/addDateText"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_below="@+id/addDateText"
-          android:layout_marginTop="10dp"
-  >
-      </CalendarView>
+          android:text="Start Date"
+          android:onClick=" "/>
+      <TextView
+          android:id="@+id/startDateTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Start Date"
+          android:layout_alignBaseline="@+id/startDate"
+          android:layout_alignBottom="@+id/startDate"
+          android:layout_toRightOf="@+id/startDate"
+          android:layout_toEndOf="@+id/startDate"
+          android:layout_marginLeft="13dp"
+          android:layout_marginStart="13dp" />
+
+      <Button
+          android:id="@+id/endDate"
+          android:layout_below="@+id/startDate"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="End Date"
+          android:onClick=" "
+          android:layout_marginBottom="50dp"/>
+      <TextView
+          android:id="@+id/endDateTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="End Date"
+          android:layout_alignBaseline="@+id/endDate"
+          android:layout_alignBottom="@+id/endDate"
+          android:layout_toRightOf="@+id/endDate"
+          android:layout_toEndOf="@+id/endDate"
+          android:layout_marginLeft="13dp"
+          android:layout_marginStart="13dp" />
 
       <Button
           android:id="@+id/createTour"

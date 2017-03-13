@@ -61,11 +61,11 @@ public class MenuBar {
                                 break;
                             case R.id.action_messages:
                                 //startActivity(activity, MessageThreads.class);
-                                //startFragment(new CreateTour(), 2);
+                                startFragment(new CreateTour(), 2);
                                 //TODO if app crashes, it's this or the map
-                                if (!(activity instanceof MessageActivity)) {
-                                   MainActivity.getInstance().launchMessaging(null);
-                                }
+                                //if (!(activity instanceof MessageActivity)) {
+                                //   MainActivity.getInstance().launchMessaging(null);
+                                //}
                                 break;
                             case R.id.action_my_tours:
                                 //startActivity(activity, Tours.class);

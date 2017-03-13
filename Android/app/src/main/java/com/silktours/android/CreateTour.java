@@ -1,5 +1,7 @@
 package com.silktours.android;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -10,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -47,16 +51,25 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.security.PrivateKey;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-public class CreateTour extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private View rootView;
     private Tour tour = new Tour();
-    private EditText tourName;
-    private EditText tourDesc;
+    private EditText tourName, tourDesc;
+    TextView startDateText, endDateText;
+    private Button startDateBtn, endDateBtn;
+
     private GoogleMap mGoogleMap;
+    Calendar start = Calendar.getInstance();
+    Calendar end = Calendar.getInstance();
+
+    private int year, month, date;
+    DateFormat formatDate = DateFormat.getDateInstance();
 
     ArrayList<Marker> markers = new ArrayList<Marker>();
     static final int POLYGON_POINTS = 5;
@@ -68,13 +81,17 @@ public class CreateTour extends Fragment implements OnMapReadyCallback, GoogleAp
         rootView = inflater.inflate(R.layout.content_create_tour, container, false);
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
+        startDateBtn = (Button) rootView.findViewById(R.id.startDate);
+        endDateBtn = (Button) rootView.findViewById(R.id.endDate);
+        startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
+        endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
+
         setUpListeners();
         //initMap();
        // SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
         //mapFragment.getMapAsync(this);
         return rootView;
     }
-
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
@@ -211,8 +228,48 @@ public class CreateTour extends Fragment implements OnMapReadyCallback, GoogleAp
                 }.execute(1);
             }
         });
+
+        startDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateStartDate();
+            }
+        });
+        endDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateEndDate();
+            }
+        });
     }
 
+    private void updateStartDate(){
+        new DatePickerDialog(rootView.getContext(), startDatePicker, start.get(Calendar.YEAR),start.get(Calendar.MONTH),start.get(Calendar.DAY_OF_MONTH)).show();
+    }
+    private void updateEndDate(){
+        new DatePickerDialog(rootView.getContext(), endDatePicker, end.get(Calendar.YEAR),end.get(Calendar.MONTH),end.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    DatePickerDialog.OnDateSetListener startDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            start.set(Calendar.YEAR, year);
+            start.set(Calendar.MONTH, monthOfYear);
+            start.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            startDateText.setText(formatDate.format(start.getTime()));
+        }
+    };
+    DatePickerDialog.OnDateSetListener endDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            end.set(Calendar.YEAR, year);
+            end.set(Calendar.MONTH, monthOfYear);
+            end.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            if(!start.before(end))
+                Toast.makeText(view.getContext(), "End Date Cannot Be Before Start Date", Toast.LENGTH_SHORT).show();
+            else
+                endDateText.setText(formatDate.format(end.getTime()));
+    }};
 
 
     private void commitTour() {
@@ -251,19 +308,20 @@ public class CreateTour extends Fragment implements OnMapReadyCallback, GoogleAp
     public void onConnected(@Nullable Bundle bundle) {
 
     }
-
     @Override
     public void onConnectionSuspended(int i) {
 
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
     @Override
     public void onLocationChanged(Location location) {
+
+    }
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
     }
 }
