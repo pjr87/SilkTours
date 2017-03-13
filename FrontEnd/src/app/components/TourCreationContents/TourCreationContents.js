@@ -68,9 +68,9 @@ TourCreationContents.propTypes = {
 function select (state) {
   return {
     auth: state.AuthReducer.auth,
-    currentlySending: state.TourReducer.currentlySending,
-    errorMessage: state.TourReducer.errorMessage,
-    tour: state.TourReducer.tour
+    currentlySending: state.TourCreationReducer.currentlySending,
+    errorMessage: state.TourCreationReducer.errorMessage,
+    tour: state.TourCreationReducer.tour
   };
 }
 

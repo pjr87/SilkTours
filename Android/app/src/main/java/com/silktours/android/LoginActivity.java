@@ -54,12 +54,17 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.securitytoken.model.FederatedUser;
+import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
+import com.applozic.mobicomkit.api.account.user.UserLoginTask;
+import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
+import com.applozic.mobicommons.people.contact.Contact;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.silktours.android.database.Common;
 import com.silktours.android.database.User;
+import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
 import com.silktours.android.utils.StringPrompt;
 
@@ -133,6 +138,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        SharedPreferences sp = LoginActivity.this.getPreferences(MODE_PRIVATE);
+        mEmail = sp.getString("email", "");
+        mPassword = sp.getString("password", "");
+        mEmailView.setText(mEmail);
+        mPasswordView.setText(mPassword);
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -143,6 +154,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplication(),
+                CredentialHandler.identityPoolId,
+                Regions.US_EAST_1
+        );
+        credentialsProvider.clear();
     }
 
     @Override
@@ -160,11 +178,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                credentialsProvider = new CognitoCachingCredentialsProvider(
-                        getApplication(),
-                        CredentialHandler.identityPoolId,
-                        Regions.US_EAST_1
-                );
                 final Map<String, String> logins = new HashMap<>();
                 String accessToken = loginResult.getAccessToken().getToken();
                 logins.put("graph.facebook.com", accessToken);
@@ -180,6 +193,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void done(String email, String name, String picture) {
                         User user = null;
+                        CredentialHandler.logins = new JSONObject(logins).toString();
+                        CredentialHandler.identityId = credentialsProvider.getIdentityId();
                         try {
                             user = User.getByEmail(email);
                         } catch (IOException | JSONException e) {
@@ -199,6 +214,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 CredentialHandler.setUser(LoginActivity.this,
                                         user,
                                         loginResult.getAccessToken().getExpires().getTime());
+                                applozicSignup(user);
                                 goHome();
                                 finish();
                                 return;
@@ -211,6 +227,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     user,
                                     loginResult.getAccessToken().getExpires().getTime());
                             if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
+                                applozicSignup(user);
                                 goHome();
                                 finish();
                                 return;
@@ -500,14 +517,46 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
+    private void applozicSignup(User silkUser) {
+        com.applozic.mobicomkit.api.account.user.UserLoginTask.TaskListener listener = new com.applozic.mobicomkit.api.account.user.UserLoginTask.TaskListener() {
+            @Override
+            public void onSuccess(RegistrationResponse registrationResponse, Context context) {
+                Log.d("Applozic", "Signup Successfull");
+            }
+
+            @Override
+            public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
+                // If any failure in registration the callback  will come here
+                Log.d("Applozic", "Unknown Error");
+            }};
+        new com.applozic.mobicomkit.api.account.user.User();
+        com.applozic.mobicomkit.api.account.user.User user = new com.applozic.mobicomkit.api.account.user.User();
+        user.setUserId(Integer.toString(silkUser.getInt(User.ID_USERS))); //userId it can be any unique user identifier
+        user.setDisplayName(silkUser.getStr(User.FIRST_NAME) + " " + silkUser.getStr(User.LAST_NAME));
+        user.setEmail(silkUser.getStr(User.EMAIL));
+        user.setAuthenticationTypeId(com.applozic.mobicomkit.api.account.user.User.AuthenticationType.APPLOZIC.getValue());  //User.AuthenticationType.APPLOZIC.getValue() for password verification from Applozic server and User.AuthenticationType.CLIENT.getValue() for access Token verification from your server set access token as password
+        user.setPassword(""); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+        user.setImageLink(silkUser.getStr(User.PROFILE_PICTURE));
+        new com.applozic.mobicomkit.api.account.user.UserLoginTask(user, listener, this).execute((Void) null);
+    }
+
     AuthenticationHandler authHandler = new AuthenticationHandler() {
         @Override
         public void onSuccess(CognitoUserSession userSession) {
             try {
+                Map<String, String> logins = new HashMap<>();
+                logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld", userSession.getIdToken().getJWTToken());
+                credentialsProvider.clear();
+                credentialsProvider.setLogins(logins);
+                CredentialHandler.identityId = credentialsProvider.getIdentityId();
+                CredentialHandler.logins = new JSONObject(logins).toString();
+                User user = User.getByEmail(mEmail);
                 CredentialHandler.setUser(
                         LoginActivity.this,
-                        User.getByEmail(mEmail),
-                        userSession.getAccessToken().getExpiration().getTime());
+                        user,
+                        userSession.getAccessToken().getExpiration().getTime()
+                );
+                applozicSignup(user);
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -526,33 +575,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         public void onFailure(Exception exception) {
+            if (! (exception instanceof AmazonServiceException)) {
+                exception.printStackTrace();
+                return;
+            }
             AmazonServiceException serviceException = (AmazonServiceException) exception;
-            if (serviceException.getErrorCode().equals("UserNotFoundException")
-                    || serviceException.getErrorCode().toLowerCase().contains("confirm")) {
+            if (serviceException.getErrorCode().equals("UserNotFoundException")) {
                 CognitoUserAttributes userAttributes = new CognitoUserAttributes();
                 userAttributes.addAttribute("email", mEmail);
                 userPool.signUp(mEmail, mPassword, userAttributes, null, signupCallback);
+            }else if (serviceException.getErrorCode().toLowerCase().contains("confirm")) {
+                confirmUser(userPool.getUser(mEmail));
             }
         }
     };
 
     SignUpHandler signupCallback = new SignUpHandler() {
         @Override
-        public void onSuccess(final CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-            if(!userConfirmed) {
-                confirmUser(cognitoUser);
-            }
-            else {
-                loginDone(true);
-            }
-            User user = new User();
-            user.set(User.EMAIL, mEmail);
-            try {
-                user.create();
-                cognitoUser.getSession(authHandler);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        public void onSuccess(final CognitoUser cognitoUser, final boolean userConfirmed, final CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+            CreateUserPrompt prompt = new CreateUserPrompt();
+            prompt.promptUIThread(LoginActivity.this, new CreateUserPrompt.CreateUserPromptListener() {
+                @Override
+                public void onResult(List<String> keys, List<String> values) {
+                    Log.d("SilkKeys", keys.toString());
+                    Log.d("SilkValues", values.toString());
+                    User user = new User();
+                    user.set(User.EMAIL, mEmail);
+                    user.set(User.FIRST_NAME, values.get(0));
+                    user.set(User.LAST_NAME, values.get(1));
+                    user.set(User.PHONE_NUMBER, values.get(2));
+                    user.set(User.ADDRESS + ":" + "street", values.get(3));
+                    try {
+                        user.create();
+                        if (!userConfirmed) {
+                            confirmUser(cognitoUser);
+                        } else {
+                            loginDone(true);
+                            cognitoUser.getSession(authHandler);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
 
         @Override
@@ -570,7 +641,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         cognitoUser.confirmSignUpInBackground(result, false, new GenericHandler() {
                             @Override
                             public void onSuccess() {
-                                loginDone(true);
+                                cognitoUser.getSession(authHandler);
                             }
 
                             @Override
@@ -607,7 +678,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     CredentialHandler.clientId,
                     null,
                     clientConfiguration);
+            SharedPreferences sp = LoginActivity.this.getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("email", mEmail);
+            editor.putString("password", mPassword);
+            editor.apply();
             userPool.getUser(mEmail).authenticateUser(new AuthenticationDetails(mEmail, mPassword, null), authHandler);
+
             try {
                 loginLatch.await();
             } catch (InterruptedException e) {

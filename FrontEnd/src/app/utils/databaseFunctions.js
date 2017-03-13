@@ -30,6 +30,31 @@ function getCookie(name) {
     return false;
 }
 
+export function getFilteredTours(rating, priceMin, priceMax, keywords) {
+    return axios.get(SERVER_URL + "/search?rating="+rating+"&piceMin="+priceMin+"&priceMax="+priceMax+"&keywords="+keywords);
+}
+
+export function getTourById(tourId) {
+    return axios.get(SERVER_URL + "/tours/"+tourId);
+}
+
+export function getTourEventById(tourId){
+    return axios.get(SERVER_URL + "/tour/"+tourId+"/events");
+}
+
+export function putTourEventById(eventid, json, auth) {
+    console.log("url: " + url);
+    console.log("json: " + json);
+    let url = SERVER_URL + '/tourevents/' + eventid;
+    return axios.put(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 export function getAllTours() {
     return axios.get(SERVER_URL + "/search");
 }
@@ -65,7 +90,6 @@ export function updateExistingUser(id, json, auth) {
       headers:{
         'Silk-Logins': auth.Logins,
         'Silk-Identity-Id': auth.IdentityId
-        //'Silk-Bypass': true
       },
     });
 }

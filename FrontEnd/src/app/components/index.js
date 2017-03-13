@@ -2,6 +2,8 @@ export SearchBar from './SearchBar/SearchBar';
 export PageTitle from './PageTitle/PageTitle';
 export BannerImage from './BannerImage/BannerImage';
 export TourContainer from './Tours/TourContainer';
+export TourDetailContents from './TourDetailContents/TourDetailContents';
+export TourConfirmationContents from './TourConfirmationContents/TourConfirmationContents';
 export TourModify from './Tours/TourModify';
 export AboutContents from './AboutContents/AboutContents';
 export SignInContents from './SignInContents/SignInContents';

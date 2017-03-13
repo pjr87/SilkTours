@@ -1,7 +1,7 @@
 package com.silktours.android.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -23,26 +23,20 @@ import com.silktours.android.R;
  * Created by andrew on 2/10/17.
  */
 public class LocationPrompt {
+    private final Activity activity;
     private AlertDialog filterDialog;
-    private String selection = null;
+    public String selection = null;
     private static View view;
 
+    public LocationPrompt(Activity activity) {
+        this.activity = activity;
+    }
 
     public LocationPrompt(Activity activity, final OnLocationSetListener listener) {
+        this.activity = activity;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-        if (view != null) {
-            ViewGroup parent = (ViewGroup) view.getParent();
-            if (parent != null)
-                parent.removeView(view);
-        }
-        try {
-            view = inflater.inflate(R.layout.location_select, null);
-        }catch(InflateException e) {
-            e.printStackTrace();
-        }
-        builder.setView(view)
+        builder.setTitle("Enter Your Location");
+        build(builder)
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
@@ -61,6 +55,31 @@ public class LocationPrompt {
                     }
                 });
         filterDialog = builder.create();
+        filterDialog.show();
+
+        /*CheckBox useGPS = (CheckBox) filterDialog.findViewById(R.id.useGPS);
+        useGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                EditText filterLocation = (EditText) filterDialog.findViewById(R.id.filterLocation);
+                filterLocation.setEnabled(!isChecked);
+            }
+        });*/
+    }
+
+    public AlertDialog.Builder build(AlertDialog.Builder builder) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.location_select, null);
+        }catch(InflateException e) {
+            e.printStackTrace();
+        }
+        builder.setView(view);
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -73,16 +92,7 @@ public class LocationPrompt {
             public void onError(Status status) {
             }
         });
-        filterDialog.show();
-
-        /*CheckBox useGPS = (CheckBox) filterDialog.findViewById(R.id.useGPS);
-        useGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                EditText filterLocation = (EditText) filterDialog.findViewById(R.id.filterLocation);
-                filterLocation.setEnabled(!isChecked);
-            }
-        });*/
+        return builder;
     }
 
     public interface OnLocationSetListener {

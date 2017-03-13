@@ -1,12 +1,14 @@
 import {combineReducers} from "redux";
 import AuthReducer from "./AuthReducer";
-import TourReducer from "./TourReducer";
+import TourCreationReducer from "./TourCreationReducer";
+import TourDetailReducer from "./TourDetailReducer";
 import { reducer as formReducer } from 'redux-form'
 
 
 const reducers = combineReducers({
   AuthReducer,
-  TourReducer,
+  TourCreationReducer,
+  TourDetailReducer,
   form: formReducer
 });
 

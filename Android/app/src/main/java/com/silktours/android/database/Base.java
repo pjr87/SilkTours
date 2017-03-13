@@ -14,7 +14,11 @@ public class Base {
     }
 
     public String getStr(String key) {
-        return (String) get(key);
+        try {
+            return (String) get(key);
+        } catch (ClassCastException e) {
+            return "";
+        }
     }
 
     public Integer getInt(String key) {
@@ -49,6 +53,9 @@ public class Base {
         try {
             if (key.contains(":")) {
                 String[] pair = key.split(":", 2);
+                if (!obj.has(pair[0])) {
+                    obj.put(pair[0], new JSONObject());
+                }
                 set(obj.getJSONObject(pair[0]), pair[1], value);
                 return;
             }

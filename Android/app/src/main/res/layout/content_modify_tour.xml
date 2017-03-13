@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".CreateTour"
+        tools:showIn="@layout/activity_modify_tour">
+        <!-->
+          <LinearLayout
+              android:id="@+id/picture"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:padding="5dp"
+              android:background="#BBBBBB">
+              <com.silktours.android.utils.RoundedImageView
+                  android:id="@+id/profileImage"
+                  android:layout_width="100dp"
+                  android:layout_height="100dp"
+                  android:src="@mipmap/ic_launcher"/>
+          </LinearLayout>
+
+          </-->
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/picture"
+            android:text="Tour Name"/>
+        <LinearLayout
+            android:id="@+id/nameFields"
+            android:layout_below="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <EditText
+                android:id="@+id/tourName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_weight="1"
+                android:hint="Enter tour name"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tourDescText"
+            android:layout_below="@+id/nameFields"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tour Description"/>
+        <EditText
+            android:id="@+id/tourDesc"
+            android:layout_below="@+id/tourDescText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter tour description"/>
+
+        <TextView
+            android:id="@+id/mapText"
+            android:layout_below="@+id/tourDesc"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Locations"/>
+
+        <fragment
+            android:id="@+id/mapFragment"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/mapText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:minHeight="500px"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/addedLocations"
+            android:layout_below="@+id/mapFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/com_facebook_blue"/>
+
+        <Button
+            android:id="@+id/addLocation"
+            android:layout_below="@+id/addedLocations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Add a location"/>
+
+
+        <TextView
+            android:id="@+id/additionalPicText"
+            android:layout_below="@+id/addLocation"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Pictures"/>
+        <Button
+            android:id="@+id/additionalPicButton"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/additionalPicText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload"/>
+
+        <TextView
+            android:id="@+id/addDateText"
+            android:layout_below="@+id/additionalPicButton"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Dates"/>
+
+        <CalendarView
+            android:id="@+id/calender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addDateText"
+            android:layout_marginTop="10dp"
+            >
+        </CalendarView>
+
+        <Button
+            android:id="@+id/createTour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Create Tour"/>
+
+    </RelativeLayout>
+</ScrollView>

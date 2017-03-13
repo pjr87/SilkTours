@@ -1,4 +1,6 @@
 export ExplorePage from './ExplorePage/ExplorePage';
+export TourDetailPage from './TourDetailPage/TourDetailPage';
+export TourConfirmationPage from './TourConfirmationPage/TourConfirmationPage';
 export ActivitiesPage from './ActivitiesPage/ActivitiesPage';
 export AboutUsPage from './AboutUsPage/AboutUsPage';
 export SignInPage from './SignInPage/SignInPage';

@@ -49,8 +49,8 @@ class Tours extends React.Component{
           <p>
             <Link
               to={{
-                pathname: '/TourDetail',
-                query: { tourName: this.state.name }
+                pathname: '/tourdetail',
+                query: { tourId: this.state.id_tour }
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>

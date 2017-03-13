@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 // Importing componenets
 import{
   ExplorePage,
+  TourDetailPage,
+  TourConfirmationPage,
   ActivitiesPage,
   AboutUsPage,
   SignInPage,
@@ -14,7 +16,7 @@ import{
   MyToursPage,
   ContactUsPage,
   SettingsPage,
-  NotFound, 
+  NotFound,
   MessagesPage } from '../pages';
 import {ContactUsRedux} from '../pages';
 import TourSignup from './pages/TourSignup';
@@ -52,6 +54,7 @@ const Root = ({ store }) => (
     <Router history={browserHistory}>
       <Route component={App}>
         <Route path="/" component={ExplorePage}/>
+        <Route path="/tourdetail" component={TourDetailPage}/>
         <Route path="/activities" component={ActivitiesPage}/>
         <Route path="/about" component={AboutUsPage}/>
         <Route path="/sign" component={SignInPage}/>
@@ -60,7 +63,9 @@ const Root = ({ store }) => (
         <Route path='/confirmationpage' component={ConfirmationPage}/>
         <Route path='/messagereact' component={MessagesReact} />
         <Route path='/contactusredux' component ={ContactUsRedux} />
+        <Route path='/notfound' component ={NotFound} />
         <Route onEnter={checkAuth}>
+          <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route path='/tour-creation' component={TourCreationPage}/>
