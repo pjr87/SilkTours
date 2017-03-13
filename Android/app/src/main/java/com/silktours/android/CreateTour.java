@@ -79,10 +79,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private DateFormat formatDate = DateFormat.getDateInstance();
 
 
-    ArrayList<Marker> markers = new ArrayList<Marker>();
-    static final int POLYGON_POINTS = 5;
-    Polygon shape;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.content_create_tour, container, false);
@@ -110,33 +106,14 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
 
     private void setUpMap(){
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(39.956208, -75.191730);
         mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
     }
 
-/*
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
-        super.onViewCreated(view, savedInstanceState);
-
-        mMapView = (MapView) rootView.findViewById(R.id.mapFragment);
-        if(mMapView != null){
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            mMapView.getMapAsync(this);
-        }
-    }
-*/
     @Override
     public void onMapReady(GoogleMap googleMap) {
-       // MapsInitializer.initialize((getContext()));
-
         mGoogleMap = googleMap;
-        //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //LatLng sydney = new LatLng(-34, 151);
-        //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         setUpMap();
     }
 
