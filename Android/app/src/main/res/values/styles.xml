@@ -23,4 +23,9 @@
         <item name="android:maxHeight">48dip</item>
     </style>
 
+    <style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
+    </style>
+
 </resources>

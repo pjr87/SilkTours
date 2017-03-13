@@ -1,6 +1,7 @@
 package com.silktours.android;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +15,16 @@ import android.widget.Toast;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
+import com.applozic.mobicomkit.api.conversation.service.ConversationService;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
+import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
+import com.applozic.mobicommons.people.contact.Contact;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
@@ -48,9 +55,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                LoginManager.getInstance().logOut();
+                CredentialHandler.logout(MainActivity.this);
             }
         });
 
@@ -66,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    public void login() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     public void launchMessaging(final User to) {
         User user = CredentialHandler.getUser(this);
         if (user == null) {
@@ -73,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         } else {
-            launchMessaging(user, null);
+            launchMessaging(user, to);
         }
     }
 
@@ -87,10 +98,15 @@ public class MainActivity extends AppCompatActivity {
                 //startActivity(intent);
                 Log.d("SilkSuccess", registrationResponse.getMessage());
                 Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                //Bundle bundle = new Bundle();
                 if (to != null) {
+                    Contact contact = new Contact(MainActivity.this, Integer.toString(to.getInt(User.ID_USERS)));
+                    //intent.putExtra(ConversationActivity.CONTACT, contact);
+                    //bundle.putSerializable(ConversationActivity.CONTACT, contact);
                     intent.putExtra(ConversationUIService.USER_ID, Integer.toString(to.getInt(User.ID_USERS)));
                     intent.putExtra(ConversationUIService.DISPLAY_NAME, (to.getStr(User.FIRST_NAME) + " " + to.getStr(User.LAST_NAME))); //put it for displaying the title.
                 }
+                //intent.putExtras(bundle);
                 startActivity(intent);
             }
 
@@ -142,5 +158,21 @@ public class MainActivity extends AppCompatActivity {
             paymentListener.done(resultCode == Activity.RESULT_OK);
         }
     }
+
+    public boolean googleServicesAvailable() {
+        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+        int isAvailable = api.isGooglePlayServicesAvailable(this);
+        if (isAvailable == ConnectionResult.SUCCESS) {
+            return true;
+        } else if (api.isUserResolvableError(isAvailable)) {
+            Dialog dialog = api.getErrorDialog(this, isAvailable, 0);
+            dialog.show();
+        } else {
+            Toast.makeText(this, "Cant connect to play services", Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
+
+
 
 }
