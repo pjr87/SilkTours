@@ -12,6 +12,13 @@ import TourCreationLocation from './TourCreationLocation';
 import TourCreationLanguage from './TourCreationLanguage';
 import TourCreationTitle from './TourCreationTitle';
 import TourCreationTime from './TourCreationTime';
+import TourCreationPhotos from './TourCreationPhotos';
+import TourCreationDescription from './TourCreationDescription';
+import TourCreationInterests from './TourCreationInterests';
+import TourCreationStops from './TourCreationStops';
+import TourCreationAdditional from './TourCreationAdditional';
+import TourCreationPrice from './TourCreationPrice';
+import TourCreationReview from './TourCreationReview';
 
 class TourCreationContents extends React.Component{
   constructor() {
@@ -92,6 +99,41 @@ class TourCreationContents extends React.Component{
                   </Tab.Pane>
                   <Tab.Pane eventKey="time">
                     <TourCreationTime
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="photos">
+                    <TourCreationPhotos
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="description">
+                    <TourCreationDescription
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="interests">
+                    <TourCreationInterests
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="stops">
+                    <TourCreationStops
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="additional">
+                    <TourCreationAdditional
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="price">
+                    <TourCreationPrice
+                      tour={this.props.tour}
+                      dispatch={this.props.dispatch}/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="review">
+                    <TourCreationReview
                       tour={this.props.tour}
                       dispatch={this.props.dispatch}/>
                   </Tab.Pane>

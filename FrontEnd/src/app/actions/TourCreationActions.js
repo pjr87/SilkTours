@@ -97,6 +97,22 @@ export function updateLanguageState(newLanguageState) {
  * Updates a tour's information
  * @param  {object} newTourState //The user json
  */
+export function updateStopState(newStopsState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_STOPS, newStopsState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateInterestState(newInterestState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_INTEREST, newInterestState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
 export function updateNameState(newNameState) {
   return { type: tourCreationConstants.UPDATE_TOUR_NAME, newNameState };
 }
@@ -107,6 +123,14 @@ export function updateNameState(newNameState) {
  */
 export function updateTimeState(newTimeState) {
   return { type: tourCreationConstants.UPDATE_TOUR_TIME, newTimeState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateDescriptionState(newDescriptionState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_DESCRIPTION, newDescriptionState };
 }
 
 /**
