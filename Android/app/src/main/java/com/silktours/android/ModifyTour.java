@@ -83,6 +83,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
         endDateBtn = (Button) rootView.findViewById(R.id.endDate);
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
+        addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
 
         initMap();
         setUpListeners();

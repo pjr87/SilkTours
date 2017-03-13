@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -77,6 +79,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private GoogleMap mGoogleMap;
     private MapView mMapView;
     private DateFormat formatDate = DateFormat.getDateInstance();
+    private Place placeSelected;
 
 
     @Override
@@ -88,7 +91,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         endDateBtn = (Button) rootView.findViewById(R.id.endDate);
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
-        //addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
+        addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
 
         initMap();
         setUpListeners();
@@ -96,19 +99,32 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     }
 
     private void initMap() {
-        if(mGoogleMap == null) {
+        if (mGoogleMap == null) {
             SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
             mapFrag.getMapAsync(this);
-        }
-        else
+        } else
             setUpMap();
     }
 
 
-    private void setUpMap(){
+    private void setUpMap() {
         LatLng sydney = new LatLng(39.956208, -75.191730);
         mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
+       // if (ActivityCompat.checkSelfPermission(rootView.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(rootView.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            //Toast.makeText(rootView.getContext(), "End Date Cannot Be Before Start Date", Toast.LENGTH_SHORT).show();
+
+          //  return;
+        //}
+        //mGoogleMap.setMyLocationEnabled(true);
+        //.setZoomControlsEnabled(true);
     }
 
     @Override
