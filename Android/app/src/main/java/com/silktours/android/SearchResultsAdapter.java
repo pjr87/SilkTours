@@ -82,6 +82,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
                 }
             }
         }).start();
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewtourTemp.start(tour);
+            }
+        });
     }
 
     @Override

@@ -213,7 +213,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 user.create();
                                 CredentialHandler.setUser(LoginActivity.this,
                                         user,
-                                        loginResult.getAccessToken().getExpires().getTime());
+                                        loginResult.getAccessToken().getExpires().getTime(),
+                                        credentialsProvider.getIdentityId(),
+                                        new JSONObject(logins).toString());
                                 applozicSignup(user);
                                 goHome();
                                 finish();
@@ -225,7 +227,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             credentialsProvider.refresh();
                             CredentialHandler.setUser(LoginActivity.this,
                                     user,
-                                    loginResult.getAccessToken().getExpires().getTime());
+                                    loginResult.getAccessToken().getExpires().getTime(),
+                                    credentialsProvider.getIdentityId(),
+                                    new JSONObject(logins).toString());
                             if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
                                 applozicSignup(user);
                                 goHome();
@@ -548,13 +552,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld", userSession.getIdToken().getJWTToken());
                 credentialsProvider.clear();
                 credentialsProvider.setLogins(logins);
-                CredentialHandler.identityId = credentialsProvider.getIdentityId();
-                CredentialHandler.logins = new JSONObject(logins).toString();
                 User user = User.getByEmail(mEmail);
                 CredentialHandler.setUser(
                         LoginActivity.this,
                         user,
-                        userSession.getAccessToken().getExpiration().getTime()
+                        userSession.getAccessToken().getExpiration().getTime(),
+                        credentialsProvider.getIdentityId(),
+                        new JSONObject(logins).toString()
                 );
                 applozicSignup(user);
             } catch (IOException | JSONException e) {

@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class Tour extends Base implements Serializable {
     private static List<Tour> defaultSearch;
-    public String additional_accomadation;
+    /*public String additional_accomadation;
     public String additional_food;
     public String additional_transport;
     public String address_city;
@@ -40,14 +40,14 @@ public class Tour extends Base implements Serializable {
     public Integer id_tour;
     public Boolean is_deleted;
     public Integer max_group_size;
-    public Integer min_group_size;
+    public Integer min_group_size;*/
     public static final String name = "name";
-    public Double price;
+    //public Double price;
     public String profile_image;
     public Integer profile_image_width;
     public Integer profile_image_height;
-    public Integer rating_count;
-    public Object stops;
+    //public Integer rating_count;
+    //public Object stops;
 
     public static class FilterParams {
         public String query;

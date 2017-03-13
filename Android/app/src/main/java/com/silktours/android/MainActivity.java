@@ -28,6 +28,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.ErrorDisplay;
 
 import org.json.JSONException;
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logOut();
+                //LoginManager.getInstance().logOut();
                 CredentialHandler.logout(MainActivity.this);
             }
         });
@@ -75,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
     public void login() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    public void logoutWithMessage() {
+        ErrorDisplay.show("You need to login first", this);
+        //LoginManager.getInstance().logOut();
+        CredentialHandler.logout(MainActivity.this);
     }
 
     public void launchMessaging(final User to) {

@@ -88,7 +88,7 @@ public class BookTourFragment extends Fragment {
         t.replace(R.id.bookTourCalendar, caldroidFragment);
         t.commit();
 
-        new GetEvents().execute(1);
+        new GetEvents().execute(tour.getInt("id_tour"));
     }
 
     final CaldroidListener listener = new CaldroidListener() {
