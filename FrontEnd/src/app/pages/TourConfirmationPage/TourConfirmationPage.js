@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {BannerImage, PageTitle, ConfirmationContents} from 'components';
+import {BannerImage, PageTitle, TourConfirmationContents} from 'components';
 
 class TourConfirmationPage extends React.Component{
   render(){
@@ -8,6 +8,7 @@ class TourConfirmationPage extends React.Component{
       <div>
         <BannerImage/>
         <PageTitle title = "Confirm your reservation"/>
+        <TourConfirmationContents/>
       </div>
     );
   }

@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".CreateTour"
-        tools:showIn="@layout/activity_viewtour">
+        tools:showIn="@layout/activity_modify_tour">
         <!-->
           <LinearLayout
               android:id="@+id/picture"
@@ -31,11 +31,6 @@
           </LinearLayout>
 
           </-->
-
-        <!-->
-        TODO add picture corousle rather than pics at the bottom ( additionalPicText )
-        </-->
-
         <TextView
             android:id="@+id/nameTextView"
             android:layout_marginTop="10dp"
@@ -43,19 +38,40 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/picture"
             android:text="Tour Name"/>
-
+        <LinearLayout
+            android:id="@+id/nameFields"
+            android:layout_below="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <EditText
+                android:id="@+id/tourName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_weight="1"
+                android:hint="Enter tour name"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tourDescText"
-            android:layout_below="@+id/nameTextView"
+            android:layout_below="@+id/nameFields"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tour Description"/>
+        <EditText
+            android:id="@+id/tourDesc"
+            android:layout_below="@+id/tourDescText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter tour description"/>
 
         <TextView
             android:id="@+id/mapText"
-            android:layout_below="@+id/tourDescText"
+            android:layout_below="@+id/tourDesc"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,26 +95,38 @@
             android:layout_height="wrap_content"
             android:textColor="@color/com_facebook_blue"/>
 
+        <Button
+            android:id="@+id/addLocation"
+            android:layout_below="@+id/addedLocations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Add a location"/>
+
 
         <TextView
             android:id="@+id/additionalPicText"
-            android:layout_below="@+id/addedLocations"
+            android:layout_below="@+id/addLocation"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pictures"/>
+            android:text="Add Pictures"/>
+        <Button
+            android:id="@+id/additionalPicButton"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/additionalPicText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload"/>
 
         <TextView
             android:id="@+id/addDateText"
-            android:layout_below="@+id/additionalPicText"
+            android:layout_below="@+id/additionalPicButton"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dates"/>
+            android:text="Add Dates"/>
 
-        <!-->
-        TODO make date table
-        </-->
         <CalendarView
             android:id="@+id/calender"
             android:layout_width="wrap_content"
@@ -109,11 +137,11 @@
         </CalendarView>
 
         <Button
-            android:id="@+id/JoinTour"
+            android:id="@+id/createTour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="Join Tour"/>
+            android:text="Create Tour"/>
 
     </RelativeLayout>
 </ScrollView>

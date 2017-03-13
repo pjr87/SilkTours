@@ -55,7 +55,6 @@ const Root = ({ store }) => (
       <Route component={App}>
         <Route path="/" component={ExplorePage}/>
         <Route path="/tourdetail" component={TourDetailPage}/>
-        <Route path="/tourconfirmation" component={TourConfirmationPage}/>
         <Route path="/activities" component={ActivitiesPage}/>
         <Route path="/about" component={AboutUsPage}/>
         <Route path="/sign" component={SignInPage}/>
@@ -66,6 +65,7 @@ const Root = ({ store }) => (
         <Route path='/contactusredux' component ={ContactUsRedux} />
         <Route path='/notfound' component ={NotFound} />
         <Route onEnter={checkAuth}>
+          <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route path='/tour-creation' component={TourCreationPage}/>

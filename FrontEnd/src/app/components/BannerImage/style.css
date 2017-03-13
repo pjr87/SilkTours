@@ -1,0 +1,23 @@
+.bannerCaptionDownload{
+  font: bold 6vw Helvetica, Sans-Serif;
+	color: #ffffff;
+  text-align: left;
+}
+.bannerCaptionDownload2{
+  font: bold 6vw Helvetica, Sans-Serif;
+	color: #ffffff;
+  text-align: left;
+  margin-bottom: 13%;
+}
+.bannerCaptionExplore{
+  font: bold 6vw Helvetica, Sans-Serif;
+	color: #ffffff;
+  text-align: center;
+  margin-bottom: 60%;
+}
+.bannerCaptionSignup{
+  font: bold 6vw Helvetica, Sans-Serif;
+	color: #ffffff;
+  text-align: center;
+  margin-bottom: 50%;
+}

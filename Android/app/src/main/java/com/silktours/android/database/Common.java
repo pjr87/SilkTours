@@ -2,6 +2,8 @@ package com.silktours.android.database;
 
 import android.util.Log;
 
+import com.silktours.android.utils.CredentialHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,9 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
@@ -26,25 +26,21 @@ import java.util.Map;
 public class Common {
     public static final String SERVER_URL = "http://34.197.42.24:5000";
 
+    private static void addAuth(HttpURLConnection conn) {
+
+        if (!CredentialHandler.logins.isEmpty() && !CredentialHandler.identityId.isEmpty()) {
+            Log.d("Logins", CredentialHandler.logins);
+            Log.d("identityPoolId", CredentialHandler.identityId);
+            conn.setRequestProperty("Silk-Logins", CredentialHandler.logins);
+            conn.setRequestProperty("Silk-Identity-Id", CredentialHandler.identityId);
+        }
+        //conn.setRequestProperty("Silk-Bypass", "true");
+    }
+
     public static String httpRequest(String urlString) throws IOException, JSONException {
-        /*HttpURLConnection urlConnection = null;
-        URL url = new URL(urlString);
-
-        urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setReadTimeout(10000);
-        urlConnection.setConnectTimeout(15000);
-        urlConnection.setDoOutput(true);
-        urlConnection.connect();
-
-        BufferedReader br=new BufferedReader(
-                new InputStreamReader(
-                        urlConnection.getInputStream()
-                )
-        );*/
-
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        addAuth(urlConnection);
         int responseCode = urlConnection.getResponseCode();
         if (responseCode != 200) {
             Log.d("Silk", "" + responseCode);
@@ -73,6 +69,7 @@ public class Common {
             String urlString = SERVER_URL + "/check_auth";
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            addAuth(urlConnection);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestMethod("POST");
@@ -102,6 +99,7 @@ public class Common {
 
     public static String request(String uri, String json, String method) throws IOException {
         HttpURLConnection httpcon = (HttpURLConnection) ((new URL (uri).openConnection()));
+        addAuth(httpcon);
         httpcon.setDoOutput(true);
         httpcon.setRequestProperty("Content-Type", "application/json");
         httpcon.setRequestProperty("Accept", "application/json");
