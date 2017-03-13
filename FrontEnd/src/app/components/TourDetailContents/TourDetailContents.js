@@ -23,7 +23,7 @@ import HostedField from 'hosted-fields-react';
 
 import * as service from '../../utils/databaseFunctions';
 
-import { setSelectedTour, setSelectedDate } from '../../actions/TourDetailActions';
+import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDateEnd } from '../../actions/TourDetailActions';
 
 class TourDetailContents extends React.Component{
   constructor(props) {
@@ -92,11 +92,16 @@ class TourDetailContents extends React.Component{
   }
 
   openModal() {
-    this.setState({ showModal: true });
+    if(this.props.loggedIn) {
+      this.setState({ showModal: true });
+    }
+    else {
+      browserHistory.push('/sign');
+    }
   }
 
   handleSelectedDateChange(e) {
-    this.setState({ selectedDate: e.target.value });
+    this.props.dispatch(setSelectedDateId(e.target.value))
   }
 
   render(){
@@ -119,13 +124,21 @@ class TourDetailContents extends React.Component{
         var tourEvent = {
           state: 'B'
         }
-        service.putTourEventById(this.state.selectedDate, tourEvent, this.props.auth).then(function(response){
+        console.log('tureventID ' + this.props.selectedTourDateId)
+        service.putTourEventById(this.props.selectedTourDateId, tourEvent, this.props.auth).then(function(response){
           console.log(response);
         })
         .catch(function (error) {
           console.log(error);
         });
-        this.props.dispatch(setSelectedDate(this.state.selectedDate));
+        this.props.dispatch(setSelectedDateId(this.props.selectedTourDateId));
+        for(var i=0; i < this.props.selectedTourDates.length; i++){
+          if(this.props.selectedTourDates[i].id_tourEvent == this.props.selectedTourDateId){
+            this.props.dispatch(setSelectedDateStart(this.props.selectedTourDates[i].start_date_time));
+            this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDates[i].end_date_time));
+            break;
+          }
+        }
         browserHistory.push('/tourconfirmation');
       }
       else {
@@ -143,11 +156,6 @@ class TourDetailContents extends React.Component{
       )
     }
     else{
-      const availableDates = this.props.selectedTourDates;
-      const guides = this.props.selectedTour.guides;
-      const interests = this.props.selectedTour.interests;
-      const reviews = this.props.selectedTour.ratings;
-      const stops = this.props.selectedTour.stops;
       return(
         <div>
           <div className={style.boxed}>
@@ -157,7 +165,7 @@ class TourDetailContents extends React.Component{
           <div className = {style.thumbnailContainer}>
             <Thumbnail>
               <div className={style.imageContainer}>
-                <Image src={this.props.selectedTour.profileImage}/>
+                <Image src={this.props.selectedTour.profile_image}/>
               </div>
               <Grid>
                 <Row>
@@ -261,7 +269,7 @@ class TourDetailContents extends React.Component{
               <FormGroup controlId="priceMin">
                 <ControlLabel>Select Available Date:</ControlLabel>
                 {'  '}
-                <FormControl componentClass="select" placeholder="select" value={this.state.selectedDate}
+                <FormControl componentClass="select" placeholder="select" value={this.props.selectedTourDateId}
                   onChange={this.handleSelectedDateChange}>
                   {this.props.selectedTourDates.map((availableDates, i) => {
                     return (
@@ -292,7 +300,7 @@ TourDetailContents.propTypes = {
   auth: React.PropTypes.object,
   selectedTourId: React.PropTypes.string,
   selectedTour: React.PropTypes.object,
-  selectedTourDate: React.PropTypes.string,
+  selectedTourDateId: React.PropTypes.string,
   selectedTourDates: React.PropTypes.array,
   isLoaded: React.PropTypes.bool
 }
@@ -300,9 +308,10 @@ TourDetailContents.propTypes = {
 function select (state) {
   return {
     auth: state.AuthReducer.auth,
+    loggedIn: state.AuthReducer.loggedIn,
     selectedTourId: state.TourDetailReducer.selectedTourId,
     selectedTour: state.TourDetailReducer.selectedTour,
-    selectedTourDate: state.TourDetailReducer.selectedTourDate,
+    selectedTourDateId: state.TourDetailReducer.selectedTourDateId,
     selectedTourDates: state.TourDetailReducer.tourDates,
     isLoaded: state.TourDetailReducer.isLoaded
   };

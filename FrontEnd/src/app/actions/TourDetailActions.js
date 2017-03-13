@@ -47,7 +47,9 @@ export function selectTour(tourId) {
           service.getTourEventById(tourId).then(function(response){
             if(response.data){
               console.log("getTourEventById", response.data);
-              dispatch(updateTourDates(response.data));
+              const availableDates = response.data;
+              dispatch(updateTourDates(availableDates));
+              dispatch(updateTourDateId(availableDates[0].id_tourEvent.toString()));
               dispatch(setLoadedState(true));
             }
             else{
@@ -83,11 +85,31 @@ export function setSelectedTour(newTourFormState) {
 
 /**
  * Selects a tour
- * @param  {object} tour The selected tour
+ * @param  {string} date The selected tour
  */
-export function setSelectedDate(newTourDateFormState) {
+export function setSelectedDateId(newTourDateIdFormState) {
   return (dispatch) => {
-    dispatch(updateTourDate(newTourDateFormState));
+    dispatch(updateTourDateId(newTourDateIdFormState));
+  };
+}
+
+/**
+ * Selects a tour
+ * @param  {string} startDate The selected tour
+ */
+export function setSelectedDateStart(newTourDateStartFormState) {
+  return (dispatch) => {
+    dispatch(updateTourDateStart(newTourDateStartFormState));
+  };
+}
+
+/**
+ * Selects a tour
+ * @param  {string} endDate The selected tour
+ */
+export function setSelectedDateEnd(newTourDateEndFormState) {
+  return (dispatch) => {
+    dispatch(updateTourDateEnd(newTourDateEndFormState));
   };
 }
 
@@ -117,7 +139,7 @@ export function updateTour(newTourFormState) {
 
 /**
  * Updates a selected tour dates
- * @param  {object} tour
+ * @param  {object} tourEvent
  */
 export function updateTourDates(newTourDatesState) {
   return { type: tourDetailConstants.UPDATE_TOUR_DATES, newTourDatesState };
@@ -125,8 +147,24 @@ export function updateTourDates(newTourDatesState) {
 
 /**
  * Updates a selected tour information
- * @param  {object} tour
+ * @param  {string} tourId
  */
-export function updateTourDate(newTourDateFormState) {
-  return { type: tourDetailConstants.UPDATE_SELECTED_TOUR_DATE, newTourDateFormState };
+export function updateTourDateId(newTourDateIdFormState) {
+  return { type: tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_ID, newTourDateIdFormState };
+}
+
+/**
+ * Updates a selected tour information
+ * @param  {string} tourStartDate
+ */
+export function updateTourDateStart(newTourDateStartFormState) {
+  return { type: tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_START, newTourDateStartFormState };
+}
+
+/**
+ * Updates a selected tour information
+ * @param  {string} tourStartDate
+ */
+export function updateTourDateEnd(newTourDateEndFormState) {
+  return { type: tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_END, newTourDateEndFormState };
 }
