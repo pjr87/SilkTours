@@ -28,6 +28,8 @@ public class User extends Base implements Serializable {
     public static final String PROFILE_PICTURE = "profile_picture";
     public static final String ADDRESS = "address";
     public static final String EXPIRE_TIME = "expire_time";
+    public static final String LOGINS = "logins";
+    public static final String IDENTITY_ID = "identity_id";
 
     public static User current;
 
@@ -51,13 +53,11 @@ public class User extends Base implements Serializable {
 
     public void create() throws IOException {
         String url = Common.SERVER_URL + "/users";
-        set("bypass", true); // Bypass auth
         String result = Common.request(url, JSON.toString(), "POST");
     }
 
     public void commit() throws IOException {
         String url = Common.SERVER_URL + "/users/" + getInt(ID_USERS);
-        set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "PUT");
         Log.d("Server", result);

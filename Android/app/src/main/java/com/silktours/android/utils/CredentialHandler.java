@@ -2,9 +2,12 @@ package com.silktours.android.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.silktours.android.LoginActivity;
+import com.silktours.android.MainActivity;
 import com.silktours.android.database.User;
 
 import org.json.JSONException;
@@ -26,6 +29,23 @@ public class CredentialHandler {
     public static String email = null;
     private static User user;
     private static long expireDate = 0;
+    public static String logins = "";
+    public static String identityId = "";
+
+
+
+    public static void logout(Activity context) {
+        expireDate = 0;
+        if (user == null)
+            user = new User();
+        user.set(User.EXPIRE_TIME, expireDate);
+        user.set(User.LOGINS, logins);
+        user.set(User.IDENTITY_ID, identityId);
+        persist(context);
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+        context.finish();
+    }
 
     public static void persist(Activity context) {
         if (user == null) return;
@@ -53,7 +73,9 @@ public class CredentialHandler {
                 expireDate = 0;
                 return;
             }
-            expireDate = (Long) o_exireDate;
+            logins = user.getStr(User.LOGINS);
+            identityId = user.getStr(User.IDENTITY_ID);
+            expireDate = ((Number) o_exireDate).longValue();
             if (expireDate < System.currentTimeMillis()) {
                 user = null;
             }
@@ -68,9 +90,11 @@ public class CredentialHandler {
         if (user == null) {
             load(context);
         }
-        if (System.currentTimeMillis() < expireDate)
+        if (System.currentTimeMillis() < expireDate) {
+            refresh(context);
             return user;
-
+        }
+        refresh(context);
         return null;
     }
 
@@ -80,7 +104,13 @@ public class CredentialHandler {
         persist(context);
     }
 
-
+    public static void refresh(Activity context) {
+        if (credentialsProvider == null)
+            return;
+        credentialsProvider.refresh();
+        expireDate = credentialsProvider.getSessionCredentitalsExpiration().getTime();
+        persist(context);
+    }
 
     public static final String identityPoolId = "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349";
     public static final String userPoolId = "us-east-1_917Igx5Ld";

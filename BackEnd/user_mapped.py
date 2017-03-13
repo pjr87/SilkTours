@@ -23,6 +23,7 @@ class User(Base):
     reg_date = Column(Date)
     email = Column(String)
     accessKeyId = Column(String)
+    is_guide = Column(Boolean)
     secretAccessKey = None
 
     address_id = Column(Integer, ForeignKey("Address.id_address"))
