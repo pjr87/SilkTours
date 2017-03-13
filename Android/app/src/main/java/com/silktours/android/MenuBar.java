@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Stack;
+import java.util.TimerTask;
 
 /**
  * Created by andrew on 1/25/17.
@@ -36,6 +38,7 @@ public class MenuBar {
     private int currentID;
     private boolean isMessaging;
     private Stack<Integer> indexStack = new Stack<>();
+    private int retryCount = 0;
 
     public void setupClickListeners(final AppCompatActivity activity, Toolbar toolbar) {
         indexStack.push(1);
@@ -95,7 +98,7 @@ public class MenuBar {
         from.startActivity(intent);
     }
 
-    public void startFragment(Fragment fragment, int index) {
+    public void startFragment(final Fragment fragment, final int index) {
         if (isMessaging) {
             activity.finish();
             MainActivity.getInstance().getMenu().startFragment(fragment, index);
@@ -103,12 +106,31 @@ public class MenuBar {
         }
         bottomNavigationView.getMenu().getItem(index).setChecked(true);
 
-        visited.push(fragment);
+
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
-        fragmentManager.beginTransaction()
-                .replace(currentID, fragment, CURRENT_TAG)
-                .addToBackStack( null ).commit();
+        try {
+            fragmentManager.beginTransaction()
+                    .replace(currentID, fragment, CURRENT_TAG)
+                    .addToBackStack(null).commit();
+            retryCount = 0;
+        } catch(IllegalStateException e) {
+            // Retry after 20ms
+            if (retryCount > 20) {
+                retryCount = 0;
+                return;
+            }
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    retryCount++;
+                    startFragment(fragment, index);
+                }
+            }, 20);
+            return;
+        }
+        visited.push(fragment);
         indexStack.push(index);
         //.commitAllowingStateLoss();
         currentID = fragment.getId();
