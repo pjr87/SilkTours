@@ -26,7 +26,7 @@ class Tours extends React.Component{
       average_rating: this.props.average_rating,
       description: this.props.description,
       firstStart_date: this.props.firstStart_date,
-      id_guide: this.props.id_guide,
+      guides: this.props.guides,
       id_rating: this.props.id_rating,
       id_tour: this.props.id_tour,
       is_deleted: this.props.is_deleted,
@@ -40,7 +40,25 @@ class Tours extends React.Component{
       stops: this.props.stops,
     };
   }
+
+  componentDidMount(){
+    console.log("Guide Id" + this.props.guides.length);
+  }
+
   render(){
+    const guidesLength = this.state.guides.length;
+    let guideButton = null;
+    if (guidesLength != '0') {
+      guideButton = <Link
+                    to={{
+                      pathname: '/messages',
+                      query: { guideUserId: this.state.guides[0].id_user }
+                    }}>
+                      <Button bsStyle="default">Message</Button>
+                    </Link>;
+    } else {
+      guideButton = null;
+    }
     return (
       <Col xs={12} md={6} lg={6}>
         <Thumbnail>
@@ -56,19 +74,28 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
-            <Link
-              to={{
-                pathname: '/messages',
-                query: { guideUserId: this.props.selectedTour.guides[0].id_user }
-              }}>
-              <Button bsStyle="default">Message</Button>
-            </Link>
+            {guideButton}
           </p>
         </Thumbnail>
       </Col>
     );
   }
 };
+
+function checkNoGuide(props){
+  const guidesLength = props.guides.length
+  if(guidesLength == 0) {
+    return(
+      <Link
+        to={{
+          pathname: '/messages',
+          query: { guideUserId: this.props.guides[0].id_user }
+        }}>
+      <Button bsStyle="default">Message</Button>
+    </Link>
+    )
+  }
+}
 
 function select (state) {
   return {

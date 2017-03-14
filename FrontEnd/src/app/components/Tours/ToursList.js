@@ -18,7 +18,7 @@ const ToursList = ({tours}) => {
         average_rating={tours.average_rating}
         description={tours.description}
         firstStart_date={tours.firstStart_date}
-        id_guide={tours.id_guide}
+        guides={tours.guides}
         id_rating={tours.id_rating}
         id_tour={tours.id_tour}
         is_deleted={tours.is_deleted}
