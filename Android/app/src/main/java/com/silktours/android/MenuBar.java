@@ -2,6 +2,7 @@ package com.silktours.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -48,7 +49,11 @@ public class MenuBar {
                         switch (item.getItemId()) {
                             case R.id.action_profile:
                                 //startActivity(activity, Profile.class);
-                                startFragment(new Profile(), 0);
+                                Profile profile = new Profile();
+                                //Bundle args = new Bundle();
+                                //args.putInt("id_user", 41);
+                                //profile.setArguments(args);
+                                startFragment(profile, 0);
                                 break;
                             case R.id.action_search:
                                 //startActivity(activity, search.class);
@@ -57,8 +62,9 @@ public class MenuBar {
                             case R.id.action_messages:
                                 //startActivity(activity, MessageThreads.class);
                                 //startFragment(new CreateTour(), 2);
+                                //TODO if app crashes, it's this or the map
                                 if (!(activity instanceof MessageActivity)) {
-                                    MainActivity.getInstance().launchMessaging(null);
+                                   MainActivity.getInstance().launchMessaging(null);
                                 }
                                 break;
                             case R.id.action_my_tours:

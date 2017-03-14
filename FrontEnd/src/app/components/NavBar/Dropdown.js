@@ -40,19 +40,6 @@ class Dropdown extends React.Component {
           <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
         </LinkContainer>
     );
-    /*const renderGuideTab(){
-      //if(this.props.isTourGuide){
-      if(true){
-        return(<LinkContainer to="/tour-creation" onClick={this._clearError}>
-            <MenuItem eventKey={4.4}>Create New Tour</MenuItem>
-          </LinkContainer>);
-      }
-
-      return (<LinkContainer to="/become-guide" onClick={this._clearError}>
-          <MenuItem eventKey={4.4}>Become Tour Guide</MenuItem>
-        </LinkContainer>);
-
-    }*/
 
     return (
       <NavDropdown eventKey={4} title = {this.props.usersName} id="nav-dropdown">

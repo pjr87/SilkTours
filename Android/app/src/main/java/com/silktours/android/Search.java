@@ -66,6 +66,7 @@ public class Search extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         makeLayoutManager();
         recyclerView.setLayoutManager(manager);
+        searchDefault();
         return rootView;
     }
 
@@ -131,6 +132,22 @@ public class Search extends Fragment {
         }
     }
 
+    private void searchDefault() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<Tour> tours;
+                try {
+                    tours = Tour.getDefaultSearch();
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                updateResults(tours);
+            }
+        }).start();
+    }
+
     private void search() {
         filterParams.query = searchView.getQuery().toString();
 
@@ -140,27 +157,28 @@ public class Search extends Fragment {
                 final List<Tour> tours;
                 try {
                     tours = Tour.getBySearch(filterParams);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                     return;
                 }
-                MainActivity.getInstance().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        RecyclerView.Adapter i = new SearchResultsAdapter(
-                                MainActivity.getInstance(),
-                                tours,
-                                recyclerView.getWidth(),
-                                recyclerView.getHeight()
-                        );
-                        recyclerView.swapAdapter(i, false);
-                    }
-                });
+                updateResults(tours);
             }
         }).start();
+    }
+
+    private void updateResults(final List<Tour> tours) {
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                RecyclerView.Adapter i = new SearchResultsAdapter(
+                        MainActivity.getInstance(),
+                        tours,
+                        recyclerView.getWidth(),
+                        recyclerView.getHeight()
+                );
+                recyclerView.swapAdapter(i, false);
+            }
+        });
     }
 
     private Float stringToFloat(String f) {
