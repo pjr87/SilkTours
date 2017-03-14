@@ -11,7 +11,7 @@ class MyGuide extends React.Component{
           <Row>
             <Col md={6} mdPull={0}>
               <Panel header="Tours Pending Confirmation">
-                No Tours
+                <p>{this.props.user.email}</p>
               </Panel>
             </Col>
             <Col md={6} mdPush={0}>
