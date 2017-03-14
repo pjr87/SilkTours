@@ -66,12 +66,15 @@ export function getUser(id){
 
 }
 
-export function newTour(data){
-    console.log(data);
-    var url = SERVER_URL + "/tours";
-    console.log("url: "+url);
-    //var t = JSON.stringify(data);
-    return axios.post(url, data);
+export function newTour(data, auth){
+    let url = SERVER_URL + '/tours';
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
 }
 
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.

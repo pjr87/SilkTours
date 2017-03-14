@@ -2,9 +2,9 @@ import React from 'react';
 import style from './style.css';
 import {EditableField} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
-import { updateLanguageState, setTabKey } from '../../actions/TourCreationActions';
+import { updateNameState, setTabKey } from '../../actions/TourCreationActions';
 
-class TourCreationLanguage extends React.Component{
+class TourCreationTitle extends React.Component{
   constructor() {
     super();
 
@@ -14,29 +14,29 @@ class TourCreationLanguage extends React.Component{
   }
 
   next(){
-    this.props.dispatch(setTabKey("title"));
+    this.props.dispatch(setTabKey("time"));
   }
 
   previous(){
-    this.props.dispatch(setTabKey("location"));
+    this.props.dispatch(setTabKey("language"));
   }
 
   _changeTour(event) {
-    this._emitUserChange({...this.props.tour, language: event.target.value});
+    this._emitUserChange({...this.props.tour, name: event.target.value});
   }
 
-  _emitUserChange (newLanguageState) {
-    this.props.dispatch(updateLanguageState(newLanguageState))
+  _emitUserChange (newTitleState) {
+    this.props.dispatch(updateNameState(newTitleState))
   }
 
   render(){
-    if(this.props.tour.language != null || this.props.tour.language != ''){
+    if(this.props.tour.name != null || this.props.tour.name != ''){
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>What language will the tour be in?</p>
+          <p className={style.HeaderStyle}>What is the title of the tour?</p>
           <br/>
-          <EditableField label="Language" onChange={this._changeTour} value={this.props.tour.language}/>
+          <EditableField label="Title" onChange={this._changeTour} value={this.props.tour.name}/>
           <br/>
           <Pager>
             <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
@@ -49,9 +49,9 @@ class TourCreationLanguage extends React.Component{
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>What language will the tour be in?</p>
+          <p className={style.HeaderStyle}>What is the title of the tour?</p>
           <br/>
-          <EditableField label="Language" onChange={this._changeTour} value=""/>
+          <EditableField label="Title" onChange={this._changeTour} value=""/>
           <br/>
             <Pager>
               <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
@@ -63,4 +63,4 @@ class TourCreationLanguage extends React.Component{
   }
 }
 
-export default TourCreationLanguage;
+export default TourCreationTitle;

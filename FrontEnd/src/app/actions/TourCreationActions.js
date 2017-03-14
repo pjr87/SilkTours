@@ -61,11 +61,13 @@ export function createTour(tour, auth) {
       return;
     }
 
-    service.updateExistingUser(id_user, user, auth).then(function(response){
+    service.newTour(tour, auth).then(function(response){
       if(response.data){
         console.log("response.data", response.data);
-        dispatch(updateUserState(response.data));
         dispatch(sendingRequest(false));
+        forwardTo('/');
+        dispatch(clearTour())
+        dispatch(setTabKey("info"))
       }
       else{
         // If there was a problem, show an error
@@ -82,7 +84,71 @@ export function createTour(tour, auth) {
  * @param  {object} newTourState //The user json
  */
 export function updateTourState(newTourState) {
-  return { type: tourCreationConstants.UPDATE_USER, newUserState };
+  return { type: tourCreationConstants.UPDATE_TOUR, newTourState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateLanguageState(newLanguageState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_LANGUAGE, newLanguageState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateAdditionalState(newAdditionalState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_ADDITIONAL, newAdditionalState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updatePriceState(newPriceState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_PRICE, newPriceState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateStopState(newStopsState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_STOPS, newStopsState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateInterestState(newInterestState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_INTEREST, newInterestState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateNameState(newNameState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_NAME, newNameState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateTimeState(newTimeState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_TIME, newTimeState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateDescriptionState(newDescriptionState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_DESCRIPTION, newDescriptionState };
 }
 
 /**
@@ -115,11 +181,20 @@ export function setConfirmed(newConfirmedState) {
  * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
  * @param message
  */
+export function setTabKey(newTabKeyState) {
+  return { type: tourCreationConstants.UPDATE_TAB_KEY, newTabKeyState };
+}
+
+/**
+ * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
+ * @param message
+ */
 function setErrorMessage(message) {
   return (dispatch) => {
     dispatch({ type: tourCreationConstants.SET_ERROR_MESSAGE, message });
   }
 }
+
 
 /**
  * Forwards the user
@@ -148,4 +223,19 @@ function anyElementsEmpty(elements) {
  */
 export function clearError () {
   return {type: tourCreationConstants.CLEAR_ERROR}
+}
+
+/**
+ * Sets the `error` state as empty
+ */
+export function clearTour () {
+  return {type: tourCreationConstants.CLEAR_TOUR}
+}
+
+/**
+ * Forwards the user
+ * @param {string} location The route the user should be forwarded to
+ */
+function forwardTo(location) {
+  browserHistory.push(location);
 }
