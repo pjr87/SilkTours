@@ -45,7 +45,7 @@ class TourCreationAdditional extends React.Component{
         <br/>
         <p className={style.HeaderStyle}>Will you offer any additional services?</p>
         <br/>
-        <EditableFieldClass style={style.BodyStyle} label="Accomadation" onChange={this._changeAccomodation} value={this.props.tour.additional_accomadation}/>
+        <EditableFieldClass style={style.BodyStyle} label="Accommodation" onChange={this._changeAccomodation} value={this.props.tour.additional_accomadation}/>
         <br/>
         <br/>
         <EditableFieldClass style={style.BodyStyle} label="Food" onChange={this._changeFood} value={this.props.tour.additional_food}/>
