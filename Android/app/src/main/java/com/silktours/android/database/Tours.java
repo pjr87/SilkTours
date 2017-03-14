@@ -10,8 +10,7 @@ import java.io.Serializable;
  * Created by yongqiangfan on 2/6/17.
  */
 
-public class Tours implements Serializable{
-    private JSONObject jsObj;
+public class Tours extends Base implements Serializable  {
     private String firstStart_date;
     private String lastEnd_date;
     private String address_city;
@@ -24,28 +23,31 @@ public class Tours implements Serializable{
     private String description;
     private String price;
     private Double[][] stops;
-    
+
+    public JSONObject getJSON() {
+        return JSON;
+    }
 
     public Tours(JSONObject jsObj) throws JSONException{
-        this.jsObj = jsObj;
+        this.JSON = jsObj;
         getInfo();
     }
 
     public void getInfo() throws JSONException{
-        JSONArray jsonGuide = jsObj.getJSONArray("guides");
+        JSONArray jsonGuide = JSON.getJSONArray("guides");
         guides = new String[jsonGuide.length()];
         for(int i = 0; i < jsonGuide.length(); i++) {
             guides[i] = jsonGuide.getJSONObject(i).getString("first_name") + " " + jsonGuide.getJSONObject(i).getString("last_name");
         }
-        id_tour = jsObj.getInt("id_tour");
-//        is_deleted = jsObj.getBoolean("is_deleted");
-        name = jsObj.getString("name");
-        profile_image = jsObj.getString("profile_image");
-        firstStart_date = jsObj.getString("firstStart_date");
-        lastEnd_date = jsObj.getString("lastEnd_date");
-        description = jsObj.getString("description");
-        price = jsObj.getString("price");
-        JSONArray jsonStop = jsObj.getJSONArray("stops");
+        id_tour = JSON.getInt("id_tour");
+//        is_deleted = JSON.getBoolean("is_deleted");
+        name = JSON.getString("name");
+        profile_image = JSON.getString("profile_image");
+        firstStart_date = JSON.getString("firstStart_date");
+        lastEnd_date = JSON.getString("lastEnd_date");
+        description = JSON.getString("description");
+        price = JSON.getString("price");
+        JSONArray jsonStop = JSON.getJSONArray("stops");
         stops = new Double[jsonStop.length()][2];
         for(int i = 0; i < jsonStop.length(); i++) {
             stops[i][0] = jsonStop.getJSONObject(i).getDouble("lat");

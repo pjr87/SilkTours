@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silktours.android.database.Tour;
+import com.silktours.android.database.Tours;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -85,7 +88,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewtourTemp.start(tour);
+                try {
+                    Viewtour.start(new Tours(tour.JSON));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }

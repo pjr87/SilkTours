@@ -1,5 +1,6 @@
 package com.silktours.android;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -10,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,9 +27,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.silktours.android.database.Controller;
 import com.silktours.android.database.Media;
+import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
+import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +59,15 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private Double[][] stops;
     private String tourId;
     private Media[] medias;
+    private Tour _tour;
+
+    public static void start(Tours tour) {
+        Bundle args = new Bundle();
+        args.putSerializable("TourObject", tour);
+        Viewtour fragment = new Viewtour();
+        fragment.setArguments(args);
+        MainActivity.getInstance().getMenu().startFragment(fragment, 1);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +100,49 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
 
         getInfo();
 
+        (rootView.findViewById(R.id.btnMessage)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            int guide_id = tour.getJSON().getJSONArray("guides").getJSONObject(0).getInt("id_user");
+                            User guide = User.getByID(guide_id);
+                            startMessaging(guide);
+                        } catch (IOException | JSONException | NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+
+        (rootView.findViewById(R.id.btnJoin)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = CredentialHandler.getUser(MainActivity.getInstance());
+                if (user == null) {
+                    MainActivity.getInstance().logoutWithMessage();
+                    return;
+                } else {
+                    Tour _tour = new Tour();
+                    _tour.JSON = tour.getJSON();
+                    BookTourFragment.start(_tour, user);
+                }
+            }
+        });
+
         return rootView;
+    }
+
+    private void startMessaging(final User guide) {
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.getInstance().launchMessaging(guide);
+            }
+        });
     }
 
 
