@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.css';
 import {EditableField} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
-import { updatePhotoState, setTabKey } from '../../actions/TourCreationActions';
+import { updateAdditionalState, setTabKey } from '../../actions/TourCreationActions';
 
 class TourCreationAdditional extends React.Component{
   constructor() {
@@ -10,7 +10,9 @@ class TourCreationAdditional extends React.Component{
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
-    this._changeStartTime = this._changeStartTime.bind(this)
+    this._changeAccomodation = this._changeAccomodation.bind(this)
+    this._changeFood = this._changeFood.bind(this)
+    this._changeTransport = this._changeTransport.bind(this)
   }
 
   next(){
@@ -21,12 +23,20 @@ class TourCreationAdditional extends React.Component{
     this.props.dispatch(setTabKey("stops"));
   }
 
-  _changeStartTime(event) {
-    this._emitUserChange({...this.props.tour, firstStart_date: event.target.value});
+  _changeAccomodation(event) {
+    this._emitUserChange({...this.props.tour, additional_accomadation: event.target.value});
   }
 
-  _emitUserChange (newTimeState) {
-    this.props.dispatch(updateTimeState(newTimeState))
+  _changeFood(event) {
+    this._emitUserChange({...this.props.tour, additional_food: event.target.value});
+  }
+
+  _changeTransport(event) {
+    this._emitUserChange({...this.props.tour, additional_transport: event.target.value});
+  }
+
+  _emitUserChange (newAdditionalState) {
+    this.props.dispatch(updateAdditionalState(newAdditionalState))
   }
 
   render(){
@@ -34,6 +44,14 @@ class TourCreationAdditional extends React.Component{
       <div>
         <br/>
         <p className={style.HeaderStyle}>Will you offer any additional services?</p>
+        <br/>
+        <EditableField label="Accomadation" onChange={this._changeAccomodation} value={this.props.tour.additional_accomadation}/>
+        <br/>
+        <br/>
+        <EditableField label="Food" onChange={this._changeFood} value={this.props.tour.additional_food}/>
+        <br/>
+        <br/>
+        <EditableField label="Transport" onChange={this._changeTransport} value={this.props.tour.additional_transport}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>

@@ -22,7 +22,7 @@ export default class StopDisplay extends React.Component{
     var k=stops.length;
     var stop = {data:val, key:k};
     stops.push(stop);
-    this.props.updateStops(stops);
+    this.props.updateStops(this.props.stops);
   }
 
   removeStop(key){
@@ -65,7 +65,7 @@ export default class StopDisplay extends React.Component{
 
     var stop = {data:e, key:k};
     stops[k]=stop;
-    this.props.updateStops(stops);
+    this.props.updateStops(this.props.stops);
   }
 
   render(){

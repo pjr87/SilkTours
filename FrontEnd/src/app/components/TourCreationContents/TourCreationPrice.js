@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.css';
 import {EditableField} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
-import { updatePhotoState, setTabKey } from '../../actions/TourCreationActions';
+import { updatePriceState, setTabKey } from '../../actions/TourCreationActions';
 
 class TourCreationPrice extends React.Component{
   constructor() {
@@ -10,7 +10,7 @@ class TourCreationPrice extends React.Component{
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
-    this._changeStartTime = this._changeStartTime.bind(this)
+    this._changePrice = this._changePrice.bind(this)
   }
 
   next(){
@@ -21,12 +21,12 @@ class TourCreationPrice extends React.Component{
     this.props.dispatch(setTabKey("additional"));
   }
 
-  _changeStartTime(event) {
-    this._emitUserChange({...this.props.tour, firstStart_date: event.target.value});
+  _changePrice(event) {
+    this._emitUserChange({...this.props.tour, price: event.target.value});
   }
 
-  _emitUserChange (newTimeState) {
-    this.props.dispatch(updateTimeState(newTimeState))
+  _emitUserChange (newPriceState) {
+    this.props.dispatch(updatePriceState(newPriceState))
   }
 
   render(){
@@ -34,6 +34,8 @@ class TourCreationPrice extends React.Component{
       <div>
         <br/>
         <p className={style.HeaderStyle}>What will this tour cost?</p>
+        <br/>
+        <EditableField label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>

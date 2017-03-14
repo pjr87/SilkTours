@@ -68,6 +68,10 @@ function TourCreationReducer(state = initialState, action) {
       return {...state, tour : action.newInterestState};
     case tourCreationConstants.UPDATE_TOUR_STOPS:
       return {...state, tour : action.newStopsState};
+    case tourCreationConstants.UPDATE_TOUR_ADDITIONAL:
+      return {...state, tour : action.newAdditionalState};
+    case tourCreationConstants.UPDATE_TOUR_PRICE:
+      return {...state, tour : action.newPriceState};
     case tourCreationConstants.UPDATE_TAB_KEY:
       return {...state, tabKey: action.newTabKeyState};
     case tourCreationConstants.UPDATE_TOUR_ADDRESS:

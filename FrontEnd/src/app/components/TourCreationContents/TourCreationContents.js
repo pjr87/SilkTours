@@ -135,7 +135,8 @@ class TourCreationContents extends React.Component{
                   <Tab.Pane eventKey="review">
                     <TourCreationReview
                       tour={this.props.tour}
-                      dispatch={this.props.dispatch}/>
+                      dispatch={this.props.dispatch}
+                      auth={this.props.auth}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>

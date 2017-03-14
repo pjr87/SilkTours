@@ -61,10 +61,9 @@ export function createTour(tour, auth) {
       return;
     }
 
-    service.updateExistingUser(id_user, user, auth).then(function(response){
+    service.newTour(tour, auth).then(function(response){
       if(response.data){
         console.log("response.data", response.data);
-        dispatch(updateUserState(response.data));
         dispatch(sendingRequest(false));
       }
       else{
@@ -91,6 +90,22 @@ export function updateTourState(newTourState) {
  */
 export function updateLanguageState(newLanguageState) {
   return { type: tourCreationConstants.UPDATE_TOUR_LANGUAGE, newLanguageState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateAdditionalState(newAdditionalState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_ADDITIONAL, newAdditionalState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updatePriceState(newPriceState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_PRICE, newPriceState };
 }
 
 /**
