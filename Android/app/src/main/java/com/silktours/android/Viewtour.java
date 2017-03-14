@@ -134,6 +134,22 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
             }
         });
 
+        rootView.findViewById(R.id.btnViewProfile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Profile profile = new Profile();
+                    Bundle args = new Bundle();
+                    int guide_id = tour.JSON.getJSONArray("guides").getJSONObject(0).getInt("id_user");
+                    args.putInt("id_user", guide_id);
+                    profile.setArguments(args);
+                    MainActivity.getInstance().getMenu().startFragment(profile, 0);
+                } catch (JSONException | NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return rootView;
     }
 
