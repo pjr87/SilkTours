@@ -2,6 +2,7 @@ package com.silktours.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.SearchView;
 
+import com.silktours.android.database.Create_Tour;
 import com.silktours.android.database.Tour;
 
 import org.json.JSONException;
@@ -61,6 +64,15 @@ public class Search extends Fragment {
                 launchFilterDialog();
             }
         });
+
+        Button createTourButton = (Button) rootView.findViewById(R.id.createTour);
+        createTourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.getInstance().getMenu().startFragment(new CreateTour(), 1);
+            }
+        });
+
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
