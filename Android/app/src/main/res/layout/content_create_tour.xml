@@ -32,11 +32,21 @@
 
       </-->
       <TextView
+          android:id="@+id/headingCreateTour"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:textSize="30dp"
+          android:textStyle="bold"
+          android:layout_centerHorizontal="true"
+          android:text="Create Tour" />
+
+      <TextView
           android:id="@+id/nameTextView"
           android:layout_marginTop="10dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_below="@+id/picture"
+          android:layout_below="@+id/headingCreateTour"
           android:text="Tour Name"/>
       <LinearLayout
           android:id="@+id/nameFields"
@@ -82,7 +92,7 @@
           android:layout_marginTop="10dp"
           android:layout_below="@+id/mapText"
           android:layout_width="match_parent"
-          android:layout_height="600px"
+          android:layout_height="300dp"
           android:orientation="horizontal"
           android:name="com.google.android.gms.maps.SupportMapFragment"
           android:padding="5dp"/>
@@ -149,8 +159,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:hint="End Date"
-          android:onClick=" "
-          android:layout_marginBottom="50dp"/>
+          android:onClick=" " />
       <TextView
           android:id="@+id/endDateTextView"
           android:layout_width="wrap_content"
@@ -163,12 +172,29 @@
           android:layout_marginLeft="13dp"
           android:layout_marginStart="13dp" />
 
+      <TextView
+          android:id="@+id/priceText"
+          android:layout_below="@+id/endDate"
+          android:layout_marginTop="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Price"/>
+      <EditText
+          android:id="@+id/price"
+          android:layout_below="@+id/priceText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"
+          android:hint="Enter Price"
+          android:layout_marginBottom="50dp"/>
+
       <Button
           android:id="@+id/createTour"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_alignParentBottom="true"
           android:text="Create Tour"/>
+
 
 </RelativeLayout>
   </ScrollView>

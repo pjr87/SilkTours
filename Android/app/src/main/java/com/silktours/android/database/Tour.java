@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.net.FileNameMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -32,17 +33,17 @@ public class Tour extends Base implements Serializable {
     public String address_unit_number;
     public String address_zip;
     public Double average_rating;
-    public static final String description = "description";
     public String firstStart_date;
     public String lastEnd_date;
     public Integer id_guide;
     public Integer id_rating;
-    public Integer id_tour;
     public Boolean is_deleted;
     public Integer max_group_size;
     public Integer min_group_size;*/
+    public static final String description = "description";
     public static final String name = "name";
-    //public Double price;
+    public static final Integer id_tour = 1;
+    public static final Double price = 0.0;
     public String profile_image;
     public Integer profile_image_width;
     public Integer profile_image_height;
@@ -133,7 +134,7 @@ public class Tour extends Base implements Serializable {
     }
 
     public void commitModify() throws IOException {
-        String url = Common.SERVER_URL + "/tours";
+        String url = Common.SERVER_URL + "/tours/" + id_tour;
         set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "PUT");

@@ -66,6 +66,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
     private EditText tourName;
     private EditText tourDesc;
     private TextView startDateText, endDateText, addedLocationText;
+    private Integer tourId = 1;
     private Button startDateBtn, endDateBtn;
     private Calendar start = Calendar.getInstance();
     private Calendar end = Calendar.getInstance();
@@ -88,9 +89,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
 
-        filloutFields(1);
-
-        Toast.makeText(rootView.getContext(), "Modify Tour", Toast.LENGTH_SHORT).show();
+        filloutFields(tourId);
 
         initMap();
         setUpListeners();
@@ -145,6 +144,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                 if (tour == null) return;
                 tour.set(Tour.name, tourName.getText().toString());
                 tour.set(Tour.description, tourDesc.getText().toString());
+                tour.set( ""+Tour.id_tour, tourId);
                 //Log.d("json", "onClick: " + tour.get());
                 commitTour();
             }

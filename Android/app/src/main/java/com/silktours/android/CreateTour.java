@@ -71,7 +71,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
     private View rootView;
     private Tour tour = new Tour();
-    private EditText tourName, tourDesc;
+    private EditText tourName, tourDesc, price;
     private TextView startDateText, endDateText, addedLocationText;
     private Button startDateBtn, endDateBtn;
     private Calendar start = Calendar.getInstance();
@@ -87,12 +87,12 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         rootView = inflater.inflate(R.layout.content_create_tour, container, false);
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
+        price = (EditText) rootView.findViewById(R.id.price);
         startDateBtn = (Button) rootView.findViewById(R.id.startDate);
         endDateBtn = (Button) rootView.findViewById(R.id.endDate);
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
-        Toast.makeText(rootView.getContext(), "Create Tour", Toast.LENGTH_SHORT).show();
 
         initMap();
         setUpListeners();
@@ -157,13 +157,15 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         createTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+
                 if (tour == null) return;
                 tour.set(Tour.name, tourName.getText().toString());
                 tour.set(Tour.description, tourDesc.getText().toString());
+                tour.set("price", price.getText().toString());
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
-                */
+
+                /*
                 final User user = new User();
                 user.set(User.FIRST_NAME, "Andrew");
                 user.set(User.LAST_NAME, "Shidel");
@@ -187,6 +189,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                         }
                     }
                 }.execute(1);
+                */
             }
         });
 

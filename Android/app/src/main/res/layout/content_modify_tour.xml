@@ -32,11 +32,21 @@
 
           </-->
         <TextView
+            android:id="@+id/headingCreateTour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:text="Modify Tour" />
+
+        <TextView
             android:id="@+id/nameTextView"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/picture"
+            android:layout_below="@+id/headingCreateTour"
             android:text="Tour Name"/>
         <LinearLayout
             android:id="@+id/nameFields"
