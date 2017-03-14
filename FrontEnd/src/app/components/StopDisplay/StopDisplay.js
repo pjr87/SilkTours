@@ -4,7 +4,7 @@ import {Map} from 'components';
 export default class StopDisplay extends React.Component{
 
   renderStops(){
-
+    console.log("this.props.stops", this.props.stops);
     const stops = this.props.stops.map(function(obj){
         return(<li key={obj.key}> {"stop "+(obj.key+1)+": "+obj.data.latLng.lat()+", "+obj.data.latLng.lng()}
           <button onClick={this.moveStop.bind(this,"up",obj.key)}> move up </button>
@@ -22,7 +22,7 @@ export default class StopDisplay extends React.Component{
     var k=stops.length;
     var stop = {data:val, key:k};
     stops.push(stop);
-    this.props.updateStops(stops);
+    this.props.updateStops(this.props.stops);
   }
 
   removeStop(key){
@@ -65,7 +65,7 @@ export default class StopDisplay extends React.Component{
 
     var stop = {data:e, key:k};
     stops[k]=stop;
-    this.props.updateStops(stops);
+    this.props.updateStops(this.props.stops);
   }
 
   render(){
