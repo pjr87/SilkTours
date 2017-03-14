@@ -2,6 +2,7 @@ package com.silktours.android;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -42,6 +43,8 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONException;
@@ -76,7 +79,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.content_create_tour, container, false);
+        rootView = inflater.inflate(R.layout.content_modify_tour, container, false);
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
         startDateBtn = (Button) rootView.findViewById(R.id.startDate);
@@ -84,6 +87,10 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
+
+        filloutFields(1);
+
+        Toast.makeText(rootView.getContext(), "Modify Tour", Toast.LENGTH_SHORT).show();
 
         initMap();
         setUpListeners();
@@ -130,40 +137,16 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
             }
         });
 
-        Button createTour = (Button) rootView.findViewById(R.id.createTour);
-        createTour.setOnClickListener(new View.OnClickListener() {
+        Button modifyTour = (Button) rootView.findViewById(R.id.createTour);
+        modifyTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+
                 if (tour == null) return;
                 tour.set(Tour.name, tourName.getText().toString());
                 tour.set(Tour.description, tourDesc.getText().toString());
-               // Log.d("json", "onClick: " + tour.get());
+                //Log.d("json", "onClick: " + tour.get());
                 commitTour();
-                */
-                final User user = new User();
-                user.set(User.FIRST_NAME, "Andrew");
-                user.set(User.LAST_NAME, "Shidel");
-                new AsyncTask<Integer, Tour, Tour>() {
-                    @Override
-                    protected Tour doInBackground(Integer... params) {
-                        try {
-                            return Tour.getById(params[0]);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Tour tour) {
-                        if (tour != null) {
-                            BookTourFragment.start(tour, user);
-                        }
-                    }
-                }.execute(1);
             }
         });
 
@@ -209,34 +192,69 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                 endDateText.setText(formatDate.format(end.getTime()));
     }};
 
+    private void filloutFields(final int tourID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Tour tour;
+                final Drawable profileImage;
+                try {
+                    tour = Tour.getById(tourID);
+                    //URL thumb_u = new URL(user.getStr(user.PROFILE_PICTURE));
+                    //profileImage = Drawable.createFromStream(thumb_u.openStream(), "src");
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                ModifyTour.this.tour = tour;
+                updateFieldsOnURThread();
+            }
+        }).start();
+    }
 
+    private void updateFieldsOnURThread() {
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //if (profileImageDrawable != null)
+                 //   profileImage.setImageDrawable(profileImageDrawable);
+                tourName.setText(tour.getStr(Tour.name));
+                tourDesc.setText(tour.getStr(Tour.description));
+                // try {
+                //    location.setText(user.getStr("address:street"));
+               // } catch (Exception e) {
+                //    e.printStackTrace();
+                //}
+            }
+        });
+    }
 
     private void commitTour() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    tour.commit();
-                    postCommit(false);
+                    tour.commitModify();
+                    postCommitModify(false);
                 } catch (IOException e) {
-                    postCommit(true);
+                    postCommitModify(true);
                     e.printStackTrace();
                 }
 
             }
         }).start();
     }
-    private void postCommit(final boolean error) {
+    private void postCommitModify(final boolean error) {
         MainActivity.getInstance().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (!error) {
                     Toast.makeText(MainActivity.getInstance(),
-                            "Tour Created successfully",
+                            "Tour Modified successfully",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.getInstance(),
-                            "Tour could not be Created",
+                            "Tour could not be Modified",
                             Toast.LENGTH_SHORT).show();
                 }
             }

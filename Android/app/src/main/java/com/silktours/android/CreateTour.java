@@ -92,6 +92,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
+        Toast.makeText(rootView.getContext(), "Create Tour", Toast.LENGTH_SHORT).show();
 
         initMap();
         setUpListeners();
@@ -236,7 +237,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             @Override
             public void run() {
                 try {
-                    tour.commit();
+                    tour.commitCreate();
                     postCommit(false);
                 } catch (IOException e) {
                     postCommit(true);
