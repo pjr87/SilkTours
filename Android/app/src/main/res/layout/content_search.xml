@@ -8,6 +8,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.silktours.android.search">
 
+    <Button
+        android:id="@+id/createTour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Create Tour"/>
+
     <ImageButton
         android:id="@+id/filterButton"
         android:focusableInTouchMode="true"
