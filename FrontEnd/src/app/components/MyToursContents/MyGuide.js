@@ -12,6 +12,13 @@ class MyGuide extends React.Component{
       return null;
     });
 
+    const guideUnbookedTours = this.props.toursGuided.map(function(t,index){
+      console.log("key:",index)
+      if(t.state=="A")
+        return (<TourInfo tour={t} key={index}/>);
+      return null;
+    });
+
     const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
@@ -42,8 +49,8 @@ class MyGuide extends React.Component{
               </Panel>
             </Col>
             <Col md={6} mdPush={0}>
-              <Panel header="Tours Pending to Be Paid">
-                No Tours
+              <Panel header="UnBooked Tours">
+                {guideUnbookedTours}
               </Panel>
             </Col>
           </Row>
