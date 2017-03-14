@@ -7,6 +7,8 @@ import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
 
+import {connect} from 'react-redux';
+
 class Tours extends React.Component{
   constructor (props) {
     super(props);
@@ -54,7 +56,13 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
-            <Button bsStyle="default">Message</Button>
+            <Link
+              to={{
+                pathname: '/messages',
+                query: { guideUserId: this.props.selectedTour.guides[0].id_user }
+              }}>
+              <Button bsStyle="default">Message</Button>
+            </Link>
           </p>
         </Thumbnail>
       </Col>
@@ -62,4 +70,10 @@ class Tours extends React.Component{
   }
 };
 
-export default Tours;
+function select (state) {
+  return {
+    selectedTour: state.TourDetailReducer.selectedTour,
+  };
+}
+
+export default connect(select)(Tours);
