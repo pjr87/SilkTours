@@ -159,7 +159,7 @@ var cognitoFunctions = {
    */
   logout(callback) {
     //TODO logout stuff
-    config.credentials.clearCachedId();
+    //config.credentials.clearCachedId();
     callback(true);
   },
   /**
