@@ -24,6 +24,10 @@ from db_session import session, commitSession, createSession
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
+import sys
+
+outputFile = open('out.log', 'w')
+sys.stdout = sys.stderr = outputFile
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -186,8 +190,8 @@ def search():
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
     print("Get User")
-    if not checkLogin():
-        return notAuthorizedResponse()
+    #if not checkLogin():
+    #    return notAuthorizedResponse()
 
     user = session.query(User).get(id)
     return jsonify(user.serialize())
@@ -195,8 +199,8 @@ def get_user(id):
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
-    if not checkLogin():
-        return notAuthorizedResponse()
+    #if not checkLogin():
+    #    return notAuthorizedResponse()
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 

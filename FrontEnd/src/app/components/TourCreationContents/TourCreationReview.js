@@ -10,23 +10,14 @@ class TourCreationReview extends React.Component{
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
-    this._changeStartTime = this._changeStartTime.bind(this)
   }
 
   next(){
-    this.props.dispatch(createTour(this.props.tour, this.props.auth))
+    this.props.dispatch(createTour(this.props.tour, this.props.auth, this.props.photos, this.props.startTime, this.props.endTime))
   }
 
   previous(){
     this.props.dispatch(setTabKey("price"));
-  }
-
-  _changeStartTime(event) {
-    this._emitUserChange({...this.props.tour, firstStart_date: event.target.value});
-  }
-
-  _emitUserChange (newTimeState) {
-    this.props.dispatch(updateTimeState(newTimeState))
   }
 
   render(){

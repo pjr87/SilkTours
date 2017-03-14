@@ -80,6 +80,8 @@ class TourCreationContents extends React.Component{
                 <Tab.Content animation>
                   <Tab.Pane eventKey="info">
                     <TourCreationInfo
+                      user={this.props.user}
+                      tour={this.props.tour}
                       dispatch={this.props.dispatch}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="location">
@@ -100,12 +102,15 @@ class TourCreationContents extends React.Component{
                   <Tab.Pane eventKey="time">
                     <TourCreationTime
                       tour={this.props.tour}
-                      dispatch={this.props.dispatch}/>
+                      dispatch={this.props.dispatch}
+                      startTime={this.props.startTime}
+                      endTime={this.props.endTime}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="photos">
                     <TourCreationPhotos
                       tour={this.props.tour}
-                      dispatch={this.props.dispatch}/>
+                      dispatch={this.props.dispatch}
+                      photos={this.props.photos}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="description">
                     <TourCreationDescription
@@ -136,7 +141,10 @@ class TourCreationContents extends React.Component{
                     <TourCreationReview
                       tour={this.props.tour}
                       dispatch={this.props.dispatch}
-                      auth={this.props.auth}/>
+                      auth={this.props.auth}
+                      photos={this.props.photos}
+                      startTime={this.props.startTime}
+                      endTime={this.props.endTime}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
@@ -151,18 +159,26 @@ class TourCreationContents extends React.Component{
 TourCreationContents.propTypes = {
   currentlySending: React.PropTypes.bool,
   auth: React.PropTypes.object,
+  user: React.PropTypes.object,
   dispatch: React.PropTypes.func,
   tour: React.PropTypes.object,
+  endTime: React.PropTypes.number,
+  startTime: React.PropTypes.number,
   errorMessage: React.PropTypes.string,
-  tabKey: React.PropTypes.string
+  tabKey: React.PropTypes.string,
+  photos: React.PropTypes.array
 }
 
 function select (state) {
   return {
     auth: state.AuthReducer.auth,
+    user: state.AuthReducer.user,
+    startTime: state.TourCreationReducer.startTime,
+    endTime: state.TourCreationReducer.endTime,
     currentlySending: state.TourCreationReducer.currentlySending,
     errorMessage: state.TourCreationReducer.errorMessage,
     tour: state.TourCreationReducer.tour,
+    photos: state.TourCreationReducer.photos,
     tabKey: state.TourCreationReducer.tabKey
   };
 }

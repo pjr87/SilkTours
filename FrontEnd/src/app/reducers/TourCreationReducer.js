@@ -24,11 +24,11 @@ const initialState = {
       state_code:"",
       street:"",
       unit:"",
-      zip:""},
+      zip:""
+    },
     average_rating: 0,
     description: "",
     firstStart_date: "",
-    guides: [],
     id_rating: null,
     is_deleted: false,
     lastEnd_date: "",
@@ -44,8 +44,12 @@ const initialState = {
     language: '',
     rating_count: 0,
     interests:[],
-    stops: []
+    stops: [],
+    guides: []
   },
+  startTime: 0,
+  endTime: 0,
+  photos: [],
   currentlySending: false,
   errorMessage: '',
   tabKey: 'info'
@@ -60,6 +64,10 @@ function TourCreationReducer(state = initialState, action) {
       return {...state, tour : action.newLanguageState};
     case tourCreationConstants.UPDATE_TOUR_NAME:
       return {...state, tour : action.newNameState};
+    case tourCreationConstants.SET_START_TIME:
+      return {...state, startTime : action.newStartState};
+    case tourCreationConstants.SET_END_TIME:
+      return {...state, endTime : action.newEndState};
     case tourCreationConstants.UPDATE_TOUR_TIME:
       return {...state, tour : action.newTimeState};
     case tourCreationConstants.UPDATE_TOUR_DESCRIPTION:
@@ -70,8 +78,12 @@ function TourCreationReducer(state = initialState, action) {
       return {...state, tour : action.newStopsState};
     case tourCreationConstants.UPDATE_TOUR_ADDITIONAL:
       return {...state, tour : action.newAdditionalState};
+    case tourCreationConstants.UPDATE_TOUR_GUIDE:
+      return {...state, tour : action.newGuideState};
     case tourCreationConstants.UPDATE_TOUR_PRICE:
       return {...state, tour : action.newPriceState};
+    case tourCreationConstants.UPDATE_TOUR_PHOTO:
+      return {...state, photos : action.newPhotoState};
     case tourCreationConstants.UPDATE_TAB_KEY:
       return {...state, tabKey: action.newTabKeyState};
     case tourCreationConstants.UPDATE_TOUR_ADDRESS:

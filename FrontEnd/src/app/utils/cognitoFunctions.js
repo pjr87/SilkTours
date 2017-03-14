@@ -159,6 +159,7 @@ var cognitoFunctions = {
    */
   logout(callback) {
     //TODO logout stuff
+    config.credentials.clearCachedId();
     callback(true);
   },
   /**
@@ -344,7 +345,7 @@ var cognitoFunctions = {
                         console.log(response.status);
 
                         if(response.data.email == username){
-                          //config.credentials.clearCachedId();
+                          config.credentials.clearCachedId();
 
                           if (callback) callback({
                             authenticated: true,

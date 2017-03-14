@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updatePhotoState, setTabKey } from '../../actions/TourCreationActions';
 import TourInterests from '../Interests/TourInterests';

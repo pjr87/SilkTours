@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updateStopState, setTabKey } from '../../actions/TourCreationActions';
 import StopDisplay from '../StopDisplay/StopDisplay';
@@ -34,7 +34,7 @@ class TourCreationStops extends React.Component{
     return (
       <div>
         <br/>
-        <p className={style.HeaderStyle}>Choose the locations to tour will stop.</p>
+        <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
         <br/>
         <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
         <br/>
