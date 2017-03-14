@@ -19,8 +19,6 @@ class MyGuide extends React.Component{
       return null;
     });
 
-
-
     return (
       <div>
         <Grid>
