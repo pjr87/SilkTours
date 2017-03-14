@@ -51,7 +51,7 @@ function checkAuth(nextState, replaceState) {
 
 const Root = ({ store }) => (
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
       <Route component={App}>
         <Route path="/" component={ExplorePage}/>
         <Route path="/tourdetail" component={TourDetailPage}/>
