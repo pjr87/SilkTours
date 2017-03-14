@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +41,7 @@ public class Tour extends Base implements Serializable {
     public Integer max_group_size;
     public Integer min_group_size;*/
     public static final String name = "name";
+    public static String description = "description";
     //public Double price;
     public String profile_image;
     public Integer profile_image_width;

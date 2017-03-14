@@ -38,7 +38,7 @@ public class Tours implements Serializable{
             guides[i] = jsonGuide.getJSONObject(i).getString("first_name") + " " + jsonGuide.getJSONObject(i).getString("last_name");
         }
         id_tour = jsObj.getInt("id_tour");
-        is_deleted = jsObj.getBoolean("is_deleted");
+//        is_deleted = jsObj.getBoolean("is_deleted");
         name = jsObj.getString("name");
         profile_image = jsObj.getString("profile_image");
         firstStart_date = jsObj.getString("firstStart_date");
