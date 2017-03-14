@@ -19,16 +19,22 @@ const configureStore = () => {
 
   //This is the middleware that logs states to console
   const Logger = logger({
-    // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
-    //predicate: (getState, action) => action.type !== 'CHANGE_FORM'
+    // Ignore `CHANGE_LOGIN_FORM` actions in the logger, since they fire after every keystroke
+    //predicate: (getState, action) => action.type !== 'CHANGE_LOGIN_FORM'
   })
 
   // Creates the Redux reducer with the redux-thunk middleware, which allows us
   // to do asynchronous calls in actions, implemented as callbacks
   const middleware = composeEnhancers(applyMiddleware(promise(),thunk,Logger));
 
+  //Get the persisted state if one exists
+  const persistedState = loadState();
+  if(persistedState){
+    persistedState.AuthReducer.currentlySending = false;
+  }
+
   //Create the store
-  const store = createStore(reducer, middleware);
+  const store = createStore(reducer, persistedState, middleware);
 
   //This function subscribes the saveState function to the store so that
   //every 1000 ms there is a change the store is saved

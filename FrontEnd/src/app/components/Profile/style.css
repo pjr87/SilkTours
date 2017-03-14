@@ -1,0 +1,46 @@
+/******** Profile ********/
+ .profileHeader{
+   background-color: #DFDAE0;
+   width:80%;
+   height:200px;
+   margin:0 10%;
+/*   margin-right: auto;
+   /*text-align: center;*/
+   display: inline-block;
+   border-bottom: solid #A799A6 2px;
+ }
+ .profileNameText{
+   color: #A799A6;
+   display: inline-block;
+   font-size:30pt;
+   padding-left:15px;
+   vertical-align: bottom;
+   padding-bottom: 15px;
+ }
+
+ .profileBox{
+   width:175px;
+   height:75%;
+   padding-top: 10px;
+   padding-left:10px;
+   margin-top: 40px;
+   background-color: #A799A6;
+   display: inline-block;
+   font-size:30pt;
+   color: #DFDAE0;
+ }
+
+ .profileButtons{
+	 margin:20px;
+	 height: 50px;
+	 color: #A799A6;
+	 font-size: 1rem;
+	 background-color: inherit;
+	 width:200px;
+	 border: solid #A799A6 3px;
+ }
+
+.profileButtonMenu{
+	text-align: center;
+	background-color: white;
+}

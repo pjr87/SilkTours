@@ -63,7 +63,7 @@ public class BookTourFragment extends Fragment {
         args.putSerializable("user", user);
         BookTourFragment fragment = new BookTourFragment();
         fragment.setArguments(args);
-        MainActivity.getInstance().getMenu().startFragment(fragment, 2);
+        MainActivity.getInstance().getMenu().startFragment(fragment, 3);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class BookTourFragment extends Fragment {
         t.replace(R.id.bookTourCalendar, caldroidFragment);
         t.commit();
 
-        new GetEvents().execute(1);
+        new GetEvents().execute(tour.getInt("id_tour"));
     }
 
     final CaldroidListener listener = new CaldroidListener() {

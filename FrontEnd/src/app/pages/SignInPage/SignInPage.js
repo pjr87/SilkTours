@@ -9,7 +9,7 @@ class SignInPage extends React.Component{
     return(
       <div>
         <BannerImage/>
-        <PageTitle title = "sign in"/>
+        <PageTitle title = "Sign in!"/>
         <SignInContents/>
       </div>
     );

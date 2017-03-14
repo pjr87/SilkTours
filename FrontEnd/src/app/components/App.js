@@ -18,7 +18,7 @@ class App extends Component {
     return(
       <div className="wrapper">
         <NavBar loggedIn={this.props.loggedIn}
-                usersName={this.props.usersName}
+                usersName={this.props.firstName}
                 currentlySending={this.props.currentlySending}
                 history={this.props.history}
                 location={this.props.location}
@@ -36,7 +36,7 @@ class App extends Component {
 App.propTypes = {
   loggedIn: React.PropTypes.bool.isRequired,
   currentlySending: React.PropTypes.bool,
-  usersName: React.PropTypes.string,
+  firstName: React.PropTypes.string,
   history: React.PropTypes.object,
   location: React.PropTypes.object,
   children: React.PropTypes.object,
@@ -48,7 +48,7 @@ function select(state) {
   return {
     loggedIn: state.AuthReducer.loggedIn,
     currentlySending: state.AuthReducer.currentlySending,
-    usersName: state.AuthReducer.user.fullName
+    firstName: state.AuthReducer.user.first_name
   };
 }
 

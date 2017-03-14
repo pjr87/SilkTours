@@ -1,15 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
 import style from './messageStyle.css';
 
-
-
-import * as service from '../../ajaxServices/AjaxList';
+import * as service from "../../utils/databaseFunctions";
 import logoImg from '../../style/images/logo5.png';
-import { loadState, saveState } from '../../helpers/localStorageWrapper.js';
-import AuthStore from "../../stores/AuthStore.js";
 import ReactList from 'react-list';
 
 import ChatView from './ChatView';
@@ -20,7 +14,7 @@ import PageTitle from '../PageTitle/PageTitle.js'
 
 class MessageReact extends React.Component{
 
-  
+
 
   constructor(props) {
   super(props);
@@ -36,8 +30,8 @@ class MessageReact extends React.Component{
   componentWillMount() {
 
     var names = [
-          ['Abbott', 'http://i.imgur.com/ivIVJb.png'], 
-          ['Acevedo', 'http://i.imgur.com/SZmu3b.png'], 
+          ['Abbott', 'http://i.imgur.com/ivIVJb.png'],
+          ['Acevedo', 'http://i.imgur.com/SZmu3b.png'],
           ['Acosta', 'http://i.imgur.com/CNDZkb.png'],
           ['Arnold','http://i.imgur.com/znl28b.png'],
           ['Ashley','http://i.imgur.com/RV3uGb.png'],
@@ -77,7 +71,7 @@ class MessageReact extends React.Component{
   handleClick(event)
   {
     var messages = [];
-    
+
     console.dir();
 
     service.getMessages().then(function(response){
@@ -90,16 +84,16 @@ class MessageReact extends React.Component{
 
     console.log( "msg:\n"); console.dir( messages );
 
-        
+
 
     console.log("clicked " + event.target.innerText);
     this.setState({selected: event.target.innerText });
     console.log("state: " + event.target.innerText);
-  
+
   }
 
   renderItem(index, key) {
-    return ( 
+    return (
       <div key={key} className={style.Conversation} onClick={ this.handleClick }>
         <img src={this.state.accounts[index][1]} className={style.contactImage} />
         <a key={key} className={style.contactInfo}>{this.state.accounts[index][0]}
@@ -108,7 +102,7 @@ class MessageReact extends React.Component{
   }
 
   renderItemChat(index, key){
-    return ( 
+    return (
       <div key={key}>{this.state.messages[index]}</div> );
   }
 
@@ -119,12 +113,11 @@ class MessageReact extends React.Component{
         {props.selected}
       </div>)
   }
-  
+
 
   render(){
         return (
             <div className= {style.MainBody}>
-              <Header fileName={logoImg}/>
                 <PageTitle title = "Conversations"/>
                 <div className={style.mainMessage}>
                   <div className = {style.messageContacts} style={{overflow: 'auto'}}>
@@ -138,10 +131,6 @@ class MessageReact extends React.Component{
                   <ChatView name={this.state.selected} />
 
                 </div>
-
-
-               
-              <Footer className={style.FooterMessaging} />
             </div>
         );
       }
@@ -153,7 +142,7 @@ class MessageReact extends React.Component{
 
     }
 
- 
-  
+
+
 
 export default MessageReact;

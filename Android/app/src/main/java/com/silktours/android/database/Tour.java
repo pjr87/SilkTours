@@ -20,7 +20,8 @@ import java.util.List;
  * Created by andrew on 1/26/17.
  */
 public class Tour extends Base implements Serializable {
-    public String additional_accomadation;
+    private static List<Tour> defaultSearch;
+    /*public String additional_accomadation;
     public String additional_food;
     public String additional_transport;
     public String address_city;
@@ -39,14 +40,14 @@ public class Tour extends Base implements Serializable {
     public Integer id_tour;
     public Boolean is_deleted;
     public Integer max_group_size;
-    public Integer min_group_size;
+    public Integer min_group_size;*/
     public static final String name = "name";
-    public Double price;
+    //public Double price;
     public String profile_image;
     public Integer profile_image_width;
     public Integer profile_image_height;
-    public Integer rating_count;
-    public Object stops;
+    //public Integer rating_count;
+    //public Object stops;
 
     public static class FilterParams {
         public String query;
@@ -67,6 +68,14 @@ public class Tour extends Base implements Serializable {
         Tour tour = new Tour();
         tour.JSON = Common.getJson(Common.SERVER_URL + "/tours/"+id);
         return tour;
+    }
+
+    public static List<Tour> getDefaultSearch() throws IOException, JSONException {
+        if (defaultSearch == null) {
+            FilterParams defaultParams = new FilterParams();
+            defaultSearch = getBySearch(defaultParams);
+        }
+        return defaultSearch;
     }
 
     public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
@@ -115,11 +124,19 @@ public class Tour extends Base implements Serializable {
         return result;
     }
 
-    public void commit() throws IOException {
+    public void commitCreate() throws IOException {
         String url = Common.SERVER_URL + "/tours";
         set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "POST");
+        Log.d("Server", result);
+    }
+
+    public void commitModify() throws IOException {
+        String url = Common.SERVER_URL + "/tours";
+        set("bypass", true); // Bypass auth
+        Log.d("JSON", JSON.toString());
+        String result = Common.request(url, JSON.toString(), "PUT");
         Log.d("Server", result);
     }
 }

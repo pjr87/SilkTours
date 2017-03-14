@@ -1,6 +1,7 @@
 from flask import Flask, g
 from flask import jsonify
 from flask import request
+import json
 from user_mapped import User
 from ratings_mapped import Rating
 from tour_mapped import Tour
@@ -31,14 +32,54 @@ CORS(app)
 client = boto3.client('cognito-identity')
 
 
-def checkLogin(data):
-    if "bypass" in data and data["bypass"]:
+def checkLogin():
+    if request.args.get("bypass") == 'true':
         return True
 
+    print(request.headers)
+    print(request.data)
+    data = None
+    try:
+        data = request.get_json(force=True)
+    except:
+        print("No JSON data")
+        if (request.headers.get('Silk-Bypass') != 'true'
+                and "Silk-Identity-Id" not in request.headers):
+            return False
+    print(data)
+    logins = None
+    identityId = None
+    if request.headers is None:
+        request.headers = {}
+    if data is None:
+        data = {}
+    if request.headers.get('Silk-Bypass') == 'true' or data.get("bypass") is True:
+        return True
+
+    if (data is None
+            or data.get("IdentityId") is None
+            or data.get("Logins") is None):
+        if (request.headers.get('Silk-Logins') is None
+                or request.headers.get('Silk-Identity-Id') is None):
+            return False
+        identityId = request.headers.get('Silk-Identity-Id')
+        logins = json.loads(request.headers.get('Silk-Logins'))
+    else:
+        logins = data["Logins"]
+        identityId = data["IdentityId"]
+
+    if logins is None or identityId is None:
+        return False
+    return checkLoginWithArgs(logins, identityId)
+
+
+def checkLoginWithArgs(logins, identityId):
+    print("Logins:")
+    print(logins)
     try:
         result = client.get_credentials_for_identity(
-            IdentityId=data["IdentityId"],
-            Logins=data["Logins"]
+            IdentityId=identityId,
+            Logins=logins
         )
         print ("Success")
         print(result)
@@ -50,8 +91,8 @@ def checkLogin(data):
 
 
 def notAuthorizedResponse():
-    return "<h1>403: Not Authorized. Click <a"
-    + " href='http://localhost:5000/login'>here</a> to login.</h1>", 403
+    return """<h1>403: Not Authorized. Click <a
+    href='http://localhost:5000/login'>here</a> to login.</h1>""", 403
 
 
 db = DbController()
@@ -88,10 +129,8 @@ def internal_server_error(e):
 
 @app.route("/")
 def hello():
-    checkLogin({
-        "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld": "eyJraWQiOiJCZTVyY2oraXJUclNvdHVMRGhSc1JGemVudzdyelwvTVNDR0ZzaFVTYXZTND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhOGE3MjYwNy0yOTZlLTQxMWUtOWYzOC00ZTYwZjRmM2NlMGYiLCJhdWQiOiIyYnM5bDl0NW9sNG0wOWZnZm1hZGszam1oNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTQ4NzAzODM1NCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOTE3SWd4NUxkIiwicGhvbmVfbnVtYmVyX3ZlcmlmaWVkIjpmYWxzZSwiY29nbml0bzp1c2VybmFtZSI6ImFuZHJld3NoaWRlbEBnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIrMTQxMjY1MTA0OTgiLCJleHAiOjE0ODcwNDE5NTQsImlhdCI6MTQ4NzAzODM1NCwiZW1haWwiOiJhbmRyZXdzaGlkZWxAZ21haWwuY29tIn0.WrfAVkJ7dsb2DBK2pdVZl3mz4DUg-bxdtej83Oq9SQpe5Qzw61o6rcHorVQwwuOfrGva3Ckg2mq9Cl8Nt9ATsUalhdo0J_RC3LENrue17bW7ubVQ_WA1if1xac-mqmyCN_KO7FlZ6iFNRRP2nAaoQtvs3i6_SLrEWaMg_yoY9NA-zcOLKwr78emWhY1vo5lIlyR0evtuL3FJqUh27c6eocDXdc5Cfo4kpSRw8ixx-3Lvcd65WnIL_5QNVfya8qabd-pKYyKQNrpBIMsT1b6xh-WUKQqUCouJAb0DD4t_RclFrDUwK1kMTZDvlkTVKtEVfICMjQVCw6oZocrpb5nZHw"
-    }, "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349")
-
+    if not checkLogin():
+        return notAuthorizedResponse()
     user = session.query(User).get(1)
     return "Hello " + user.first_name
 
@@ -146,15 +185,18 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
+    print("Get User")
+    if not checkLogin():
+        return notAuthorizedResponse()
+
     user = session.query(User).get(id)
     return jsonify(user.serialize())
 
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
-    # if (not checkLogin(id)):
-    #     return notAuthorizedResponse()
-    # checkLogin(id)
+    if not checkLogin():
+        return notAuthorizedResponse()
     user = session.query(User).filter(User.email == email).first()
     return jsonify(user.serialize())
 
@@ -169,53 +211,45 @@ def login(id, accessKeyID):
     return jsonify(user.serialize())
 '''
 
+
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
-
     try:
-        data = request.get_json()
-        if (not checkLogin(data)):
+        if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username').replace(' ', ':')):
             return "false"
     except:
         return "false"
     return "true"
 
+
 # Creates a new user
 @app.route('/users', methods=['POST'])
 def set_user():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
     user = User()
-    user.set_props(request.get_json())
-    session.add(user)
-    session.commit()
-    commitSession()
+    user.create_or_edit(request.get_json())
     return jsonify(user.serialize())
 
 
 # Edits a user
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
-
+    data = request.get_json()
     user = session.query(User).get(id)
-    user.set_props(data)
-    session.add(user)
-    session.commit()
-    commitSession()
+    user.create_or_edit(data)
     return jsonify(user.serialize())
 
 
 # Adds a new rating
 @app.route('/ratings', methods=['POST'])
 def add_rating():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
     rating = Rating()
     id_user_rated = data["id_user_rated"]
@@ -238,9 +272,9 @@ def add_rating():
 # Adds a new rating
 @app.route('/stops', methods=['POST'])
 def add_stop():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
 
     stop = Stop()
     id_tour = data["id_tour"]
@@ -263,25 +297,27 @@ def get_tour_list():
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
     tour = session.query(Tour).get(tourid)
-    return jsonify(tour.serialize(True))
+    return jsonify(tour.serialize(False))
 
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
-
-    return db.post(request.get_json(), 'Tour')
+    data = request.get_json()
+    tour = Tour()
+    tour.createOrEdit(data)
+    return jsonify(tour.serialize(False))
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
-    data = request.get_json()
-    if (not checkLogin(data)):
+    if not checkLogin():
         return notAuthorizedResponse()
-
-    return db.edit(tourid, data, 'Tour')
+    data = request.get_json()
+    tour = session.query(Tour).get(tourid)
+    tour.createOrEdit(data)
+    return jsonify(tour.serialize(False))
 
 
 @app.route('/tour/<tourid>/events', methods=['GET'])
@@ -290,22 +326,32 @@ def get_tourevent(tourid):
     return jsonify([event.serialize() for event in events])
 
 
-@app.route('/tourevents/<tourid>', methods=['POST'])
-def set_tourevent(tourid):
-    data = request.get_json()
-    if (not checkLogin(data)):
+@app.route('/tourevents', methods=['POST'])
+def set_tourevent():
+    if not checkLogin():
         return notAuthorizedResponse()
+    data = request.get_json()
+    event = TourEvent()
+    event.set_props(data)
+    commitSession(event)
+    return jsonify(event.serialize())
 
-    return db.edit(tourid, request.get_json(), 'TourEvent')
 
-
-@app.route('/tourevents/<tourid>', methods=['PUT'])
-def edit_tourevent(tourid):
-    return db.edit(tourid, request.get_json(), 'TourEvent')
+@app.route('/tourevents/<eventid>', methods=['PUT'])
+def edit_tourevent(eventid):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    data = request.get_json()
+    event = session.query(TourEvent).get(eventid)
+    event.set_props(data)
+    commitSession(event)
+    return jsonify(event.serialize())
 
 
 @app.route('/tours/image/<tourid>', methods=['POST'])
 def upload(tourid):
+    if not checkLogin():
+        return notAuthorizedResponse()
     file = request.files['file']
     return s3.upload(file, tourid)
 

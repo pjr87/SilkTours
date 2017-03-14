@@ -2,6 +2,7 @@ package com.silktours.android.database;
 
 import android.util.Log;
 
+import com.silktours.android.MainActivity;
 import com.silktours.android.utils.CredentialHandler;
 
 import org.json.JSONArray;
@@ -28,7 +29,10 @@ public class Common {
 
     private static void addAuth(HttpURLConnection conn) {
 
-        if (!CredentialHandler.logins.isEmpty() && !CredentialHandler.identityId.isEmpty()) {
+        if (CredentialHandler.logins != null &&
+                CredentialHandler.identityId != null &&
+                !CredentialHandler.logins.isEmpty() &&
+                !CredentialHandler.identityId.isEmpty()) {
             Log.d("Logins", CredentialHandler.logins);
             Log.d("identityPoolId", CredentialHandler.identityId);
             conn.setRequestProperty("Silk-Logins", CredentialHandler.logins);
@@ -42,6 +46,9 @@ public class Common {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         addAuth(urlConnection);
         int responseCode = urlConnection.getResponseCode();
+        if (responseCode == 403) {
+            return "{\"authorized\": false}";
+        }
         if (responseCode != 200) {
             Log.d("Silk", "" + responseCode);
             return "{'exists': false}";

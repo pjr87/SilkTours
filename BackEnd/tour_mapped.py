@@ -6,6 +6,7 @@ from tour_guide_mapped import TourGuides
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
+from db_session import session, commitSession, createSession
 
 
 class Tour(Base):
@@ -18,13 +19,6 @@ class Tour(Base):
     description = Column(String)
     min_group_size = Column(Integer)
     max_group_size = Column(Integer)
-    address_zip = Column(String)
-    address_street = Column(String)
-    address_suffix = Column(String)
-    address_unit = Column(String)
-    address_unit_number = Column(String)
-    address_city = Column(String)
-    address_country = Column(String)
     profile_image = Column(String)
     profile_image_width = Column(Integer)
     profile_image_height = Column(Integer)
@@ -39,6 +33,35 @@ class Tour(Base):
     stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
     guides = relationship("TourGuides", foreign_keys="TourGuides.id_tour")
+    language = Column(String)
+
+    def set_props(self, data):
+        for key in data:
+            print(key)
+            if key not in ["ratings", "stops", "interests", "guides"]:
+                print("setting")
+                setattr(self, key, data[key])
+
+    def create_extras(self, data):
+        for key in data:
+            if key == "stops":
+                for item in data[key]:
+                    Stop.create(item, self.id_tour)
+                # self.stops = [Stop.create(item, self.id_tour) for item in data[key]]
+            elif key == "interests":
+                for item in data[key]:
+                    Interests.create(item, self.id_tour)
+                # self.interests = [Interests.create(item, self.id_tour) for item in data[key]]
+            elif key == "guides":
+                for item in data[key]:
+                    TourGuides.create(item, self.id_tour)
+                # self.guides = [TourGuides.create(item, self.id_tour) for item in data[key]]
+
+    def createOrEdit(self, data):
+        self.set_props(data)
+        commitSession(self)
+        self.create_extras(data)
+        commitSession(self)
 
     def serialize(self, deep):
         result = {}
@@ -54,7 +77,15 @@ class Tour(Base):
         for stop in self.stops:
             result["stops"].append(stop.serialize())
 
+        result["interests"] = []
+        for interest in self.interests:
+            result["interests"].append(interest.serialize())
+
         result["guides"] = []
         for guide in self.guides:
             result["guides"].append(guide.serialize())
+
+        result["ratings"] = []
+        for rating in self.ratings:
+            result["ratings"].append(rating.serialize())
         return result

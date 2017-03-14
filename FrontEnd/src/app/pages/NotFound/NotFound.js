@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
 
-class NotFound extends Component {
-  render() {
+import {BannerImage, PageTitle, SignInContents} from 'components';
+
+class NotFound extends React.Component{
+  render(){
     return(
       <div>
-        <br/>
-        <br/>
-          <br/>
-          <br/>
-        <h1>Page not found.</h1>
-        <Link to="/" className="btn">Home</Link>
+        <BannerImage/>
+        <PageTitle title = "Page Not Found!"/>
       </div>
     );
   }

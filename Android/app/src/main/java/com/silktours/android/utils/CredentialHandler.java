@@ -51,6 +51,8 @@ public class CredentialHandler {
         if (user == null) return;
         try {
             user.set(User.EXPIRE_TIME, expireDate);
+            user.set(User.LOGINS, logins);
+            user.set(User.IDENTITY_ID, identityId);
             FileOutputStream fos = context.openFileOutput(PERSIST_LOCATION, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(user.JSON.toString());
@@ -90,19 +92,29 @@ public class CredentialHandler {
         if (user == null) {
             load(context);
         }
-        if (System.currentTimeMillis() < expireDate)
+        if (System.currentTimeMillis() < expireDate) {
+            //refresh(context);
             return user;
-
+        }
+        //refresh(context);
         return null;
     }
 
-    public static void setUser(Activity context, User user, long expireDate) {
+    public static void setUser(Activity context, User user, long expireDate, String identityId, String logins) {
+        CredentialHandler.identityId = identityId;
+        CredentialHandler.logins = logins;
         CredentialHandler.expireDate = expireDate;
         CredentialHandler.user = user;
         persist(context);
     }
 
-
+    public static void refresh(Activity context) {
+        if (credentialsProvider == null)
+            return;
+        credentialsProvider.refresh();
+        expireDate = credentialsProvider.getSessionCredentitalsExpiration().getTime();
+        persist(context);
+    }
 
     public static final String identityPoolId = "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349";
     public static final String userPoolId = "us-east-1_917Igx5Ld";

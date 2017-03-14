@@ -54,37 +54,79 @@ class DbController:
         query = ("SELECT * FROM Tour Where id_tour=" + tourId)
         rows = self.execute(query)
 
-        objects_list = []
         for row in rows:
             d = collections.OrderedDict()
             for i in range(len(row)):
                 d[PROP[i]] = self.parse(row[i])
 
-        PROP = list(self.PROPS['TourEvent'])
-        query = ("SELECT * FROM TourEvent Where id_tour=" + tourId)
-        rows = self.execute(query)
-        e = []
-        for row in rows:
-            t = collections.OrderedDict()
-            for i in range(len(row)):
-                t[PROP[i]] = self.parse(row[i])
-            e.append(t)
-        d['TourEvents'] = e
+        d['TourEvent'] = self.get_tourevent_with_id(tourId)
+        d['Stop'] = self.get_stop_with_id(tourId)
+        d['Address'] = self.get_address_with_id(tourId)
+        d['TourGuides'] = self.get_tourguides_with_id(tourId)
+        d['Rating'] = self.get_rating_with_id(tourId)
 
-        PROP = list(self.PROPS['Stop'])
-        query = ("SELECT * FROM Stop Where id_tour=" + tourId)
-        rows = self.execute(query)
-        e = []
-        for row in rows:
-            t = collections.OrderedDict()
-            for i in range(len(row)):
-                t[PROP[i]] = self.parse(row[i])
-            e.append(t)
-        d['Stop'] = e
-
-        objects_list.append(d)
-        j = json.dumps(objects_list, sort_keys=True, indent=4, separators=(',', ': '))
+        j = json.dumps(d, sort_keys=True, indent=4, separators=(',', ': '))
         return j
+
+    def get_tourevent_with_id(self, tourid):
+        PROP = list(self.PROPS['TourEvent'])
+        query = ("SELECT * FROM TourEvent Where id_tour=" + tourid)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        return e
+
+    def get_stop_with_id(self, tourid):
+        PROP = list(self.PROPS['Stop'])
+        query = ("SELECT * FROM Stop Where id_tour=" + tourid)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        return e
+
+    def get_address_with_id(self, tourid):
+        PROP = list(self.PROPS['Address'])
+        query = ("SELECT * FROM Address Where id_tour=" + tourid)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        return e
+
+    def get_tourguides_with_id(self, tourid):
+        PROP = list(self.PROPS['Tourguides'])
+        query = ("SELECT * FROM TourGuides Where id_tour=" + tourid)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        return e
+
+    def get_rating_with_id(self, tourid):
+        PROP = list(self.PROPS['Ratings'])
+        query = ("SELECT * FROM Rating Where id_tour=" + tourid)
+        rows = self.execute(query)
+        e = []
+        for row in rows:
+            t = collections.OrderedDict()
+            for i in range(len(row)):
+                t[PROP[i]] = self.parse(row[i])
+            e.append(t)
+        return e
 
     def post(self, props, table):
         entrys = []

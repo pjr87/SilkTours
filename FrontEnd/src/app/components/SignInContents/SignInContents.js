@@ -1,25 +1,20 @@
 /*
- Sign.js
+ SignInContents.js
 
  User sign in page, integration with FB, AWS
  Written by: Phillip Ryan
-
- Calls functions from CognitoSync folder to display login functions
- Displayed when Signin is click
-
- TODO:
-  Link back to the home page after sign up
-  Add Signin from exisiting user account sequence for (devAuth, Facebook, other)
 */
 
 import React from 'react';
 import { BrowserRouter as Router, Link, Match, Miss, Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, HelpBlock, FormGroup } from 'react-bootstrap';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import auth from '../../utils/cognitoFunctions';
-import { login, changeForm } from '../../actions/AuthActions';
-import ErrorMessage from '../common/ErrorMessage';
+import { login, changeLoginForm, clearError } from '../../actions/AuthActions';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -33,71 +28,103 @@ class SignInContents extends React.Component{
     this.loginSubmit = this.loginSubmit.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
+    this._clearError = this._clearError.bind(this)
   }
 
   _changeUsername (event) {
-    this._emitChange({...this.props.formState, username: event.target.value})
+    this._emitChange({...this.props.loginFormState, username: event.target.value})
   }
 
   _changePassword (event) {
-    this._emitChange({...this.props.formState, password: event.target.value})
+    this._emitChange({...this.props.loginFormState, password: event.target.value})
   }
 
-  _emitChange (newFormState) {
-    this.props.dispatch(changeForm(newFormState))
+  _emitChange (newLoginFormState) {
+    this.props.dispatch(changeLoginForm(newLoginFormState))
   }
 
   loginSubmit(event) {
     event.preventDefault()
-    this.props.dispatch(login(this.props.formState.username, this.props.formState.password));
+    this.props.dispatch(login(this.props.loginFormState.username, this.props.loginFormState.password));
   }
 
   render() {
-    const {errorMessage} = this.props;
+    let isLoading = this.props.currentlySending;
+    function ErrorFunc(props){
+
+      if( props.errorText ){
+        return (<HelpBlock>{props.errorText}</HelpBlock>);
+      }
+
+      return <div></div>
+    }
+
     return (
       <div>
-        <br/>
-        <br/>
-        <Form inline>
-            <FormGroup controlId="formHorizontalEmail">
-                <ControlLabel>Email </ControlLabel>
+        <Grid>
+          <br/>
+          <Form horizontal>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                Email
+              </Col>
+              <Col sm={4}>
                 <FormControl
                   type="username"
                   ref="username"
                   onChange={this._changeUsername}
                   placeholder="Email" />
+              </Col>
             </FormGroup>
-            <FormGroup controlId="formHorizontalPassword">
-                <ControlLabel>Password </ControlLabel>
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                Password
+              </Col>
+              <Col sm={4}>
                 <FormControl
                   type="password"
                   ref="password"
                   onChange={this._changePassword}
                   placeholder="Password" />
+              </Col>
             </FormGroup>
-            <Button onClick={this.loginSubmit}>Login</Button>
-            {errorMessage &&
-            <p style={{color:'red'}}>{errorMessage}</p>
-            }
-        </Form>
-        <br/>
-        <br/>
-        <br/>
-        <p>Don't have one?</p>
-        <Link to='/signup'>CREATE ONE</Link>
-        <br/>
-        <br/>
+            <FormGroup
+              validationState = {this.props.errorMessage ? "error" : "success"}>
+              <Col smOffset={2} sm={10}>
+                <ErrorFunc errorText = {this.props.errorMessage} />
+                <Button
+                  disabled={isLoading}
+                  onClick={!isLoading ? this.loginSubmit : null}>
+                  {isLoading ? 'Logging in...' : 'Login'}
+                </Button>
+              </Col>
+            </FormGroup>
+            <Col sm={4}>
+              <p>Don't have a travel profile?</p>
+              <Link to='/signup' onClick={this._clearError}>Sign up!</Link>
+            </Col>
+          </Form>
+        </Grid>
       </div>
     )
   }
+  _clearError () {
+    this.props.dispatch(clearError())
+  }
 }
 
+SignInContents.propTypes = {
+  currentlySending: React.PropTypes.bool,
+  loginFormState: React.PropTypes.object,
+  errorMessage: React.PropTypes.string
+}
 
 // select chooses which props to pull from store
 function select(state) {
   return {
-    formState: state.AuthReducer.formState,
-    currentlySending: state.AuthReducer.currentlySending
+    loginFormState: state.AuthReducer.loginFormState,
+    currentlySending: state.AuthReducer.currentlySending,
+    errorMessage: state.AuthReducer.errorMessage
   };
 }
 

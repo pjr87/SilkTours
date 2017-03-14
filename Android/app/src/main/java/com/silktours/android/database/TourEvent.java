@@ -2,6 +2,9 @@ package com.silktours.android.database;
 
 import android.util.Log;
 
+import com.silktours.android.MainActivity;
+import com.silktours.android.utils.CredentialHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
