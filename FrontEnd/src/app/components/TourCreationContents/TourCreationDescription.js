@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updateDescriptionState, setTabKey } from '../../actions/TourCreationActions';
 
@@ -35,7 +35,7 @@ class TourCreationDescription extends React.Component{
         <br/>
         <p className={style.HeaderStyle}>Please describe the tour.</p>
         <br/>
-        <EditableField label="Description" onChange={this._changeDescription} value={this.props.tour.description}/>
+        <EditableFieldClass style={style.BodyStyle} label="Description" onChange={this._changeDescription} value={this.props.tour.description}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
