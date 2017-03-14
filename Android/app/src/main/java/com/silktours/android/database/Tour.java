@@ -34,15 +34,13 @@ public class Tour extends Base implements Serializable {
     public Double average_rating;
     public String firstStart_date;
     public String lastEnd_date;
-    public Integer id_guide;
     public Integer id_rating;
     public Boolean is_deleted;
     public Integer max_group_size;
     public Integer min_group_size;*/
     public static final String description = "description";
     public static final String name = "name";
-
-    public static String description = "description";
+    public static final Integer id_guide = 48;
     //public Double price;
     public static final Integer id_tour = 1;
     public static final Double price = 0.0;

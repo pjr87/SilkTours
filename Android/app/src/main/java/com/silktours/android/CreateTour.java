@@ -52,6 +52,7 @@ import com.silktours.android.database.Tour;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.LocationPrompt;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -162,6 +163,22 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set(Tour.name, tourName.getText().toString());
                 tour.set(Tour.description, tourDesc.getText().toString());
                 tour.set("price", price.getText().toString());
+                //TODO make it 0 by default in the backend(average rating)
+                tour.set("average_rating", 0);
+                tour.set("firstStart_date", start.get(Calendar.YEAR)+"-"+start.get(Calendar.MONTH)+"-"+start.get(Calendar.DATE));
+                tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
+
+                JSONArray guides = new JSONArray();
+                JSONObject guide = new JSONObject();
+                try {
+                    guide.put("id_user", 48);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //guide.put("id_tour", );
+                guides.put(guide);
+                tour.set("guides", guides);
+
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
 
