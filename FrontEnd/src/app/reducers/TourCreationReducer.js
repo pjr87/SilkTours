@@ -88,6 +88,8 @@ function TourCreationReducer(state = initialState, action) {
       return {...state, errorMessage: action.message};
     case tourCreationConstants.CLEAR_ERROR:
       return {...state, errorMessage: ''}
+    case tourCreationConstants.CLEAR_TOUR:
+      return {...state, tour: initialState.tour}
     default:
       return state;
   }

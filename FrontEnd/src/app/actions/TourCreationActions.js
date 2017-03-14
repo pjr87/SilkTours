@@ -65,6 +65,9 @@ export function createTour(tour, auth) {
       if(response.data){
         console.log("response.data", response.data);
         dispatch(sendingRequest(false));
+        forwardTo('/');
+        dispatch(clearTour())
+        dispatch(setTabKey("info"))
       }
       else{
         // If there was a problem, show an error
@@ -220,4 +223,19 @@ function anyElementsEmpty(elements) {
  */
 export function clearError () {
   return {type: tourCreationConstants.CLEAR_ERROR}
+}
+
+/**
+ * Sets the `error` state as empty
+ */
+export function clearTour () {
+  return {type: tourCreationConstants.CLEAR_TOUR}
+}
+
+/**
+ * Forwards the user
+ * @param {string} location The route the user should be forwarded to
+ */
+function forwardTo(location) {
+  browserHistory.push(location);
 }
