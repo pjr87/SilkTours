@@ -72,7 +72,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
     private View rootView;
     private Tour tour = new Tour();
-    private EditText tourName, tourDesc, price;
+    private EditText tourName, tourDesc, price, language;
     private TextView startDateText, endDateText, addedLocationText;
     private Button startDateBtn, endDateBtn;
     private Calendar start = Calendar.getInstance();
@@ -89,6 +89,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
         price = (EditText) rootView.findViewById(R.id.price);
+        language = (EditText) rootView.findViewById((R.id.language));
         startDateBtn = (Button) rootView.findViewById(R.id.startDate);
         endDateBtn = (Button) rootView.findViewById(R.id.endDate);
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
@@ -172,6 +173,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set("average_rating", 0);
                 tour.set("firstStart_date", start.get(Calendar.YEAR)+"-"+start.get(Calendar.MONTH)+"-"+start.get(Calendar.DATE));
                 tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
+                tour.set("language", language.getText().toString());
 
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();
