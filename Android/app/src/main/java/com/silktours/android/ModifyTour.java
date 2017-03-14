@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -48,6 +49,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
     private Calendar end = Calendar.getInstance();
     private GoogleMap mGoogleMap;
     private MapView mMapView;
+    private Place placeSelected;
     private DateFormat formatDate = DateFormat.getDateInstance();
 
     //TODO fill modify tour page when opened
@@ -102,10 +104,11 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
             public void onClick(View v) {
                 new LocationPrompt(MainActivity.getInstance(), new LocationPrompt.OnLocationSetListener() {
                     @Override
-                    public void onLocationSet(String location) {
+                    public void onLocationSet(String location, Place place) {
                         if (location != null) {
                             TextView locationView = (TextView) rootView.findViewById(R.id.addedLocations);
                             locationView.setText(addedLocationText.getText()+location+"\n");
+                            placeSelected = place;
                         }
                     }
                 });

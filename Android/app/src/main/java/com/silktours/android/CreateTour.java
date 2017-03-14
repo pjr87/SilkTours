@@ -110,9 +110,9 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
 
     private void setUpMap() {
-        LatLng sydney = new LatLng(39.956208, -75.191730);
-        mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
+        //LatLng sydney = new LatLng(39.956208, -75.191730);
+        //mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
+        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
        // if (ActivityCompat.checkSelfPermission(rootView.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(rootView.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -138,16 +138,21 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
     private void setUpListeners() {
 
+        //TODO make stops table have an address name with the stops id
         Button locationEdit = (Button) rootView.findViewById(R.id.addLocation);
         locationEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new LocationPrompt(MainActivity.getInstance(), new LocationPrompt.OnLocationSetListener() {
                     @Override
-                    public void onLocationSet(String location) {
+                    public void onLocationSet(String location, Place place) {
                         if (location != null) {
                             TextView locationView = (TextView) rootView.findViewById(R.id.addedLocations);
                             locationView.setText(addedLocationText.getText()+location+"\n");
+                            placeSelected = place;
+                            LatLng loca = place.getLatLng();
+                            mGoogleMap.addMarker(new MarkerOptions().position(loca));
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
                         }
                     }
                 });
@@ -175,7 +180,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //guide.put("id_tour", );
                 guides.put(guide);
                 tour.set("guides", guides);
 

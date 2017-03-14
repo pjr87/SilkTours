@@ -42,17 +42,17 @@ public class LocationPrompt {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         if (filterDialog == null) {
-                            listener.onLocationSet(null);
+                            listener.onLocationSet(null, null);
                             return;
                         }
-                        listener.onLocationSet(selection);
+                        listener.onLocationSet(selection, placeSelected);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         filterDialog = null;
-                        listener.onLocationSet(null);
+                        listener.onLocationSet(null, null);
                     }
                 });
         filterDialog = builder.create();
@@ -98,10 +98,7 @@ public class LocationPrompt {
     }
 
     public interface OnLocationSetListener {
-        void onLocationSet(String location);
-    }
-    public interface getLocationListener{
-        public Place getPlace();
+        void onLocationSet(String location, Place place);
     }
 
 }

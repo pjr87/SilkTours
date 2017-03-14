@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private ImageView imgProfile;
     private GoogleMap googleMap;
     private MapView mapView;
-    private HorizontalScrollView hsvMedia;
+    private LinearLayout lnlMedia;
     private Double[][] stops;
     private String tourId;
     private Media[] medias;
@@ -84,7 +85,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
         imgProfile = (ImageView) rootView.findViewById(R.id.imgProfile);
-        hsvMedia = (HorizontalScrollView) rootView.findViewById(R.id.hsvMedia);
+        lnlMedia = (LinearLayout) rootView.findViewById(R.id.lnlMedia);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -215,7 +216,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                         imageView.setLayoutParams(layoutParams);
-                        hsvMedia.addView(imageView);
+                        lnlMedia.addView(imageView);
                         Log.d(TAG, "onPostExecute: ");
                     }
 

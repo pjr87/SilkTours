@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
@@ -143,7 +144,7 @@ public class Profile extends Fragment {
             public void onClick(View v) {
                 new LocationPrompt(MainActivity.getInstance(), new LocationPrompt.OnLocationSetListener() {
                     @Override
-                    public void onLocationSet(String location) {
+                    public void onLocationSet(String location, Place place) {
                         if (location != null) {
                             TextView locationView = (TextView) rootView.findViewById(R.id.locationTextView);
                             locationView.setText(location);
