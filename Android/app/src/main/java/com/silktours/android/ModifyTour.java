@@ -30,7 +30,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.silktours.android.database.Tour;
 import com.silktours.android.utils.LocationPrompt;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -41,7 +43,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
     private View rootView;
     private Tour tour = new Tour();
     private EditText tourName;
-    private EditText tourDesc;
+    private EditText tourDesc,price, language;;
     private TextView startDateText, endDateText, addedLocationText;
     private Integer tourId = 1;
     private Button startDateBtn, endDateBtn;
@@ -61,6 +63,8 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
         rootView = inflater.inflate(R.layout.content_modify_tour, container, false);
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
+        price = (EditText) rootView.findViewById(R.id.price);
+        language = (EditText) rootView.findViewById((R.id.language));
         startDateBtn = (Button) rootView.findViewById(R.id.startDate);
         endDateBtn = (Button) rootView.findViewById(R.id.endDate);
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
@@ -109,6 +113,9 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                             TextView locationView = (TextView) rootView.findViewById(R.id.addedLocations);
                             locationView.setText(addedLocationText.getText()+location+"\n");
                             placeSelected = place;
+                            LatLng loca = place.getLatLng();
+                            mGoogleMap.addMarker(new MarkerOptions().position(loca));
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
                         }
                     }
                 });
@@ -124,6 +131,22 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                 tour.set(Tour.name, tourName.getText().toString());
                 tour.set(Tour.description, tourDesc.getText().toString());
                 tour.set( ""+Tour.id_tour, tourId);
+                tour.set("price", price.getText().toString());
+                //TODO make it 0 by default in the backend(average rating)
+                tour.set("average_rating", 0);
+                tour.set("firstStart_date", start.get(Calendar.YEAR)+"-"+start.get(Calendar.MONTH)+"-"+start.get(Calendar.DATE));
+                tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
+                tour.set("language", language.getText().toString());
+
+                JSONArray guides = new JSONArray();
+                JSONObject guide = new JSONObject();
+                try {
+                    guide.put("id_user", 48);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                guides.put(guide);
+                tour.set("guides", guides);
                 //Log.d("json", "onClick: " + tour.get());
                 commitTour();
             }
@@ -199,6 +222,8 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                  //   profileImage.setImageDrawable(profileImageDrawable);
                 tourName.setText(tour.getStr(Tour.name));
                 tourDesc.setText(tour.getStr(Tour.description));
+                price.setText((tour.getDbl("price")).toString());
+                language.setText(tour.getStr("language"));
                 // try {
                 //    location.setText(user.getStr("address:street"));
                // } catch (Exception e) {

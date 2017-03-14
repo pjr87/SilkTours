@@ -25,6 +25,9 @@ public class Base {
         return (Integer) get(key);
     }
 
+    public Double getDbl(String key) {
+        return (Double) get(key);
+    }
     public JSONObject getJSONObject(String key) {
         return (JSONObject) get(key);
     }
