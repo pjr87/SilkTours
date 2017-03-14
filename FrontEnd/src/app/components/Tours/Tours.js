@@ -82,21 +82,6 @@ class Tours extends React.Component{
   }
 };
 
-function checkNoGuide(props){
-  const guidesLength = props.guides.length
-  if(guidesLength == 0) {
-    return(
-      <Link
-        to={{
-          pathname: '/messages',
-          query: { guideUserId: this.props.guides[0].id_user }
-        }}>
-      <Button bsStyle="default">Message</Button>
-    </Link>
-    )
-  }
-}
-
 function select (state) {
   return {
     selectedTour: state.TourDetailReducer.selectedTour,
