@@ -31,7 +31,7 @@ class MyToursContents extends React.Component{
       var tabPag = <Overview/>;
     }
     if(this.state.tab == 'myguide'){
-      var tabPag = <MyGuide/>;
+      var tabPag = <MyGuide user={this.props.user}/>;
     }
     if(this.state.tab == 'mytour'){
       var tabPag = <MyTours/>;
