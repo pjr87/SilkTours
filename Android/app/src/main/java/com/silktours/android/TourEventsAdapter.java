@@ -45,9 +45,11 @@ public class TourEventsAdapter extends ArrayAdapter<TourEvent> {
 
 
         TextView startTime = (TextView) v.findViewById(R.id.tourEventStartTime);
+        TextView endTime = (TextView) v.findViewById(R.id.tourEventEndTime);
         TourEvent tourEvent = getItem(position);
         v.setOnClickListener(new ItemClickListener(tourEvent));
         startTime.setText(tourEvent.get("start_date_time").toString());
+        endTime.setText(tourEvent.get("end_date_time").toString());
         return v;
     }
 
