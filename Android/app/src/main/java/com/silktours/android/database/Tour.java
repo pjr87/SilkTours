@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.net.FileNameMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -42,7 +41,7 @@ public class Tour extends Base implements Serializable {
     public static final String description = "description";
     public static final String name = "name";
 
-    public static String description = "description";
+    //public static String description = "description";
     //public Double price;
     public static final Integer id_tour = 1;
     public static final Double price = 0.0;

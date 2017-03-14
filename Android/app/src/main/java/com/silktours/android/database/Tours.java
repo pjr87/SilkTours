@@ -85,4 +85,8 @@ public class Tours implements Serializable{
         return stops;
     }
 
+    public Integer getId_tour() {
+        return id_tour;
+    }
+
 }

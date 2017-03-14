@@ -6,9 +6,11 @@ import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +22,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.silktours.android.database.Controller;
+import com.silktours.android.database.Media;
 import com.silktours.android.database.Tours;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class Viewtour extends Fragment implements OnMapReadyCallback{
 
@@ -39,8 +48,10 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private ImageView imgProfile;
     private GoogleMap googleMap;
     private MapView mapView;
+    private HorizontalScrollView hsvMedia;
     private Double[][] stops;
     private String tourId;
+    private Media[] medias;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +59,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         View rootView = inflater.inflate(R.layout.content_viewtour, container, false);
         tour = (Tours) getArguments().getSerializable("TourObject");
 
+        tourId = tour.getId_tour().toString();
         txtName = (TextView) rootView.findViewById(R.id.txtName);
         txtCountry = (TextView) rootView.findViewById(R.id.txtCountry);
         txtCity = (TextView) rootView.findViewById(R.id.txtCity);
@@ -56,6 +68,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
         imgProfile = (ImageView) rootView.findViewById(R.id.imgProfile);
+        hsvMedia = (HorizontalScrollView) rootView.findViewById(R.id.hsvMedia);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -95,7 +108,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtPrice.setText(tour.getPrice());
         txtStartDate.setText(tour.getStartDate());
         txtEndDate.setText(tour.getEndDate());
-        txtDescription.setText(tour.getDescription() + " " + tour.getStops()[0][0] + " " + tour.getStops()[0][1]);
+        txtDescription.setText(tour.getDescription());
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -107,7 +120,54 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                 imgProfile.setImageBitmap(response);
             }
         }.execute();
+        getMedia(tourId);
+
     }
+
+    public void getMedia(final String tourId) {
+        new AsyncTask<Void, Void, ArrayList<Bitmap>>() {
+            @Override
+            protected ArrayList<Bitmap> doInBackground(Void... params) {
+
+                try {
+                    String response =  Controller.sendGet("/tours/image/" + tourId);
+                    JSONArray jsArray = new JSONArray(response);
+                    Log.d(TAG, "doInBackground: " + jsArray.length());
+                    medias = new Media[jsArray.length()];
+                    for(int i = 0; i < jsArray.length(); i++) {
+                        medias[i] = new Media(jsArray.getJSONObject(i));
+                    }
+                    ArrayList<Bitmap> bitmaps = new ArrayList<>(medias.length);
+                    for (int i = 0; i < medias.length; i++) {
+                        bitmaps.add(medias[i].getDisplayRank()-1, getBitmapFromURL(medias[i].getUrl()));
+                    }
+                    return bitmaps;
+                } catch (Exception e) {
+                    Log.e(TAG, "doInBackground: ", e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Bitmap> response) {
+                try {
+                    for (int i = 0; i < response.size(); i++) {
+                        ImageView imageView = new ImageView(MainActivity.getInstance());
+                        imageView.setImageBitmap(getResizedBitmap(response.get(i), 200, 200));
+                        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                        imageView.setLayoutParams(layoutParams);
+                        hsvMedia.addView(imageView);
+                        Log.d(TAG, "onPostExecute: ");
+                    }
+
+                } catch (Exception e) {
+                    Log.e(TAG, "onPostExecute: ", e);
+                }
+            }
+        }.execute();
+    }
+
 
 
     private Bitmap getBitmapFromURL(String src) {
