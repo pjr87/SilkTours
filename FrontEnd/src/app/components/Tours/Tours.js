@@ -49,13 +49,23 @@ class Tours extends React.Component{
     const guidesLength = this.state.guides.length;
     let guideButton = null;
     if (guidesLength != '0') {
-      guideButton = <Link
-                    to={{
-                      pathname: '/messages',
-                      query: { guideUserId: this.state.guides[0].id_user }
-                    }}>
-                      <Button bsStyle="default">Message</Button>
-                    </Link>;
+      if(this.props.loggedIn) {
+        guideButton = <Link
+                      to={{
+                        pathname: '/messages',
+                        query: { guideUserId: this.state.guides[0].id_user }
+                        }}>
+                        <Button bsStyle="default">Message</Button>
+                      </Link>;
+      }
+      else {
+        guideButton = <Link
+                      to={{
+                        pathname: '/sign'
+                        }}>
+                        <Button bsStyle="default">Message</Button>
+                      </Link>;
+      }
     } else {
       guideButton = null;
     }
@@ -84,6 +94,7 @@ class Tours extends React.Component{
 
 function select (state) {
   return {
+    loggedIn: state.AuthReducer.loggedIn,
     selectedTour: state.TourDetailReducer.selectedTour,
   };
 }

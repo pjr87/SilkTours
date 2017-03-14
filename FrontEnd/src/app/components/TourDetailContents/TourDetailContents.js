@@ -107,6 +107,29 @@ class TourDetailContents extends React.Component{
   }
 
   render(){
+    const guidesLength = this.props.selectedTour.guides.length;
+    let guideButton = null;
+    if (guidesLength != '0') {
+      if(this.props.loggedIn) {
+        guideButton = <Link
+                      to={{
+                        pathname: '/messages',
+                        query: { guideUserId: this.props.selectedTour.guides[0].id_user }
+                        }}>
+                        <Button bsStyle="default">Message</Button>
+                      </Link>;
+      }
+      else {
+        guideButton = <Link
+                      to={{
+                        pathname: '/sign'
+                        }}>
+                        <Button bsStyle="default">Message</Button>
+                      </Link>;
+      }
+    } else {
+      guideButton = null;
+    }
     const getToken = () => {
       // Replace this with an actual promise to your Braintree-enabled server
       return new Promise((resolve) => {
@@ -242,13 +265,7 @@ class TourDetailContents extends React.Component{
               <Row>
                 <Col sm={12} md={12} lg={12}>
                   <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
-                    <Link
-                      to={{
-                        pathname: '/messages',
-                        query: { guideUserId: this.props.selectedTour.guides[0].id_user }
-                      }}>
-                      <Button bsStyle="default">Message</Button>
-                    </Link>
+                  {guideButton}
                 </Col>
               </Row>
             </Grid>
