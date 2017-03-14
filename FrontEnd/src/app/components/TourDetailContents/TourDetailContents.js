@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+
 import style from "./style.css";
 
 import Image from 'react-bootstrap/lib/Image';
@@ -240,7 +242,13 @@ class TourDetailContents extends React.Component{
               <Row>
                 <Col sm={12} md={12} lg={12}>
                   <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
-                  <Button bsStyle="default">Message</Button>
+                    <Link
+                      to={{
+                        pathname: '/messages',
+                        query: { guideUserId: this.props.selectedTour.guides[0].id_user }
+                      }}>
+                      <Button bsStyle="default">Message</Button>
+                    </Link>
                 </Col>
               </Row>
             </Grid>
