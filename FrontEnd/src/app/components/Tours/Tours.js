@@ -40,11 +40,7 @@ class Tours extends React.Component{
       stops: this.props.stops,
     };
   }
-
-  componentDidMount(){
-    console.log("Guide Id" + this.props.guides.length);
-  }
-
+  
   render(){
     const guidesLength = this.state.guides.length;
     let guideButton = null;
