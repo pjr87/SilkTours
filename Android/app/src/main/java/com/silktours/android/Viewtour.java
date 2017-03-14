@@ -40,6 +40,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private GoogleMap googleMap;
     private MapView mapView;
     private Double[][] stops;
+    private String tourId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
