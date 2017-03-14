@@ -1,9 +1,26 @@
 import React from 'react';
-import {PageTitle} from 'components';
+import {PageTitle,TourInfo} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 class MyGuide extends React.Component{
   render(){
+
+    const guideBookedTours = this.props.toursGuided.map(function(t,index){
+      console.log("key:",index)
+      if(t.state=="B")
+        return (<TourInfo tour={t} key={index}/>);
+      return null;
+    });
+
+    const guideCompleteTours = this.props.toursGuided.map(function(t,index){
+      console.log("key:",index)
+      if(t.state=="B")
+        return (<TourInfo tour={t} key={index}/>);
+      return null;
+    });
+
+
+
     return (
       <div>
         <Grid>
@@ -11,12 +28,12 @@ class MyGuide extends React.Component{
           <Row>
             <Col md={6} mdPull={0}>
               <Panel header="Tours Pending Confirmation">
-                <p>{this.props.user.email}</p>
+                No Tours
               </Panel>
             </Col>
             <Col md={6} mdPush={0}>
               <Panel header="Upcoming Tours">
-                No Tours
+                {guideBookedTours}
               </Panel>
             </Col>
           </Row>
@@ -35,7 +52,7 @@ class MyGuide extends React.Component{
           <Row>
             <Col md={6} mdPull={0}>
               <Panel header="Completed Tours">
-                No Tours
+                {guideCompleteTours}
               </Panel>
             </Col>
             <Col md={6} mdPush={0}>

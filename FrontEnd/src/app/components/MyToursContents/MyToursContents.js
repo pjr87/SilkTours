@@ -28,13 +28,15 @@ class MyToursContents extends React.Component{
 
   render(){
     if(this.state.tab == 'overview'){
-      var tabPag = <Overview/>;
+      var tabPag = <Overview toursGuided={this.props.user.tours_teaching}/>;
     }
     if(this.state.tab == 'myguide'){
-      var tabPag = <MyGuide user={this.props.user}/>;
+
+      var tabPag = <MyGuide toursGuided={this.props.user.tours_teaching}/>;
     }
     if(this.state.tab == 'mytour'){
-      var tabPag = <MyTours/>;
+      console.log("user:",this.props.user);
+      var tabPag = <MyTours toursTaken={this.props.user.tours_taking}/>;
     }
     if(this.state.tab == 'messages'){
       var tabPag = <Messages/>;

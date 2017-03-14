@@ -25,12 +25,13 @@ export default class Interests extends React.Component{
   }
 
   deleteTag(i) {
-    var interests = this.props.user.interests;;
+    var interests = this.props.user.interests;
     interests.splice(i, 1);
     this._changeInterest(interests);
   }
 
   addTag(tag) {
+
     var interests = this.props.user.interests;
     interests.push({
         id: interests.length+1,

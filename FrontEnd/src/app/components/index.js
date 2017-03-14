@@ -5,6 +5,7 @@ export TourContainer from './Tours/TourContainer';
 export TourDetailContents from './TourDetailContents/TourDetailContents';
 export TourConfirmationContents from './TourConfirmationContents/TourConfirmationContents';
 export TourModify from './Tours/TourModify';
+export TourInfo from './tours/TourInfo';
 export AboutContents from './AboutContents/AboutContents';
 export SignInContents from './SignInContents/SignInContents';
 export SignUpContents from './SignUpContents/SignUpContents';
