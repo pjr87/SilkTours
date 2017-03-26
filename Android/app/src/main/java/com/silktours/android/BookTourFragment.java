@@ -28,6 +28,7 @@ import com.roomorama.caldroid.CaldroidListener;
 import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.TourEvent;
+import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.ListViewUtils;
@@ -182,6 +183,11 @@ public class BookTourFragment extends Fragment {
                                     bookTour(payment);
                                     Toast.makeText(MainActivity.getInstance(), "Tour Booked Successfully", Toast.LENGTH_SHORT).show();
                                     ViewtourTemp.start(tour);
+                                    try {
+                                        Viewtour.start(new Tours(tour.JSON));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
                                     ErrorDisplay.show("Unable to process payment, please try again.", MainActivity.getInstance());
                                 }
