@@ -47,6 +47,17 @@ export function login(username, password) {
 
     if (cognitoFunctions.loggedIn()) {
       console.log("Logged In");
+      // When the request is finished, hide the loading indicator
+      dispatch(sendingRequest(false));
+      dispatch(setAuthState(true));
+
+      // If the login worked, forward the user to home and clear the form
+      dispatch(changeLoginForm({
+        username: "",
+        password: ""
+      }));
+      dispatch(clearError());
+      forwardTo('/');
       return;
     }
 
