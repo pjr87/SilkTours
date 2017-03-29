@@ -64,7 +64,8 @@ class MessagesPage extends React.Component{
             userName : this.props.firstName,
             //appId: '39dbafa82d712b9c4b91428bf91631707',
             //appId: 'psoxs4b4395b4a0ddb58368a338981675575c',
-            appId: '2ad84408079d676df9953c6b9fe1c8e3d',
+           // appId: '2ad84408079d676df9953c6b9fe1c8e3d',
+           appId: '208f30b543b13fdfba85ce3c442e217ad',
             ojq : $original,
             obsm : oModal,
             accessToken : this.props.auth['Logins'],//'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url

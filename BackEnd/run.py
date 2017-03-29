@@ -15,7 +15,7 @@ from ratings_mapped import Rating
 from tour_mapped import Tour
 from tour_event_mapped import TourEvent
 from interests_mapped import Interests
-from sqlalchemy import create_engine, func, or_
+from sqlalchemy import create_engine, func, or_, and_
 from sqlalchemy.orm.session import sessionmaker
 from flask_cors import CORS
 from sqlalchemy.orm import scoped_session
@@ -326,6 +326,46 @@ def edit_tour(tourid):
 def get_tourevent(tourid):
     events = session.query(TourEvent).filter(TourEvent.id_tour == tourid).all()
     return jsonify([event.serialize() for event in events])
+
+
+# TODO: Need to check if the user making the request is who they say they are
+# TODO: When a tour is completed, the payment should be processed
+@app.route('/complete_tour_event/<eventId>', methods=['PUT'])
+def compute_tour_event(eventId):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    event = session.query(TourEvent).get(eventId)
+    event.state = "C"
+    event.pending_review = True
+    commitSession(event)
+
+
+@app.route('/clear_pending_review/<eventId>', methods=['PUT'])
+def clear_pending_review(eventId):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    event = session.query(TourEvent).get(eventId)
+    event.pending_review = False
+    commitSession(event)
+    return "Success"
+
+
+# TODO: Decide to use PR table or PR field
+@app.route('/pending_reviews/<id_user>', methods=['GET'])
+def get_prs(id_user):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    events = session.query(TourEvent).filter(
+            and_(
+                TourEvent.id_user == id_user,
+                TourEvent.pending_review
+            )
+        ).all()
+
+    result = []
+    for event in events:
+        result.append(event.serialize())
+    return jsonify(result)
 
 
 @app.route('/tourevents', methods=['POST'])

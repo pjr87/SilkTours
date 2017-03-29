@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updateNameState, setTabKey } from '../../actions/TourCreationActions';
 
@@ -36,7 +36,7 @@ class TourCreationTitle extends React.Component{
           <br/>
           <p className={style.HeaderStyle}>What is the title of the tour?</p>
           <br/>
-          <EditableField label="Title" onChange={this._changeTour} value={this.props.tour.name}/>
+          <EditableFieldClass style={style.BodyStyle} label="Title" onChange={this._changeTour} value={this.props.tour.name}/>
           <br/>
           <Pager>
             <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
@@ -51,7 +51,7 @@ class TourCreationTitle extends React.Component{
           <br/>
           <p className={style.HeaderStyle}>What is the title of the tour?</p>
           <br/>
-          <EditableField label="Title" onChange={this._changeTour} value=""/>
+          <EditableFieldClass style={style.BodyStyle} label="Title" onChange={this._changeTour} value=""/>
           <br/>
             <Pager>
               <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
