@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import { setTabKey } from '../../actions/TourCreationActions';
+import { updateGuideState, setTabKey } from '../../actions/TourCreationActions';
 import { Pager } from 'react-bootstrap';
 
 class TourCreationInfo extends React.Component{
@@ -8,9 +8,32 @@ class TourCreationInfo extends React.Component{
     super();
 
     this.next = this.next.bind(this)
+    this.addGuide = this.addGuide.bind(this)
+  }
+
+  addGuide(){
+    var guides = this.props.tour.guides;
+    var guide = {
+      first_name: this.props.user.first_name,
+      id_user: this.props.user.id_users,
+      last_name: this.props.user.last_name
+    };
+
+    guides.push(guide);
+    console.log("guides", guides);
+    this.updateGuides(guides);
+  }
+
+  updateGuides(g) {
+    this._emitUserChange({...this.props.tour, guides: g});
+  }
+
+  _emitUserChange (newGuideState) {
+    this.props.dispatch(updateGuideState(newGuideState))
   }
 
   next(){
+    this.addGuide();
     this.props.dispatch(setTabKey("location"));
   }
 

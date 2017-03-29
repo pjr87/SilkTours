@@ -46,28 +46,120 @@ export function login(username, password) {
   }
 }
 
+ function toHHMMSS(sec_num) {
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
+}
+
+export function buildTourEvent(startTime, endTime, startDay, endDay, tourId, guideId){
+  var start = startDay + " " + toHHMMSS(startTime);
+  var end = endDay + " " + toHHMMSS(endTime);
+
+  var tourEvent = {
+    end_date_time: start,
+    id_tour: tourId,
+    id_guide: guideId,
+    start_date_time: end,
+    state: "A"
+  };
+
+  return tourEvent;
+}
+
 /**
  * Create a Tour in the database
  * @param  {object} tour The tour to create
  */
-export function createTour(tour, auth) {
+export function createTour(tour, auth, photos, startTime, endTime) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ tour, auth })) {
+    if (anyElementsEmpty({ tour, auth, photos, startTime, endTime })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
 
+    console.log("photos", photos);
+
     service.newTour(tour, auth).then(function(response){
       if(response.data){
-        console.log("response.data", response.data);
-        dispatch(sendingRequest(false));
-        forwardTo('/');
-        dispatch(clearTour())
-        dispatch(setTabKey("info"))
+        console.log("response.data", response.data.id_tour);
+        if(photos.length > 0){
+          service.newPhoto(photos, response.data.id_tour, auth).then(function(response){
+            if(response.data){
+              var tourEvent = buildTourEvent(
+                startTime,
+                endTime,
+                tour.firstStart_date,
+                tour.lastEnd_date,
+                response.data.id_tour,
+                tour.guides[0].id_user);
+              console.log('tourEvent', tourEvent);
+              service.putTourEvent(tourEvent, auth).then(function(response){
+                if(response.data){
+                  dispatch(sendingRequest(false));
+                  forwardTo('/');
+                  dispatch(clearTour())
+                  dispatch(updatePhotoState([]))
+                  dispatch(setTabKey("info"))
+                }
+                else{
+                  // If there was a problem, show an error
+                  console.log('response.error: ' + response.error);
+                  dispatch(sendingRequest(false));
+                  dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+                }
+              });
+            }
+            else{
+              // If there was a problem, show an error
+              console.log('response.error: ' + response.error);
+              dispatch(sendingRequest(false));
+              dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+            }
+          });
+        }
+        else{
+          if(response.data){
+            var tourEvent = buildTourEvent(
+              startTime,
+              endTime,
+              tour.firstStart_date,
+              tour.lastEnd_date,
+              response.data.id_tour,
+              tour.guides[0].id_user);
+            console.log('tourEvent', tourEvent);
+            service.putTourEvent(tourEvent, auth).then(function(response){
+              if(response.data){
+                dispatch(sendingRequest(false));
+                forwardTo('/');
+                dispatch(clearTour())
+                dispatch(updatePhotoState([]))
+                dispatch(setTabKey("info"))
+              }
+              else{
+                // If there was a problem, show an error
+                console.log('response.error: ' + response.error);
+                dispatch(sendingRequest(false));
+                dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+              }
+            });
+          }
+          else{
+            // If there was a problem, show an error
+            console.log('response.error: ' + response.error);
+            dispatch(sendingRequest(false));
+            dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+          }
+        }
       }
       else{
         // If there was a problem, show an error
@@ -76,6 +168,31 @@ export function createTour(tour, auth) {
         dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
       }
     });
+  }
+}
+
+/**
+ * Adds a guide to the tour
+ * @param  {object} user The user to add
+ */
+export function addGuide(user) {
+  return (dispatch) => {
+    if (anyElementsEmpty({ user })) {
+      console.log("error", user);
+      return;
+    }
+
+    var newGuide = {
+      first_name: user.first_name,
+      id_tour: '',
+      id_tour_guide: '',
+      id_user: user.id_user,
+      last_name: user.last_name,
+    }
+
+    console.log("newGuide", newGuide);
+
+    dispatch(updateGuideState(newGuide));
   }
 }
 
@@ -89,10 +206,26 @@ export function updateTourState(newTourState) {
 
 /**
  * Updates a tour's information
+ * @param  {object} newGuideState //The user json
+ */
+export function updateGuideState(newGuideState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_GUIDE, newGuideState };
+}
+
+/**
+ * Updates a tour's information
  * @param  {object} newTourState //The user json
  */
 export function updateLanguageState(newLanguageState) {
   return { type: tourCreationConstants.UPDATE_TOUR_LANGUAGE, newLanguageState };
+}
+
+/**
+ * Updates a tour's photo
+ * @param  {object} newTourState //The user json
+ */
+export function updatePhotoState(newPhotoState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_PHOTO, newPhotoState };
 }
 
 /**
@@ -149,6 +282,22 @@ export function updateTimeState(newTimeState) {
  */
 export function updateDescriptionState(newDescriptionState) {
   return { type: tourCreationConstants.UPDATE_TOUR_DESCRIPTION, newDescriptionState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function setStartTime(newStartState) {
+  return { type: tourCreationConstants.SET_START_TIME, newStartState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function setEndTime(newEndState) {
+  return { type: tourCreationConstants.SET_END_TIME, newEndState };
 }
 
 /**

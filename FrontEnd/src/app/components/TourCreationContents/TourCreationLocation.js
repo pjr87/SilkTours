@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updateAddressState, setTabKey } from '../../actions/TourCreationActions';
 
@@ -37,7 +37,7 @@ class TourCreationLocation extends React.Component{
           <br/>
           <p className={style.HeaderStyle}>We will be begin by selecting a city</p>
           <br/>
-          <EditableField label="City" onChange={this._changeLocation} value={this.props.tour.address.city}/>
+          <EditableFieldClass style={style.BodyStyle} label="City" onChange={this._changeLocation} value={this.props.tour.address.city}/>
           <br/>
           <Pager>
             <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
@@ -52,7 +52,7 @@ class TourCreationLocation extends React.Component{
           <br/>
           <p className={style.BodyStyle}>We will be begin by selecting a city</p>
           <br/>
-          <EditableField label="City" onChange={this._changeLocation} value=""/>
+          <EditableFieldClass style={style.BodyStyle} label="City" onChange={this._changeLocation} value=""/>
           <br/>
             <Pager>
               <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>

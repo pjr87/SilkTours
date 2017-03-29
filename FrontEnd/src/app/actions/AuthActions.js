@@ -6,7 +6,7 @@
  * messes it up weirdly somewhere.
  *
  * To add a new Action:
- * 1) Import your constant
+ * 1) Import your constantupdateUserState
  * 2) Add a function like this:
  *    export function yourAction(var) {
  *        return { type: YOUR_ACTION_CONSTANT, var: var }
@@ -47,6 +47,17 @@ export function login(username, password) {
 
     if (cognitoFunctions.loggedIn()) {
       console.log("Logged In");
+      // When the request is finished, hide the loading indicator
+      dispatch(sendingRequest(false));
+      dispatch(setAuthState(true));
+
+      // If the login worked, forward the user to home and clear the form
+      dispatch(changeLoginForm({
+        username: "",
+        password: ""
+      }));
+      dispatch(clearError());
+      forwardTo('/');
       return;
     }
 

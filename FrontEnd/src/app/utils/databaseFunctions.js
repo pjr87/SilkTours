@@ -55,6 +55,17 @@ export function putTourEventById(eventid, json, auth) {
     });
 }
 
+export function putTourEvent(json, auth) {
+    let url = SERVER_URL + '/tourevents';
+    return axios.post(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 export function getAllTours() {
     return axios.get(SERVER_URL + "/search");
 }
@@ -68,6 +79,17 @@ export function getUser(id){
 
 export function newTour(data, auth){
     let url = SERVER_URL + '/tours';
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function newPhoto(data, id, auth){
+    let url = SERVER_URL + '/tours/image/' + id;
     return axios.post(url, data,
     {
       headers:{

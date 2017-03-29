@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updateAdditionalState, setTabKey } from '../../actions/TourCreationActions';
 
@@ -45,13 +45,13 @@ class TourCreationAdditional extends React.Component{
         <br/>
         <p className={style.HeaderStyle}>Will you offer any additional services?</p>
         <br/>
-        <EditableField label="Accomadation" onChange={this._changeAccomodation} value={this.props.tour.additional_accomadation}/>
+        <EditableFieldClass style={style.BodyStyle} label="Accommodation" onChange={this._changeAccomodation} value={this.props.tour.additional_accomadation}/>
         <br/>
         <br/>
-        <EditableField label="Food" onChange={this._changeFood} value={this.props.tour.additional_food}/>
+        <EditableFieldClass style={style.BodyStyle} label="Food" onChange={this._changeFood} value={this.props.tour.additional_food}/>
         <br/>
         <br/>
-        <EditableField label="Transport" onChange={this._changeTransport} value={this.props.tour.additional_transport}/>
+        <EditableFieldClass style={style.BodyStyle} label="Transport" onChange={this._changeTransport} value={this.props.tour.additional_transport}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>

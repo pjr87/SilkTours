@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
+import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
 import { updatePriceState, setTabKey } from '../../actions/TourCreationActions';
 
@@ -35,7 +35,7 @@ class TourCreationPrice extends React.Component{
         <br/>
         <p className={style.HeaderStyle}>What will this tour cost?</p>
         <br/>
-        <EditableField label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
+        <EditableFieldClass style={style.BodyStyle} label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>

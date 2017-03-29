@@ -4,9 +4,8 @@ import {Map} from 'components';
 export default class StopDisplay extends React.Component{
 
   renderStops(){
-    console.log("this.props.stops", this.props.stops);
     const stops = this.props.stops.map(function(obj){
-        return(<li key={obj.key}> {"stop "+(obj.key+1)+": "+obj.data.latLng.lat()+", "+obj.data.latLng.lng()}
+        return(<li key={obj.key}> {"stop "+(obj.key+1)+": "+obj.lat+", "+obj.lon}
           <button onClick={this.moveStop.bind(this,"up",obj.key)}> move up </button>
             <button onClick={this.moveStop.bind(this,"down",obj.key)}> move down </button>
             <button onClick={this.removeStop.bind(this,obj.key)}> remove </button>
@@ -17,11 +16,14 @@ export default class StopDisplay extends React.Component{
   }
 
   addStop(val){
-    var stops = this.props.stops;
-    console.log("addstop, tour:",this.props.stops);
-    var k=stops.length;
-    var stop = {data:val, key:k};
-    stops.push(stop);
+    //var stops = this.props.stops;
+    var k = this.props.stops.length;
+    var stop = {
+      lat:val.latLng.lat(),
+      lon:val.latLng.lng(),
+      key: k
+    };
+    this.props.stops.push(stop);
     this.props.updateStops(this.props.stops);
   }
 
