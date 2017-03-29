@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from base import Base
 from db_session import session, commitSession
@@ -9,8 +9,8 @@ class Stop(Base):
     __tablename__ = 'Stop'
     id_stop = Column(Integer, primary_key=True)
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
-    lat = Column(Integer)
-    lon = Column(Integer)
+    lat = Column(Float)
+    lon = Column(Float)
     tour = relationship("Tour", foreign_keys=[id_tour])
 
     def set_props(self, id_tour, lat, lon):
