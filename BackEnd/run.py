@@ -111,7 +111,7 @@ s3 = S3Controller()
 #Session = scoped_session(sessionmaker(bind=engine))
 #session = None
 
-
+'''
 @app.before_request
 def before_request():
     createSession()
@@ -123,7 +123,7 @@ def after_request(response):
         response = funct(response)
     session.close()
     return response
-
+'''
 
 @app.errorhandler(500)
 def internal_server_error(e):
@@ -268,7 +268,7 @@ def add_rating():
     tour.rating_count += 1
     session.add(tour)
     session.add(rating)
-    session.commit()
+    #session.commit()
     commitSession()
     return "Success"
 
@@ -287,9 +287,7 @@ def add_stop():
 
     stop.set_props(id_tour, lat, lon)
 
-    session.add(stop)
-    session.commit()
-    commitSession()
+    commitSession(stop)
     return "Success"
 
 
@@ -365,4 +363,4 @@ def get_image(tourid):
     return s3.get_image(tourid)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True, threaded=True)

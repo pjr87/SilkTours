@@ -14,10 +14,12 @@ def createSession():
         session = Session()
 
 
-def commitSession(obj=None):
+def commitSession(obj=None, obj2=None):
     createSession()
     if obj is not None:
         session.add(obj)
+    if obj2 is not None:
+        session.add(obj2)
     try:
         session.commit()
     except Exception as e:
