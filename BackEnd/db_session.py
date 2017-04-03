@@ -14,10 +14,25 @@ def createSession():
         session = Session()
 
 
-def commitSession(obj=None):
+def safe_call(obj, fname, arg, retryCount=0):
+    method_to_call = getattr(obj, fname)
+    try:
+        if arg is None:
+            return method_to_call()
+        return method_to_call(arg)
+    except Exception as e:
+        print("SQL Error: " + str(e))
+        session.rollback()
+        if (retryCount < 2):
+            return safe_call(obj, fname, arg, retryCount+1)
+
+
+def commitSession(obj=None, obj2=None):
     createSession()
     if obj is not None:
         session.add(obj)
+    if obj2 is not None:
+        session.add(obj2)
     try:
         session.commit()
     except Exception as e:

@@ -53,7 +53,92 @@ class EditableField extends React.Component{
   }
 }
 
+class EditableFieldClass extends React.Component{
 
+  onChangeHandler(e){
+    this.props.onChange(e);
+  }
+
+  render(){
+    if(this.props.value == null){
+      return (
+        <FormGroup controlId={this.props.id}>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <ControlLabel className={this.props.style}> {this.props.label} </ControlLabel>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+                <FormControl type="input" onChange={this.onChangeHandler.bind(this)} value='' />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+        </FormGroup>
+      );
+    }
+    else{
+      return (
+        <FormGroup controlId={this.props.id}>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <ControlLabel className={this.props.style}> {this.props.label} </ControlLabel>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+                <FormControl type="input" onChange={this.onChangeHandler.bind(this)} value={this.props.value} />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+        </FormGroup>
+      );
+    }
+  }
+}
+
+class StaticField extends React.Component{
+  render(){
+    if(this.props.value == null){
+      return (
+        <FormGroup controlId={this.props.id}>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <ControlLabel className={this.props.style}> {this.props.label} </ControlLabel>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+                <FormControl type="input" value='' />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+        </FormGroup>
+      );
+    }
+    else{
+      return (
+        <FormGroup controlId={this.props.id}>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <ControlLabel className={this.props.style}> {this.props.label} </ControlLabel>
+          </Col>
+          <Col xs={12} md={6} lg={6}>
+                <FormControl type="input" value={this.props.value} />
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <div />
+          </Col>
+        </FormGroup>
+      );
+    }
+  }
+}
 
 
 class DoubleEditableField extends React.Component{
@@ -118,4 +203,4 @@ class FormButton extends React.Component{
   }
 }
 
-export {EditableField, FormTitle, FormButton, DoubleEditableField};
+export {EditableField, EditableFieldClass, StaticField, FormTitle, FormButton, DoubleEditableField};

@@ -10,7 +10,7 @@ class Interests(Base):
     VISABLE_PROPS = ["name", "id_interestList"]
 
     id_interestList = Column(Integer, primary_key=True)
-    name = Column(String)
+    text = Column(String)
     #id_interest = Column(Integer, ForeignKey("address.id"))
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
 
@@ -36,7 +36,7 @@ class Interests(Base):
 
     def serialize(self):
         return {
-            "name": self.name,
+            "text": self.text,
             "id_interestList": self.id_interestList
         }
 

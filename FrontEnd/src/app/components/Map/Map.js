@@ -9,8 +9,8 @@ export default class Map extends React.Component{
     const markers = this.props.markers.map(function(marker) {
         return (
           <Marker key={ marker.key }
-           lat={ marker.data.latLng.lat() }
-           lng={ marker.data.latLng.lng() }
+           lat={ marker.lat }
+           lng={ marker.lon }
            draggable={ true }
            onDragEnd={ this.props.onMarkerDragged.bind(this, marker.key) }
            label={(marker.key+1)+""}

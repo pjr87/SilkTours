@@ -5,11 +5,11 @@ import Col from 'react-bootstrap/lib/Col';
 
 import { WithContext as ReactTags } from 'react-tag-input';
 import {EditableField, FormTitle, DoubleEditableField, FormButton} from '../Forms/Forms.js';
-import { updateUserState } from '../../actions/AuthActions';
+import { updateInterestState } from '../../actions/TourCreationActions';
 
 import style from './style.css';
 
-export default class Interests extends React.Component{
+export default class TourInterests extends React.Component{
   constructor(){
     super();
 
@@ -17,22 +17,21 @@ export default class Interests extends React.Component{
   }
 
   _changeInterest(interest) {
-    this._emitUserChange({...this.props.user, interests: interest});
+    this._emitTourChange({...this.props.tour, interests: interest});
   }
 
-  _emitUserChange (newUserState) {
-    this.props.dispatch(updateUserState(newUserState))
+  _emitTourChange (newInterestState) {
+    this.props.dispatch(updateInterestState(newInterestState))
   }
 
   deleteTag(i) {
-    var interests = this.props.user.interests;
+    var interests = this.props.tour.interests;;
     interests.splice(i, 1);
     this._changeInterest(interests);
   }
 
   addTag(tag) {
-
-    var interests = this.props.user.interests;
+    var interests = this.props.tour.interests;
     interests.push({
         id: interests.length+1,
         text: tag
@@ -43,7 +42,6 @@ export default class Interests extends React.Component{
   render(){
     return (
       <div>
-        <FormTitle title={this.props.title} />
       <Grid>
         <Row>
             <Col xs={0} md={1} lg={1}>
@@ -59,7 +57,7 @@ export default class Interests extends React.Component{
               remove: style.ReactTags__remove,
               suggestions: style.ReactTags__suggestions
             }}
-              tags={this.props.user.interests}
+              tags={this.props.tour.interests}
               handleDelete={this.deleteTag.bind(this)}
               handleAddition={this.addTag.bind(this)}/>
              <br />

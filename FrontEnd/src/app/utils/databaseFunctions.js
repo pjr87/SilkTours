@@ -55,6 +55,17 @@ export function putTourEventById(eventid, json, auth) {
     });
 }
 
+export function putTourEvent(json, auth) {
+    let url = SERVER_URL + '/tourevents';
+    return axios.post(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 export function getAllTours() {
     return axios.get(SERVER_URL + "/search");
 }
@@ -66,12 +77,26 @@ export function getUser(id){
 
 }
 
-export function newTour(data){
-    console.log(data);
-    var url = SERVER_URL + "/tours";
-    console.log("url: "+url);
-    //var t = JSON.stringify(data);
-    return axios.post(url, data);
+export function newTour(data, auth){
+    let url = SERVER_URL + '/tours';
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function newPhoto(data, id, auth){
+    let url = SERVER_URL + '/tours/image/' + id;
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
 }
 
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.
