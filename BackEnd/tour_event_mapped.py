@@ -19,6 +19,7 @@ class TourEvent(Base):
     start_date_time = Column(DateTime)
     end_date_time = Column(DateTime)
     state = Column(String)
+    pending_review = Column(Boolean)
 
     # TODO parse datetime strings before setting
     def set_props(self, data):
@@ -54,5 +55,6 @@ class TourEvent(Base):
             "id_tour": self.id_tour,
             "start_date_time": start_date_time,
             "end_date_time": end_date_time,
-            "state": self.state
+            "state": self.state,
+            "pending_review": self.pending_review
         }
