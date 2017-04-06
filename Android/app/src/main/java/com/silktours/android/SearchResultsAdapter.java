@@ -42,6 +42,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         this.parentHeight = height;
     }
 
+    public void add (List<Tour> newPage) {
+        int prevTourCount = tourList.size();
+        tourList.addAll(newPage);
+        this.notifyItemRangeInserted(prevTourCount, newPage.size());
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         parentWidth = parent.getWidth();
