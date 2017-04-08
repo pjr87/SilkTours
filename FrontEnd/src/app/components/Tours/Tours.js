@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Link } from 'react-router';
-
+import style from './style.css';
 import Col from 'react-bootstrap/lib/Col';
 import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 import Button from 'react-bootstrap/lib/Button';
@@ -40,7 +40,7 @@ class Tours extends React.Component{
       stops: this.props.stops,
     };
   }
-  
+
   render(){
     const guidesLength = this.state.guides.length;
     let guideButton = null;
@@ -68,7 +68,7 @@ class Tours extends React.Component{
     return (
       <Col xs={12} md={6} lg={6}>
         <Thumbnail>
-          <img width={900} height={400} alt="1800x800" src={this.state.profile_image}/>
+          <img className="card-img-top tour-image img-responsive"  src={this.state.profile_image}/>
           <p>{this.state.name}</p>
           <p>review: </p>
           <p>price: ${this.state.price}</p>
