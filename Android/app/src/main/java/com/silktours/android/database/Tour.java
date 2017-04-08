@@ -59,6 +59,7 @@ public class Tour extends Base implements Serializable {
         public double priceMin;
         public double priceMax;
         public double minRating;
+        public int page = 0;
 
         public FilterParams() {
             query = "";
@@ -82,6 +83,7 @@ public class Tour extends Base implements Serializable {
 
     public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
         URIBuilder uri = new URIBuilder(Common.SERVER_URL + "/search");
+        uri.addParam("page", Integer.toString(params.page));
         if (params.query != null) {
             List<String> keywords = Arrays.asList(params.query.split(" "));
             if (keywords.size() > 0) {

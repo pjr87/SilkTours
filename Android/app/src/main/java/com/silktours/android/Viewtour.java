@@ -192,7 +192,8 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
 
             @Override
             protected void onPostExecute(Bitmap response) {
-                imgProfile.setImageBitmap(response);
+                if (response != null)
+                    imgProfile.setImageBitmap(response);
             }
         }.execute();
         getMedia(tourId);
@@ -262,6 +263,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        if (bm == null) return null;
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
