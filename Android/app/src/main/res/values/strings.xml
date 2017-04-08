@@ -25,4 +25,11 @@
     <string name="loading">Loading&#8230;</string>
     <string name="facebook_app_id">606443696175641</string>
     <string name="default_media_location_folder">SilkTours</string>
+
+    <!--content_my_tour-->
+    <string name="role">I am a </string>
+    <string-array name="spinner_items">
+        <item>Tourist</item>
+        <item>Guide</item>
+    </string-array>
 </resources>
