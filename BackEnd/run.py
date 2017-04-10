@@ -2,13 +2,13 @@ from flask import Flask, g
 from flask import jsonify
 from flask import request
 import json
-from user_mapped import User
-from ratings_mapped import Rating
-from tour_mapped import Tour
-from stop_mapped import Stop
+from app.models.user_mapped import User
+from app.models.ratings_mapped import Rating
+from app.models.tour_mapped import Tour
+from app.models.stop_mapped import Stop
 
 from flask_cors import CORS
-from tour_event_mapped import TourEvent
+from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
 from db_session import session, commitSession, safe_call, limiting_query

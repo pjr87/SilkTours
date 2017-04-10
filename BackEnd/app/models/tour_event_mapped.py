@@ -1,6 +1,6 @@
 import datetime
-from interests_mapped import Interests
-from tour_mapped import Tour
+from app.models.interests_mapped import Interests
+from app.models.tour_mapped import Tour
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
