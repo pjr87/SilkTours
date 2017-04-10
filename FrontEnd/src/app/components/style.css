@@ -6,3 +6,28 @@
 .centerStuff{
 	text-align: center;
 }
+
+.footerSocial{
+	font-size: 1.5rem;
+
+}
+
+.footerBG{
+	padding: 2rem 0;
+	background-color: #BB66AA;
+}
+
+.icons{
+	padding: 5px 0px;
+}
+
+.contactUsText a, .contactUsText {
+	color: white;
+	font-weight: bold;
+}
+
+
+.contactSpan{
+	font-size:26pt;
+	vertical-align: middle;
+}

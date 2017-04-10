@@ -24,3 +24,5 @@ export MyToursContents from './MyToursContents/MyToursContents';
 export TourCreationContents from './TourCreationContents/TourCreationContents';
 
 export MessageBody from './MessageBody/MessageBody';
+
+export Footer from './Footer/Footer';
