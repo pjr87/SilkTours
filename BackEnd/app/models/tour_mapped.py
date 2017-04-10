@@ -29,6 +29,8 @@ class Tour(Base):
     id_rating = Column(Integer)
     average_rating = Column(Float)
     rating_count = Column(Integer)
+    address_id = Column(Integer, ForeignKey("Address.id_address"))
+    address = relationship("Address", foreign_keys=[address_id])
     ratings = relationship("Rating")
     stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")

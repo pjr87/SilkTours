@@ -17,8 +17,8 @@ from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
 import sys
 
-outputFile = open('out.log', 'w')
-sys.stdout = sys.stderr = outputFile
+#outputFile = open('out.log', 'w')
+#sys.stdout = sys.stderr = outputFile
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -164,11 +164,13 @@ def search():
     if priceMax is not None:
         query = query.filter("Tour.price<=" + priceMax)
     if city is not None:
-        query = query.filter(Tour.address_city == city)
+        query = query.filter(Tour.address.has(city=city))
     query = limiting_query(query, page, page_size)
     tours = safe_call(query, "all", None)
 
     result = []
+    if tours is None:
+        tours = []
     for tour in tours:
         result.append(tour.serialize(True))
 
