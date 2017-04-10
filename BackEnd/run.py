@@ -2,13 +2,13 @@ from flask import Flask, g
 from flask import jsonify
 from flask import request
 import json
-from user_mapped import User
-from ratings_mapped import Rating
-from tour_mapped import Tour
-from stop_mapped import Stop
+from app.models.user_mapped import User
+from app.models.ratings_mapped import Rating
+from app.models.tour_mapped import Tour
+from app.models.stop_mapped import Stop
 
 from flask_cors import CORS
-from tour_event_mapped import TourEvent
+from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
 from db_session import session, commitSession, safe_call, limiting_query
@@ -17,8 +17,8 @@ from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
 import sys
 
-outputFile = open('out.log', 'w')
-sys.stdout = sys.stderr = outputFile
+#outputFile = open('out.log', 'w')
+#sys.stdout = sys.stderr = outputFile
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -164,11 +164,13 @@ def search():
     if priceMax is not None:
         query = query.filter("Tour.price<=" + priceMax)
     if city is not None:
-        query = query.filter(Tour.address_city == city)
+        query = query.filter(Tour.address.has(city=city))
     query = limiting_query(query, page, page_size)
     tours = safe_call(query, "all", None)
 
     result = []
+    if tours is None:
+        tours = []
     for tour in tours:
         result.append(tour.serialize(True))
 

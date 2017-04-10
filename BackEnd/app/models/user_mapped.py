@@ -1,8 +1,8 @@
 # from interests import Interests
 import datetime
-from address_mapped import Address
-from interests_mapped import Interests
-from tour_event_mapped import TourEvent
+from app.models.address_mapped import Address
+from app.models.interests_mapped import Interests
+from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base

@@ -1,8 +1,8 @@
 import datetime
-from interests_mapped import Interests
-from ratings_mapped import Rating
-from stop_mapped import Stop
-from tour_guide_mapped import TourGuides
+from app.models.interests_mapped import Interests
+from app.models.ratings_mapped import Rating
+from app.models.stop_mapped import Stop
+from app.models.tour_guide_mapped import TourGuides
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -29,6 +29,8 @@ class Tour(Base):
     id_rating = Column(Integer)
     average_rating = Column(Float)
     rating_count = Column(Integer)
+    address_id = Column(Integer, ForeignKey("Address.id_address"))
+    address = relationship("Address", foreign_keys=[address_id])
     ratings = relationship("Rating")
     stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
