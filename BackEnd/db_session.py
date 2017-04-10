@@ -14,6 +14,14 @@ def createSession():
         session = Session()
 
 
+def limiting_query(query, page=0, page_size=None):
+    if page_size:
+        query = query.limit(page_size)
+    if page:
+        query = query.offset(page*page_size)
+    return query
+
+
 def safe_call(obj, fname, arg, retryCount=0):
     method_to_call = getattr(obj, fname)
     try:

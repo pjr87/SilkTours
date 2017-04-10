@@ -11,7 +11,7 @@ from flask_cors import CORS
 from tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
-from db_session import session, commitSession, safe_call
+from db_session import session, commitSession, safe_call, limiting_query
 
 from app.database_module.controlers import DbController
 from app.s3_module.controlers import S3Controller
@@ -138,6 +138,8 @@ def search():
     priceMin = request.args.get("priceMin", None)
     priceMax = request.args.get("priceMax", None)
     city = request.args.get("city", None)
+    page = int(request.args.get("page", 0))
+    page_size = int(request.args.get("page_size", 10))
 
     query = session.query(Tour)
     if interests is not None:
@@ -163,7 +165,7 @@ def search():
         query = query.filter("Tour.price<=" + priceMax)
     if city is not None:
         query = query.filter(Tour.address_city == city)
-
+    query = limiting_query(query, page, page_size)
     tours = safe_call(query, "all", None)
 
     result = []
