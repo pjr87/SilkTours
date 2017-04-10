@@ -8,21 +8,20 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Button from 'react-bootstrap/lib/Button';
 import Pager from 'react-bootstrap/lib/Pager';
+import {connect} from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import TourContainer from '../Tours/TourFilteredContainer'
+import { setSelectedKeywords, setSelectedRating, setSelectedPriceMin, setSelectedPriceMax, setSelectedCity, setSelectedInterests, searchTour } from '../../actions/SearchActions';
 
 class SearchBar extends React.Component{
   constructor(props){
     super();
     this.state = {
-      rating: '0',
-      priceMin: '0',
-      priceMax: '1000000',
-      keywords: '',
-      ratingProp: '0',
-      priceMinProp: '0',
-      priceMaxProp: '1000000',
-      keywordsProp: ''
+      rating: props.rating,
+      priceMin: props.priceMin,
+      priceMax: props.priceMax,
+      keywords: props.keywords,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
@@ -33,18 +32,12 @@ class SearchBar extends React.Component{
 
   handleSubmit(e) {
     e.preventDefault();
-    // console.log("Search");
-    // console.log("Rating: " + this.state.rating);
-    // console.log("PriceMin: " + this.state.priceMin);
-    // console.log("PriceMax: " + this.state.priceMax);
-    // console.log("keywords: " + this.state.keywords);
-    this.setState({
-      ratingProp: this.state.rating,
-      priceMinProp: this.state.priceMin,
-      priceMaxProp: this.state.priceMax,
-      keywordsProp: this.state.keywords
-    });
 
+    this.props.dispatch(setSelectedRating(this.state.rating))
+    this.props.dispatch(setSelectedPriceMin(this.state.priceMin))
+    this.props.dispatch(setSelectedPriceMax(this.state.priceMax))
+    this.props.dispatch(setSelectedKeywords(this.state.keywords))
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", ""));
   }
 
   handleRatingChange(e) {
@@ -131,4 +124,28 @@ class SearchBar extends React.Component{
   }
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  tours: React.PropTypes.array,
+  keywords: React.PropTypes.string,
+  interests: React.PropTypes.string,
+  rating: React.PropTypes.string,
+  priceMin: React.PropTypes.string,
+  priceMax: React.PropTypes.string,
+  city: React.PropTypes.string,
+  isLoaded: React.PropTypes.bool
+}
+
+function select (state) {
+  return {
+    tours: state.SearchReducer.tours,
+    keywords: state.SearchReducer.keywords,
+    interests: state.SearchReducer.interests,
+    rating: state.SearchReducer.rating,
+    priceMin: state.SearchReducer.priceMin,
+    priceMax: state.SearchReducer.priceMax,
+    city: state.SearchReducer.city,
+    isLoaded: state.SearchReducer.isLoaded
+  };
+}
+
+export default connect(select)(SearchBar);
