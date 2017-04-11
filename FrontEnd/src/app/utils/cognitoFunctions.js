@@ -159,7 +159,39 @@ var cognitoFunctions = {
    */
   logout(callback) {
     //TODO logout stuff
-    //config.credentials.clearCachedId();
+    var data = {
+      UserPoolId: appConfig.userPoolId,
+      ClientId: appConfig.clientId,
+    };
+
+    var userPool = new CognitoIdentityServiceProvider.CognitoUserPool(data);
+    var cognitoUser = userPool.getCurrentUser();
+
+    //If there is a current session then logout that current session
+    if (cognitoUser != null) {
+      cognitoUser.getSession(function(err, session) {
+          if (err) {
+             alert(err); //TODO
+              return;
+          }
+
+          //If successful build login value
+          let loginsIdpData = {};
+          let loginsCognitoKey = 'cognito-idp.us-east-1.amazonaws.com/' + appConfig.userPoolId
+          loginsIdpData[loginsCognitoKey] = session.getIdToken().getJwtToken();
+
+          //Set credentials
+          config.credentials = new CognitoIdentityCredentials({
+            IdentityPoolId: appConfig.identityPoolId,
+            Logins: loginsIdpData
+          });
+
+          //Logout and reset the credentials
+          //cognitoUser.globalSignOut(); //Signs user out globally by invalidating all tokens
+          cognitoUser.signOut(); //Signs the current user out from the application
+          config.credentials.clearCachedId(); //Clears the AWS tokens
+      });
+    }
     callback(true);
   },
   /**
