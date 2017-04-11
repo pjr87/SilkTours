@@ -1,0 +1,4 @@
+.tour-image {
+  border-color: $gray-lightest;
+  img { width: 100%; }
+}
