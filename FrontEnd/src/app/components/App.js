@@ -10,6 +10,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import NavBar from './NavBar/NavBar';
+import Footer from './Footer/Footer';
 import { connect } from 'react-redux';
 import style from './style.css';
 
@@ -24,10 +25,7 @@ class App extends Component {
                 location={this.props.location}
                 dispatch={this.props.dispatch}/>
         { this.props.children }
-        <div className={style.centerStuff}>
-          <p className= {style.Footer}><Link to='/contactus'>Contact us</Link></p>
-          <p className = {style.Footer}>&#169;silk tours inc.</p>
-        </div>
+        <Footer location={this.props.location} brandName={"Silk Tours Inc."}/>
       </div>
     )
   }

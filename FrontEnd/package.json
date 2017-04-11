@@ -82,6 +82,7 @@
     "eslint-plugin-react": "^3.3.2",
     "file-loader": "^0.8.4",
     "html-webpack-plugin": "^1.6.1",
+    "jest-cli": "^17.0.0",
     "json-loader": "^0.5.4",
     "object.assign": "^4.0.1",
     "postcss-focus": "^1.0.0",
@@ -89,11 +90,11 @@
     "postcss-loader": "^0.8.0",
     "postcss-reporter": "^1.2.1",
     "postcss-simple-vars": "^1.0.0",
+    "react-social-icons": "^2.6.0",
     "react-transform-hmr": "^1.0.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
-    "webpack": "^1.13.2",
-    "jest-cli": "^17.0.0"
+    "webpack": "^1.13.2"
   },
   "jest": {
     "scriptPreprocessor": "./tools/preprocessor.js",
