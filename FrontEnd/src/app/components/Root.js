@@ -7,12 +7,13 @@ import{
   ExplorePage,
   TourDetailPage,
   TourConfirmationPage,
-  ActivitiesPage,
   AboutUsPage,
   SignInPage,
   SignUpPage,
+  ProfilePage,
   ConfirmationPage,
   TourCreationPage,
+  BecomeGuidePage,
   MyToursPage,
   ContactUsPage,
   SettingsPage,
@@ -55,7 +56,6 @@ const Root = ({ store }) => (
       <Route component={App}>
         <Route path="/" component={ExplorePage}/>
         <Route path="/tourdetail" component={TourDetailPage}/>
-        <Route path="/activities" component={ActivitiesPage}/>
         <Route path="/about" component={AboutUsPage}/>
         <Route path="/sign" component={SignInPage}/>
         <Route path='/contactus' component={ContactUsPage}/>
@@ -64,11 +64,13 @@ const Root = ({ store }) => (
         <Route path='/messagereact' component={MessagesReact} />
         <Route path='/contactusredux' component ={ContactUsRedux} />
         <Route path='/notfound' component ={NotFound} />
+        <Route path='/profile' component ={ProfilePage} />
         <Route onEnter={checkAuth}>
           <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route path='/tour-creation' component={TourCreationPage}/>
+          <Route path='/become-guide' component={BecomeGuidePage}/>
           <Route path='/tour-signup' component={TourSignup}/>
           <Route path='/messages' component={MessagesPage}/>
         </Route>

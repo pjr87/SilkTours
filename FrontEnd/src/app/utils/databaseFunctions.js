@@ -73,8 +73,7 @@ export function getAllTours() {
 export function getUser(id){
     var url = SERVER_URL + "/users/"+id;
     console.log("url: "+url);
-    return axios.get(url, data);
-
+    return axios.get(url);
 }
 
 export function newTour(data, auth){
