@@ -208,10 +208,16 @@ class TourDetailContents extends React.Component{
                       return (
                         <li key={i} className={style.content}>{i+1}</li>);
                       })}
-                    <p className={style.contentSubTitle}>Guide: </p>
+                    <p className={style.contentSubTitle}>Guides: </p>
                     {this.props.selectedTour.guides.map((guides, i) => {
                       return (
-                        <li key={i} className={style.content}>{guides.first_name} {guides.last_name}</li>);
+                        <li key={i} className={style.content}><Link
+                                      to={{
+                                        pathname: '/profile',
+                                        query: { guideUserId: this.props.selectedTour.guides[0].id_user}
+                                        }}>
+                                        {guides.first_name} {guides.last_name}
+                                      </Link></li>);
                       })}
                     <p className={style.contentSubTitle}>Available Date: </p>
                     {this.props.selectedTourDates.map((availableDates, i) => {
