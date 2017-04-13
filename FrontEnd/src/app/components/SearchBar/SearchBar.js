@@ -9,10 +9,12 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Button from 'react-bootstrap/lib/Button';
 import Pager from 'react-bootstrap/lib/Pager';
 import Pagination from 'react-bootstrap/lib/Pagination';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import TourContainer from '../Tours/TourFilteredContainer'
+import ToursList from '../Tours/ToursList';
 import { setSelectedKeywords, setSelectedRating, setSelectedPriceMin, setSelectedPriceMax, setSelectedCity, setSelectedInterests, searchTour, setSelectedPage, setSelectedPageSize } from '../../actions/SearchActions';
 
 class SearchBar extends React.Component{
@@ -144,7 +146,13 @@ class SearchBar extends React.Component{
           </Form>
         </Pager>
         <br/>
-        <TourContainer rating={this.state.ratingProp} priceMin={this.state.priceMinProp} priceMax={this.state.priceMaxProp} keywords={this.state.keywordsProp}/>
+        <div>
+          <Grid>
+            <Row>
+              <ToursList tours={this.props.tours}/>
+            </Row>
+          </Grid>
+        </div>
         <Pager>
           <Pagination
             prev
