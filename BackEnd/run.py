@@ -12,9 +12,7 @@ from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
 from db_session import session, commitSession, safe_call, limiting_query
-
-from app.database_module.controlers import DbController
-from app.s3_module.controlers import S3Controller
+from app.models.media_mapped import Media
 import sys
 
 #outputFile = open('out.log', 'w')
@@ -90,8 +88,6 @@ def notAuthorizedResponse():
     href='http://localhost:5000/login'>here</a> to login.</h1>""", 403
 
 
-db = DbController()
-s3 = S3Controller()
 
 # engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
 #engine = create_engine(
@@ -281,10 +277,6 @@ def add_stop():
     return "Success"
 
 
-@app.route('/tours', methods=['GET'])
-def get_tour_list():
-    return db.list_tours()
-
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
@@ -381,17 +373,20 @@ def edit_tourevent(eventid):
     return jsonify(event.serialize())
 
 
-@app.route('/tours/image/<tourid>', methods=['POST'])
+@app.route('/image/<tourid>', methods=['POST'])
 def upload(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
     file = request.files['file']
-    return s3.upload(file, tourid)
+    media = Media()
+    return media.upload(file, tourid)
 
 
-@app.route('/tours/image/<tourid>', methods=['GET'])
+@app.route('/media/<tourid>', methods=['GET'])
 def get_image(tourid):
-    return s3.get_image(tourid)
+    query = session.query(Media).filter(Media.id_tour == tourid)
+    medias = safe_call(query, "all", None)
+    return jsonify([media.serialize() for media in medias])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, threaded=True)
