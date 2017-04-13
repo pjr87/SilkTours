@@ -7,6 +7,8 @@ from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
 from db_session import session, commitSession, createSession
+import boto3
+import uuid
 
 
 class Tour(Base):
@@ -94,3 +96,18 @@ class Tour(Base):
         for rating in self.ratings:
             result["ratings"].append(rating.serialize())
         return result
+
+
+    def upload_to_s3(self, file, filename):
+        resource = boto3.resource('s3')
+        bucket = resource.Bucket('silktours-media')
+        bucket.put_object(Key='tour/profile/' + filename, Body=file, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
+
+    def upload_profile_image(self, file, tourid):
+        s = file.filename.split('.')
+        extension = s[-1]
+        url = 'https://s3.amazonaws.com/silktours-media/' + 'tour/profile/' + tourid + '.' + extension
+        self.upload_to_s3(file, tourid + '.' + extension)
+        self.profile_image = url
+        commitSession(self)
+        return self.serialize()
