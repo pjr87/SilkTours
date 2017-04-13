@@ -2,6 +2,7 @@ from flask import Flask, g
 from flask import jsonify
 from flask import request
 import json
+import math
 from app.models.user_mapped import User
 from app.models.ratings_mapped import Rating
 from app.models.tour_mapped import Tour
@@ -136,6 +137,8 @@ def search():
     city = request.args.get("city", None)
     page = int(request.args.get("page", 0))
     page_size = int(request.args.get("page_size", 10))
+    if page_size == 0:
+        page_size = 1
 
     query = session.query(Tour)
     if interests is not None:
@@ -161,7 +164,9 @@ def search():
         query = query.filter("Tour.price<=" + priceMax)
     if city is not None:
         query = query.filter(Tour.address.has(city=city))
+    count = query.count()
     query = limiting_query(query, page, page_size)
+    print(count)
     tours = safe_call(query, "all", None)
 
     result = []
@@ -170,7 +175,11 @@ def search():
     for tour in tours:
         result.append(tour.serialize(True))
 
-    return jsonify({"data": result})
+    return jsonify({
+        "page_count": math.ceil(count/page_size),
+        "page_size": page_size,
+        "page": page,
+        "data": result})
 
 
 @app.route('/users/<id>', methods=['GET'])
