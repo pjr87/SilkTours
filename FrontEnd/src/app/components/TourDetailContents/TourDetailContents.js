@@ -40,55 +40,6 @@ class TourDetailContents extends React.Component{
     this.handleSelectedDateChange = this.handleSelectedDateChange.bind(this);
   }
 
-  /*componentDidMount(){
-    console.log("selected Tour Id " + this.props.selectedTourId)
-    this.fetchPostInfo(this.props.selectedTourId);
-  }*/
-
-  /*fetchPostInfo = async (tourId) => {
-    try {
-      const info = await Promise.all([
-        service.getTourById(tourId),
-        service.getTourEventById(tourId)
-      ]);
-      const tour = info[0].data;
-      const guides = info[0].data.guides;
-      const interests = info[0].data.interests;
-      const reviews = info[0].data.ratings;
-      const stops = info[0].data.stops;
-      const availableDates = info[1].data;
-      this.setState({
-        selectedDate: availableDates[0].id_tourEvent
-      })
-      var selectedTour = {
-        toutId: tour.id_tour,
-        name: tour.name,
-        description: tour.description,
-        price: tour.price,
-        rating: tour.average_rating,
-        maxGroupSize: tour.max_group_size,
-        minGroupSize: tour.min_group_size,
-        tourStartDate: tour.firstStart_date,
-        tourEndDate: tour.lastEnd_date,
-        stops,
-        guides,
-        availableDates,
-        addtionalAccomadation: tour.additional_accomadation,
-        addtionalFood: tour.additional_food,
-        addtionalTransport: tour.additional_transport,
-        interests,
-        profileImage: tour.profile_image,
-        profileImageHeight: tour.profile_image_height,
-        profileImageWidth: tour.profile_image_width,
-        reviews,
-        ratingCount: tour.rating_count
-      }
-      this.props.dispatch(setSelectedTour(selectedTour));
-    } catch(e) {
-      console.log("error occured pulling tour data");
-    }
-  }*/
-
   closeModal() {
     this.setState({ showModal: false, validationState: null });
   }
