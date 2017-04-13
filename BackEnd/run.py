@@ -243,6 +243,15 @@ def edit_user(id):
     user.create_or_edit(data)
     return jsonify(user.serialize())
 
+@app.route('/users/<userid>/profile', methods=['PUT'])
+def edit_user_profile(userid):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    file = request.files['file']
+    user = safe_call(session.query(User), "get", userid)
+    user.upload_profile_image(file, userid)
+    return jsonify(user.serialize())
+
 
 # Adds a new rating
 @app.route('/ratings', methods=['POST'])
@@ -300,6 +309,15 @@ def set_tour():
     data = request.get_json()
     tour = Tour()
     tour.createOrEdit(data)
+    return jsonify(tour.serialize(False))
+
+@app.route('/tours/<tourid>/profile', methods=['PUT'])
+def edit_tour_profile(tourid):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    file = request.files['file']
+    tour = safe_call(session.query(Tour), "get", tourid)
+    tour.upload_profile_image(file, tourid)
     return jsonify(tour.serialize(False))
 
 
@@ -382,7 +400,7 @@ def edit_tourevent(eventid):
     return jsonify(event.serialize())
 
 
-@app.route('/image/<tourid>', methods=['POST'])
+@app.route('/media/<tourid>', methods=['POST'])
 def upload(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
@@ -393,6 +411,8 @@ def upload(tourid):
 
 @app.route('/media/<tourid>', methods=['GET'])
 def get_image(tourid):
+    if not checkLogin():
+        return notAuthorizedResponse()
     query = session.query(Media).filter(Media.id_tour == tourid)
     medias = safe_call(query, "all", None)
     return jsonify([media.serialize() for media in medias])

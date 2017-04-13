@@ -61,5 +61,4 @@ class Media(Base):
         values['id_tour'] = tourid
         values['file_name'] = filename
         result.post(values)
-        return "s"
-
+        return 's'
