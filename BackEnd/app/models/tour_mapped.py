@@ -65,7 +65,7 @@ class Tour(Base):
         self.create_extras(data)
         commitSession(self)
 
-    def serialize(self, deep):
+    def serialize(self, deep=True):
         result = {}
 
         for c in self.__table__.columns:
@@ -74,6 +74,9 @@ class Tour(Base):
             if type(value) is datetime.date:
                 value = str(value)
             result[key] = value
+
+        if not deep:
+            return result
 
         result["stops"] = []
         for stop in self.stops:
