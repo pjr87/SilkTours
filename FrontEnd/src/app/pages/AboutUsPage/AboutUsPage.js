@@ -10,7 +10,7 @@ class AboutUsPage extends React.Component{
         <PageTitle title= "mission statement"/>
         <br/>
         <br/>
-        <PageTitle title= "introducing our team member"/>
+        <PageTitle title= "introducing our team members"/>
         <AboutContents/>
       </div>
     );

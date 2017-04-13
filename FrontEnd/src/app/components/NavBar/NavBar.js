@@ -30,7 +30,8 @@ class NavBar extends Component {
     const dropDown = this.props.loggedIn ? (
       <Dropdown usersName={this.props.usersName}
                 currentlySending={this.props.currentlySending}
-                dispatch={this.props.dispatch}/>
+                dispatch={this.props.dispatch}
+                isGuide={this.props.isGuide}/>
     ) : (
       <LinkContainer to="/sign" onClick={this._clearError}>
         <NavItem eventKey={4}>sign in</NavItem>
@@ -54,9 +55,6 @@ class NavBar extends Component {
               <LinkContainer to="/" onClick={this._clearError}>
                 <NavItem eventKey={1}>home</NavItem>
               </LinkContainer>
-              <LinkContainer to="/activities" onClick={this._clearError}>
-                <NavItem eventKey={2}>activities</NavItem>
-              </LinkContainer>
               <LinkContainer to="/about" onClick={this._clearError}>
                 <NavItem eventKey={3}>about us</NavItem>
               </LinkContainer>
@@ -78,7 +76,8 @@ NavBar.propTypes = {
   loggedIn: React.PropTypes.bool.isRequired,
   usersName: React.PropTypes.string,
   currentlySending: React.PropTypes.bool,
-  dispatch: React.PropTypes.func
+  dispatch: React.PropTypes.func,
+  isGuide: React.PropTypes.bool
 }
 
 export default NavBar;
