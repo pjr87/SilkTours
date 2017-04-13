@@ -91,6 +91,21 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
 
         mapView.onResume(); // needed to get the map to display immediately
 
+        Button createTourButton = (Button) rootView.findViewById(R.id.modifyTour);
+        createTourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ModifyTour.start(tour);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {

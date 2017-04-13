@@ -219,6 +219,14 @@
                 android:visibility="visible"
                 android:background="#2b90f5"/>
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/modifyTour"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="Modify Tour"
+                android:visibility="visible"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

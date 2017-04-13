@@ -20,10 +20,10 @@ import java.util.List;
  */
 public class Tour extends Base implements Serializable {
     private static List<Tour> defaultSearch;
-    /*public String additional_accomadation;
+    public String additional_accomadation;
     public String additional_food;
     public String additional_transport;
-    public String address_city;
+    /*public String address_city;
     public String address_country;
     public String address_street;
     public String address_suffix;
@@ -41,7 +41,7 @@ public class Tour extends Base implements Serializable {
     public static final String name = "name";
 
     //public static String description = "description";
-    public static final Integer id_guide = 48;
+    public static final Integer id_guide = 0;
     //public Double price;
     public static final Integer id_tour = 1;
     public static final Double price = 0.0;

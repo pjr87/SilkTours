@@ -16,7 +16,7 @@ public class Tours extends Base implements Serializable  {
     private String address_city;
     private String address_country;
     private String[] guides;
-    private Integer id_tour;
+    public Integer id_tour;
     private Boolean is_deleted;
     private String name;
     private String profile_image;

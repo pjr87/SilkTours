@@ -1,7 +1,10 @@
 package com.silktours.android;
 
+import android.app.ActivityManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -50,6 +53,7 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
 import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONArray;
@@ -72,7 +76,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
     private View rootView;
     private Tour tour = new Tour();
-    private EditText tourName, tourDesc, price, language;
+    private EditText tourName, tourDesc, price, language, additionalAccommodation, additionalTransport, additionalFood;
     private TextView startDateText, endDateText, addedLocationText;
     private Button startDateBtn, endDateBtn;
     private Calendar start = Calendar.getInstance();
@@ -82,10 +86,14 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private DateFormat formatDate = DateFormat.getDateInstance();
     private Place placeSelected;
 
+    private CredentialHandler credentialHandler;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.content_create_tour, container, false);
+
+        Log.d("User", user.ID_USERS.toString());
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
         price = (EditText) rootView.findViewById(R.id.price);
@@ -95,6 +103,9 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
+        additionalAccommodation = (EditText) rootView.findViewById((R.id.additionalAccommodation));
+        additionalTransport = (EditText) rootView.findViewById((R.id.additionalTransport));
+        additionalFood = (EditText) rootView.findViewById((R.id.additionalFood));
 
         initMap();
         setUpListeners();
@@ -174,6 +185,10 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set("firstStart_date", start.get(Calendar.YEAR)+"-"+start.get(Calendar.MONTH)+"-"+start.get(Calendar.DATE));
                 tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
                 tour.set("language", language.getText().toString());
+                tour.set("id_guide", user.ID_USERS.toString());
+                tour.set("additional_food", additionalFood.getText().toString());
+                tour.set("additional_accomadation", additionalAccommodation.getText().toString());
+                tour.set("additional_transport", additionalTransport.getText().toString());
 
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();

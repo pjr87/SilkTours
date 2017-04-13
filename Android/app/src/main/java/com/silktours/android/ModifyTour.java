@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.silktours.android.database.Tour;
+import com.silktours.android.database.Tours;
 import com.silktours.android.utils.LocationPrompt;
 
 import org.json.JSONArray;
@@ -41,11 +43,11 @@ import java.util.Calendar;
 public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private View rootView;
-    private Tour tour = new Tour();
+    private static Tour tour = new Tour();
     private EditText tourName;
-    private EditText tourDesc,price, language;;
+    private EditText tourDesc,price, language, additionalAccommodation, additionalTransport, additionalFood;
     private TextView startDateText, endDateText, addedLocationText;
-    private Integer tourId = 1;
+    private static Integer tourId = 1;
     private Button startDateBtn, endDateBtn;
     private Calendar start = Calendar.getInstance();
     private Calendar end = Calendar.getInstance();
@@ -54,13 +56,20 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
     private Place placeSelected;
     private DateFormat formatDate = DateFormat.getDateInstance();
 
-    //TODO fill modify tour page when opened
-
+    public static void start(Tours tours) throws IOException, JSONException {
+        tourId = (int)tours.getId_tour();
+        Bundle args = new Bundle();
+        args.putSerializable("TourObject", tour);
+        ModifyTour fragment = new ModifyTour();
+        fragment.setArguments(args);
+        MainActivity.getInstance().getMenu().startFragment(fragment, 1);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.content_modify_tour, container, false);
+       // filloutFields();
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
         price = (EditText) rootView.findViewById(R.id.price);
@@ -70,6 +79,9 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
         startDateText = (TextView) rootView.findViewById(R.id.startDateTextView);
         endDateText = (TextView) rootView.findViewById(R.id.endDateTextView);
         addedLocationText = (TextView) rootView.findViewById(R.id.addedLocations);
+        additionalAccommodation = (EditText) rootView.findViewById((R.id.additionalAccommodation));
+        additionalTransport = (EditText) rootView.findViewById((R.id.additionalTransport));
+        additionalFood = (EditText) rootView.findViewById((R.id.additionalFood));
 
         filloutFields(tourId);
 
@@ -122,7 +134,7 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
             }
         });
 
-        Button modifyTour = (Button) rootView.findViewById(R.id.createTour);
+        Button modifyTour = (Button) rootView.findViewById(R.id.modifyTour);
         modifyTour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +149,9 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                 tour.set("firstStart_date", start.get(Calendar.YEAR)+"-"+start.get(Calendar.MONTH)+"-"+start.get(Calendar.DATE));
                 tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
                 tour.set("language", language.getText().toString());
+                tour.set("additional_food", additionalFood.getText().toString());
+                tour.set("additional_accomadation", additionalAccommodation.getText().toString());
+                tour.set("additional_transport", additionalTransport.getText().toString());
 
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();
@@ -224,6 +239,11 @@ public class ModifyTour extends Fragment implements OnMapReadyCallback, GoogleAp
                 tourDesc.setText(tour.getStr(Tour.description));
                 price.setText((tour.getDbl("price")).toString());
                 language.setText(tour.getStr("language"));
+                additionalAccommodation.setText(tour.getStr("additional_accomadation"));
+                additionalFood.setText(tour.getStr("additional_food"));
+                additionalTransport.setText(tour.getStr("additional_transport"));
+                startDateText.setText(tour.getStr("firstStart_date"));
+                endDateText.setText(tour.getStr("firstEnd_date"));
                 // try {
                 //    location.setText(user.getStr("address:street"));
                // } catch (Exception e) {

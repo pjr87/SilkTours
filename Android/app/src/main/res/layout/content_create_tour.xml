@@ -208,7 +208,53 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:inputType="text"
-          android:hint="Enter Price"
+          android:hint="Enter Price" />
+
+  <TextView
+      android:id="@+id/additionalFoodText"
+      android:layout_below="@+id/price"
+      android:layout_marginTop="10dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textStyle="bold"
+      android:text="Additional Services - Food"/>
+
+      <EditText
+          android:id="@+id/additionalFood"
+          android:layout_below="@+id/additionalFoodText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"/>
+
+      <TextView
+          android:id="@+id/additionalAccommodationText"
+          android:layout_below="@+id/additionalFood"
+          android:layout_marginTop="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          android:text="Additional Services - Accommodation"/>
+      <EditText
+          android:id="@+id/additionalAccommodation"
+          android:layout_below="@+id/additionalAccommodationText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"/>
+
+      <TextView
+          android:id="@+id/additionalTransportText"
+          android:layout_below="@+id/additionalAccommodation"
+          android:layout_marginTop="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          android:text="Additional Services - Transport"/>
+      <EditText
+          android:id="@+id/additionalTransport"
+          android:layout_below="@+id/additionalTransportText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"
           android:layout_marginBottom="50dp"/>
 
       <Button
