@@ -15,8 +15,9 @@ class ExplorePage extends React.Component{
   render(){
     return (
       <div>
-        <BannerImage/>
-        <PageTitle title= "available tours"/>
+        <br/>
+        <br/>
+        <PageTitle title= "Available tours"/>
         <SearchBar/>
       </div>
     );

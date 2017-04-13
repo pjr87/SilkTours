@@ -106,7 +106,7 @@ export function createTour(tour, auth, photos, startTime, endTime) {
               service.putTourEvent(tourEvent, auth).then(function(response){
                 if(response.data){
                   dispatch(sendingRequest(false));
-                  forwardTo('/');
+                  forwardTo('/explore');
                   dispatch(clearTour())
                   dispatch(updatePhotoState([]))
                   dispatch(setTabKey("info"))
@@ -140,7 +140,7 @@ export function createTour(tour, auth, photos, startTime, endTime) {
             service.putTourEvent(tourEvent, auth).then(function(response){
               if(response.data){
                 dispatch(sendingRequest(false));
-                forwardTo('/');
+                forwardTo('/explore');
                 dispatch(clearTour())
                 dispatch(updatePhotoState([]))
                 dispatch(setTabKey("info"))

@@ -14,3 +14,4 @@ export ContactUsRedux from './ContactUsRedux/ContactUsRedux';
 export MyToursPage from './MyToursPage/MyToursPage';
 export MessagesPage from './MessagesPage/MessagesPage';
 export ProfilePage from './ProfilePage/ProfilePage';
+export LandingPage from './LandingPage/LandingPage';
