@@ -40,7 +40,7 @@ class Media(Base):
     def upload_to_s3(self, file, filename, tourid):
         resource = boto3.resource('s3')
         bucket = resource.Bucket('silktours-media')
-        bucket.put_object(Key='tour/' + tourid + '/' + filename, Body=file)
+        bucket.put_object(Key='tour/' + tourid + '/' + filename, Body=file, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
 
     def upload(self, file, tourid):
         result = Media()
