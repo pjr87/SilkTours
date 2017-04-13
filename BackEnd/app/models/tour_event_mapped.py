@@ -49,12 +49,14 @@ class TourEvent(Base):
         if self.end_date_time is not None:
             end_date_time = str(self.end_date_time)
 
-        return {
+        result = {
             "id_tourEvent": self.id_tourEvent,
             # "tour": self.tour.serialize(False),
             "id_tour": self.id_tour,
             "start_date_time": start_date_time,
             "end_date_time": end_date_time,
             "state": self.state,
-            "pending_review": self.pending_review
+            "pending_review": self.pending_review,
         }
+        result.update(self.tour.serialize(False))
+        return result
