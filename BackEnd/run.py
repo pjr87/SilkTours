@@ -19,7 +19,8 @@ import sys
 #outputFile = open('out.log', 'w')
 #sys.stdout = sys.stderr = outputFile
 
-app = Flask(__name__)
+application = Flask(__name__)
+app = application
 app.config['DEBUG'] = True
 CORS(app)
 
