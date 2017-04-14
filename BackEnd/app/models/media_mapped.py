@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from base import Base
-from db_session import session, commitSession, createSession, safe_call
+from db_session import get_session, commitSession, createSession, safe_call
 import boto3
 import uuid
 
@@ -29,7 +29,7 @@ class Media(Base):
         for key in data:
             setattr(self, key, data[key])
         createSession()
-        session.add(self)
+        get_session().add(self)
         commitSession()
 
     def isVideo(self, extension):
@@ -44,7 +44,7 @@ class Media(Base):
 
     def upload(self, file, tourid):
         result = Media()
-        query = session.query(Media).filter(Media.id_tour == tourid)
+        query = get_session().query(Media).filter(Media.id_tour == tourid)
         medias = safe_call(query, "all", None)
         rank = len(medias) + 1
         print(rank)

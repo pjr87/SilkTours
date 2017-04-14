@@ -12,7 +12,7 @@ from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
-from db_session import session, commitSession, safe_call, limiting_query
+from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
 import sys
 
@@ -110,13 +110,13 @@ def before_request():
 def after_request(response):
     for funct in getattr(g, 'call_after_request', ()):
         response = funct(response)
-    session.close()
+    get_session().close()
     return response
 '''
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    session.rollback()
+    get_session().rollback()
     return "Internal Server Error. Rolling back session. Try again.", 500
 
 
@@ -124,7 +124,7 @@ def internal_server_error(e):
 def hello():
     if not checkLogin():
         return notAuthorizedResponse()
-    user = session.query(User).get(1)
+    user = get_session().query(User).get(1)
     return "Hello " + user.first_name
 
 
@@ -141,7 +141,7 @@ def search():
     if page_size == 0:
         page_size = 1
 
-    query = session.query(Tour)
+    query = get_session().query(Tour)
     if interests is not None:
         query = query.filter(
             or_(
@@ -189,7 +189,7 @@ def get_user(id):
     #if not checkLogin():
     #    return notAuthorizedResponse()
 
-    user = safe_call(session.query(User), "get", id)
+    user = safe_call(get_session().query(User), "get", id)
     return jsonify(user.serialize())
 
 
@@ -197,7 +197,7 @@ def get_user(id):
 def get_user_by_email(email):
     #if not checkLogin():
     #    return notAuthorizedResponse()
-    query = session.query(User).filter(User.email == email)
+    query = get_session().query(User).filter(User.email == email)
     user = safe_call(query, "first", None)
     return jsonify(user.serialize())
 
@@ -240,7 +240,7 @@ def edit_user(id):
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-    user = safe_call(session.query(User), "get", id)
+    user = safe_call(get_session().query(User), "get", id)
     user.create_or_edit(data)
     return jsonify(user.serialize())
 
@@ -249,7 +249,7 @@ def edit_user_profile(userid):
     if not checkLogin():
         return notAuthorizedResponse()
     file = request.files['file']
-    user = safe_call(session.query(User), "get", userid)
+    user = safe_call(get_session().query(User), "get", userid)
     user.upload_profile_image(file, userid)
     return jsonify(user.serialize())
 
@@ -267,13 +267,13 @@ def add_rating():
     rating_value = float(data["rating"])
     comment = data["comment"]
     rating.set_props(rating_value, comment, id_tour_rated, id_user_rated)
-    tour = session.query(Tour).get(int(id_tour_rated))
+    tour = get_session().query(Tour).get(int(id_tour_rated))
     tour.average_rating = ((tour.average_rating
                             * tour.rating_count + rating_value)
                            / (tour.rating_count + 1))
     tour.rating_count += 1
-    session.add(tour)
-    session.add(rating)
+    get_session().add(tour)
+    get_session().add(rating)
     commitSession()
     return "Success"
 
@@ -299,7 +299,7 @@ def add_stop():
 
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
-    tour = safe_call(session.query(Tour), "get", tourid)
+    tour = safe_call(get_session().query(Tour), "get", tourid)
     return jsonify(tour.serialize(False))
 
 
@@ -317,7 +317,7 @@ def edit_tour_profile(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
     file = request.files['file']
-    tour = safe_call(session.query(Tour), "get", tourid)
+    tour = safe_call(get_session().query(Tour), "get", tourid)
     tour.upload_profile_image(file, tourid)
     return jsonify(tour.serialize(False))
 
@@ -327,14 +327,14 @@ def edit_tour(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-    tour = safe_call(session.query(Tour), "get", tourid)
+    tour = safe_call(get_session().query(Tour), "get", tourid)
     tour.createOrEdit(data)
     return jsonify(tour.serialize(False))
 
 
 @app.route('/tour/<tourid>/events', methods=['GET'])
 def get_tourevent(tourid):
-    query = session.query(TourEvent).filter(TourEvent.id_tour == tourid)
+    query = get_session().query(TourEvent).filter(TourEvent.id_tour == tourid)
     events = safe_call(query, "all", None)
     return jsonify([event.serialize() for event in events])
 
@@ -345,7 +345,7 @@ def get_tourevent(tourid):
 def compute_tour_event(eventId):
     if not checkLogin():
         return notAuthorizedResponse()
-    event = safe_call(session.query(TourEvent), "get", eventId)
+    event = safe_call(get_session().query(TourEvent), "get", eventId)
     event.state = "C"
     event.pending_review = True
     commitSession(event)
@@ -355,7 +355,7 @@ def compute_tour_event(eventId):
 def clear_pending_review(eventId):
     if not checkLogin():
         return notAuthorizedResponse()
-    event = safe_call(session.query(TourEvent), "get", eventId)
+    event = safe_call(get_session().query(TourEvent), "get", eventId)
     event.pending_review = False
     commitSession(event)
     return "Success"
@@ -366,7 +366,7 @@ def clear_pending_review(eventId):
 def get_prs(id_user):
     if not checkLogin():
         return notAuthorizedResponse()
-    query = session.query(TourEvent).filter(
+    query = get_session().query(TourEvent).filter(
             and_(
                 TourEvent.id_user == id_user,
                 TourEvent.pending_review
@@ -395,7 +395,7 @@ def edit_tourevent(eventid):
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
-    event = safe_call(session.query(TourEvent), "get", eventid)
+    event = safe_call(get_session().query(TourEvent), "get", eventid)
     event.set_props(data)
     commitSession(event)
     return jsonify(event.serialize())
@@ -414,7 +414,7 @@ def upload(tourid):
 def get_image(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
-    query = session.query(Media).filter(Media.id_tour == tourid)
+    query = get_session().query(Media).filter(Media.id_tour == tourid)
     medias = safe_call(query, "all", None)
     return jsonify([media.serialize() for media in medias])
 

@@ -6,7 +6,7 @@ from app.models.tour_guide_mapped import TourGuides
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import session, commitSession, createSession
+from db_session import get_session, commitSession, createSession
 import boto3
 import uuid
 

@@ -2,7 +2,7 @@ import datetime
 from sqlalchemy import Column, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import session, commitSession
+from db_session import get_session, commitSession
 
 
 class Stop(Base):
@@ -22,7 +22,7 @@ class Stop(Base):
     def create(data, id_tour=None):
         result = None
         if "id_stop" in data:
-            result = session.query(Stop).get(data["id_stop"])
+            result = get_session().query(Stop).get(data["id_stop"])
         if result is None:
             result = Stop()
         result.set_props(data.get("id_tour"), data.get("lat"), data.get("lon"))
