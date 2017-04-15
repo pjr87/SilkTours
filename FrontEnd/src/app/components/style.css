@@ -1,5 +1,5 @@
 .Footer{
-  font: bold 34px Helvetica, Sans-Serif;
+	font: bold 34px Helvetica, Sans-Serif;
 	color: #A9A9A9;
 }
 
@@ -15,6 +15,9 @@
 .footerBG{
 	padding: 2rem 0;
 	background-color: #BB66AA;
+	left:0;
+	bottom:0;
+	right:0;
 }
 
 .icons{
@@ -22,15 +25,33 @@
 	display: -webkit-box;
 }
 
-.contactUsText a, .contactUsText {
-	color: white;
-	font-weight: bold;
+
+
+/* Extra small devices (phones, up to 480px) */
+@media screen and (max-width: 767px) {
+
+	.contactUsText a, .contactUsText {
+		color: white;
+		font-weight: bold;
+	}
+
+	.contactSpan{
+		font-size: 12pt;
+		vertical-align: middle;
+	}
 }
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
 
+	.contactUsText a, .contactUsText {
+		color: white;
+		font-weight: bold;
+	}
 
-.contactSpan{
-	font-size:26pt;
-	vertical-align: middle;
+	.contactSpan{
+		font-size: 22pt;
+		vertical-align: middle;
+	}
 }
 
 .footerContent ul{

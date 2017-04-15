@@ -41,7 +41,7 @@ class TourCreationPhotos extends React.Component{
         file: formData
       }
       photos.push(newFile);
-      console.log("photos", photos);
+      console.log("newFile ", newFile);
     });
     this.props.dispatch(updatePhotoState(photos));
   }

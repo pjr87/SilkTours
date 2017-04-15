@@ -8,43 +8,41 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Button from 'react-bootstrap/lib/Button';
 import Pager from 'react-bootstrap/lib/Pager';
+import Pagination from 'react-bootstrap/lib/Pagination';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import {connect} from 'react-redux';
+import { browserHistory } from 'react-router';
 
-import TourContainer from '../Tours/TourFilteredContainer'
+import ToursList from '../Tours/ToursList';
+import { setSelectedKeywords, setSelectedRating, setSelectedPriceMin, setSelectedPriceMax, setSelectedCity, setSelectedInterests, searchTour, setSelectedPage, setSelectedPageSize } from '../../actions/SearchActions';
 
 class SearchBar extends React.Component{
   constructor(props){
     super();
     this.state = {
-      rating: '0',
-      priceMin: '0',
-      priceMax: '1000000',
-      keywords: '',
-      ratingProp: '0',
-      priceMinProp: '0',
-      priceMaxProp: '1000000',
-      keywordsProp: ''
+      rating: props.rating,
+      priceMin: props.priceMin,
+      priceMax: props.priceMax,
+      keywords: props.keywords,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handlePriceMinChange = this.handlePriceMinChange.bind(this);
     this.handlePriceMaxChange = this.handlePriceMaxChange.bind(this);
+    this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.handleKeywordsChange = this.handleKeywordsChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    // console.log("Search");
-    // console.log("Rating: " + this.state.rating);
-    // console.log("PriceMin: " + this.state.priceMin);
-    // console.log("PriceMax: " + this.state.priceMax);
-    // console.log("keywords: " + this.state.keywords);
-    this.setState({
-      ratingProp: this.state.rating,
-      priceMinProp: this.state.priceMin,
-      priceMaxProp: this.state.priceMax,
-      keywordsProp: this.state.keywords
-    });
 
+    this.props.dispatch(setSelectedRating(this.state.rating))
+    this.props.dispatch(setSelectedPriceMin(this.state.priceMin))
+    this.props.dispatch(setSelectedPriceMax(this.state.priceMax))
+    this.props.dispatch(setSelectedKeywords(this.state.keywords))
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "", ""));
   }
 
   handleRatingChange(e) {
@@ -58,6 +56,14 @@ class SearchBar extends React.Component{
   }
   handleKeywordsChange(e) {
     this.setState({ keywords: e.target.value });
+  }
+  handlePageSizeChange(e) {
+    this.props.dispatch(setSelectedPageSize(e.target.value));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
+  }
+  handlePageChange(e) {
+    this.props.dispatch(setSelectedPage(e-1));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
 
   render(){
@@ -124,11 +130,72 @@ class SearchBar extends React.Component{
             </Button>
           </Form>
           <br/>
+          <Form inline>
+          <FormGroup controlId="page_size">
+            <ControlLabel>View by</ControlLabel>
+            {'  '}
+            <FormControl componentClass="select" placeholder="select" value={this.props.page_size}
+              onChange={this.handlePageSizeChange}>
+              <option value="10">10 items</option>
+              <option value="20">20 items</option>
+              <option value="30">30 items</option>
+              <option value="40">40 items</option>
+              <option value="50">50 items</option>
+            </FormControl>
+          </FormGroup>
+          </Form>
         </Pager>
-        <TourContainer rating={this.state.ratingProp} priceMin={this.state.priceMinProp} priceMax={this.state.priceMaxProp} keywords={this.state.keywordsProp}/>
+        <br/>
+        <div>
+          <Grid>
+            <Row>
+              <ToursList tours={this.props.tours}/>
+            </Row>
+          </Grid>
+        </div>
+        <Pager>
+          <Pagination
+            prev
+            next
+            first
+            last
+            ellipsis
+            boundaryLinks
+            items={this.props.page_count}
+            maxButtons={5}
+            activePage={Number.parseInt(this.props.page,10)+1}
+            onSelect={this.handlePageChange} />
+        </Pager>
       </div>
     );
   }
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  tours: React.PropTypes.array,
+  keywords: React.PropTypes.string,
+  interests: React.PropTypes.string,
+  rating: React.PropTypes.string,
+  priceMin: React.PropTypes.string,
+  priceMax: React.PropTypes.string,
+  city: React.PropTypes.string,
+  isLoaded: React.PropTypes.bool
+}
+
+function select (state) {
+  return {
+    tours: state.SearchReducer.tours,
+    keywords: state.SearchReducer.keywords,
+    interests: state.SearchReducer.interests,
+    rating: state.SearchReducer.rating,
+    priceMin: state.SearchReducer.priceMin,
+    priceMax: state.SearchReducer.priceMax,
+    city: state.SearchReducer.city,
+    page: state.SearchReducer.page,
+    page_size: state.SearchReducer.page_size,
+    page_count: state.SearchReducer.page_count,
+    isLoaded: state.SearchReducer.isLoaded
+  };
+}
+
+export default connect(select)(SearchBar);

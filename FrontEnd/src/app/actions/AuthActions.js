@@ -57,7 +57,7 @@ export function login(username, password) {
         password: ""
       }));
       dispatch(clearError());
-      forwardTo('/');
+      forwardTo('/explore');
       return;
     }
 
@@ -81,7 +81,7 @@ export function login(username, password) {
           password: ""
         }));
         dispatch(clearError());
-        forwardTo('/');
+        forwardTo('/explore');
       } else {
         // If there was a problem authenticating the user, show an error on the
         // form
@@ -280,7 +280,7 @@ export function confirmSignUp(cognitoUser, firstname, lastname, username, passwo
         }));
 
         dispatch(clearError());
-        forwardTo('/');
+        forwardTo('/explore');
       }
       else{
         // If there was a problem signin up the user, show an error

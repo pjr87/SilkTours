@@ -23,7 +23,9 @@ class MessagesPage extends React.Component{
   render(){
 
         return (
+          <div>
               <MessageBody />
+          </div>
         );
       }
 
