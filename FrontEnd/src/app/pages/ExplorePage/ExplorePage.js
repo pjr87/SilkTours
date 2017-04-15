@@ -9,7 +9,7 @@ import { searchTour } from '../../actions/SearchActions';
 class ExplorePage extends React.Component{
 
   componentWillMount(){
-    this.props.dispatch(searchTour(this.props.rating, this.props.priceMin, this.props.priceMax, this.props.keywords, "", "", "&page="+this.props.page, "&page_size="+this.props.page_size));
+    this.props.dispatch(searchTour(this.props.rating, this.props.priceMin, this.props.priceMax, this.props.keywords, "", "", this.props.page, this.props.page_size));
   }
 
   render(){

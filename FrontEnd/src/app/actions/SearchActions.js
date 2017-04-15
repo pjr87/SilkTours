@@ -52,18 +52,26 @@ export function searchTour(rating, priceMin, priceMax, keywords, interests, city
     var priceMin_prop = "";
     var priceMax_prop = "";
     var keywords_prop = "";
+    var page_prop = "";
+    var page_size_prop = "";
 
     if (rating != "0") {
       rating_prop = "&rating="+rating;
     }
     if (priceMin != "0") {
-      priceMin_prop = "&priceMin"+priceMin;
+      priceMin_prop = "&priceMin="+priceMin;
     }
     if (priceMax != "1000000") {
-      priceMax_prop = "&priceMax"+priceMax;
+      priceMax_prop = "&priceMax="+priceMax;
     }
     if (keywords != "") {
-      keywords_prop = "&keywords"+keywords;
+      keywords_prop = "&keywords="+keywords;
+    }
+    if (page != "") {
+      page_prop = "&page="+page;
+    }
+    if (page_size != "") {
+      page_size_prop = "&page_size="+page_size
     }
 
     console.log('rating: ' + rating_prop);
@@ -77,7 +85,7 @@ export function searchTour(rating, priceMin, priceMax, keywords, interests, city
 
     try {
       // service.getFilteredTours(rating, priceMin, priceMax, keywords, page, page_size).then(function(response){
-      service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page, page_size).then(function(response){
+      service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop).then(function(response){
         if(response.data){
           console.log("getSearchTour", response.data.data);
           const tours = response.data.data;

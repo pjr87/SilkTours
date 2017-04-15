@@ -1,5 +1,7 @@
 import React from 'react';
 import Tours from './Tours';
+import {connect} from 'react-redux';
+
 const ToursList = ({tours}) => {
   // map data to components
   const toursList = tours.map(
@@ -41,4 +43,10 @@ const ToursList = ({tours}) => {
   );
 };
 
-export default ToursList;
+function select (state) {
+  return {
+    tours: state.SearchReducer.tours,
+  };
+}
+
+export default connect(select)(ToursList);
