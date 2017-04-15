@@ -14,6 +14,7 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Image from 'react-bootstrap/lib/Image';
 import {LinkContainer} from 'react-router-bootstrap';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import Style from './style.css'
 
 import React, { Component } from 'react';
 import { Link } from 'react-router';
@@ -39,7 +40,7 @@ class NavBar extends Component {
     );
 
     return (
-      <div>
+      <div className={Style.wrapper}>
         <Navbar fixedTop collapseOnSelect style={{opacity:1}}>
           <Navbar.Header>
             <Navbar.Brand>

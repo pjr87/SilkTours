@@ -161,7 +161,7 @@ export function logout() {
           confirmationCode: ''
         }));
         dispatch(clearError());
-        browserHistory.push('/explore');
+        browserHistory.push('/');
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
         dispatch(sendingRequest(false));

@@ -79,8 +79,6 @@ class LandingPage extends React.Component{
 
     return (
       <div>
-        <br/>
-        <br/>
         <BannerImage/>
 
         <LandingCanvas>
