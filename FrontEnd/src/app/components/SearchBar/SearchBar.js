@@ -59,11 +59,11 @@ class SearchBar extends React.Component{
   }
   handlePageSizeChange(e) {
     this.props.dispatch(setSelectedPageSize(e.target.value));
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "&page="+this.props.page, "&page_size="+e.target.value));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
   }
   handlePageChange(e) {
     this.props.dispatch(setSelectedPage(e));
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "&page="+e, "&page_size="+this.props.page_size));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e, this.props.page_size));
   }
 
   render(){
