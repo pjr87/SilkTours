@@ -2,10 +2,13 @@ from flask import Flask, g
 from flask import jsonify
 from flask import request
 import json
+import time
 from app.models.user_mapped import User
 from app.models.ratings_mapped import Rating
 from app.models.tour_mapped import Tour
 from app.models.stop_mapped import Stop
+from app.models.tour_hours import TourHours
+from app.models.tour_hours_special import TourHoursSpecial
 
 from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
@@ -393,5 +396,29 @@ def upload(tourid):
 def get_image(tourid):
     return s3.get_image(tourid)
 
+
+@app.route('/tours/available_hours', methods=['GET'])
+def get_hours():
+    tour_id = request.args.get("tour_id", None)
+    start_date = request.args.get("start_time", time.time())
+    end_date = request.args.get("end_time", time.time()*2)
+
+    if tour_id is None:
+        return 422, "No tour specified"
+    tour = safe_call(session.query(Tour), "get", tour_id)
+    query = session.query(TourHours).filter(TourHours.tour_id == tour_id)
+    # TODO: Filter by start and end date
+    baseHours = safe_call(query, "all", None)
+    length = tour.length
+    for hour in baseHours:
+        start = hour.start_time
+        end = hour.end_time
+        hour = start.hour
+        end_hour = end.hour
+        while hour < end_hour:
+
+            hour += length
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, threaded=True)
+    app.run(host='0.0.0.0', debug=False, threaded=True)

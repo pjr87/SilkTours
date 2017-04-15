@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import Column, Integer, ForeignKey, Time, Date
+from sqlalchemy import Column, Integer, ForeignKey, Time, Date, Boolean
 from sqlalchemy.orm import relationship
 from base import Base
 from db_session import session, commitSession
@@ -12,13 +12,15 @@ class TourHoursSpecial(Base):
     date = Column(Date)
     open_time = Column(Time)
     close_time = Column(Time)
+    overrides = Column(Boolean)
     # tour = relationship("Tour", foreign_keys=[id_tour])
 
-    def set_props(self, id_tour, date, open_time, close_time):
+    def set_props(self, id_tour, date, open_time, close_time, overrides):
         self.id_tour = id_tour
         self.date = date
         self.open_time = open_time
         self.close_time = close_time
+        self.overrides = overrides
         self.tour_hours_id = None
 
     def create(data, id_tour=None):
@@ -31,7 +33,8 @@ class TourHoursSpecial(Base):
             data.get("tour_id"),
             data.get("date"),
             data.get("open_time"),
-            data.get("close_time"))
+            data.get("close_time"),
+            data.get("overrides"))
         if id_tour is not None:
             result.id_tour = id_tour
         commitSession(result)
