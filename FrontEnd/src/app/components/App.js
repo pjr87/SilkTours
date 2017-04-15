@@ -17,15 +17,17 @@ import style from './style.css';
 class App extends Component {
   render() {
     return(
-      <div className="wrapper">
+      <div className="wrapper" style={{"height":"100%"}}>
         <NavBar loggedIn={this.props.loggedIn}
                 usersName={this.props.firstName}
                 currentlySending={this.props.currentlySending}
                 history={this.props.history}
                 location={this.props.location}
                 dispatch={this.props.dispatch}/>
+        <div style={{"minHeight": "60%"}} >
         { this.props.children }
-        <Footer location={this.props.location} brandName={"Silk Tours Inc."}/>
+        </div>
+        <Footer style={{"minHeight":"30%"}} location={this.props.location} brandName={"Silk Tours Inc."}/>
       </div>
     )
   }

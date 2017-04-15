@@ -26,3 +26,6 @@ export TourCreationContents from './TourCreationContents/TourCreationContents';
 export MessageBody from './MessageBody/MessageBody';
 
 export Footer from './Footer/Footer';
+
+export TermsOfService from './Policies/TermsOfService';
+export Privacy from './Policies/Privacy';

@@ -13,3 +13,5 @@ export TourCreationPage from './TourCreationPage/TourCreationPage';
 export ContactUsRedux from './ContactUsRedux/ContactUsRedux';
 export MyToursPage from './MyToursPage/MyToursPage';
 export MessagesPage from './MessagesPage/MessagesPage';
+export TermsPage from './Policies/Terms';
+export PrivacyPage from './Policies/Privacy';
