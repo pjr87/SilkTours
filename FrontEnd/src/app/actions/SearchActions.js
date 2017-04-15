@@ -37,10 +37,55 @@ import { browserHistory } from 'react-router';
  * @param  {Integer} priceMax The search priceMax
  * @param  {String} city The search city
  */
-export function searchTour(rating, priceMin, priceMax, keywords, interests, city) {
+export function searchTour(rating, priceMin, priceMax, keywords, interests, city, page, page_size) {
   return (dispatch) => {
+    // console.log('rating: ' + rating);
+    // console.log('priceMin: ' + priceMin);
+    // console.log('priceMax: ' + priceMax);
+    // console.log('keywords: ' + keywords);
+    // console.log('interests: ' + interests);
+    // console.log('city: ' + city);
+    // console.log('page: ' + page);
+    // console.log('page_size: ' + page_size);
+
+    var rating_prop = "";
+    var priceMin_prop = "";
+    var priceMax_prop = "";
+    var keywords_prop = "";
+    var page_prop = "";
+    var page_size_prop = "";
+
+    if (rating != "0") {
+      rating_prop = "&rating="+rating;
+    }
+    if (priceMin != "0") {
+      priceMin_prop = "&priceMin="+priceMin;
+    }
+    if (priceMax != "1000000") {
+      priceMax_prop = "&priceMax="+priceMax;
+    }
+    if (keywords != "") {
+      keywords_prop = "&keywords="+keywords;
+    }
+    if (page != "") {
+      page_prop = "&page="+page;
+    }
+    if (page_size != "") {
+      page_size_prop = "&page_size="+page_size
+    }
+
+    console.log('rating: ' + rating_prop);
+    console.log('priceMin: ' + priceMin_prop);
+    console.log('priceMax: ' + priceMax_prop);
+    console.log('keywords: ' + keywords_prop);
+    console.log('interests: ' + interests);
+    console.log('city: ' + city);
+    console.log('page: ' + page);
+    console.log('page_size: ' + page_size);
+
     try {
-      service.getFilteredTours(rating, priceMin, priceMax, keywords).then(function(response){
+      // service.getFilteredTours(rating, priceMin, priceMax, keywords, page, page_size).then(function(response){
+      service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop).then(function(response){
         if(response.data){
           console.log("getSearchTour", response.data.data);
           const tours = response.data.data;
@@ -131,8 +176,28 @@ export function setSelectedCity(newSearchCityFormState) {
 }
 
 /**
+ * Selects a page
+ * @param  {string} page The selected page
+ */
+export function setSelectedPage(newSearchPageFormState) {
+  return (dispatch) => {
+    dispatch(updateSearchPage(newSearchPageFormState));
+  };
+}
+
+/**
+ * Selects a page size
+ * @param  {string} pageSize The selected page size
+ */
+export function setSelectedPageSize(newSearchPageSizeFormState) {
+  return (dispatch) => {
+    dispatch(updateSearchPageSize(newSearchPageSizeFormState));
+  };
+}
+
+/**
  * Updates a user's selected search tours
- * @param  {Integer} selectedTourId
+ * @param  {array} tours
  */
 export function updateSearchTours(newSearchToursFormState) {
   return { type: searchConstants.SEARCH_TOURS, newSearchToursFormState };
@@ -140,7 +205,7 @@ export function updateSearchTours(newSearchToursFormState) {
 
 /**
  * Updates a user's selected search keywords
- * @param  {Integer} selectedTourId
+ * @param  {String} keywords
  */
 export function updateSearchKeywords(newSearchKeywordsFormState) {
   return { type: searchConstants.SEARCH_KEY_WORD, newSearchKeywordsFormState };
@@ -148,7 +213,7 @@ export function updateSearchKeywords(newSearchKeywordsFormState) {
 
 /**
  * Updates a selected search tour interests
- * @param  {object} tour
+ * @param  {String} interests
  */
 export function updateSearchInterests(newSearchInterestsFormState) {
   return { type: searchConstants.SEARCH_INTEREST, newSearchInterestsFormState };
@@ -156,7 +221,7 @@ export function updateSearchInterests(newSearchInterestsFormState) {
 
 /**
  * Updates a selected tour dates
- * @param  {object} tourEvent
+ * @param  {String} rating
  */
 export function updateSearchRating(newSearchRatingFormState) {
   return { type: searchConstants.SEARCH_RATING, newSearchRatingFormState };
@@ -164,7 +229,7 @@ export function updateSearchRating(newSearchRatingFormState) {
 
 /**
  * Updates a selected search price min
- * @param  {object} tourEvent
+ * @param  {String} priceMin
  */
 export function updateSearchPriceMin(newSearchPriceMinFormState) {
   return { type: searchConstants.SEARCH_MINIMUM_PRICE, newSearchPriceMinFormState };
@@ -172,7 +237,7 @@ export function updateSearchPriceMin(newSearchPriceMinFormState) {
 
 /**
  * Updates a selected search price max
- * @param  {object} tourEvent
+ * @param  {String} priceMax
  */
 export function updateSearchPriceMax(newSearchPriceMaxFormState) {
   return { type: searchConstants.SEARCH_MAXIMUM_PRICE, newSearchPriceMaxFormState };
@@ -180,10 +245,26 @@ export function updateSearchPriceMax(newSearchPriceMaxFormState) {
 
 /**
  * Updates a selected search city
- * @param  {object} tourEvent
+ * @param  {String} city
  */
 export function updateSearchCity(newSearchCityFormState) {
   return { type: searchConstants.SEARCH_CITY, newSearchCityFormState };
+}
+
+/**
+ * Updates a selected search page
+ * @param  {String} page
+ */
+export function updateSearchPage(newSearchPageFormState) {
+  return { type: searchConstants.SEARCH_PAGE, newSearchPageFormState };
+}
+
+/**
+ * Updates a selected search page size
+ * @param  {String} pageSize
+ */
+export function updateSearchPageSize(newSearchPageSizeFormState) {
+  return { type: searchConstants.SEARCH_PAGE_SIZE, newSearchPageSizeFormState };
 }
 
 /**

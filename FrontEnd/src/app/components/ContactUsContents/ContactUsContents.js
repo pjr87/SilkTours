@@ -33,9 +33,6 @@ class ContactUsContents extends React.Component{
   }
 }
 
-
-
-
 class ContactUsContentsDiv extends React.Component{
 
   constructor(props){
@@ -92,7 +89,7 @@ class ContactUsContentsDiv extends React.Component{
 
   clearForm(){
 
-    this.setState({submitted:true, 
+    this.setState({submitted:true,
       form: {
       'department': '',
       'email': '',
@@ -203,7 +200,7 @@ class ContactUsContentsDiv extends React.Component{
           </FormGroup>
 
           <FormGroup  validationState = {'questionComment' in this.state.errors && 'error' || !('questionComment' in this.state.errors) && null} >
-            <Col componentClass={ControlLabel} sm={2}>            
+            <Col componentClass={ControlLabel} sm={2}>
               <ControlLabel>Question / Comment</ControlLabel>
             </Col>
             <Col sm={8} >
@@ -219,7 +216,7 @@ class ContactUsContentsDiv extends React.Component{
           </Button>
           </Col>
           </FormGroup>
-         
+
         </Form>);
       }
   }

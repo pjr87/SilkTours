@@ -39,7 +39,7 @@ class SettingsContents extends React.Component{
           <Interests title="Interests" user={this.props.user} dispatch={this.props.dispatch} />
           <FormGroup
             validationState = {this.props.errorMessage ? "error" : "success"}>
-            <Col smOffset={2} sm={10}>
+            <Col smOffset={2} >
               <ErrorFunc errorText = {this.props.errorMessage} />
               <Button
                 disabled={isLoading}

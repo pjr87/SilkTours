@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import session, commitSession, createSession
+from db_session import get_session, commitSession, createSession
 
 
 class TourGuides(Base):
@@ -20,7 +20,7 @@ class TourGuides(Base):
     def create(data, id_tour=None):
         result = None
         if "id_tour_guide" in data:
-            result = session.query(TourGuides).get(data["id_tour_guide"])
+            result = get_session().query(TourGuides).get(data["id_tour_guide"])
         if result is None:
             result = TourGuides()
         result.set_props(data)

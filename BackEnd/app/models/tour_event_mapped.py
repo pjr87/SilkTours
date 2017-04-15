@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import commitSession, session
+from db_session import commitSession, get_session
 
 
 class TourEvent(Base):
@@ -29,7 +29,7 @@ class TourEvent(Base):
     def create(data, id_tour=None, id_user=None):
         result = None
         if "id_tourEvent" in data:
-            result = session.query(TourEvent).get(data["id_tourEvent"])
+            result = get_session().query(TourEvent).get(data["id_tourEvent"])
         if result is None:
             result = TourEvent()
         result.set_props(data)
@@ -49,12 +49,14 @@ class TourEvent(Base):
         if self.end_date_time is not None:
             end_date_time = str(self.end_date_time)
 
-        return {
+        result = {
             "id_tourEvent": self.id_tourEvent,
             # "tour": self.tour.serialize(False),
             "id_tour": self.id_tour,
             "start_date_time": start_date_time,
             "end_date_time": end_date_time,
             "state": self.state,
-            "pending_review": self.pending_review
+            "pending_review": self.pending_review,
         }
+        result.update(self.tour.serialize(False))
+        return result

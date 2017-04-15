@@ -187,7 +187,7 @@ export default class TourSignup extends React.Component{
         <div className={style.mainBody}>
           <div className={style.formSection} >
             <FormTitle title="Tour Signup" />
-            Available Positions {}<EditableField update={this.textChange.bind(this)} value={tour.tourist_quantity} label="How Many Persons" name="tourist_quantity"/>
+            Available Positions <EditableField update={this.textChange.bind(this)} value={tour.tourist_quantity} label="How Many Persons" name="tourist_quantity"/>
             <select>
               <option>test</option>
             </select>

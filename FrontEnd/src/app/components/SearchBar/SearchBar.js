@@ -8,11 +8,14 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Button from 'react-bootstrap/lib/Button';
 import Pager from 'react-bootstrap/lib/Pager';
+import Pagination from 'react-bootstrap/lib/Pagination';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import TourContainer from '../Tours/TourFilteredContainer'
-import { setSelectedKeywords, setSelectedRating, setSelectedPriceMin, setSelectedPriceMax, setSelectedCity, setSelectedInterests, searchTour } from '../../actions/SearchActions';
+import ToursList from '../Tours/ToursList';
+import { setSelectedKeywords, setSelectedRating, setSelectedPriceMin, setSelectedPriceMax, setSelectedCity, setSelectedInterests, searchTour, setSelectedPage, setSelectedPageSize } from '../../actions/SearchActions';
 
 class SearchBar extends React.Component{
   constructor(props){
@@ -27,7 +30,9 @@ class SearchBar extends React.Component{
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handlePriceMinChange = this.handlePriceMinChange.bind(this);
     this.handlePriceMaxChange = this.handlePriceMaxChange.bind(this);
+    this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.handleKeywordsChange = this.handleKeywordsChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   handleSubmit(e) {
@@ -37,7 +42,7 @@ class SearchBar extends React.Component{
     this.props.dispatch(setSelectedPriceMin(this.state.priceMin))
     this.props.dispatch(setSelectedPriceMax(this.state.priceMax))
     this.props.dispatch(setSelectedKeywords(this.state.keywords))
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", ""));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "", ""));
   }
 
   handleRatingChange(e) {
@@ -51,6 +56,14 @@ class SearchBar extends React.Component{
   }
   handleKeywordsChange(e) {
     this.setState({ keywords: e.target.value });
+  }
+  handlePageSizeChange(e) {
+    this.props.dispatch(setSelectedPageSize(e.target.value));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
+  }
+  handlePageChange(e) {
+    this.props.dispatch(setSelectedPage(e));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e, this.props.page_size));
   }
 
   render(){
@@ -117,8 +130,42 @@ class SearchBar extends React.Component{
             </Button>
           </Form>
           <br/>
+          <Form inline>
+          <FormGroup controlId="page_size">
+            <ControlLabel>View by</ControlLabel>
+            {'  '}
+            <FormControl componentClass="select" placeholder="select" value={this.state.page_size}
+              onChange={this.handlePageSizeChange}>
+              <option value="10">10 items</option>
+              <option value="20">20 items</option>
+              <option value="30">30 items</option>
+              <option value="40">40 items</option>
+              <option value="50">50 items</option>
+            </FormControl>
+          </FormGroup>
+          </Form>
         </Pager>
-        <TourContainer rating={this.state.ratingProp} priceMin={this.state.priceMinProp} priceMax={this.state.priceMaxProp} keywords={this.state.keywordsProp}/>
+        <br/>
+        <div>
+          <Grid>
+            <Row>
+              <ToursList tours={this.props.tours}/>
+            </Row>
+          </Grid>
+        </div>
+        <Pager>
+          <Pagination
+            prev
+            next
+            first
+            last
+            ellipsis
+            boundaryLinks
+            items={20}
+            maxButtons={5}
+            activePage={Number.parseInt(this.props.page,10)}
+            onSelect={this.handlePageChange} />
+        </Pager>
       </div>
     );
   }
@@ -144,6 +191,8 @@ function select (state) {
     priceMin: state.SearchReducer.priceMin,
     priceMax: state.SearchReducer.priceMax,
     city: state.SearchReducer.city,
+    page: state.SearchReducer.page,
+    page_size: state.SearchReducer.page_size,
     isLoaded: state.SearchReducer.isLoaded
   };
 }

@@ -30,8 +30,8 @@ function getCookie(name) {
     return false;
 }
 
-export function getFilteredTours(rating, priceMin, priceMax, keywords) {
-    return axios.get(SERVER_URL + "/search?rating="+rating+"&piceMin="+priceMin+"&priceMax="+priceMax+"&keywords="+keywords);
+export function getFilteredTours(rating, priceMin, priceMax, keywords, page, page_size) {
+    return axios.get(SERVER_URL + "/search?"+rating+priceMin+priceMax+keywords+page+page_size);
 }
 
 export function getTourById(tourId) {
@@ -73,8 +73,7 @@ export function getAllTours() {
 export function getUser(id){
     var url = SERVER_URL + "/users/"+id;
     console.log("url: "+url);
-    return axios.get(url, data);
-
+    return axios.get(url);
 }
 
 export function newTour(data, auth){
