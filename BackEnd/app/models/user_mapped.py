@@ -7,6 +7,7 @@ from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
 from db_session import commitSession
+import boto3
 
 
 class User(Base):
@@ -110,3 +111,17 @@ class User(Base):
                     value = str(value)
                 result[key] = value
         return result
+
+    def upload_to_s3(self, file, filename):
+        resource = boto3.resource('s3')
+        bucket = resource.Bucket('silktours-media')
+        bucket.put_object(Key='user/profile/' + filename, Body=file, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
+
+    def upload_profile_image(self, file, userid):
+        s = file.filename.split('.')
+        extension = s[-1]
+        url = 'https://s3.amazonaws.com/silktours-media/' + 'user/profile/' + userid + '.' + extension
+        self.upload_to_s3(file, userid + '.' + extension)
+        self.profile_picture = url
+        commitSession(self)
+        return self.serialize()

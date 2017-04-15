@@ -17,7 +17,7 @@ import style from './style.css';
 class App extends Component {
   render() {
     return(
-      <div className="wrapper">
+      <div className="wrapper" style={{"height":"100%"}}>
         <NavBar loggedIn={this.props.loggedIn}
                 usersName={this.props.firstName}
                 isGuide={this.props.isGuide}
@@ -25,7 +25,10 @@ class App extends Component {
                 history={this.props.history}
                 location={this.props.location}
                 dispatch={this.props.dispatch}/>
-        { this.props.children }
+        <div style={{"min-height" : "70%"}}>
+          { this.props.children }
+        </div>
+
         <Footer location={this.props.location} brandName={"Silk Tours Inc."}/>
       </div>
     )

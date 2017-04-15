@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import commitSession, session
+from db_session import commitSession, get_session
 
 
 class Interests(Base):
@@ -23,7 +23,7 @@ class Interests(Base):
     def create(data, id_tour=None, id_user=None):
         result = None
         if "id_interestList" in data:
-            result = session.query(Interests).get(data["id_interestList"])
+            result = get_session().query(Interests).get(data["id_interestList"])
         if result is None:
             result = Interests()
         result.set_props(data)
