@@ -89,7 +89,9 @@ export function searchTour(rating, priceMin, priceMax, keywords, interests, city
         if(response.data){
           console.log("getSearchTour", response.data.data);
           const tours = response.data.data;
+          const {page_count} = response.data;
           dispatch(setSelectedTours(tours));
+          dispatch(setSelectedPageCount(page_count));
           dispatch(setLoadedState(true));
         }
         else{
@@ -196,6 +198,16 @@ export function setSelectedPageSize(newSearchPageSizeFormState) {
 }
 
 /**
+ * Selects a page count
+ * @param  {string} pageCount The selected page count
+ */
+export function setSelectedPageCount(newSearchPageCountFormState) {
+  return (dispatch) => {
+    dispatch(updateSearchPageCount(newSearchPageCountFormState));
+  };
+}
+
+/**
  * Updates a user's selected search tours
  * @param  {array} tours
  */
@@ -265,6 +277,14 @@ export function updateSearchPage(newSearchPageFormState) {
  */
 export function updateSearchPageSize(newSearchPageSizeFormState) {
   return { type: searchConstants.SEARCH_PAGE_SIZE, newSearchPageSizeFormState };
+}
+
+/**
+ * Updates a selected search page size
+ * @param  {String} pageSize
+ */
+export function updateSearchPageCount(newSearchPageCountFormState) {
+  return { type: searchConstants.SEARCH_PAGE_COUNT, newSearchPageCountFormState };
 }
 
 /**
