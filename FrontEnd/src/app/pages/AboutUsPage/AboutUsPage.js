@@ -1,16 +1,17 @@
 import React from 'react';
 
-import {BannerImage, PageTitle, AboutContents} from 'components'
+import {PageTitle, AboutContents} from 'components'
 
 class AboutUsPage extends React.Component{
   render(){
     return(
       <div>
-        <BannerImage/>
-        <PageTitle title= "mission statement"/>
         <br/>
         <br/>
-        <PageTitle title= "introducing our team members"/>
+        <PageTitle title= "Mission Statement"/>
+        <br/>
+        <br/>
+        <PageTitle title= "Introducing our team members"/>
         <AboutContents/>
       </div>
     );

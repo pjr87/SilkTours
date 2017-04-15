@@ -55,6 +55,9 @@ class NavBar extends Component {
               <LinkContainer to="/" onClick={this._clearError}>
                 <NavItem eventKey={1}>home</NavItem>
               </LinkContainer>
+              <LinkContainer to="/explore" onClick={this._clearError}>
+                <NavItem eventKey={1}>explore</NavItem>
+              </LinkContainer>
               <LinkContainer to="/about" onClick={this._clearError}>
                 <NavItem eventKey={3}>about us</NavItem>
               </LinkContainer>

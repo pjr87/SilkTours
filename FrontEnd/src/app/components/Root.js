@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 // Importing componenets
 import{
+  LandingPage,
   ExplorePage,
   TourDetailPage,
   TourConfirmationPage,
@@ -54,7 +55,8 @@ const Root = ({ store }) => (
   <Provider store={store}>
     <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
       <Route component={App}>
-        <Route path="/" component={ExplorePage}/>
+        <Route path="/" component={LandingPage}/>
+        <Route path="/explore" component={ExplorePage}/>
         <Route path="/tourdetail" component={TourDetailPage}/>
         <Route path="/about" component={AboutUsPage}/>
         <Route path="/sign" component={SignInPage}/>
