@@ -14,8 +14,8 @@ function getCookie(name){
  return null;
 }
 
-window.SERVER_URL = "http://34.197.42.24:5000";
-//window.SERVER_URL = "http://localhost:5000";
+//OLD window.SERVER_URL = "http://34.197.42.24:5000";
+window.SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
 
 /*
 Every call must use
@@ -138,9 +138,9 @@ export function getMessages(){
 
 export function postSupportTicket(department, fname, lname, email, textBody) {
     var instance = axios.create({
-      baseURL: 'https://testtingsilk123.freshdesk.com/api/v2/tickets',
+      baseURL: 'https://silktoursinc.freshdesk.com/api/v2/tickets',
       headers: {'Content-Type': 'application/json'},
-      auth: { username: 'KgANyaywWNjVCyUyQCe', password: 'x'}
+      auth: { username: '0e7cUf93oqBAib5lwaN6', password: 'x'}
     });
 
     var namee = fname + " "  + lname;
