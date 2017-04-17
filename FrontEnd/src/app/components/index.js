@@ -27,7 +27,5 @@ export MessageBody from './MessageBody/MessageBody';
 export Footer from './Footer/Footer';
 export ProfileInfo from './Profile/ProfileInfo';
 
-export Footer from './Footer/Footer';
-
 export TermsOfService from './Policies/TermsOfService';
 export Privacy from './Policies/Privacy';

@@ -51,7 +51,7 @@ class Footer extends React.Component {
                   <li className={style.icons}>
                     <SocialBadge badgeColor="#00aced" url="https://twitter.com/silktoursapp" />
                     <div className={style.social}>
-                      <a href={'https://twitter.com/silktoursapp'} className={style.footerLink}>
+                      <a href={'https://twitter.com/silktoursapp'} className={style.footerLink} target="_blank">
                         Twitter
                       </a>
                     </div>
@@ -59,7 +59,7 @@ class Footer extends React.Component {
                   <li className={style.icons}>
                     <SocialBadge badgeColor="#3b5998" url="http://www.facebook.com/silktoursapp" />
                     <div className={style.social}>
-                      <a href={'http://www.facebook.com/silktoursapp'} className={style.footerLink}>
+                      <a href={'http://www.facebook.com/silktoursapp'} className={style.footerLink} target="_blank">
                         Facebook
                       </a>
                     </div>
@@ -67,7 +67,7 @@ class Footer extends React.Component {
                   <li className={style.icons}>
                     <SocialBadge badgeColor="#3f729b" url="http://instagram.com/silktours"  />
                     <div className={style.social}>
-                      <a href={'http://instagram.com/silktours'} className={style.footerLink}>
+                      <a href={'http://instagram.com/silktours'} className={style.footerLink} target="_blank">
                         Instagram
                       </a>
                     </div>
@@ -86,10 +86,10 @@ class Footer extends React.Component {
               <div className={style.footerContent}>© {new Date().getFullYear()} {this.props.brandName}</div>
             </Col>
             <Col xs={1}  >
-              <div className={style.footerContent}><Link to={'/terms'}>Terms</Link></div>
+              <div className={style.footerContent}><Link to={{pathname:"/policy", query:{doc:"terms"}}}>Terms</Link></div>
             </Col>
             <Col xs={1}  >
-              <div className={style.footerContent}><Link to={'/privacy'}>Privacy</Link></div>
+              <div className={style.footerContent}><Link to={{pathname:"/policy", query:{doc:"privacy"}}}>Privacy</Link></div>
             </Col>
           </Row>
       </Grid> ;

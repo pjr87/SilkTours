@@ -21,7 +21,8 @@ import{
   NotFound,
   MessagesPage,
   PrivacyPage,
-  TermsPage } from '../pages';
+  TermsPage,
+  PolicyPage} from '../pages';
 import {ContactUsRedux} from '../pages';
 import TourSignup from './pages/TourSignup';
 import App from './App';
@@ -71,6 +72,7 @@ const Root = ({ store }) => (
         <Route path='/terms' component={TermsPage} />
         <Route path='/privacy' component={PrivacyPage} />
         <Route path='/profile' component ={ProfilePage} />
+        <Route path='/policy' component={PolicyPage} />
         <Route onEnter={checkAuth}>
           <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
