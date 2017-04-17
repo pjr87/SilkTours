@@ -92,7 +92,7 @@ class LandingPage extends React.Component{
             className={Style.player}
             url='https://www.youtube.com/watch?v=qcLqPX46Yak'
             width='100%'
-            playing />
+             />
 
           <EnumerationBrick
             theme={ HEAVY_BAND_THEME }

@@ -1,0 +1,19 @@
+.policyPage{
+	margin-top: 20px;
+}
+
+.policySidebar{
+	list-style: none;
+	font-size:16pt;
+}
+
+.policySidebar a,
+.policySidebar a li{
+	color: gray;
+	cursor: pointer;
+	margin-bottom: 5px;
+}
+
+.activeDoc{
+	font-weight: bold;
+}

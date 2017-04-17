@@ -15,3 +15,7 @@ export MyToursPage from './MyToursPage/MyToursPage';
 export MessagesPage from './MessagesPage/MessagesPage';
 export ProfilePage from './ProfilePage/ProfilePage';
 export LandingPage from './LandingPage/LandingPage';
+
+export TermsPage from './Policies/Terms';
+export PrivacyPage from './Policies/Privacy';
+export PolicyPage from './Policies/Policies';

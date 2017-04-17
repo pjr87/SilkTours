@@ -25,11 +25,10 @@ class App extends Component {
                 history={this.props.history}
                 location={this.props.location}
                 dispatch={this.props.dispatch}/>
-        <div style={{"min-height" : "70%"}}>
-          { this.props.children }
+        <div style={{"minHeight": "60%"}} >
+        { this.props.children }
         </div>
-
-        <Footer location={this.props.location} brandName={"Silk Tours Inc."}/>
+        <Footer style={{"minHeight":"30%"}} location={this.props.location} brandName={"Silk Tours Inc."}/>
       </div>
     )
   }
