@@ -16,7 +16,7 @@ class ContactUsPage extends React.Component{
         <PageTitle title= "Contact Us"/>
         <br/>
         <br/>
-        <ContactUsContents fullName={this.props.name} loggedIn={this.props.loggedIn} email={this.props.email} />
+        <ContactUsContents fname={this.props.fname} lname={this.props.lname} loggedIn={this.props.loggedIn} email={this.props.email} />
       </div>
     );
   }
@@ -25,7 +25,8 @@ class ContactUsPage extends React.Component{
 // select chooses which props to pull from store
 function select(state) {
   return {
-    name: state.AuthReducer.user.fullName,
+    fname: state.AuthReducer.user.first_name,
+    lname: state.AuthReducer.user.last_name,
     email: state.AuthReducer.user.email,
     loggedIn: state.AuthReducer.loggedIn
   };

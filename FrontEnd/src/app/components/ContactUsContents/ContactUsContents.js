@@ -13,6 +13,7 @@ class ContactUsContents extends React.Component{
   constructor(props)
   {
     super(props);
+    
   }
 
 
@@ -26,7 +27,7 @@ class ContactUsContents extends React.Component{
       <div>
         <br/>
         <Grid>
-            <ContactUsContentsDiv submitted={this.submitted} />
+            <ContactUsContentsDiv submitted={this.submitted} fname={this.props.fname} lname={this.props.lname} loggedIn={this.props.loggedIn} email={this.props.email} />
         </Grid>
       </div>
     );
@@ -47,6 +48,8 @@ class ContactUsContentsDiv extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
+    console.dir(this.props);
+
   }
 
   componentDidMount(){
@@ -55,7 +58,7 @@ class ContactUsContentsDiv extends React.Component{
     var fields = ['department', 'fname', 'lname', 'questionComment', 'email'];
 
     fields.forEach(function(field) {
-      vals[field] = '';
+      vals[field] = this.props[field];
     }.bind(this))
 
     this.setState({form: vals})
