@@ -2,11 +2,17 @@ from flask import Flask, g
 from flask import jsonify
 from flask import request
 import json
+import time
 import math
+import datetime
+from dateutil.parser import parse
+from collections import defaultdict
 from app.models.user_mapped import User
 from app.models.ratings_mapped import Rating
 from app.models.tour_mapped import Tour
 from app.models.stop_mapped import Stop
+from app.models.tour_hours import TourHours
+from app.models.tour_hours_special import TourHoursSpecial
 
 from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
@@ -417,6 +423,105 @@ def get_image(tourid):
     query = get_session().query(Media).filter(Media.id_tour == tourid)
     medias = safe_call(query, "all", None)
     return jsonify([media.serialize() for media in medias])
+
+
+def add_hour_entries(l, start, end, length):
+    sh = start.hour + start.minute/60.0
+    eh = end.hour + end.minute/60.0
+    while sh <= eh:
+        l.append({
+            "start": sh,
+            "end": sh+length
+        })
+        sh += length
+
+
+def get_date_string(d):
+    return "%d/%d" % (d.month, d.day)
+
+
+# Check if there are any events scheduled between dt_start and dt_end
+# dt_* can be either epoch timestamps or dates or datetimes
+def check_for_event(events, dt_start, dt_end):
+    tStart = dt_start if type(dt_start) is int else dt_start.timestamp()
+    tEnd = dt_end if type(dt_end) is int else dt_end.timestamp()
+    for event in events:
+        eStart = event.start_date_time.timestamp()
+        eEnd = event.end_date_time.timestamp()
+
+        # Check if the times overlap
+        if (tStart <= eEnd) and (tEnd >= eStart):
+            return True
+
+
+@app.route('/tours/available_hours', methods=['GET'])
+def get_hours():
+    tour_id = request.args.get("tour_id", None)
+    start_date = parse(request.args.get("start_date", time.time())).date()
+    end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
+
+    if tour_id is None:
+        return 422, "No tour specified"
+    tour = safe_call(get_session().query(Tour), "get", tour_id)
+    length = tour.length
+    query = get_session().query(TourHours).filter(TourHours.tour_id == tour_id)
+    baseHours = safe_call(query, "all", None)
+    query = get_session().query(TourHoursSpecial).filter(
+        TourHoursSpecial.tour_id == tour_id
+        # TODO filter by date
+    )
+    specialHours = safe_call(query, "all", None)
+
+    query = get_session().query(TourEvent).filter(
+        TourEvent.id_tour == tour_id
+    )
+    query = query.filter(
+        TourEvent.start_date_time > start_date
+    )
+    query = query.filter(
+        TourEvent.end_date_time < end_date
+    )
+    query = query.filter(
+        TourEvent.state == 'B'
+    )
+
+    events = safe_call(query, "all", None)
+    hours = defaultdict(list)
+    overridden = set()
+    for sHour in specialHours:
+        if sHour.date < start_date or sHour.date > end_date:
+            continue
+        ds = sHour.date.weekday()
+        if sHour.overrides:
+            overridden.add(ds)
+        add_hour_entries(hours[ds], sHour.open_time, sHour.close_time, length)
+
+    for hour in baseHours:
+        start = hour.open_time
+        end = hour.close_time
+        sh = start.hour
+        eh = end.hour
+        dow = hour.day_of_week
+        if dow in overridden:
+            continue
+        add_hour_entries(hours[dow], start, end, length)
+
+    for event in events:
+        start = event.start_date_time
+        dow = start.weekday()
+        sh = start.hour
+        eh = event.end_date_time.hour
+        if dow not in hours:
+            continue
+        i = 0
+        while i < len(hours[dow]):
+            # Check for overlapping hours
+            if (sh <= hours[dow][i]["end"]) and (eh >= hours[dow][i]["start"]):
+                del hours[dow][i]
+            else:
+                i += 1
+
+    return jsonify(hours)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, threaded=True)
