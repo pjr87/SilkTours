@@ -13,6 +13,10 @@ class TourCreationReview extends React.Component{
   }
 
   next(){
+    console.log("this.props.tour", this.props.tour);
+    console.log("this.props.startTime", this.props.startTime);
+    console.log("this.props.endTime", this.props.endTime);
+    console.log("this.props.photos", this.props.photos);
     this.props.dispatch(createTour(this.props.tour, this.props.auth, this.props.photos, this.props.startTime, this.props.endTime))
   }
 

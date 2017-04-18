@@ -109,8 +109,7 @@ class TourCreationContents extends React.Component{
                   <Tab.Pane eventKey="photos">
                     <TourCreationPhotos
                       tour={this.props.tour}
-                      dispatch={this.props.dispatch}
-                      photos={this.props.photos}/>
+                      dispatch={this.props.dispatch}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="description">
                     <TourCreationDescription

@@ -88,7 +88,7 @@ export function newTour(data, auth){
 }
 
 export function newPhoto(data, id, auth){
-    let url = SERVER_URL + '/tours/image/' + id;
+    let url = SERVER_URL + '/media/' + id;
     return axios.post(url, data,
     {
       headers:{

@@ -27,6 +27,16 @@ import logoImg2 from '../../style/images/logo2.png';
 import logoImg3 from '../../style/images/logo3.png';
 import logoImg5 from '../../style/images/logo5.png';
 
+//heading="News about silk"
+
+//heading="About Company"
+
+//heading="Founders"
+
+//heading="Mission Statement"
+
+//heading="Why we are doing this"
+
 class LandingPage extends React.Component{
 
   constructor(props) {
@@ -146,15 +156,6 @@ class LandingPage extends React.Component{
           />
 
         </LandingCanvas>
-            //heading="News about silk"
-
-            //heading="About Company"
-
-            //heading="Founders"
-
-            //heading="Mission Statement"
-
-            //heading="Why we are doing this"
       </div>
     );
   }
