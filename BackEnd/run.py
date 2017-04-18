@@ -428,7 +428,6 @@ def get_image(tourid):
 def add_hour_entries(l, start, end, length):
     sh = start.hour + start.minute/60.0
     eh = end.hour + end.minute/60.0
-    print("sh: %s, eh: %s" % (sh, eh))
     while sh <= eh:
         l.append({
             "start": sh,
@@ -458,23 +457,21 @@ def check_for_event(events, dt_start, dt_end):
 @app.route('/tours/available_hours', methods=['GET'])
 def get_hours():
     tour_id = request.args.get("tour_id", None)
-    #start_date = datetime.datetime.fromtimestamp(request.args.get("start_time", time.time()))
     start_date = parse(request.args.get("start_date", time.time())).date()
     end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
-    #end_date = datetime.datetime.fromtimestamp(request.args.get("end_time", time.time()*2))
 
     if tour_id is None:
         return 422, "No tour specified"
     tour = safe_call(get_session().query(Tour), "get", tour_id)
     length = tour.length
     query = get_session().query(TourHours).filter(TourHours.tour_id == tour_id)
-    # TODO: Filter by start and end date
     baseHours = safe_call(query, "all", None)
     query = get_session().query(TourHoursSpecial).filter(
         TourHoursSpecial.tour_id == tour_id
         # TODO filter by date
     )
     specialHours = safe_call(query, "all", None)
+
     query = get_session().query(TourEvent).filter(
         TourEvent.id_tour == tour_id
     )
@@ -482,8 +479,12 @@ def get_hours():
         TourEvent.start_date_time > start_date
     )
     query = query.filter(
-        TourEvent.end_date_time > end_date
+        TourEvent.end_date_time < end_date
     )
+    query = query.filter(
+        TourEvent.state == 'B'
+    )
+
     events = safe_call(query, "all", None)
     hours = defaultdict(list)
     overridden = set()
@@ -504,21 +505,23 @@ def get_hours():
         if dow in overridden:
             continue
         add_hour_entries(hours[dow], start, end, length)
-    return jsonify(hours)
 
-    '''
-    for hour in baseHours:
-        start = hour.start_time
-        end = hour.end_time
-        hour = start.hour
-        end_hour = end.hour
-        while hour < end_hour:
-            for sHour in specialHours:
-                sStart = sHour.open_time.hour
-                sEnd = sHour.close_time.hour
-                if hour > sStart and hour
-            hour += length
-    '''
+    for event in events:
+        start = event.start_date_time
+        dow = start.weekday()
+        sh = start.hour
+        eh = event.end_date_time.hour
+        if dow not in hours:
+            continue
+        i = 0
+        while i < len(hours[dow]):
+            # Check for overlapping hours
+            if (sh <= hours[dow][i]["end"]) and (eh >= hours[dow][i]["start"]):
+                del hours[dow][i]
+            else:
+                i += 1
+
+    return jsonify(hours)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, threaded=True)
