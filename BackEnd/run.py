@@ -5,6 +5,7 @@ import json
 import time
 import math
 import datetime
+from dateutil.parser import parse
 from collections import defaultdict
 from app.models.user_mapped import User
 from app.models.ratings_mapped import Rating
@@ -457,8 +458,10 @@ def check_for_event(events, dt_start, dt_end):
 @app.route('/tours/available_hours', methods=['GET'])
 def get_hours():
     tour_id = request.args.get("tour_id", None)
-    start_date = datetime.datetime.fromtimestamp(request.args.get("start_time", time.time()))
-    end_date = datetime.datetime.fromtimestamp(request.args.get("end_time", time.time()*2))
+    #start_date = datetime.datetime.fromtimestamp(request.args.get("start_time", time.time()))
+    start_date = parse(request.args.get("start_date", time.time())).date()
+    end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
+    #end_date = datetime.datetime.fromtimestamp(request.args.get("end_time", time.time()*2))
 
     if tour_id is None:
         return 422, "No tour specified"
@@ -469,6 +472,7 @@ def get_hours():
     baseHours = safe_call(query, "all", None)
     query = get_session().query(TourHoursSpecial).filter(
         TourHoursSpecial.tour_id == tour_id
+        # TODO filter by date
     )
     specialHours = safe_call(query, "all", None)
     query = get_session().query(TourEvent).filter(
@@ -484,11 +488,22 @@ def get_hours():
     hours = defaultdict(list)
     overridden = set()
     for sHour in specialHours:
-        ds = get_date_string(sHour.date)
+        if sHour.date < start_date or sHour.date > end_date:
+            continue
+        ds = sHour.date.weekday()
         if sHour.overrides:
             overridden.add(ds)
         add_hour_entries(hours[ds], sHour.open_time, sHour.close_time, length)
 
+    for hour in baseHours:
+        start = hour.open_time
+        end = hour.close_time
+        sh = start.hour
+        eh = end.hour
+        dow = hour.day_of_week
+        if dow in overridden:
+            continue
+        add_hour_entries(hours[dow], start, end, length)
     return jsonify(hours)
 
     '''
