@@ -4,6 +4,8 @@ from flask import request
 import json
 import time
 import math
+import datetime
+from collections import defaultdict
 from app.models.user_mapped import User
 from app.models.ratings_mapped import Rating
 from app.models.tour_mapped import Tour
@@ -422,28 +424,86 @@ def get_image(tourid):
     return jsonify([media.serialize() for media in medias])
 
 
+def add_hour_entries(l, start, end, length):
+    sh = start.hour + start.minute/60.0
+    eh = end.hour + end.minute/60.0
+    print("sh: %s, eh: %s" % (sh, eh))
+    while sh <= eh:
+        l.append({
+            "start": sh,
+            "end": sh+length
+        })
+        sh += length
+
+
+def get_date_string(d):
+    return "%d/%d" % (d.month, d.day)
+
+
+# Check if there are any events scheduled between dt_start and dt_end
+# dt_* can be either epoch timestamps or dates or datetimes
+def check_for_event(events, dt_start, dt_end):
+    tStart = dt_start if type(dt_start) is int else dt_start.timestamp()
+    tEnd = dt_end if type(dt_end) is int else dt_end.timestamp()
+    for event in events:
+        eStart = event.start_date_time.timestamp()
+        eEnd = event.end_date_time.timestamp()
+
+        # Check if the times overlap
+        if (tStart <= eEnd) and (tEnd >= eStart):
+            return True
+
+
 @app.route('/tours/available_hours', methods=['GET'])
 def get_hours():
     tour_id = request.args.get("tour_id", None)
-    start_date = request.args.get("start_time", time.time())
-    end_date = request.args.get("end_time", time.time()*2)
+    start_date = datetime.datetime.fromtimestamp(request.args.get("start_time", time.time()))
+    end_date = datetime.datetime.fromtimestamp(request.args.get("end_time", time.time()*2))
 
     if tour_id is None:
         return 422, "No tour specified"
-    tour = safe_call(session.query(Tour), "get", tour_id)
-    query = session.query(TourHours).filter(TourHours.tour_id == tour_id)
+    tour = safe_call(get_session().query(Tour), "get", tour_id)
+    length = tour.length
+    query = get_session().query(TourHours).filter(TourHours.tour_id == tour_id)
     # TODO: Filter by start and end date
     baseHours = safe_call(query, "all", None)
-    length = tour.length
+    query = get_session().query(TourHoursSpecial).filter(
+        TourHoursSpecial.tour_id == tour_id
+    )
+    specialHours = safe_call(query, "all", None)
+    query = get_session().query(TourEvent).filter(
+        TourEvent.id_tour == tour_id
+    )
+    query = query.filter(
+        TourEvent.start_date_time > start_date
+    )
+    query = query.filter(
+        TourEvent.end_date_time > end_date
+    )
+    events = safe_call(query, "all", None)
+    hours = defaultdict(list)
+    overridden = set()
+    for sHour in specialHours:
+        ds = get_date_string(sHour.date)
+        if sHour.overrides:
+            overridden.add(ds)
+        add_hour_entries(hours[ds], sHour.open_time, sHour.close_time, length)
+
+    return jsonify(hours)
+
+    '''
     for hour in baseHours:
         start = hour.start_time
         end = hour.end_time
         hour = start.hour
         end_hour = end.hour
         while hour < end_hour:
-
+            for sHour in specialHours:
+                sStart = sHour.open_time.hour
+                sEnd = sHour.close_time.hour
+                if hour > sStart and hour
             hour += length
-
+    '''
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=False, threaded=True)
+    app.run(host='0.0.0.0', debug=True, threaded=True)

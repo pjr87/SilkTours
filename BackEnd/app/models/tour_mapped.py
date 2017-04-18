@@ -38,6 +38,7 @@ class Tour(Base):
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
     guides = relationship("TourGuides", foreign_keys="TourGuides.id_tour")
     language = Column(String)
+    length = Column(Integer)
 
     def set_props(self, data):
         for key in data:

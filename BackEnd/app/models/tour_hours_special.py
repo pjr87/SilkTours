@@ -2,7 +2,7 @@ import datetime
 from sqlalchemy import Column, Integer, ForeignKey, Time, Date, Boolean
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import session, commitSession
+from db_session import get_session, commitSession
 
 
 class TourHoursSpecial(Base):
@@ -26,7 +26,7 @@ class TourHoursSpecial(Base):
     def create(data, id_tour=None):
         result = None
         if "tour_hours_id" in data:
-            result = session.query(TourHoursSpecial).get(data["tour_hours_special_id"])
+            result = get_session().query(TourHoursSpecial).get(data["tour_hours_special_id"])
         if result is None:
             result = TourHoursSpecial()
         result.set_props(
