@@ -1,19 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-import ToursList from './ToursList';
+import {ToursList} from './ToursList';
 
 import * as service from '../../utils/databaseFunctions';
 
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 
-class TourContainer extends Component {
+class TourContainer extends React.Component {
   constructor(props) {
     super();
     // initializes component state
     this.state = {
       fetching: false, // tells whether the request is waiting for response or not
       tours: [],
+      displayprops:{display:"small", showEdit:false}
     };
   }
 
@@ -49,12 +50,15 @@ class TourContainer extends Component {
   }
 
   render() {
-    const {fetching, tours} = this.state;
+  //  const {fetching, tours, displayProps} = this.state;
+
+
+    //console.log("tProps:",this.state.displayProps);
     return (
       <div>
         <Grid>
           <Row>
-            <ToursList tours={tours}/>
+            <ToursList tourDisplayProps={"test"} tours={this.state.tours}/>
           </Row>
         </Grid>
       </div>

@@ -1,4 +1,10 @@
-.tour-image {
+.tour-image-large {
   border-color: $gray-lightest;
   img { width: 100%; }
+}
+
+.tour-image-small {
+  border-color: $gray-lightest;
+  img { width: 50px; };
+  float:left;
 }
