@@ -1,30 +1,39 @@
 import React from 'react';
-import {PageTitle,TourInfo} from 'components';
+import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 class MyGuide extends React.Component{
   render(){
 
-    const guideBookedTours = this.props.toursGuided.map(function(t,index){
-      console.log("key:",index)
-      if(t.state=="B")
-        return (<TourInfo tour={t} key={index}/>);
-      return null;
+    const guideBookedT = this.props.toursGuided.filter(function(tour){
+      return tour.state=="B";
     });
+    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>);
 
-    const guideUnbookedTours = this.props.toursGuided.map(function(t,index){
+
+    const guideUnbookedT = this.props.toursGuided.filter(function(tour){
+      return tour.state=="A";
+    });
+    const guideUnbookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideUnbookedT}/>);
+
+    /*const guideUnbookedTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="A")
         return (<TourInfo tour={t} key={index}/>);
       return null;
+    });*/
+    const guideCompleteT = this.props.toursGuided.filter(function(tour){
+      return tour.state=="C";
     });
 
-    const guideCompleteTours = this.props.toursGuided.map(function(t,index){
+    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideCompleteT}/>);
+
+    /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
         return (<TourInfo tour={t} key={index}/>);
       return null;
-    });
+    });*/
 
     return (
       <div>

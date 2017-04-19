@@ -41,7 +41,7 @@ class Tours extends React.Component{
   }
 
   render(){
-    const guidesLength = this.state.guides.length;
+    //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
     console.log("display", this.props.tourDisplayProps);
     if(this.props.tourDisplayProps.display == "small"){
@@ -49,7 +49,7 @@ class Tours extends React.Component{
       tourDisplay = (
         <Col xs={12} md={6} lg={6}>
           <Thumbnail>
-            <img className="card-img-top tour-image-small img-responsive"  src={this.state.profile_image}/>
+            <img className={style.tour_image_small} src={this.state.profile_image}/><span>
             <p>{this.state.name}</p>
             <p>review: </p>
             <p>price: ${this.state.price}</p>
@@ -61,8 +61,8 @@ class Tours extends React.Component{
                 }}>
                 <Button bsStyle="primary">More Info</Button>&nbsp;
               </Link>
-              {guideButton}
-            </p>
+              {/*guideButton*/}
+            </p></span>
           </Thumbnail>
         </Col>);
     }
@@ -83,14 +83,14 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
-            {guideButton}
+            {/*guideButton*/}
           </p>
         </Thumbnail>
       </Col>);
     }
 
 
-    let guideButton = null;
+    /*let guideButton = null;
     if (guidesLength != '0') {
       if(this.props.loggedIn) {
         guideButton = <Link
@@ -111,26 +111,10 @@ class Tours extends React.Component{
       }
     } else {
       guideButton = null;
-    }
-    return (
-      <Col xs={12} md={6} lg={6}>
-        <Thumbnail>
-          <img className="card-img-top tour-image-large img-responsive"  src={this.state.profile_image}/>
-          <p>{this.state.name}</p>
-          <p>review: </p>
-          <p>price: ${this.state.price}</p>
-          <p>
-            <Link
-              to={{
-                pathname: '/tourdetail',
-                query: { tourId: this.state.id_tour }
-              }}>
-              <Button bsStyle="primary">More Info</Button>&nbsp;
-            </Link>
-            {guideButton}
-          </p>
-        </Thumbnail>
-      </Col>
+    }*/
+    return (<div>
+      {tourDisplay}
+    </div>
     );
   }
 };

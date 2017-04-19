@@ -75,7 +75,7 @@ class TourFilteredContainer extends Component {
       <div>
         <Grid>
           <Row>
-            <ToursList tours={this.props.tours}/>
+            <ToursList tourDisplayProps={{display:"large",showEdit:false}} tours={this.props.tours}/>
           </Row>
         </Grid>
       </div>

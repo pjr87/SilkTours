@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ToursList} from './ToursList';
+import {ToursList} from 'components';
 
 import * as service from '../../utils/databaseFunctions';
 
@@ -14,7 +14,7 @@ class TourContainer extends React.Component {
     this.state = {
       fetching: false, // tells whether the request is waiting for response or not
       tours: [],
-      displayprops:{display:"small", showEdit:false}
+      displayprops:{display:"large", showEdit:false}
     };
   }
 

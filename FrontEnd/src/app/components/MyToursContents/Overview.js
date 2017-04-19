@@ -1,16 +1,22 @@
 import React from 'react';
-import {PageTitle,TourInfo} from 'components';
+import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 class Overview extends React.Component{
   render(){
 
-    const guideBookedTours = this.props.toursGuided.map(function(t,index){
+    const guideBookedT = this.props.toursGuided.filter(function(tour){
+      return tour.state=="B";
+    });
+    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>);
+
+
+  /*  const guideBookedTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
         return (<TourInfo tour={t} key={index}/>);
       return null;
-    });
+    });*/
 
     return (
       <div>
