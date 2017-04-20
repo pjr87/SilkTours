@@ -114,7 +114,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         additionalTransport = (EditText) rootView.findViewById((R.id.additionalTransport));
         additionalFood = (EditText) rootView.findViewById((R.id.additionalFood));
         stopsList = (ListView) rootView.findViewById(R.id.stopsList);
-        stopsAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.simplerow, stops);
+        stopsAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.tours_stops_list, stops);
         stopsList.setAdapter(stopsAdapter);
 
         initMap();
@@ -171,7 +171,9 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                         if (location != null) {
                             //TextView locationView = (TextView) rootView.findViewById(R.id.addedLocations);
                             //locationView.setText(addedLocationText.getText()+location+"\n");
-                            stopsAdapter.add(location);
+                            stops.add(location);
+                            stopsAdapter.notifyDataSetChanged();
+                            Log.d("STOPSSSSSSSSSS", stops.toString());
                             placeSelected = place;
                             LatLng loca = place.getLatLng();
                             mGoogleMap.addMarker(new MarkerOptions().position(loca));
