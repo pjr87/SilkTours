@@ -42,8 +42,9 @@ class TourHoursSpecial(Base):
 
     def serialize(self):
         return {
-            "tour_hours_id": self.tour_hours_id,
+            "tour_hours_special_id": self.tour_hours_special_id,
             "date": str(self.date),
             "open_time": str(self.open_time),
-            "close_time": str(self.lon)
+            "close_time": str(self.close_time),
+            "overrides": str(self.overrides)
         }

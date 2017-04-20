@@ -3,12 +3,13 @@ from app.models.interests_mapped import Interests
 from app.models.ratings_mapped import Rating
 from app.models.stop_mapped import Stop
 from app.models.tour_guide_mapped import TourGuides
+from app.models.tour_hours import TourHours
+from app.models.tour_hours_special import TourHoursSpecial
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import get_session, commitSession, createSession
+from db_session import get_session, commitSession, safe_call
 import boto3
-import uuid
 
 
 class Tour(Base):
@@ -36,6 +37,7 @@ class Tour(Base):
     ratings = relationship("Rating")
     stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
+    base_hours = relationship("TourHours", foreign_keys="TourHours.tour_id")
     guides = relationship("TourGuides", foreign_keys="TourGuides.id_tour")
     language = Column(String)
     length = Column(Integer)
@@ -112,3 +114,15 @@ class Tour(Base):
         self.profile_image = url
         commitSession(self)
         return self.serialize()
+
+    def get_hours(tour_id):
+        query = get_session().query(TourHours).filter(TourHours.tour_id == tour_id)
+        baseHours = safe_call(query, "all", None)
+        query = get_session().query(TourHoursSpecial).filter(
+            TourHoursSpecial.tour_id == tour_id
+        )
+        specialHours = safe_call(query, "all", None)
+        return {
+            "base_hours": [hour.serialize() for hour in baseHours],
+            "special_hours": [hour.serialize() for hour in specialHours]
+        }

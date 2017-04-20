@@ -2,7 +2,6 @@ from flask import Flask, g
 from flask import jsonify
 from flask import request
 import json
-import time
 import math
 import datetime
 from dateutil.parser import parse
@@ -13,14 +12,12 @@ from app.models.tour_mapped import Tour
 from app.models.stop_mapped import Stop
 from app.models.tour_hours import TourHours
 from app.models.tour_hours_special import TourHoursSpecial
-
 from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
 from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
-import sys
 
 #outputFile = open('out.log', 'w')
 #sys.stdout = sys.stderr = outputFile
@@ -96,30 +93,6 @@ def notAuthorizedResponse():
     href='http://localhost:5000/login'>here</a> to login.</h1>""", 403
 
 
-
-# engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
-#engine = create_engine(
-#    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
-
-#engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
-
-#Session = scoped_session(sessionmaker(bind=engine))
-#session = None
-
-'''
-@app.before_request
-def before_request():
-    createSession()
-
-
-@app.after_request
-def after_request(response):
-    for funct in getattr(g, 'call_after_request', ()):
-        response = funct(response)
-    get_session().close()
-    return response
-'''
-
 @app.errorhandler(500)
 def internal_server_error(e):
     get_session().rollback()
@@ -136,6 +109,7 @@ def hello():
 
 @app.route("/search", methods=['GET'])
 def search():
+    'Searches through all tours'
     interests = request.args.get("interests", None)
     keyWordsStr = request.args.get("keywords", None)
     rating = request.args.get("rating", None)
@@ -219,9 +193,9 @@ def login(id, accessKeyID):
 '''
 
 
-# Creates a new user
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
+    'Creates a new user'
     try:
         if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username').replace(' ', ':')):
             return "false"
@@ -317,6 +291,7 @@ def set_tour():
     tour = Tour()
     tour.createOrEdit(data)
     return jsonify(tour.serialize(False))
+
 
 @app.route('/tours/<tourid>/profile', methods=['PUT'])
 def edit_tour_profile(tourid):
@@ -454,11 +429,33 @@ def check_for_event(events, dt_start, dt_end):
             return True
 
 
-@app.route('/tours/available_hours', methods=['GET'])
-def get_hours():
+@app.route('/tours/<tour_id>/add_base_hours', methods=['POST'])
+def add_base_hours(tour_id):
+    if not checkLogin():
+        return notAuthorizedResponse()
+    data = request.get_json()
+    base_hours = data.get("base_hours", None)
+    session = get_session()
+    for base_hour in base_hours:
+        result = TourHours.create(base_hour, id_tour=tour_id)
+        session.add(result)
+    commitSession()
+
+
+@app.route('/tours/<tour_id>/hours/', methods=['GET'])
+def get_hours(tour_id):
+    return jsonify(Tour.get_hours(tour_id))
+
+
+@app.route('/tours/available_tours', methods=['GET'])
+def get_available():
     tour_id = request.args.get("tour_id", None)
-    start_date = parse(request.args.get("start_date", time.time())).date()
-    end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
+    start_date = request.args.get("start_date", None)
+    if type(start_date) is str:
+        start_date = parse(start_date).date()
+    else:
+        start_date = datetime.date.today() - datetime.timedelta(days=7)
+    end_date = start_date + datetime.timedelta(days=6)
 
     if tour_id is None:
         return 422, "No tour specified"
