@@ -18,7 +18,8 @@ class Interests(Base):
 
     def set_props(self, data):
         for key in data:
-            setattr(self, key, data[key])
+            if hasattr(self, key):
+                setattr(self, key, data[key])
 
     def create(data, id_tour=None, id_user=None):
         result = None
