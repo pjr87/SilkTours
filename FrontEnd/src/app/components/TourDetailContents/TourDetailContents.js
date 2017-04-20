@@ -163,12 +163,10 @@ class TourDetailContents extends React.Component{
                     {/*this.props.selectedTour.stops.map((stops, i) => {
                       return (
                         <li key={i} className={style.content}>{i+1}</li>);
-<<<<<<< HEAD
+
                       })}
 
-=======
-                      })*/}
->>>>>>> troy
+
                     <p className={style.contentSubTitle}>Guides: </p>
                     {/*this.props.selectedTour.guides.map((guides, i) => {
                       return (
@@ -179,12 +177,10 @@ class TourDetailContents extends React.Component{
                                         }}>
                                         {guides.first_name} {guides.last_name}
                                       </Link></li>);
-<<<<<<< HEAD
+
                       })}
                     */}
-=======
-                      })*/}
->>>>>>> troy
+
                     <p className={style.contentSubTitle}>Available Date: </p>
                     {this.props.selectedTourDates.map((availableDates, i) => {
                       return (
@@ -196,8 +192,8 @@ class TourDetailContents extends React.Component{
                     <li className={style.content}>Transport: {this.props.selectedTour.additional_transport}</li>
                   </Col>
                   <Col sm={12} md={7} lg={7}>
-                    <br/>
-                    {/*
+                    {/*<br/>
+
                     <div className={style.mapContainer}>
                     {/*}<Gmaps
                       width={'94%'}
@@ -228,7 +224,7 @@ class TourDetailContents extends React.Component{
                             key={i}/>
                           );
                       })
-                    </Gmaps>*/}
+                    </Gmaps>
                   </div>
                   */}
                 </Col>
@@ -239,11 +235,9 @@ class TourDetailContents extends React.Component{
               <Row>
                 <Col sm={12} md={12} lg={12}>
                   <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
-<<<<<<< HEAD
+
                   {/*{guideButton}*/}
-=======
-                  {/*guideButton*/}
->>>>>>> troy
+
                 </Col>
               </Row>
             </Grid>
@@ -259,7 +253,7 @@ class TourDetailContents extends React.Component{
                       <p className={style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
                       <p className={style.reviewContent}>{reviews.comments}</p>
                     </div>);
-                  })*/}
+                  })
               </Col>
             </Row>
           </Thumbnail>

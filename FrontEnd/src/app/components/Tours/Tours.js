@@ -223,15 +223,14 @@ class Tours extends React.Component{
     }*/
     return (<div>
       {tourDisplay}
-    </div>
-
-    );
-};
+    </div>);
+  }
+}
 
 function select (state) {
   return {
-    loggedIn: state.AuthReducer.loggedIn
-    selectedTour: state.TourDetailReducer.selectedTour,
+    loggedIn: state.AuthReducer.loggedIn,
+    selectedTour: state.TourDetailReducer.selectedTour
   };
 }
 

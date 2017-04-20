@@ -58,7 +58,7 @@ class TourContainer extends React.Component {
       <div>
         <Grid>
           <Row>
-            <ToursList tourDisplayProps={"test"} tours={this.state.tours}/>
+            <ToursList tourDisplayProps={{display:"large"}}  tours={this.state.tours}/>
           </Row>
         </Grid>
       </div>

@@ -149,7 +149,7 @@ class SearchBar extends React.Component{
         <div>
           <Grid>
             <Row>
-              <ToursList tours={this.props.tours}/>
+              <ToursList tours={this.props.tours} tourDisplayProps={{display:"large"}} />
             </Row>
           </Grid>
         </div>
