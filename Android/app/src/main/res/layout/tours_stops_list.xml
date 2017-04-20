@@ -9,4 +9,3 @@
     android:layout_alignBottom="@+id/removeStopBtn"
     android:layout_alignParentTop="true"
     xmlns:android="http://schemas.android.com/apk/res/android" />
-
