@@ -1,5 +1,6 @@
 import datetime
 from app.models.interests_mapped import Interests
+from app.models.address_mapped import Address
 from app.models.ratings_mapped import Rating
 from app.models.stop_mapped import Stop
 from app.models.tour_guide_mapped import TourGuides
@@ -43,7 +44,7 @@ class Tour(Base):
     def set_props(self, data):
         for key in data:
             print(key)
-            if key not in ["ratings", "stops", "interests", "guides"]:
+            if key not in ["ratings", "stops", "interests", "guides", "address"]:
                 print("setting")
                 setattr(self, key, data[key])
 
@@ -60,6 +61,10 @@ class Tour(Base):
             elif key == "guides":
                 for item in data[key]:
                     TourGuides.create(item, self.id_tour)
+            elif key == "address":
+                address = Address.create(data[key])
+                self.address_id = address.id_address
+                commitSession(self)
                 # self.guides = [TourGuides.create(item, self.id_tour) for item in data[key]]
 
     def createOrEdit(self, data):
@@ -96,6 +101,10 @@ class Tour(Base):
         result["ratings"] = []
         for rating in self.ratings:
             result["ratings"].append(rating.serialize())
+
+        result["address"] = {}
+        if self.address is not None:
+            result["address"] = self.address.serialize()
         return result
 
 
