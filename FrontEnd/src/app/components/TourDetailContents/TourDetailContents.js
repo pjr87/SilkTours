@@ -58,10 +58,11 @@ class TourDetailContents extends React.Component{
   }
 
   render(){
-    {/*
-    const guidesLength = this.props.selectedTour.guides.length;
+
+
+    /*const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
-    if (guidesLength != '0') {
+  //  if (guidesLength != '0') {
       if(this.props.loggedIn) {
         guideButton = <Link
                       to={{
@@ -79,10 +80,11 @@ class TourDetailContents extends React.Component{
                         <Button bsStyle="default">Message</Button>
                       </Link>;
       }
-    } else {
-      guideButton = null;
-    }
-    */}
+
+    //} else {
+    //  guideButton = null;
+    //}*/
+
     const getToken = () => {
       // Replace this with an actual promise to your Braintree-enabled server
       return new Promise((resolve) => {
@@ -158,13 +160,17 @@ class TourDetailContents extends React.Component{
                     <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEnd_date}</p>
                     {/*
                     <p className={style.contentSubTitle}>Stops: </p>
-                    {this.props.selectedTour.stops.map((stops, i) => {
+                    {/*this.props.selectedTour.stops.map((stops, i) => {
                       return (
                         <li key={i} className={style.content}>{i+1}</li>);
+<<<<<<< HEAD
                       })}
 
+=======
+                      })*/}
+>>>>>>> troy
                     <p className={style.contentSubTitle}>Guides: </p>
-                    {this.props.selectedTour.guides.map((guides, i) => {
+                    {/*this.props.selectedTour.guides.map((guides, i) => {
                       return (
                         <li key={i} className={style.content}><Link
                                       to={{
@@ -173,8 +179,12 @@ class TourDetailContents extends React.Component{
                                         }}>
                                         {guides.first_name} {guides.last_name}
                                       </Link></li>);
+<<<<<<< HEAD
                       })}
                     */}
+=======
+                      })*/}
+>>>>>>> troy
                     <p className={style.contentSubTitle}>Available Date: </p>
                     {this.props.selectedTourDates.map((availableDates, i) => {
                       return (
@@ -189,7 +199,7 @@ class TourDetailContents extends React.Component{
                     <br/>
                     {/*
                     <div className={style.mapContainer}>
-                    <Gmaps
+                    {/*}<Gmaps
                       width={'94%'}
                       height={'400px'}
                       lat={this.props.selectedTour.stops[0].lat}
@@ -198,7 +208,7 @@ class TourDetailContents extends React.Component{
                       loadingMessage={'Be happy'}
                       params={{v: '3.exp', key: 'AIzaSyA7hW-zSFPnfDssD8pXPbfS6ePP3j0xq98'}}
                       onMapCreated={this.onMapCreated}>
-                      {this.props.selectedTour.stops.map((stops, i) => {
+                      {/*this.props.selectedTour.stops.map((stops, i) => {
                         return (
                           <Marker
                             lat={stops.lat}
@@ -217,8 +227,8 @@ class TourDetailContents extends React.Component{
                             onCloseClick={this.onCloseClick}
                             key={i}/>
                           );
-                      })}
-                    </Gmaps>
+                      })
+                    </Gmaps>*/}
                   </div>
                   */}
                 </Col>
@@ -229,7 +239,11 @@ class TourDetailContents extends React.Component{
               <Row>
                 <Col sm={12} md={12} lg={12}>
                   <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
+<<<<<<< HEAD
                   {/*{guideButton}*/}
+=======
+                  {/*guideButton*/}
+>>>>>>> troy
                 </Col>
               </Row>
             </Grid>
@@ -239,13 +253,13 @@ class TourDetailContents extends React.Component{
             <Row>
               <Col sm={12} md={12} lg={12}>
                 <p className={style.contentSubTitle}>Reviews:</p>
-                {this.props.selectedTour.ratings.map((reviews, i) => {
+                {/*this.props.selectedTour.ratings.map((reviews, i) => {
                   return (
                     <div key={i}>
                       <p className={style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
                       <p className={style.reviewContent}>{reviews.comments}</p>
                     </div>);
-                  })}
+                  })*/}
               </Col>
             </Row>
           </Thumbnail>

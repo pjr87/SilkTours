@@ -1,4 +1,14 @@
-.tour-image {
+.tour-image-large {
   border-color: $gray-lightest;
   img { width: 100%; }
+}
+
+.tour_image_small {
+  border-color: $gray-lightest;
+  height: 110px;
+  left:0px;
+  bottom:0px;
+  float:left;
+  padding-right: 10px;
+  padding-bottom: 10px;
 }

@@ -1,24 +1,35 @@
 import React from 'react';
-import {PageTitle,TourInfo} from 'components';
+import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 export default class MyTours extends React.Component{
 
   render(){
 
-    const takeCompletedTours = this.props.toursTaken.map(function(t,index){
+    const takeCompletedT = this.props.toursTaken.filter(function(tour){
+      return tour.state=="C";
+    });
+    const takeCompletedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={takeCompletedT}/>);
+
+    /*const takeCompletedTours = this.props.toursTaken.map(function(t,index){
       console.log("key:",index)
       if(t.state=="C")
         return (<TourInfo tour={t} key={index}/>);
       return null;
-    });
+    });*/
 
+    const takeBookedT = this.props.toursTaken.filter(function(tour){
+      return tour.state=="B";
+    });
+    const takeBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={takeBookedT}/>);
+
+    /*
     const takeBookedTours = this.props.toursTaken.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
         return (<TourInfo tour={t} key={index}/>);
       return null;
-    });
+    });*/
 
 
     return (
