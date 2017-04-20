@@ -306,7 +306,7 @@ def add_stop():
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
     tour = safe_call(get_session().query(Tour), "get", tourid)
-    return jsonify(tour.serialize(False))
+    return jsonify(tour.serialize(True))
 
 
 @app.route('/tours', methods=['POST'])
