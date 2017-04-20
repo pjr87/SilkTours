@@ -6,6 +6,7 @@ export default class ProfilePage extends React.Component{
   constructor(props){
     super(props)
     this.state={guide_id: this.props.location.query.guideUserId};
+    
   }
 
   render(){

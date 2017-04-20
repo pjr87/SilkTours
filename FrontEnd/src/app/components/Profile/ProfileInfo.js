@@ -11,13 +11,12 @@ import React from 'react';
 export default class ProfileInfo extends React.Component{
 
   render(){
-    const offeredTours = this.props.guide.tours_teaching.map(function(t,index){
-      console.log("key:",index)
-      if(t.state=="A")
-        return (<TourInfo tour={t} key={index}/>);
-      return null;
+
+    const offeredT = this.props.guide.tours_teaching.filter(function(tour){
+      return tour.state=="A";
     });
-//NEED TO PASS tourDisplayProps argument
+    const offeredTours = (<ToursList tourDisplayProps={{display:"small"}} tours={offeredT}/>);
+
     return (
       <Row>
         <Col xs={12} md={4} lg={4}>
@@ -26,11 +25,14 @@ export default class ProfileInfo extends React.Component{
           <p>Email: {this.props.guide.email}</p>
           <p>Phone: {this.props.guide.phone_number}</p>
           </Panel>
+
+            <Panel header={"About "+this.props.guide.first_name}>
+              {this.props.guide.description}
+            </Panel>
         </Col>
-        <ToursList tourDisplayProps={{display:"small",showEdit:false}} tours={tours} />
-        <Col xs={12} md={4} lg={4}>
-          <Panel header={"About "+this.props.guide.first_name}>
-            {this.props.guide.description}
+        <Col xs={12} md={8} lg={8}>
+          <Panel header={"Tours Offered"}>
+            {offeredTours}
           </Panel>
         </Col>
       </Row>
