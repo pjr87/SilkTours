@@ -318,6 +318,7 @@ def set_tour():
     tour.createOrEdit(data)
     return jsonify(tour.serialize(False))
 
+
 @app.route('/tours/<tourid>/profile', methods=['PUT'])
 def edit_tour_profile(tourid):
     if not checkLogin():
@@ -411,9 +412,12 @@ def edit_tourevent(eventid):
 def upload(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
-    file = request.files['file']
+    data = request.get_json()
+    print("Data: " + str(data))
+    file_data = data['file']
+    filename = data['name']
     media = Media()
-    return media.upload(file, tourid)
+    return media.upload(file_data, filename, tourid)
 
 
 @app.route('/media/<tourid>', methods=['GET'])
