@@ -1,10 +1,12 @@
 package com.silktours.android;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -25,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -106,7 +109,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         //user = User.getByID(Profile.);
 
 
-        Log.d("user", String.valueOf(user.getInt(user.ID_USERS)));
+        //Log.d("user", String.valueOf(user.getInt(user.ID_USERS)));
         //Log.d("user", user.ID_USERS.toString());
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
@@ -197,7 +200,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                         if (location != null) {
                             //TextView locationView = (TextView) rootView.findViewById(R.id.addedLocations);
                             //locationView.setText(addedLocationText.getText()+location+"\n");
-                            stops.add(location);
+                            stops.add((String) place.getName());
                             setListViewHeightBasedOnChildren(stopsList);
                             stopsAdapter.notifyDataSetChanged();
                             Log.d("STOPSSSSSSSSSS", stops.toString());
@@ -284,6 +287,23 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             @Override
             public void onClick(View v) {
                 updateEndDate();
+            }
+        });
+
+        stopsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                AlertDialog.Builder adb=new AlertDialog.Builder(MainActivity.getInstance());
+                adb.setTitle("Delete?");
+                adb.setMessage("Are you sure you want to delete " + position);
+                final int positionToRemove = position;
+                adb.setNegativeButton("Cancel", null);
+                adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        stops.remove(positionToRemove);
+                        setListViewHeightBasedOnChildren(stopsList);
+                        stopsAdapter.notifyDataSetChanged();
+                    }});
+                adb.show();
             }
         });
     }
