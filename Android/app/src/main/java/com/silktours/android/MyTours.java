@@ -64,7 +64,7 @@ public class MyTours extends Fragment {
                 try {
                     User user = CredentialHandler.getUser(MainActivity.getInstance());
                     if (user != null)
-                        return Controller.sendGet("/users/" + user.getInt(User.ID_USERS));
+                        return Controller.sendGet("/users/" + user.getInt(User.ID_USERS) + "?deep=true");
                 } catch (Exception e) {
                     Log.e(TAG, "doInBackground: ", e);
                 }
