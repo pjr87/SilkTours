@@ -11,7 +11,6 @@ class TourCreationInterests extends React.Component{
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
-    this._changeStartTime = this._changeStartTime.bind(this)
   }
 
   next(){
@@ -20,14 +19,6 @@ class TourCreationInterests extends React.Component{
 
   previous(){
     this.props.dispatch(setTabKey("description"));
-  }
-
-  _changeStartTime(event) {
-    this._emitUserChange({...this.props.tour, firstStart_date: event.target.value});
-  }
-
-  _emitUserChange (newTimeState) {
-    this.props.dispatch(updateTimeState(newTimeState))
   }
 
   render(){
