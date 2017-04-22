@@ -106,7 +106,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
 
         Log.d("user", String.valueOf(user.getInt(user.ID_USERS)));
-        Log.d("user", user.ID_USERS.toString());
+        //Log.d("user", user.ID_USERS.toString());
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
         price = (EditText) rootView.findViewById(R.id.price);
@@ -212,13 +212,13 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();
                 try {
-                    guide.put("id_user", user.getStr(user.ID_USERS));
+                    guide.put("id_user", String.valueOf(user.getInt(user.ID_USERS)));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 guides.put(guide);
-                Log.d("USER IDDDDDDDDDDDDDD", user.ID_USERS.toString());
-                Log.d("user iddddddddddddd", user.getStr(user.ID_USERS));
+                //Log.d("USER IDDDDDDDDDDDDDD", user.ID_USERS.toString());
+                //Log.d("user iddddddddddddd", user.getStr(user.ID_USERS));
 
                 tour.set("guides", guides);
 
