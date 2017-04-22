@@ -87,54 +87,19 @@ export function createTour(tour, auth, photos, startTime, endTime) {
       return;
     }
 
-    console.log("photos", photos);
-
     service.newTour(tour, auth).then(function(response){
       if(response.data){
-        console.log("response.data", response.data.id_tour);
-        if(photos.length > 0){
-          service.newPhoto(photos, response.data.id_tour, auth).then(function(response){
-            if(response.data){
-              var tourEvent = buildTourEvent(
-                startTime,
-                endTime,
-                tour.firstStart_date,
-                tour.lastEnd_date,
-                response.data.id_tour,
-                tour.guides[0].id_user);
-              console.log('tourEvent', tourEvent);
-              service.putTourEvent(tourEvent, auth).then(function(response){
-                if(response.data){
-                  dispatch(sendingRequest(false));
-                  forwardTo('/explore');
-                  dispatch(clearTour())
-                  dispatch(updatePhotoState([]))
-                  dispatch(setTabKey("info"))
-                }
-                else{
-                  // If there was a problem, show an error
-                  console.log('response.error: ' + response.error);
-                  dispatch(sendingRequest(false));
-                  dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
-                }
-              });
-            }
-            else{
-              // If there was a problem, show an error
-              console.log('response.error: ' + response.error);
-              dispatch(sendingRequest(false));
-              dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
-            }
-          });
-        }
-        else{
+        var tour_id = response.data.id_tour;
+        console.log("response.data", tour_id);
+        console.log("Addidng photo");
+        service.newProfilePhoto(photos, tour_id, auth).then(function(response){
           if(response.data){
             var tourEvent = buildTourEvent(
               startTime,
               endTime,
               tour.firstStart_date,
               tour.lastEnd_date,
-              response.data.id_tour,
+              tour_id,
               tour.guides[0].id_user);
             console.log('tourEvent', tourEvent);
             service.putTourEvent(tourEvent, auth).then(function(response){
@@ -159,7 +124,7 @@ export function createTour(tour, auth, photos, startTime, endTime) {
             dispatch(sendingRequest(false));
             dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
           }
-        }
+        });
       }
       else{
         // If there was a problem, show an error

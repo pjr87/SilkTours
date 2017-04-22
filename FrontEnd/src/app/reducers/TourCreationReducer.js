@@ -49,7 +49,7 @@ const initialState = {
   },
   startTime: 0,
   endTime: 0,
-  photos: [],
+  photos: {},
   currentlySending: false,
   errorMessage: '',
   tabKey: 'info'

@@ -165,7 +165,7 @@ TourCreationContents.propTypes = {
   startTime: React.PropTypes.number,
   errorMessage: React.PropTypes.string,
   tabKey: React.PropTypes.string,
-  photos: React.PropTypes.array
+  photos: React.PropTypes.object
 }
 
 function select (state) {

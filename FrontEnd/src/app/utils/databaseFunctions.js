@@ -98,6 +98,18 @@ export function newPhoto(data, id, auth){
     });
 }
 
+export function newProfilePhoto(data, id, auth){
+    let url = SERVER_URL + '/tours/' + id + '/profile';
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.
  The arguments should be put in the HTTP request's form, and the JSON structure
  of the params is the same as the result of "http://34.197.42.24:5000/users/1"
