@@ -97,6 +97,9 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     ArrayList<String> stops = new ArrayList<String>();
     ArrayAdapter<String> stopsAdapter;
 
+    JSONArray stopJSON = new JSONArray();
+    JSONObject stop = new JSONObject();
+
     private CredentialHandler credentialHandler;
     private User user;
 
@@ -208,6 +211,16 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                             LatLng loca = place.getLatLng();
                             mGoogleMap.addMarker(new MarkerOptions().position(loca));
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
+
+
+                            try {
+                                stop.put("lat", loca.latitude);
+                                stop.put("lon", loca.longitude);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            stopJSON.put(stop);
+                            Log.d("stopsJSON", stopJSON.toString());
                         }
                     }
                 });
@@ -228,7 +241,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set("firstStart_date", start.get(Calendar.YEAR)+"-"+start.get(Calendar.MONTH)+"-"+start.get(Calendar.DATE));
                 tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
                 tour.set("language", language.getText().toString());
-                //tour.set("guides:id_user", user.ID_USERS.toString());
                 tour.set("additional_food", additionalFood.getText().toString());
                 tour.set("additional_accomadation", additionalAccommodation.getText().toString());
                 tour.set("additional_transport", additionalTransport.getText().toString());
@@ -243,8 +255,9 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 guides.put(guide);
                 //Log.d("USER IDDDDDDDDDDDDDD", user.ID_USERS.toString());
                 //Log.d("user iddddddddddddd", user.getStr(user.ID_USERS));
-
                 tour.set("guides", guides);
+
+                tour.set("stops", stop);
 
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
