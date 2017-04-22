@@ -153,8 +153,71 @@ class Tours extends React.Component{
     //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
     console.log("display", this.props.tourDisplayProps);
+
+    const modifyBtn = (this.props.tourDisplayProps.modifyBtn) ? (<p>
+        <Link
+          to={{
+            pathname: '/tourModify',
+            query: { tourId: this.state.id_tour }
+          }}>
+          <Button bsStyle="primary">Modify</Button>&nbsp;
+        </Link>
+      </p>) : null;
+
+    const contactGuideBtn = (this.props.tourDisplayProps.contactGuideBtn) ? (<p>
+        <Link
+          to={{
+            pathname: '/messages',
+            query: { tourId: this.state.id_tour }
+          }}>
+          <Button bsStyle="primary">Message Guide</Button>&nbsp;
+        </Link>
+      </p>) : null;
+
+      const summaryBtn = (this.props.tourDisplayProps.summaryBtn) ? (<p>
+          <Link
+            to={{
+              pathname: '/messages',
+              query: { tourId: this.state.id_tour }
+            }}>
+            <Button bsStyle="primary">Review Summary</Button>&nbsp;
+          </Link>
+        </p>) : null;
+
+      const rating = (this.props.tourDisplayProps.rating) ? (<p>
+          {/* <Link
+          //   to={{
+          //     pathname: '/messages',
+          //     query: { tourId: this.state.id_tour }
+          //   }}>
+          //   <Button bsStyle="primary">Review Summary</Button>&nbsp;
+          // </Link>*/}
+          Rating: (the rating)
+        </p>) : null;
+
+      const contactTouristBtn = (this.props.tourDisplayProps.contactTouristBtn) ? (<p>
+          <Link
+            to={{
+              pathname: '/messages',
+              query: { tourId: this.state.id_tour }
+            }}>
+            <Button bsStyle="primary">Message Tourist</Button>&nbsp;
+          </Link>
+        </p>) : null;
+
+      const cancelBtn = (this.props.tourDisplayProps.cancelBtn) ? (<p>
+          <Link
+            to={{
+              pathname: '/cancelTour',
+              query: { tourId: this.state.id_tour }
+            }}>
+            <Button bsStyle="primary">Cancel Booking</Button>&nbsp;
+          </Link>
+        </p>) : null;
+
+
     if(this.props.tourDisplayProps.display == "small"){
-      console.log("MEOW!");
+
       tourDisplay = (
         <Col xs={12} md={6} lg={6}>
           <Thumbnail>
@@ -170,10 +233,13 @@ class Tours extends React.Component{
                 }}>
                 <Button bsStyle="primary">More Info</Button>&nbsp;
               </Link>
-              {/*guideButton*/}
-            </p></span>
+
+            </p>{modifyBtn} {contactGuideBtn} {summaryBtn} {rating} {contactTouristBtn} {cancelBtn}</span>
           </Thumbnail>
         </Col>);
+
+
+
     }
     else{
 
