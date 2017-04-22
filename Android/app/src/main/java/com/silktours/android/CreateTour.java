@@ -100,8 +100,12 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.content_create_tour, container, false);
 
-        user = CredentialHandler.getUser(MainActivity.getInstance());
-        //Log.d("user", user.getStr(user.ID_USERS));
+        //user = CredentialHandler.getUser(MainActivity.getInstance());
+        user = CredentialHandler.getUser(this.getActivity());
+        //user = User.getByID(Profile.);
+
+
+        Log.d("user", String.valueOf(user.getInt(user.ID_USERS)));
         Log.d("user", user.ID_USERS.toString());
         tourName = (EditText) rootView.findViewById(R.id.tourName);
         tourDesc = (EditText) rootView.findViewById(R.id.tourDesc);
@@ -201,7 +205,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set("firstEnd_date", end.get(Calendar.YEAR)+"-"+end.get(Calendar.MONTH)+"-"+end.get(Calendar.DATE));
                 tour.set("language", language.getText().toString());
                 //tour.set("guides:id_user", user.ID_USERS.toString());
-                Log.d("USER IDDDDDDDDDDDDDD", user.ID_USERS.toString());
                 tour.set("additional_food", additionalFood.getText().toString());
                 tour.set("additional_accomadation", additionalAccommodation.getText().toString());
                 tour.set("additional_transport", additionalTransport.getText().toString());
@@ -209,11 +212,14 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();
                 try {
-                    guide.put("id_user", 48);
+                    guide.put("id_user", user.getStr(user.ID_USERS));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 guides.put(guide);
+                Log.d("USER IDDDDDDDDDDDDDD", user.ID_USERS.toString());
+                Log.d("user iddddddddddddd", user.getStr(user.ID_USERS));
+
                 tour.set("guides", guides);
 
                // Log.d("json", "onClick: " + tour.get());

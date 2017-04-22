@@ -25,7 +25,8 @@ import java.util.Map;
  * Created by andrew on 1/26/17.
  */
 public class Common {
-    public static final String SERVER_URL = "http://34.197.42.24:5000";
+    //public static final String SERVER_URL = "http://34.197.42.24:5000";
+    public static final String SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com/";
 
     private static void addAuth(HttpURLConnection conn) {
 
