@@ -1573,7 +1573,7 @@ ol, ul {
 
 .mck-msg-right .mck-msg-box:after {
 	border-color: transparent;
-	border-left-color: #00b0ff;
+	border-left-color: #9840A4;
 	border-width: 8px;
 }
 
@@ -2156,7 +2156,7 @@ ol, ul {
 	font-size: 14px;
 	margin-right: 15px;
 	min-height: 44px; padding : 10px 14px 12px;
-	background-color: #00b0ff;
+	background-color: #9840A4;
 	-webkit-align-self: flex-start;
 	-ms-flex-item-align: start;
 	align-self: flex-start;
