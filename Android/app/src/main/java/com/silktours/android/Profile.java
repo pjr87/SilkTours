@@ -72,6 +72,11 @@ public class Profile extends Fragment {
         }else{
             Button button = (Button) rootView.findViewById(R.id.saveProfile);
             button.setText("Message");
+            firstName.setKeyListener(null);
+            lastName.setKeyListener(null);
+            phoneNumber.setKeyListener(null);
+            email.setKeyListener(null);
+            location.setKeyListener(null);
         }
         new Thread(new Runnable() {
             @Override
@@ -153,6 +158,8 @@ public class Profile extends Fragment {
                 });
             }
         });
+        if (!editable)
+            locationEdit.setVisibility(View.GONE);
 
         Button saveButton = (Button) rootView.findViewById(R.id.saveProfile);
         saveButton.setOnClickListener(new View.OnClickListener() {
