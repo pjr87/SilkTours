@@ -183,11 +183,7 @@ public class BookTourFragment extends Fragment {
                                     bookTour(payment);
                                     Toast.makeText(MainActivity.getInstance(), "Tour Booked Successfully", Toast.LENGTH_SHORT).show();
                                     ViewtourTemp.start(tour);
-                                    try {
-                                        Viewtour.start(new Tours(tour.JSON));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                    Viewtour.start(tour);
                                 } else {
                                     ErrorDisplay.show("Unable to process payment, please try again.", MainActivity.getInstance());
                                 }

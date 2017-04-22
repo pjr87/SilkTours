@@ -95,11 +95,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Viewtour.start(new Tours(tour.JSON));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Viewtour.start(tour);
 
             }
         });

@@ -63,7 +63,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private Media[] medias;
     private Tour _tour;
 
-    public static void start(Tours tour) {
+    public static void start(Tour tour) {
         Bundle args = new Bundle();
         args.putSerializable("TourObject", tour);
         Viewtour fragment = new Viewtour();
