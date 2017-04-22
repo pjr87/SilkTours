@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {SearchBar, PageTitle, BannerImage} from 'components';
+import {SearchBar, PageTitle, BannerImage, PendingReview} from 'components';
 
 import { connect } from 'react-redux';
 import { searchTour } from '../../actions/SearchActions';
@@ -18,6 +18,7 @@ class ExplorePage extends React.Component{
         <br/>
         <br/>
         <PageTitle title= "Available tours"/>
+        <PendingReview/>
         <SearchBar/>
       </div>
     );

@@ -162,3 +162,39 @@ export function postSupportTicket(department, fname, lname, email, textBody) {
     return instance.post('', dataa, instance);
 
 }
+
+export function getPendingReviewsByUserId(userId, auth){
+    let url = SERVER_URL + '/pending_reviews/' + userId;
+
+    return axios.get(url,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function postPendingReviewsByRatingComment(json, auth){
+    let url = SERVER_URL + '/ratings';
+
+    return axios.post(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function putClearPendingReviewsByEventId(eventId, auth){
+    let url = SERVER_URL + '/clear_pending_review/' + eventId;
+
+    return axios.put(url,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
