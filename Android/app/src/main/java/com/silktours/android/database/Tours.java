@@ -47,12 +47,17 @@ public class Tours extends Base implements Serializable  {
         lastEnd_date = JSON.getString("lastEnd_date");
         description = JSON.getString("description");
         price = JSON.getString("price");
+        if (!JSON.has("stops")) {
+            JSON.put("stops", new JSONArray());
+        }
         JSONArray jsonStop = JSON.getJSONArray("stops");
         stops = new Double[jsonStop.length()][2];
-        for(int i = 0; i < jsonStop.length(); i++) {
+
+        for (int i = 0; i < jsonStop.length(); i++) {
             stops[i][0] = jsonStop.getJSONObject(i).getDouble("lat");
             stops[i][1] = jsonStop.getJSONObject(i).getDouble("lon");
         }
+
     }
 
     public String getName(){

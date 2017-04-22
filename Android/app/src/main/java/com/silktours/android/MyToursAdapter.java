@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
 
 import java.io.IOException;
@@ -22,13 +23,13 @@ import java.net.HttpURLConnection;
  * Created by yongqiangfan on 2/6/17.
  */
 
-public class MyToursAdapter extends ArrayAdapter<Tours>{
+public class MyToursAdapter extends ArrayAdapter<Tour>{
 
     private TextView txtCity;
     private TextView txtName;
     private ImageView imgProfile;
 
-    public MyToursAdapter(Context context, Tours[] tours) {
+    public MyToursAdapter(Context context, Tour[] tours) {
         super(context, 0, tours);
     }
 
@@ -37,19 +38,19 @@ public class MyToursAdapter extends ArrayAdapter<Tours>{
         LayoutInflater tourInflater = LayoutInflater.from(getContext());
         final View tourView = tourInflater.inflate(R.layout.my_tours_item, parent, false);
 
-        final Tours tour = getItem(position);
+        final Tour tour = getItem(position);
 
         txtCity = (TextView) tourView.findViewById(R.id.txtCity);
         txtName = (TextView) tourView.findViewById(R.id.txtName);
         imgProfile = (ImageView) tourView.findViewById(R.id.imgProfile);
 
-        txtCity.setText(tour.getCity());
-        txtName.setText(tour.getName());
+        txtCity.setText(tour.getStr("address:city"));
+        txtName.setText(tour.getStr("name"));
 
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
-                return getResizedBitmap(getBitmapFromURL(tour.getProfileImage()), 200, 200);
+                return getResizedBitmap(getBitmapFromURL(tour.getStr("profile_image")), 200, 200);
             }
 
             @Override

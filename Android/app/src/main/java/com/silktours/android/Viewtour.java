@@ -32,6 +32,7 @@ import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.ErrorDisplay;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,8 +75,14 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.content_viewtour, container, false);
-        tour = (Tours) getArguments().getSerializable("TourObject");
-
+        Tour _tour = (Tour) getArguments().getSerializable("TourObject");
+        try {
+            tour = new Tours(_tour.JSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            ErrorDisplay.show("Issue displaying tour", MainActivity.getInstance());
+            return rootView;
+        }
         tourId = tour.getId_tour().toString();
         txtName = (TextView) rootView.findViewById(R.id.txtName);
         txtCountry = (TextView) rootView.findViewById(R.id.txtCountry);

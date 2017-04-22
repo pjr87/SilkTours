@@ -15,7 +15,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.silktours.android.database.Controller;
+import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
+import com.silktours.android.database.User;
+import com.silktours.android.utils.CredentialHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,9 +33,10 @@ public class MyTours extends Fragment {
     Stack<Fragment> visited = new Stack<>();
     private static final String CURRENT_TAG = "CURRENT";
     private int currentID;
-    private Tours[] tours;
+    private Tour[] tours;
     private ListView listView;
     private LayoutInflater inflater;
+    private boolean guide = false;
     private Bundle bundle;
     private Spinner spinner;
 
@@ -58,7 +62,9 @@ public class MyTours extends Fragment {
             @Override
             protected String doInBackground(Void... params) {
                 try {
-                    return Controller.sendGet("/search");
+                    User user = CredentialHandler.getUser(MainActivity.getInstance());
+                    if (user != null)
+                        return Controller.sendGet("/users/" + user.getInt(User.ID_USERS));
                 } catch (Exception e) {
                     Log.e(TAG, "doInBackground: ", e);
                 }
@@ -69,11 +75,12 @@ public class MyTours extends Fragment {
             protected void onPostExecute(String response) {
                 try {
                     JSONObject jsObj = new JSONObject(response);
-                    JSONArray jsArray = jsObj.getJSONArray("data");
+                    JSONArray jsArray = jsObj.getJSONArray(guide?"tours_teaching":"tours_taking");
                     Log.d(TAG, "onPostExecute: finished JSON1");
-                    tours = new Tours[jsArray.length()];
+                    tours = new Tour[jsArray.length()];
                     for(int i = 0; i < jsArray.length(); i++) {
-                        tours[i] = new Tours(jsArray.getJSONObject(i));
+                        tours[i] = new Tour();
+                        tours[i].JSON = jsArray.getJSONObject(i);
                     }
                     ListAdapter tourAdapter = new MyToursAdapter(MainActivity.getInstance(), tours);
                     listView.setAdapter(tourAdapter);
@@ -115,11 +122,8 @@ public class MyTours extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
             //Log.d(TAG, "onItemSelected: " + position);
-            if (position == 0) {
-                getTours();
-            } else {
-
-            }
+            guide = (position==1);
+            getTours();
         }
 
         @Override
