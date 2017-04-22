@@ -15,7 +15,6 @@ import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import Modal from 'react-bootstrap/lib/Modal';
 
-import ToursList from '../Tours/ToursList';
 import * as service from '../../utils/databaseFunctions';
 import { getPendingReviewsByUserId, setShowPendingReview, setShowRating, setShowComment, postPendingReviewsByRatingComment, putClearPendingReviewsByEventId } from '../../actions/PendingReviewActions';
 
@@ -50,19 +49,20 @@ class PendingReview extends React.Component{
   }
 
   handleSubmitPendingReview(){
-    this.props.dispatch(postPendingReviewsByRatingComment(this.props.id_user, this.props.tripCompleted[0].id_tour, this.props.rating, this.props.comment, this.props.auth));
+    this.props.dispatch(postPendingReviewsByRatingComment(this.props.id_user, this.props.tripCompleted[this.props.selectedPendingReview].id_tour, this.props.rating, this.props.comment, this.props.auth));
     this.props.dispatch(setShowPendingReview(false));
   }
 
   handleDeclinePendingReview(){
-    this.props.dispatch(putClearPendingReviewsByEventId(this.props.tripCompleted[0].id_tourEvent, this.props.auth))
+    this.props.dispatch(putClearPendingReviewsByEventId(this.props.tripCompleted[this.props.selectedPendingReview].id_tourEvent, this.props.auth))
     this.props.dispatch(setShowPendingReview(false));
   }
 
   componentDidMount() {
     if(this.props.loggedIn) {
-      this.props.dispatch(getPendingReviewsByUserId("1", this.props.auth));
-      // this.props.dispatch(getPendingReviewsByUserId(this.props.id_user, this.props.auth));
+      // this.props.dispatch(getPendingReviewsByUserId("1", this.props.auth));
+      this.props.dispatch(getPendingReviewsByUserId(this.props.id_user, this.props.auth));
+      console.log("test= " + this.props.selectedPendingReview);
     }
   }
 
@@ -72,10 +72,10 @@ class PendingReview extends React.Component{
       <div>
       <Modal show={this.props.showPendingReview} onHide={this.closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Review: {this.props.tripCompleted[0].name}</Modal.Title>
+          <Modal.Title>Review: {this.props.tripCompleted[this.props.selectedPendingReview].name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Average Rating: {this.props.tripCompleted[0].average_rating}
+          Average Rating: {this.props.tripCompleted[this.props.selectedPendingReview].average_rating}
           <br/>
           <br/>
           <br/>

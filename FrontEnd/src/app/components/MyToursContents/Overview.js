@@ -1,8 +1,33 @@
 import React from 'react';
 import {PageTitle,TourInfo,ToursList} from 'components';
-import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import {Panel, Grid, Row, Col, ListGroup, ListGroupItem, Button} from 'react-bootstrap';
+import { getPendingReviewsByUserId, setShowPendingReview } from '../../actions/PendingReviewActions';
+import {connect} from 'react-redux';
+import { browserHistory } from 'react-router';
+import PendingReview from '../PendingReview/PendingReview';
 
 class Overview extends React.Component{
+  constructor(props){
+    super();
+    this.state = {
+      showComponent: false,
+      selectedPendingReview: '',
+    };
+  }
+
+  componentDidMount() {
+    this.props.dispatch(getPendingReviewsByUserId(this.props.id_user, this.props.auth));
+    // this.props.dispatch(getPendingReviewsByUserId("1", this.props.auth));
+  }
+
+  handleReviewChange(id_tour) {
+    this.setState({
+      showComponent: true,
+      selectedPendingReview: id_tour,
+    });
+    this.props.dispatch(setShowPendingReview(true));
+  }
+
   render(){
 
     const guideBookedT = this.props.toursGuided.filter(function(tour){
@@ -20,6 +45,10 @@ class Overview extends React.Component{
 
     return (
       <div>
+        {this.state.showComponent ?
+           <PendingReview selectedPendingReview={this.state.selectedPendingReview}/> :
+           null
+        }
         <Grid>
           <PageTitle title="Overview"/>
           <Row>
@@ -30,7 +59,12 @@ class Overview extends React.Component{
             </Col>
             <Col md={6} mdPush={0}>
               <Panel header="Pending Reviews">
-                No Tours
+                <ListGroup fill>
+                  {this.props.tripCompleted.map((tours, i) => {
+                    return (
+                      <ListGroupItem key={i}>{i+1}. {tours.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleReviewChange.bind(this, i)}>Review</Button></ListGroupItem>);
+                  })}
+                </ListGroup>
               </Panel>
             </Col>
           </Row>
@@ -47,4 +81,16 @@ class Overview extends React.Component{
   }
 }
 
-export default Overview;
+function select (state) {
+  return {
+    auth: state.AuthReducer.auth,
+    loggedIn: state.AuthReducer.loggedIn,
+    id_user: state.AuthReducer.id_user,
+    showPendingReview: state.PendingReviewReducer.showPendingReview,
+    tripCompleted: state.PendingReviewReducer.tripCompleted,
+    rating: state.PendingReviewReducer.rating,
+    comment: state.PendingReviewReducer.comment,
+  };
+}
+
+export default connect(select)(Overview);
