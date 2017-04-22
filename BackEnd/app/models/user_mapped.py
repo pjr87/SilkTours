@@ -83,7 +83,7 @@ class User(Base):
         self.create_extras(data)
         commitSession(self)
 
-    def serialize(self):
+    def serialize(self, deep=False):
         result = {}
 
         result["interests"] = []
@@ -92,11 +92,11 @@ class User(Base):
 
         result["tours_teaching"] = []
         for tourEvent in self.tours_teaching:
-            result["tours_teaching"].append(tourEvent.serialize())
+            result["tours_teaching"].append(tourEvent.serialize(deep))
 
         result["tours_taking"] = []
         for tourEvent in self.tours_taking:
-            result["tours_taking"].append(tourEvent.serialize())
+            result["tours_taking"].append(tourEvent.serialize(deep))
 
         if self.address is not None:
             result["address"] = self.address.serialize()

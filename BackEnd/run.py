@@ -192,11 +192,13 @@ def search():
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
     print("Get User")
+    deep = request.args.get("deep", False) == "true"
+    print("deep: " + str(deep))
     #if not checkLogin():
     #    return notAuthorizedResponse()
 
     user = safe_call(get_session().query(User), "get", id)
-    return jsonify(user.serialize())
+    return jsonify(user.serialize(deep))
 
 
 @app.route('/users/email/<email>', methods=['GET'])

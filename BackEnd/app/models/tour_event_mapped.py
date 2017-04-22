@@ -40,7 +40,7 @@ class TourEvent(Base):
         commitSession(result)
         return result
 
-    def serialize(self):
+    def serialize(self, deep=False):
         start_date_time = None
         if self.start_date_time is not None:
             start_date_time = str(self.start_date_time)
@@ -58,5 +58,5 @@ class TourEvent(Base):
             "state": self.state,
             "pending_review": self.pending_review,
         }
-        result.update(self.tour.serialize(False))
+        result.update(self.tour.serialize(deep))
         return result
