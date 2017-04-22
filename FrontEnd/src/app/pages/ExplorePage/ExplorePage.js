@@ -13,12 +13,13 @@ class ExplorePage extends React.Component{
   }
 
   render(){
+    const pendingReview = (this.props.loggedIn) ? (<PendingReview selectedPendingReview="0"/>) : null;
     return (
       <div>
         <br/>
         <br/>
         <PageTitle title= "Available tours"/>
-        <PendingReview/>
+        {pendingReview}
         <SearchBar/>
       </div>
     );
@@ -28,6 +29,7 @@ class ExplorePage extends React.Component{
 // select chooses which props to pull from store
 function select(state) {
   return {
+    loggedIn: state.AuthReducer.loggedIn,
     tours: state.SearchReducer.tours,
     keywords: state.SearchReducer.keywords,
     interests: state.SearchReducer.interests,
