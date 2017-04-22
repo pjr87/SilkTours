@@ -250,6 +250,7 @@ def edit_user(id):
     user.create_or_edit(data)
     return jsonify(user.serialize())
 
+
 @app.route('/users/<userid>/profile', methods=['PUT'])
 def edit_user_profile(userid):
     if not checkLogin():
