@@ -2,6 +2,7 @@ import React from 'react';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import { updateStopState, setTabKey } from '../../actions/TourCreationActions';
 import StopDisplay from '../StopDisplay/StopDisplay';
 
@@ -32,38 +33,39 @@ class TourCreationStops extends React.Component{
     this.props.dispatch(updateStopState(newStopsState))
   }
 
-  componentDidMount(){
-    console.log("componentDidMount");
-  }
-
-  componentWillMount(){
-    console.log("componentWillMount");
-  }
-
   render(){
-    return (
-      <div>
-        <br/>
-        <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
-        <br/>
-        <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
-        <br/>
-        <Pager>
-          <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-        </Pager>
-      </div>
-    )
+    if(this.props.tabKey == 'stops'){
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
+          <br/>
+          <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
+    else{
+      return(
+        <div>
+          <p className={style.HeaderStyle}>Map is loading please wait!</p>
+        </div>
+      )
+    }
   }
 }
 
 TourCreationStops.propTypes = {
-  photos: React.PropTypes.object
+  tabKey: React.PropTypes.string,
 }
 
 function select (state) {
   return {
-    photos: state.TourCreationReducer.photos
+    tabKey: state.TourCreationReducer.tabKey
   };
 }
 
