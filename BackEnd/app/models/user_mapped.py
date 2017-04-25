@@ -117,8 +117,8 @@ class User(Base):
         bucket = resource.Bucket('silktours-media')
         bucket.put_object(Key='user/profile/' + filename, Body=file, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
 
-    def upload_profile_image(self, file, userid):
-        s = file.filename.split('.')
+    def upload_profile_image(self, file, filename, userid):
+        s = filename.split('.')
         extension = s[-1]
         url = 'https://s3.amazonaws.com/silktours-media/' + 'user/profile/' + userid + '.' + extension
         self.upload_to_s3(file, userid + '.' + extension)

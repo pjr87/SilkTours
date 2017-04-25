@@ -128,11 +128,7 @@ def internal_server_error(e):
 
 @app.route("/")
 def hello():
-    if not checkLogin():
-        return notAuthorizedResponse()
-    user = get_session().query(User).get(1)
-    return "Hello " + user.first_name
-
+    return "Testing..."
 
 @app.route("/search", methods=['GET'])
 def search():
@@ -258,8 +254,11 @@ def edit_user_profile(userid):
     if not checkLogin():
         return notAuthorizedResponse()
     file = request.files['file']
+    data = request.get_json()
+    file_data = data['file']
+    filename = data['name']
     user = safe_call(get_session().query(User), "get", userid)
-    user.upload_profile_image(file, userid)
+    user.upload_profile_image(file_data, filename, userid)
     return jsonify(user.serialize())
 
 
