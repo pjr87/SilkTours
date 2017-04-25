@@ -6,7 +6,6 @@ import { updatePhotoState, setTabKey } from '../../actions/TourCreationActions';
 import Dropzone from 'react-dropzone';
 import {connect} from 'react-redux';
 import {Cropper} from 'react-image-cropper'
-import logoImg5 from '../../style/images/logo5.png';
 
 class TourCreationPhotos extends React.Component{
   constructor() {

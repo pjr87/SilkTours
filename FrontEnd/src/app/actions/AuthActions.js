@@ -240,6 +240,53 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
 }
 
 /**
+ * Registers a user with facebook
+ */
+export function facebookSignUp() {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({})) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+
+    /*cognitoFunctions.signup(username, password, phoneNumber, (response) => {
+      // If the user was signed up successfully
+      if (response.authenticated) {
+        //Update the store with relevant information
+        dispatch(updateProviderState("Developer"));
+        //dispatch(updateUserState(response.data));
+        dispatch(setCognitoUser(response.cognitoUser));
+
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
+        dispatch(setConfirmed(true));
+
+        dispatch(clearError());
+        forwardTo('/confirmationpage');
+      }
+      else{
+        // If there was a problem signin up the user, show an error
+        dispatch(sendingRequest(false));
+        console.log('response.error:', String(response.error));
+        if(response.error == "UsernameExistsException: User already exists"){
+          dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
+          return;
+        }
+        else{
+          dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+          return;
+        }
+      }
+    });*/
+    dispatch(sendingRequest(false));
+  }
+}
+
+/**
  * Registers a user
  * @param  {object} cognitoUser The user to do confirmation of
  * @param  {string} confirmationNumber The confirmation number

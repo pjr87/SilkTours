@@ -65,7 +65,7 @@ class SignInContents extends React.Component{
           <br/>
           <Form horizontal>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={2}>
+              <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 Email
               </Col>
               <Col sm={4}>
@@ -77,7 +77,7 @@ class SignInContents extends React.Component{
               </Col>
             </FormGroup>
             <FormGroup>
-              <Col componentClass={ControlLabel} sm={2}>
+              <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 Password
               </Col>
               <Col sm={4}>
@@ -90,7 +90,7 @@ class SignInContents extends React.Component{
             </FormGroup>
             <FormGroup
               validationState = {this.props.errorMessage ? "error" : "success"}>
-              <Col smOffset={2} sm={10}>
+              <Col smOffset={4} sm={4}>
                 <ErrorFunc errorText = {this.props.errorMessage} />
                 <Button
                   disabled={isLoading}
@@ -99,7 +99,8 @@ class SignInContents extends React.Component{
                 </Button>
               </Col>
             </FormGroup>
-            <Col sm={4}>
+            <br/>
+            <Col sm={4} smOffset={4}>
               <p>Don't have a travel profile?</p>
               <Link to='/signup' onClick={this._clearError}>Sign up!</Link>
             </Col>
