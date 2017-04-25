@@ -15,6 +15,7 @@ class TourCreationInterests extends React.Component{
 
   next(){
     this.props.dispatch(setTabKey("stops"));
+    window.location.reload();
   }
 
   previous(){

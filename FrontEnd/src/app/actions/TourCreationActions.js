@@ -92,7 +92,7 @@ export function createTour(tour, auth, photos, startTime, endTime) {
         var tour_id = response.data.id_tour;
         console.log("response.data", tour_id);
         console.log("Addidng photo");
-        service.newProfilePhoto(photos, tour_id, auth).then(function(response){
+        service.newTourProfilePhoto(photos, tour_id, auth).then(function(response){
           if(response.data){
             var tourEvent = buildTourEvent(
               startTime,
@@ -297,6 +297,14 @@ export function setConfirmed(newConfirmedState) {
  */
 export function setTabKey(newTabKeyState) {
   return { type: tourCreationConstants.UPDATE_TAB_KEY, newTabKeyState };
+}
+
+/**
+ * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
+ * @param message
+ */
+export function updateCoordinates(newCoordinatesState) {
+  return { type: tourCreationConstants.UPDATE_COORDS, newCoordinatesState };
 }
 
 /**

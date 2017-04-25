@@ -2,12 +2,15 @@ import React from 'react';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import { updateStopState, setTabKey } from '../../actions/TourCreationActions';
 import StopDisplay from '../StopDisplay/StopDisplay';
 
 class TourCreationStops extends React.Component{
   constructor() {
     super();
+
+    console.log("TourCreationStops");
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
@@ -31,20 +34,39 @@ class TourCreationStops extends React.Component{
   }
 
   render(){
-    return (
-      <div>
-        <br/>
-        <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
-        <br/>
-        <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
-        <br/>
-        <Pager>
-          <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-        </Pager>
-      </div>
-    )
+    if(this.props.tabKey == 'stops'){
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
+          <br/>
+          <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
+    else{
+      return(
+        <div>
+          <p className={style.HeaderStyle}>Map is loading please wait!</p>
+        </div>
+      )
+    }
   }
 }
 
-export default TourCreationStops;
+TourCreationStops.propTypes = {
+  tabKey: React.PropTypes.string,
+}
+
+function select (state) {
+  return {
+    tabKey: state.TourCreationReducer.tabKey
+  };
+}
+
+export default connect(select)(TourCreationStops);

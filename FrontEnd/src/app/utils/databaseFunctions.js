@@ -98,9 +98,20 @@ export function newPhoto(data, id, auth){
     });
 }
 
-export function newProfilePhoto(data, id, auth){
+export function newTourProfilePhoto(data, id, auth){
     let url = SERVER_URL + '/tours/' + id + '/profile';
-    return axios.post(url, data,
+    return axios.put(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function newUserProfilePhoto(data, id, auth){
+    let url = SERVER_URL + '/users/' + id + '/profile';
+    return axios.put(url, data,
     {
       headers:{
         'Silk-Logins': auth.Logins,
