@@ -253,13 +253,16 @@ def edit_user(id):
 def edit_user_profile(userid):
     if not checkLogin():
         return notAuthorizedResponse()
-    file = request.files['file']
     data = request.get_json()
     file_data = data['file']
     filename = data['name']
+    media = Media()
+    result = media.upload(file_data, filename, userid=userid)
     user = safe_call(get_session().query(User), "get", userid)
-    user.upload_profile_image(file_data, filename, userid)
-    return jsonify(user.serialize())
+    user.profile_picture = result["url"]
+    # TODO set profile image size in db
+    commitSession(user)
+    return jsonify(result)
 
 
 # Adds a new rating
@@ -325,10 +328,16 @@ def set_tour():
 def edit_tour_profile(tourid):
     if not checkLogin():
         return notAuthorizedResponse()
-    file = request.files['file']
+    data = request.get_json()
+    file_data = data['file']
+    filename = data['name']
+    media = Media()
+    result = media.upload(file_data, filename, tourid=tourid)
     tour = safe_call(get_session().query(Tour), "get", tourid)
-    tour.upload_profile_image(file, tourid)
-    return jsonify(tour.serialize(False))
+    tour.profile_image = result["url"]
+    # TODO set profile image size in db
+    commitSession(tour)
+    return jsonify(result)
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
@@ -419,7 +428,8 @@ def upload(tourid):
     file_data = data['file']
     filename = data['name']
     media = Media()
-    return media.upload(file_data, filename, tourid)
+    result = media.upload(file_data, filename, tourid=tourid)
+    return jsonify(result)
 
 
 @app.route('/media/<tourid>', methods=['GET'])

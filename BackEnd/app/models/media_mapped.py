@@ -50,21 +50,28 @@ class Media(Base):
             data += b'=' * (4 - missing_padding)
         return base64.decodestring(data)
 
-    def upload_to_s3(self, file, filename, tourid):
+    def upload_to_s3(self, file, filename, key):
         resource = boto3.resource('s3')
         bucket = resource.Bucket('silktours-media')
         file = file[file.find(",")+1:]
         data = self.decode_base64(str.encode(file))
-        bucket.put_object(Key='tour/' + tourid + '/' + filename, Body=data, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
+        bucket.put_object(Key=key, Body=data, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
 
-    def upload(self, file, filename, tourid):
+    def upload(self, file, filename, tourid=None, userid=None):
         result = Media()
         query = get_session().query(Media).filter(Media.id_tour == tourid)
         medias = safe_call(query, "all", None)
         rank = len(medias) + 1
         extension = filename.split('.')[-1]
-        result.upload_to_s3(file, filename, tourid)
-        url = 'https://s3.amazonaws.com/silktours-media/' + 'tour/' + tourid + '/' + filename
+        key = None
+        if userid is None:
+            key = 'tour/' + tourid + '/' + filename
+        else:
+            key = 'user/profile/' + userid + '/' + filename
+        url = 'https://s3.amazonaws.com/silktours-media/' + key
+
+        result.upload_to_s3(file, filename, key)
+
         is_video = self.isVideo(extension)
         values = {}
         values['url'] = url
@@ -72,5 +79,6 @@ class Media(Base):
         values['display_rank'] = rank
         values['id_tour'] = tourid
         values['file_name'] = filename
-        result.post(values)
-        return 's'
+        if tourid is not None:
+            result.post(values)
+        return values
