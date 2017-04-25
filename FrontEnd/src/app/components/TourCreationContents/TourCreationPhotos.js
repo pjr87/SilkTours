@@ -6,7 +6,6 @@ import { updatePhotoState, setTabKey } from '../../actions/TourCreationActions';
 import Dropzone from 'react-dropzone';
 import {connect} from 'react-redux';
 import {Cropper} from 'react-image-cropper'
-
 import logoImg5 from '../../style/images/logo5.png';
 
 class TourCreationPhotos extends React.Component{
@@ -60,7 +59,7 @@ class TourCreationPhotos extends React.Component{
     this.setState({
       [state]: node.crop()
     });
-    console.log("HERE", this.props.photos.name);
+    console.log("HERE", this.props.photos);
     var newFile = {
       name: this.props.photos.name,
       file: node.crop()
@@ -77,22 +76,19 @@ class TourCreationPhotos extends React.Component{
         <br/>
         <br/>
         <Dropzone ref={(node) => { this.dropzone = node; }} onDrop={this.onDrop}>
-              <div>Try dropping some files here, or click to select files to upload.</div>
         </Dropzone>
         <button type="button" onClick={this.onOpenClick}>
             Open Dropzone
         </button>
 
         {this.props.photos ? <div>
-        <h2>Uploading {this.props.photos.length} files...</h2>
         <div>
-          <Cropper  src={this.props.photos.file} 
-                    ratio={9 / 9} width={100} ref="image"
+          <Cropper  src={this.props.photos.file}
+                    ratio={9 / 9} ref="image"
+                    fixedRatio={true} allowNewSelection={false}
                     onImgLoad={() => this.handleImageLoaded('image')}/>
         <br/>
         {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null}
-        <h4>after crop</h4>
-        {this.state.image ? <img src={this.props.photos.file} alt=""/> : null}
         </div>
         </div> : null}
 

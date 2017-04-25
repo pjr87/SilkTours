@@ -9,10 +9,12 @@ export default class ProfileHeader extends React.Component{
         <div className={style.profileText}>
           profile
         </div>
-        <img className={style.imgCircle} src={this.props.profilePicture} width="100px" height="100px" />
+        <img
+          className={style.imgCircle}
+          src={this.props.profilePicture}
+          width="100px" height="100px" />
       </div>
       <div className={style.profileNameText}>{this.props.name}</div>
     </div>);
   }
 }
- 
