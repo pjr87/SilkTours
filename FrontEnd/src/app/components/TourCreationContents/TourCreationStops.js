@@ -9,6 +9,8 @@ class TourCreationStops extends React.Component{
   constructor() {
     super();
 
+    console.log("TourCreationStops");
+
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
     this.updateStops = this.updateStops.bind(this)
@@ -30,6 +32,14 @@ class TourCreationStops extends React.Component{
     this.props.dispatch(updateStopState(newStopsState))
   }
 
+  componentDidMount(){
+    console.log("componentDidMount");
+  }
+
+  componentWillMount(){
+    console.log("componentWillMount");
+  }
+
   render(){
     return (
       <div>
@@ -47,4 +57,14 @@ class TourCreationStops extends React.Component{
   }
 }
 
-export default TourCreationStops;
+TourCreationStops.propTypes = {
+  photos: React.PropTypes.object
+}
+
+function select (state) {
+  return {
+    photos: state.TourCreationReducer.photos
+  };
+}
+
+export default connect(select)(TourCreationStops);
