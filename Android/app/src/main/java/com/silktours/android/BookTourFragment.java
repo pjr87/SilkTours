@@ -46,9 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.SimpleFormatter;
 
-/**
- * Created by andrew on 2/23/17.
- */
 public class BookTourFragment extends Fragment {
     private Tour tour;
     private User user;

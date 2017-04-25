@@ -1,7 +1,7 @@
 package com.silktours.android.database;
 
 /**
- * Created by andrew on 1/29/17.
+ * Used to add url parameters to a url
  */
 public class URIBuilder {
     private StringBuilder url;

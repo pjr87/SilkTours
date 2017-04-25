@@ -15,6 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+/**
+ * A wrapper around image view which displays the image as a circle
+ */
 public class RoundedImageView extends ImageView {
 
     public RoundedImageView(Context context) {
@@ -53,6 +56,12 @@ public class RoundedImageView extends ImageView {
 
     }
 
+    /**
+     * Crops the given bitmap
+     * @param bmp
+     * @param radius
+     * @return
+     */
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
 

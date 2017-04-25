@@ -20,7 +20,7 @@ import com.silktours.android.MainActivity;
 import com.silktours.android.R;
 
 /**
- * Created by andrew on 2/10/17.
+ * Prompts the user for their location
  */
 public class LocationPrompt {
     private final Activity activity;
@@ -29,10 +29,19 @@ public class LocationPrompt {
     private static View view;
     private Place placeSelected;
 
+    /**
+     * Initializes the prompt but does not display anything. build should likely be called after this.
+     * @param activity
+     */
     public LocationPrompt(Activity activity) {
         this.activity = activity;
     }
 
+    /**
+     * Creates an displays the location prompt.
+     * @param activity
+     * @param listener
+     */
     public LocationPrompt(Activity activity, final OnLocationSetListener listener) {
         this.activity = activity;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -68,6 +77,11 @@ public class LocationPrompt {
         });*/
     }
 
+    /**
+     * Adds content to an alert dialog builder
+     * @param builder The builder to add content to
+     * @return The same as the builder argument
+     */
     public AlertDialog.Builder build(AlertDialog.Builder builder) {
         LayoutInflater inflater = activity.getLayoutInflater();
         if (view != null) {

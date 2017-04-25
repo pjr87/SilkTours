@@ -25,9 +25,15 @@ import java.util.Map;
  * Created by andrew on 1/26/17.
  */
 public class Common {
-    //public static final String SERVER_URL = "http://34.197.42.24:5000";
+    /**
+     * The base url string
+     */
     public static final String SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
 
+    /**
+     * Adds auth headers to a Http connection
+     * @param conn
+     */
     private static void addAuth(HttpURLConnection conn) {
 
         if (CredentialHandler.logins != null &&
@@ -42,6 +48,12 @@ public class Common {
         //conn.setRequestProperty("Silk-Bypass", "true");
     }
 
+    /**
+     * Performs a get request to the given url
+     * @param urlString
+     * @return The string result from the request. Or an error object.
+     * @throws IOException
+     */
     public static String httpRequest(String urlString) throws IOException, JSONException {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -69,6 +81,12 @@ public class Common {
         }
     }
 
+    /**
+     * Checks if the given credentials are valid
+     * @param logins The AWS login credentials to check
+     * @param identityId The AWS user identity id
+     * @return true if the user exists and is logged in
+     */
     public static boolean checkAuth(Map<String, String> logins, String identityId) {
         try {
             JSONObject json = new JSONObject();
@@ -97,14 +115,36 @@ public class Common {
         }
     }
 
+    /**
+     * Does a get request for a JSON object
+     * @param urlString
+     * @return
+     * @throws IOException If the request could not be completed
+     * @throws JSONException If the JSON was invalid
+     */
     public static JSONObject getJson(String urlString) throws IOException, JSONException {
         return new JSONObject(httpRequest(urlString));
     }
 
+    /**
+     * Does a get request for a JSON array
+     * @param urlString
+     * @return
+     * @throws IOException If the request could not be completed
+     * @throws JSONException If the JSON was invalid
+     */
     public static JSONArray getJsonArray(String urlString) throws IOException, JSONException {
         return new JSONArray(httpRequest(urlString));
     }
 
+    /**
+     * Does an HTTP request
+     * @param uri The URI to perform the request to
+     * @param json The JSON to put in the HTTP request's body
+     * @param method The HTTP method to use.
+     * @return The string result of the request
+     * @throws IOException If the request could not be completed
+     */
     public static String request(String uri, String json, String method) throws IOException {
         HttpURLConnection httpcon = (HttpURLConnection) ((new URL (uri).openConnection()));
         addAuth(httpcon);
