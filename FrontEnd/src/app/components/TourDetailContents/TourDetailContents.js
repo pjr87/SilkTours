@@ -49,7 +49,7 @@ class TourDetailContents extends React.Component{
       this.setState({ showModal: true });
     }
     else {
-      browserHistory.push('/sign');
+      browserHistory.push('/signredirect');
     }
   }
 
