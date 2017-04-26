@@ -56,9 +56,13 @@ class TourEvent(Base):
             "start_date_time": start_date_time,
             "end_date_time": end_date_time,
             "state": self.state,
-            "pending_review": self.pending_review,
-            "participants": [self.user.serialize(print_nested=False)]
+            "pending_review": self.pending_review
         }
+        if self.id_user is not None:
+            result["participants"] = [self.user.serialize(print_nested=False)]
+        else:
+            result["participants"] = []
+
         if include_tour:
             result.update(self.tour.serialize(deep))
         return result
