@@ -350,8 +350,15 @@ def edit_tour(tourid):
     return jsonify(tour.serialize(False))
 
 
+
+@app.route('/tourevents/<eventid>', methods=['GET'])
+def get_tourevent(eventid):
+    event = safe_call(get_session().query(TourEvent), "get", eventid)
+    return jsonify(event.serialize(True))
+
+
 @app.route('/tour/<tourid>/events', methods=['GET'])
-def get_tourevent(tourid):
+def get_tourevents(tourid):
     query = get_session().query(TourEvent).filter(TourEvent.id_tour == tourid)
     events = safe_call(query, "all", None)
     return jsonify([event.serialize() for event in events])
