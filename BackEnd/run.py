@@ -644,6 +644,7 @@ def site_map():
             margin-left: 30px
         }
     </style>
+    <h2>Endpoints</h2>
     """
     for rule in app.url_map.iter_rules():
         print(rule)
@@ -678,8 +679,45 @@ def site_map():
             """.format(rule.endpoint, url, desc, methods)
         )
         html += line
+    user = safe_call(get_session().query(User), "get", 1).serialize(True)
+    clean_object(user)
 
+    tour = safe_call(get_session().query(Tour), "get", 1).serialize(True)
+    print(tour)
+    clean_object(tour)
+
+    html += """
+    <br>
+    <h2>Schema</h2>
+    <b>User:</b><br>
+    """ + clean_json(user) + """
+    <br>
+    <b>Tour:</b><br>
+    """ + clean_json(tour)
     return html
+
+
+def clean_object(obj):
+    if obj is None:
+        return
+    for key in obj:
+        if type(obj[key]) is dict:
+            clean_object(obj[key])
+        elif type(obj[key]) is list:
+            if len(obj[key]) > 0:
+                if key is "tours_taking" or key is "tours_teaching":
+                    obj[key][0] = "#Tour Event Schema + Tour Schema"
+                elif type(obj[key][0]) is dict or type(obj[key][0]) is list:
+                    clean_object(obj[key][0])
+                obj[key] = [obj[key][0]]
+        else:
+            if obj[key] is None:
+                obj[key] = ""
+            obj[key] = type(obj[key]).__name__
+
+
+def clean_json(obj):
+    return json.dumps(obj, indent=4, sort_keys=True).replace("\"", "").replace("\n", "<br>").replace(" ", "	&nbsp;")
 
 
 if __name__ == "__main__":
