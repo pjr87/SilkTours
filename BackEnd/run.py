@@ -646,10 +646,10 @@ def site_map():
     </style>
     """
     for rule in app.url_map.iter_rules():
-
+        print(rule)
         options = {}
         for arg in rule.arguments:
-            options[arg] = "<{0}>".format(arg)
+            options[arg] = "[{0}]".format(arg)
 
         desc = None
         if rule.endpoint in globals():
