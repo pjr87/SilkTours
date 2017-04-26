@@ -241,38 +241,52 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
 
 /**
  * Registers a user with facebook
+ * @param  {object}   user The cognitoUser of the user
+ * @param  {string}   accessToken The cognitoUser of the user
+ * @param  {int}   expiresIn The cognitoUser of the user
  */
-export function facebookSignUp() {
+export function facebookSignUp(user, accessToken, expiresIn) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
-    // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({})) {
+    // If no response was specified, throw a field-missing error
+    if (anyElementsEmpty({user, accessToken, expiresIn})) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
 
-    /*cognitoFunctions.signup(username, password, phoneNumber, (response) => {
+    cognitoFunctions.facebookSignUp(user, accessToken, expiresIn, (response) => {
       // If the user was signed up successfully
       if (response.authenticated) {
         //Update the store with relevant information
-        dispatch(updateProviderState("Developer"));
-        //dispatch(updateUserState(response.data));
-        dispatch(setCognitoUser(response.cognitoUser));
+        dispatch(updateProviderState("Facebook"));
+        dispatch(updateAuthState(response.auth));
+        dispatch(updateIDState(response.id_user));
+        dispatch(updateUserState(response.data));
 
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
-        dispatch(setConfirmed(true));
+        dispatch(setConfirmed(false));
+        dispatch(setAuthState(true));
+
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeSignUpForm({
+          firstname: '',
+          lastname: '',
+          username: '',
+          password: '',
+          phoneNumber: '',
+          confirmationCode: ''
+        }));
 
         dispatch(clearError());
-        forwardTo('/confirmationpage');
+        forwardTo('/explore');
       }
       else{
         // If there was a problem signin up the user, show an error
         dispatch(sendingRequest(false));
-        console.log('response.error:', String(response.error));
-        if(response.error == "UsernameExistsException: User already exists"){
+        if(response.error == "User account logged in with another provider"){
           dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
           return;
         }
@@ -281,7 +295,7 @@ export function facebookSignUp() {
           return;
         }
       }
-    });*/
+    });
     dispatch(sendingRequest(false));
   }
 }

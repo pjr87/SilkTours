@@ -13,8 +13,6 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import config from '../../utils/config';
-
-import auth from '../../utils/cognitoFunctions';
 import { signUp, facebookSignUp, changeSignUpForm } from '../../actions/AuthActions';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
@@ -26,13 +24,15 @@ class SignUpContents extends React.Component{
     super();
 
     this.signUpSubmit = this.signUpSubmit.bind(this)
-    this.signUpFacebook = this.signUpFacebook.bind(this)
-    this.checkLoginState = this.checkLoginState.bind(this)
     this._changeFirstName = this._changeFirstName.bind(this)
     this._changeLastName = this._changeLastName.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
     this._changePhoneNumber = this._changePhoneNumber.bind(this)
+
+    this.state ={
+      loggedIn: false
+    };
   }
 
   _changeFirstName (event) {
@@ -72,102 +72,53 @@ class SignUpContents extends React.Component{
     );
   }
 
-  signUpFacebook() {
-    FB.login(function(response) {
-      if (response.status === 'connected') {
-        console.log(response);
-        // Logged into your app and Facebook.
-      } else {
-        console.log(response);
-        // The person is not logged into this app or we are unable to tell.
-      }
-    });
-    //this.props.dispatch(facebookSignUp());
-  }
-
-  componentWillMount() {
-    window['statusChangeCallback'] = this.statusChangeCallback;
-    window['checkLoginState'] = this.checkLoginState;
-  }
-
   componentDidMount(){
     window.fbAsyncInit = function() {
-    FB.init({
-      appId      : config.facebookAppId,
-      cookie     : true,  // enable cookies to allow the server to access
-                        // the session
-      xfbml      : true,  // parse social plugins on this page
-      version    : config.facebookVersion
-    });
+      FB.init({
+        appId      : config.facebookAppId,
+        cookie     : true,  // enable cookies to allow the server to access
+        // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : config.facebookVersion
+      });
 
-    // Now that we've initialized the JavaScript SDK, we call
-    // FB.getLoginStatus().  This function gets the state of the
-    // person visiting this page and can return one of three states to
-    // the callback you provide.  They can be:
-    //
-    // 1. Logged into your app ('connected')
-    // 2. Logged into Facebook, but not your app ('not_authorized')
-    // 3. Not logged into Facebook and can't tell if they are logged into
-    //    your app or not.
-    //
-    // These three cases are handled in the callback function.
-    FB.getLoginStatus(function(response) {
-      this.statusChangeCallback(response);
-    }.bind(this));
-  }.bind(this);
+      FB.Event.subscribe('auth.statusChange', function(response) {
+        if (response.authResponse) {
+          var accessToken = response.authResponse.accessToken;
+          var expiresIn = response.authResponse.expiresIn;
+          FB.api('/me', {
+            locale: 'en_US',
+            fields: 'id,cover,first_name,last_name,age_range,link,gender,locale,picture,timezone,verified,email' },
+          function(response) {
+            //Set the data that was received from facebook
+            this.setState({
+              response: response,
+              accessToken: accessToken,
+              expiresIn: expiresIn,
+              loggedIn: true});
+          }.bind(this), 1000);
+        }
+        else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+      }.bind(this), 1000);
+    }.bind(this);
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
+    // Load the SDK asynchronously
+    (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=606443696175641";
     fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
-    var s = '<div class="fb-login-button"' +
-        'data-max-rows="4" data-size="medium"' +
-        'data-button-type="login_with" data-show-faces="true"' +
-        'data-auto-logout-link="true" data-use-continue-as="true"' +
-        'onlogin={this.checkLoginState}></div>';
-
-    var div = document.getElementById('social-login-button-facebook')
-    div.innerHTML = s;
-  }
-
-  componentWillUnmount() {
-    delete window['statusChangeCallback'];
-    delete window['checkLoginState'];
-  }
-
-  statusChangeCallback(response) {
-      console.log(response);
-      console.log('statusChangeCallback');
-      console.log(response);
-      // The response object is returned with a status field that lets the
-      // app know the current login status of the person.
-      // Full docs on the response object can be found in the documentation
-      // for FB.getLoginStatus().
-      if (response.status === 'connected') {
-        // Logged into your app and Facebook.
-        //testAPI();
-      } else {
-        // The person is not logged into your app or we are unable to tell.
-      }
-  }
-
-  // Callback for Facebook login button
-  checkLoginState() {
-      console.log('checking login state...');
-      FB.getLoginStatus(function(response) {
-         statusChangeCallback(response);
-         console.log(response);
-         console.log('statusChangeCallback');
-         console.log(response);
-      });
+    }(document, 'script', 'facebook-jssdk'));
   }
 
   render() {
+    if(this.state.loggedIn == true){
+      this.props.dispatch(facebookSignUp(this.state.response, this.state.accessToken, this.state.expiresIn));
+    }
+
     let isLoading = this.props.currentlySending;
     function ErrorFunc(props){
 
@@ -245,20 +196,34 @@ class SignUpContents extends React.Component{
             </FormGroup>
             <FormGroup
               validationState = {this.props.errorMessage ? "error" : "success"}>
+
+              <Row>
+                <Col sm={8} smOffset={4}>
+                  <ErrorFunc errorText = {this.props.errorMessage} />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={8} smOffset={4}>
+                  <Button
+                    disabled={isLoading}
+                    onClick={!isLoading ? this.signUpSubmit : null}>
+                    {isLoading ? 'Signing up...' : 'Sign up!'}
+                  </Button>
+                </Col>
+              </Row>
+              <br/>
               <Col sm={8} smOffset={4}>
-                <ErrorFunc errorText = {this.props.errorMessage} />
-                <Button
-                  disabled={isLoading}
-                  onClick={!isLoading ? this.signUpSubmit : null}>
-                  {isLoading ? 'Signing up...' : 'Sign up!'}
-                </Button>
-                <div id='social-login-button-facebook'>
+                <div
+                  className="fb-login-button"
+                  data-max-rows="1"
+                  data-size="large"
+                  data-button-type="continue_with"
+                  data-show-faces="true"
+                  data-auto-logout-link="true"
+                  data-use-continue-as="true"
+                  data-scope="public_profile,email"
+                  href="javascript:void(0)">
                 </div>
-                <Button
-                  disabled={isLoading}
-                  onClick={!isLoading ? this.signUpFacebook : null}>
-                  {isLoading ? 'Signing up...' : 'Sign up with Facebook!'}
-                </Button>
               </Col>
             </FormGroup>
           </Form>
@@ -267,6 +232,13 @@ class SignUpContents extends React.Component{
     );
   }
 }
+/*
+<Button
+  disabled={isLoading}
+  onClick={!isLoading ? this.signUpFacebook : null}>
+  {isLoading ? 'Signing up...' : 'Sign up with Facebook!'}
+</Button>
+*/
 
 SignUpContents.propTypes = {
   currentlySending: React.PropTypes.bool,
