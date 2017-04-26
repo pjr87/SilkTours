@@ -1,6 +1,5 @@
 import datetime
 from app.models.interests_mapped import Interests
-from app.models.tour_mapped import Tour
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
@@ -16,6 +15,7 @@ class TourEvent(Base):
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
     #id_rating = Column(Integer, ForeignKey("Ratings.id_rating"))
     tour = relationship("Tour", foreign_keys=[id_tour])
+    user = relationship("User", foreign_keys=[id_user])
     start_date_time = Column(DateTime)
     end_date_time = Column(DateTime)
     state = Column(String)
@@ -57,6 +57,7 @@ class TourEvent(Base):
             "end_date_time": end_date_time,
             "state": self.state,
             "pending_review": self.pending_review,
+            "participants": [self.user.serialize(print_nested=False)]
         }
         if include_tour:
             result.update(self.tour.serialize(deep))

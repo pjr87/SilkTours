@@ -83,8 +83,19 @@ class User(Base):
         self.create_extras(data)
         commitSession(self)
 
-    def serialize(self, deep=False):
+    def serialize(self, deep=False, print_nested=True):
         result = {}
+
+        for c in self.__table__.columns:
+            key = c.name
+            if key in User.VISABLE_PROPS:
+                value = getattr(self, c.name)
+                if type(value) is datetime.date:
+                    value = str(value)
+                result[key] = value
+
+        if not print_nested:
+            return result
 
         result["interests"] = []
         for interest in self.interests:
@@ -103,13 +114,6 @@ class User(Base):
         else:
             result["address"] = None
 
-        for c in self.__table__.columns:
-            key = c.name
-            if key in User.VISABLE_PROPS:
-                value = getattr(self, c.name)
-                if type(value) is datetime.date:
-                    value = str(value)
-                result[key] = value
         return result
 
     def upload_to_s3(self, file, filename):
