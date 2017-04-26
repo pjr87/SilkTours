@@ -619,7 +619,7 @@ def get_hours():
 
     for event in events:
         start = event.start_date_time
-        ds = str(start)
+        ds = str(start.date())
         print("ds event: " + ds)
         sh = start.hour
         eh = event.end_date_time.hour
