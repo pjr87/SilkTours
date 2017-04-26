@@ -662,7 +662,9 @@ def site_map():
                     desc = desc[:-1]
                 desc = desc.replace("\n", "<br>")
 
-        methods = ', '.join(rule.methods)
+        methods = ', '.join(
+            [i for i in rule.methods if i not in ["HEAD", "OPTIONS"]]
+        )
         url = url_for(rule.endpoint, **options)
         line = urllib.parse.unquote(
             """
@@ -683,17 +685,22 @@ def site_map():
     clean_object(user)
 
     tour = safe_call(get_session().query(Tour), "get", 1).serialize(True)
-    print(tour)
     clean_object(tour)
+
+    tour_event = safe_call(get_session().query(TourEvent), "get", 1).serialize(include_tour=False)
+    clean_object(tour_event)
 
     html += """
     <br>
     <h2>Schema</h2>
     <b>User:</b><br>
     """ + clean_json(user) + """
-    <br>
+    <br><br>
     <b>Tour:</b><br>
-    """ + clean_json(tour)
+    """ + clean_json(tour) + """
+    <br><br>
+    <b>Tour Event:</b><br>
+    """ + clean_json(tour_event)
     return html
 
 
