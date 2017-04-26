@@ -557,11 +557,12 @@ def check_for_event(events, dt_start, dt_end):
 def get_hours():
     """
     Gets a list of available times for a tour for a given week.
-    <u>URL Args:</u> tour_id, start_date=ISO standard date string , should be a monday
+    <u>URL Args:</u> tour_id, start_date=ISO standard date string, should be a monday
     """
     tour_id = request.args.get("tour_id", None)
     start_date = parse(request.args.get("start_date", time.time())).date()
     end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
+    end_date = parse(request.args.get("end_date", str(end_date))).date()
 
     if tour_id is None:
         return 422, "No tour specified"
@@ -594,7 +595,8 @@ def get_hours():
     for sHour in specialHours:
         if sHour.date < start_date or sHour.date > end_date:
             continue
-        ds = sHour.date.weekday()
+        ds = str(sHour.date)
+        print("ds special: " + ds)
         if sHour.overrides:
             overridden.add(ds)
         add_hour_entries(hours[ds], sHour.open_time, sHour.close_time, length)
@@ -605,19 +607,26 @@ def get_hours():
         sh = start.hour
         eh = end.hour
         dow = hour.day_of_week
-        if dow in overridden:
-            continue
-        add_hour_entries(hours[dow], start, end, length)
+        offset = dow - start_date.weekday()
+        curr_date = datetime.date(start_date.year, start_date.month, start_date.day+offset)
+        while curr_date <= end_date:
+            curr_date += datetime.timedelta(days=7)
+            ds = str(curr_date)
+            print("ds base: " + ds)
+            if ds in overridden:
+                continue
+            add_hour_entries(hours[ds], start, end, length)
 
     for event in events:
         start = event.start_date_time
-        dow = start.weekday()
+        ds = str(start)
+        print("ds event: " + ds)
         sh = start.hour
         eh = event.end_date_time.hour
         if dow not in hours:
             continue
         i = 0
-        while i < len(hours[dow]):
+        while i < len(hours[ds]):
             # Check for overlapping hours
             if (sh <= hours[dow][i]["end"]) and (eh >= hours[dow][i]["start"]):
                 del hours[dow][i]
@@ -652,7 +661,7 @@ def site_map():
         for arg in rule.arguments:
             options[arg] = "[{0}]".format(arg)
 
-        desc = None
+        desc = "None<br>"
         if rule.endpoint in globals():
             desc = globals()[rule.endpoint].__doc__
             if desc is not None:
@@ -674,7 +683,6 @@ def site_map():
                     <u>URL:</u> {}
                     <br>
                     <u>Description:</u> {}
-                    <br>
                     <u>Methods:</u> {}
                 </div>
                 <br><br>
