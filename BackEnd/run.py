@@ -553,6 +553,28 @@ def check_for_event(events, dt_start, dt_end):
             return True
 
 
+@app.route('/tours/<tourid>/hours', methods=['POST', 'PUT'])
+def create_hours(tourid):
+    '''
+    Sets the hours for a tourid, overriding any existing hours. See schema section for JSON format.
+    <u>JSON Fields:</u> See Tour Hours Input Schema
+    '''
+    if not checkLogin():
+        return notAuthorizedResponse()
+    data = request.get_json()
+    if request.method == 'POST':
+        get_session().query(TourHours).filter(TourHours.tour_id == tourid).delete()
+        get_session().query(TourHoursSpecial).filter(TourHoursSpecial.tour_id == tourid).delete()
+    base_hours = data.get("base_hours", [])
+    special_hours = data.get("special_hours", [])
+    result = {"base_hours": [], "special_hours": []}
+    for hour in base_hours:
+        result["base_hours"].append(TourHours.create(hour, tourid).serialize())
+    for hour in special_hours:
+        result["special_hours"].append(TourHoursSpecial.create(hour, tourid).serialize())
+    return jsonify(result)
+
+
 @app.route('/tours/available_hours', methods=['GET'])
 def get_hours():
     """
@@ -698,6 +720,13 @@ def site_map():
     tour_event = safe_call(get_session().query(TourEvent), "get", 1).serialize(include_tour=False)
     clean_object(tour_event)
 
+    hours = safe_call(get_session().query(TourHours), "get", 1).serialize()
+    hours_special = safe_call(get_session().query(TourHoursSpecial), "get", 1).serialize()
+    hours_input = {"base_hours": [hours], "hours_special": [hours_special]}
+    clean_object(hours_special)
+    clean_object(hours)
+    clean_object(hours_input)
+
     html += """
     <br>
     <h2>Schema</h2>
@@ -708,7 +737,17 @@ def site_map():
     """ + clean_json(tour) + """
     <br><br>
     <b>Tour Event:</b><br>
-    """ + clean_json(tour_event)
+    """ + clean_json(tour_event) + """
+    <br><br>
+    <b>Tour Base Hours:</b><br>
+    """ + clean_json(hours) + """
+    <br><br>
+    <b>Tour Special Hours:</b><br>
+    """ + clean_json(hours_special) + """
+    <br><br>
+    <b>Tour Hours Input Format:</b><br>
+    """ + clean_json(hours_input)
+
     return html
 
 

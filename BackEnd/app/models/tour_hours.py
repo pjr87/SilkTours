@@ -39,7 +39,7 @@ class TourHours(Base):
             data.get("start_time"),
             data.get("end_time"))
         if id_tour is not None:
-            result.id_tour = id_tour
+            result.tour_id = id_tour
         commitSession(result)
         return result
 
@@ -47,8 +47,8 @@ class TourHours(Base):
         return {
             "tour_hours_id": self.tour_hours_id,
             "day_of_week": self.day_of_week,
-            "open_time": self.open_time,
-            "close_time": self.lon,
-            "start_time": self.start_time,
-            "end_time": self.end_time
+            "open_time": str(self.open_time),
+            "close_time": str(self.close_time),
+            "start_date": str(self.start_date),
+            "end_date": str(self.end_date)
         }
