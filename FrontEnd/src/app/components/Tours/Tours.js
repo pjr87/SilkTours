@@ -8,144 +8,10 @@ import StarRatingComponent from 'react-star-rating-component';
 
 import {connect} from 'react-redux';
 
-// <<<<<<< HEAD
-// // class Tours extends React.Component{
-// //   constructor (props) {
-// //     super(props);
-// //     this.state = {
-// //       additional_accomadation: this.props.additional_accomadation,
-// //       additional_food: this.props.additional_food,
-// //       additional_transport: this.props.additional_transport,
-// //       address_city: this.props.address_city,
-// //       address_country: this.props.address_country,
-// //       address_street: this.props.address_street,
-// //       address_suffix: this.props.address_suffix,
-// //       address_unit: this.props.address_unit,
-// //       address_unit_number: this.props.address_unit_number,
-// //       address_zip: this.props.address_zip,
-// //       average_rating: this.props.average_rating,
-// //       description: this.props.description,
-// //       firstStart_date: this.props.firstStart_date,
-// //       guides: this.props.guides,
-// //       id_rating: this.props.id_rating,
-// //       id_tour: this.props.id_tour,
-// //       is_deleted: this.props.is_deleted,
-// //       lastEnd_date: this.props.lastEnd_date,
-// //       max_group_size: this.props.max_group_size,
-// //       min_group_size: this.props.min_group_size,
-// //       name: this.props.name,
-// //       price: this.props.price,
-// //       profile_image: this.props.profile_image,
-// //       rating_count: this.props.rating_count,
-// //       stops: this.props.stops,
-// //     };
-// //   }
-// //
-// //   render(){
-// //     const guidesLength = this.state.guides.length;
-// //     let guideButton = null;
-// //     if (guidesLength != '0') {
-// //       if(this.props.loggedIn) {
-// //         guideButton = <Link
-// //                       to={{
-// //                         pathname: '/messages',
-// //                         query: { guideUserId: this.state.guides[0].id_user }
-// //                         }}>
-// //                         <Button bsStyle="default">Message</Button>
-// //                       </Link>;
-// //       }
-// //       else {
-// //         guideButton = <Link
-// //                       to={{
-// //                         pathname: '/sign'
-// //                         }}>
-// //                         <Button bsStyle="default">Message</Button>
-// //                       </Link>;
-// //       }
-// //     } else {
-// //       guideButton = null;
-// //     }
-// //     return (
-// //       <Col xs={12} md={6} lg={6}>
-// //         <Thumbnail>
-// //           <img className="card-img-top tour-image img-responsive"  src={this.state.profile_image}/>
-// //           <p>{this.state.name}</p>
-// //           <p>review: </p>
-// //           <p>price: ${this.state.price}</p>
-// //           <p>
-// //             <Link
-// //               to={{
-// //                 pathname: '/tourdetail',
-// //                 query: { tourId: this.state.id_tour }
-// //               }}>
-// //               <Button bsStyle="primary">More Info</Button>&nbsp;
-// //             </Link>
-// //             {guideButton}
-// //           </p>
-// //         </Thumbnail>
-// //       </Col>
-// //     );
-// //   }
-// // };
-//
-// const Tours = ({additional_accomadation, additional_food, additional_transport, address_city, address_country, address_street, address_suffix, address_unit, address_unit_number, address_zip, average_rating, description, firstStart_date, guides, id_rating, id_tour, is_deleted, lastEnd_date, max_group_size, min_group_size, name, price, profile_image, rating_count, stops, key}) => {
-//     return (
-//       <Col xs={12} md={6} lg={6}>
-//         <Thumbnail>
-//           <img className="card-img-top tour-image img-responsive"  src={profile_image}/>
-//           <p>{name}</p>
-//           <p>review: </p>
-//           <p>price: ${price}</p>
-//           <p>
-//             <Link
-//               to={{
-//               pathname: '/tourdetail',
-//               query: { tourId: id_tour }
-//             }}>
-//               <Button bsStyle="primary">More Info</Button>&nbsp;
-//             </Link>
-//             {/*
-//             <Link
-//               to={{
-//               pathname: '/messages',
-//               query: { guideUserId: guides[0].id_user }
-//             }}>
-//               <Button bsStyle="default">Message</Button>
-//             </Link>;
-//             */}
-//           </p>
-//         </Thumbnail>
-//       </Col>
-// =======
 class Tours extends React.Component{
   constructor (props) {
     super(props);
     this.state = {
-      additional_accomadation: this.props.tour.additional_accomadation,
-      additional_food: this.props.tour.additional_food,
-      additional_transport: this.props.tour.additional_transport,
-      address_city: this.props.tour.address_city,
-      address_country: this.props.tour.address_country,
-      address_street: this.props.tour.address_street,
-      address_suffix: this.props.tour.address_suffix,
-      address_unit: this.props.tour.address_unit,
-      address_unit_number: this.props.tour.address_unit_number,
-      address_zip: this.props.tour.address_zip,
-      average_rating: this.props.tour.average_rating,
-      description: this.props.tour.description,
-      firstStart_date: this.props.tour.firstStart_date,
-      guides: this.props.tour.guides,
-      id_rating: this.props.tour.id_rating,
-      id_tour: this.props.tour.id_tour,
-      is_deleted: this.props.tour.is_deleted,
-      lastEnd_date: this.props.tour.lastEnd_date,
-      max_group_size: this.props.tour.max_group_size,
-      min_group_size: this.props.tour.min_group_size,
-      name: this.props.tour.name,
-      price: this.props.tour.price,
-      profile_image: this.props.tour.profile_image,
-      rating_count: this.props.tour.rating_count,
-      stops: this.props.tour.stops,
       showTourInfo: false,
     };
     this.mouseOver = this.mouseOver.bind(this);
@@ -154,11 +20,9 @@ class Tours extends React.Component{
 
   mouseOver = () => {
     this.setState({showTourInfo: true});
-    console.log("true");
   }
   mouseOut() {
     this.setState({showTourInfo: false});
-    console.log("false");
   }
 
   render(){
@@ -196,17 +60,6 @@ class Tours extends React.Component{
           </Link>
         </p>) : null;
 
-      const rating = (this.props.tourDisplayProps.rating) ? (<p>
-          {/* <Link
-          //   to={{
-          //     pathname: '/messages',
-          //     query: { tourId: this.state.id_tour }
-          //   }}>
-          //   <Button bsStyle="primary">Review Summary</Button>&nbsp;
-          // </Link>*/}
-          Rating: (the rating)
-        </p>) : null;
-
       const contactTouristBtn = (this.props.tourDisplayProps.contactTouristBtn) ? (<p>
           <Link
             to={{
@@ -234,22 +87,22 @@ class Tours extends React.Component{
         <Col xs={12} md={6} lg={6}>
           <Thumbnail>
             <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-              {this.state.showTourInfo ? (<img className={style.tour_image_small_info} src={this.state.profile_image}/>) : (<img className={style.tour_image_small} src={this.state.profile_image}/>)}
+              {this.state.showTourInfo ? (<img className={style.tour_image_small_info} src={this.props.tour.profile_image}/>) : (<img className={style.tour_image_small} src={this.props.tour.profile_image}/>)}
             </div>
             <span>
-            <p>{this.state.name}</p>
+            <p>{this.props.tour.name}</p>
             <p>review: </p>
-            <p>price: ${this.state.price}</p>
+            <p>price: ${this.props.tour.price}</p>
             <p>
               <Link
                 to={{
                   pathname: '/tourdetail',
-                  query: { tourId: this.state.id_tour }
+                  query: { tourId: this.props.tour.id_tour }
                 }}>
                 <Button bsStyle="primary">More Info</Button>&nbsp;
               </Link>
 
-            </p>{modifyBtn} {contactGuideBtn} {summaryBtn} {rating} {contactTouristBtn} {cancelBtn}</span>
+            </p>{modifyBtn} {contactGuideBtn} {summaryBtn} {contactTouristBtn} {cancelBtn}</span>
           </Thumbnail>
         </Col>);
 
@@ -262,22 +115,22 @@ class Tours extends React.Component{
       <Col xs={12} md={4} lg={3}>
         <Thumbnail>
           <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.state.profile_image}/>) : (<Image className={style.tour_image_large} src={this.state.profile_image}/>)}
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
           </div>
-          <p>{this.state.name}</p>
-          <p>${this.state.price}</p>
+          <p>{this.props.tour.name}</p>
+          <p>${this.props.tour.price}</p>
           <StarRatingComponent
             name="rate1"
             starCount={5}
-            value={this.state.average_rating}
+            value={this.props.tour.average_rating}
             renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
           />
-          {this.state.rating_count} reviews
+        {this.props.tour.rating_count} reviews
           <p>
             <Link
               to={{
                 pathname: '/tourdetail',
-                query: { tourId: this.state.id_tour }
+                query: { tourId: this.props.tour.id_tour }
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
