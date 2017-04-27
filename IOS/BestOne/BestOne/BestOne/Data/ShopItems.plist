@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>Cute Racoon</string>
+		<key>subTitle</key>
+		<string>PULLOVER</string>
+		<key>imgTitle</key>
+		<string>shop_item1.png</string>
+		<key>price</key>
+		<string>39</string>
+		<key>saleModePosition</key>
+		<integer>0</integer>
+		<key>saleMode</key>
+		<integer>3</integer>
+		<key>previewImgs</key>
+		<array>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+		</array>
+		<key>information</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed felis ut mi tincidunt fermentum. Morbi placerat egestas risus non vestibulum. Cras quis accumsan neque. Nulla lobortis turpis tempus, eleifend metus eget, ornare purus. Donec in orci congue, tincidunt ipsum sed, commodo urna. Phasellus vel accumsan nisl, in tempus mi. Integer suscipit sollicitudin volutpat. Donec felis velit, lacinia quis consequat et, lacinia vitae sapien.</string>
+	</dict>
+	<dict>
+		<key>information</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed felis ut mi tincidunt fermentum. Morbi placerat egestas risus non vestibulum. Cras quis accumsan neque. Nulla lobortis turpis tempus, eleifend metus eget, ornare purus. Donec in orci congue, tincidunt ipsum sed, commodo urna. Phasellus vel accumsan nisl, in tempus mi. Integer suscipit sollicitudin volutpat. Donec felis velit, lacinia quis consequat et, lacinia vitae sapien.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed felis ut mi tincidunt fermentum. Morbi placerat egestas risus non vestibulum. Cras quis accumsan neque. Nulla lobortis turpis tempus, eleifend metus eget, ornare purus. Donec in orci congue, tincidunt ipsum sed, commodo urna. Phasellus vel accumsan nisl, in tempus mi. Integer suscipit sollicitudin volutpat. Donec felis velit, lacinia quis consequat et, lacinia vitae sapien.</string>
+		<key>title</key>
+		<string>Royal Stiller</string>
+		<key>subTitle</key>
+		<string>LEATHER BAG</string>
+		<key>imgTitle</key>
+		<string>shop_item2.png</string>
+		<key>price</key>
+		<string>49</string>
+		<key>saleModePosition</key>
+		<integer>0</integer>
+		<key>saleMode</key>
+		<integer>0</integer>
+		<key>previewImgs</key>
+		<array>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+		</array>
+	</dict>
+	<dict>
+		<key>information</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed felis ut mi tincidunt fermentum. Morbi placerat egestas risus non vestibulum. Cras quis accumsan neque. Nulla lobortis turpis tempus, eleifend metus eget, ornare purus. Donec in orci congue, tincidunt ipsum sed, commodo urna. Phasellus vel accumsan nisl, in tempus mi. Integer suscipit sollicitudin volutpat. Donec felis velit, lacinia quis consequat et, lacinia vitae sapien.</string>
+		<key>title</key>
+		<string>Cute Racoon</string>
+		<key>subTitle</key>
+		<string>PULLOVER</string>
+		<key>imgTitle</key>
+		<string>shop_item1.png</string>
+		<key>price</key>
+		<string>39</string>
+		<key>saleModePosition</key>
+		<integer>0</integer>
+		<key>saleMode</key>
+		<integer>3</integer>
+		<key>previewImgs</key>
+		<array>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+		</array>
+	</dict>
+	<dict>
+		<key>information</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed felis ut mi tincidunt fermentum. Morbi placerat egestas risus non vestibulum. Cras quis accumsan neque. Nulla lobortis turpis tempus, eleifend metus eget, ornare purus. Donec in orci congue, tincidunt ipsum sed, commodo urna. Phasellus vel accumsan nisl, in tempus mi. Integer suscipit sollicitudin volutpat. Donec felis velit, lacinia quis consequat et, lacinia vitae sapien.</string>
+		<key>title</key>
+		<string>Cute Racoon</string>
+		<key>subTitle</key>
+		<string>PULLOVER</string>
+		<key>imgTitle</key>
+		<string>shop_item1.png</string>
+		<key>price</key>
+		<string>39</string>
+		<key>saleModePosition</key>
+		<integer>1</integer>
+		<key>saleMode</key>
+		<integer>3</integer>
+		<key>previewImgs</key>
+		<array>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+		</array>
+	</dict>
+	<dict>
+		<key>information</key>
+		<string>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed felis ut mi tincidunt fermentum. Morbi placerat egestas risus non vestibulum. Cras quis accumsan neque. Nulla lobortis turpis tempus, eleifend metus eget, ornare purus. Donec in orci congue, tincidunt ipsum sed, commodo urna. Phasellus vel accumsan nisl, in tempus mi. Integer suscipit sollicitudin volutpat. Donec felis velit, lacinia quis consequat et, lacinia vitae sapien.</string>
+		<key>title</key>
+		<string>Cute Racoon</string>
+		<key>subTitle</key>
+		<string>PULLOVER</string>
+		<key>imgTitle</key>
+		<string>shop_item1.png</string>
+		<key>price</key>
+		<string>39</string>
+		<key>saleModePosition</key>
+		<integer>0</integer>
+		<key>saleMode</key>
+		<integer>3</integer>
+		<key>previewImgs</key>
+		<array>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+			<string>shop_item1.png</string>
+		</array>
+	</dict>
+</array>
+</plist>
