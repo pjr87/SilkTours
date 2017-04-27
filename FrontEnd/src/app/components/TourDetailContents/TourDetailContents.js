@@ -3,18 +3,8 @@ import { Link } from 'react-router';
 
 import style from "./style.css";
 
-import Image from 'react-bootstrap/lib/Image';
-import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import Grid from 'react-bootstrap/lib/Grid';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import Button from 'react-bootstrap/lib/Button';
-import Modal from 'react-bootstrap/lib/Modal';
+import {Image, Col, Row, Grid, Thumbnail, Button, Modal, Form, FormControl, FormGroup, ControlLabel, Panel, ListGroupItem, ListGroup} from 'react-bootstrap';
 
-import Form from 'react-bootstrap/lib/Form';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import {connect} from 'react-redux';
 
 import { browserHistory } from 'react-router';
@@ -235,9 +225,7 @@ class TourDetailContents extends React.Component{
               <Row>
                 <Col sm={12} md={12} lg={12}>
                   <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
-
-                  {/*{guideButton}*/}
-
+                  {guideButton}
                 </Col>
               </Row>
             </Grid>
@@ -246,14 +234,17 @@ class TourDetailContents extends React.Component{
           <Thumbnail>
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <p className={style.contentSubTitle}>Reviews:</p>
+                <Panel header="Reviews">
+                <ListGroup fill>
                 {this.props.selectedTour.ratings.map((reviews, i) => {
                   return (
-                    <div key={i}>
+                    <ListGroupItem key={i}>
                       <p className={style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
                       <p className={style.reviewContent}>{reviews.comments}</p>
-                    </div>);
-                  })}
+                    </ListGroupItem>);
+                })}
+                </ListGroup>
+                </Panel>
               </Col>
             </Row>
           </Thumbnail>

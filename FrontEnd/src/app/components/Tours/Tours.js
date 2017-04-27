@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import style from './style.css';
-import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import Button from 'react-bootstrap/lib/Button';
-import Image from 'react-bootstrap/lib/Image';
+
+import {Col, Thumbnail, Button, Image} from 'react-bootstrap';
+
 
 import {connect} from 'react-redux';
 
@@ -221,7 +220,8 @@ class Tours extends React.Component{
       tourDisplay = (
         <Col xs={12} md={6} lg={6}>
           <Thumbnail>
-            <img className={style.tour_image_small} src={this.state.profile_image}/><span>
+            <img className={style.tour_image_small} src={this.state.profile_image}/>
+            <span>
             <p>{this.state.name}</p>
             <p>review: </p>
             <p>price: ${this.state.price}</p>
