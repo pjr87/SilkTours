@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>selectedValue</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>Show items</string>
+		<key>type</key>
+		<integer>0</integer>
+		<key>values</key>
+		<array>
+			<string>FEMALE</string>
+			<string>MALE</string>
+			<string>BOTH</string>
+		</array>
+	</dict>
+	<dict>
+		<key>selectedValue</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>Account</string>
+		<key>type</key>
+		<integer>1</integer>
+		<key>values</key>
+		<array>
+			<string>jessy.venzel@gmail.com</string>
+		</array>
+	</dict>
+	<dict>
+		<key>selectedValue</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>Terms and Conditions</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>values</key>
+		<array>
+			<string>Terms and Conditions</string>
+		</array>
+	</dict>
+	<dict>
+		<key>selectedValue</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>Payment preferences</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>values</key>
+		<array>
+			<string>Payment preferences</string>
+		</array>
+	</dict>
+	<dict>
+		<key>selectedValue</key>
+		<integer>1</integer>
+		<key>title</key>
+		<string>E-mail me on new collections</string>
+		<key>type</key>
+		<integer>3</integer>
+		<key>values</key>
+		<array/>
+	</dict>
+	<dict>
+		<key>selectedValue</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>Push notifications</string>
+		<key>type</key>
+		<integer>3</integer>
+		<key>values</key>
+		<array/>
+	</dict>
+	<dict>
+		<key>selectedValue</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>Contact Us</string>
+		<key>type</key>
+		<integer>2</integer>
+		<key>values</key>
+		<array>
+			<string>Contact Us</string>
+		</array>
+	</dict>
+</array>
+</plist>
