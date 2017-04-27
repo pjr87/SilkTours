@@ -720,8 +720,8 @@ def site_map():
     tour_event = safe_call(get_session().query(TourEvent), "get", 1).serialize(include_tour=False)
     clean_object(tour_event)
 
-    hours = safe_call(get_session().query(TourHours), "get", 1).serialize()
-    hours_special = safe_call(get_session().query(TourHoursSpecial), "get", 1).serialize()
+    hours = safe_call(get_session().query(TourHours), "get", 0).serialize()
+    hours_special = safe_call(get_session().query(TourHoursSpecial), "get", 0).serialize()
     hours_input = {"base_hours": [hours], "hours_special": [hours_special]}
     clean_object(hours_special)
     clean_object(hours)
