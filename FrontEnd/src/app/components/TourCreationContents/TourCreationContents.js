@@ -5,7 +5,7 @@ import style from './style.css';
 import { Button, HelpBlock, FormGroup, Col, Row, Tab, Nav, NavItem, Image } from 'react-bootstrap';
 import * as service from '../../utils/databaseFunctions';
 import {connect} from 'react-redux';
-import { setTabKey } from '../../actions/TourCreationActions';
+import { setTabKey, updateCoordinates } from '../../actions/TourCreationActions';
 
 import TourCreationInfo from './TourCreationInfo';
 import TourCreationLocation from './TourCreationLocation';
@@ -24,10 +24,19 @@ class TourCreationContents extends React.Component{
   constructor() {
     super();
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleMap = this.handleMap.bind(this);
   }
 
   handleSelect(key){
     this.props.dispatch(setTabKey(key));
+  }
+
+  handleMap(){
+    const coords = {
+      lat: 39.955981,
+      lng: -75.188033
+    };
+    this.props.dispatch(updateCoordinates(coords));
   }
 
   render(){
@@ -62,7 +71,7 @@ class TourCreationContents extends React.Component{
                   <NavItem eventKey="interests">
                     <p className={style.TabStyle}>Interests</p>
                   </NavItem>
-                  <NavItem eventKey="stops">
+                  <NavItem eventKey="stops" onSelect={this.handleMap}>
                     <p className={style.TabStyle}>Stops</p>
                   </NavItem>
                   <NavItem eventKey="additional">
@@ -165,7 +174,7 @@ TourCreationContents.propTypes = {
   startTime: React.PropTypes.number,
   errorMessage: React.PropTypes.string,
   tabKey: React.PropTypes.string,
-  photos: React.PropTypes.array
+  photos: React.PropTypes.object
 }
 
 function select (state) {

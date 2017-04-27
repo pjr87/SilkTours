@@ -49,7 +49,11 @@ const initialState = {
   },
   startTime: 0,
   endTime: 0,
-  photos: [],
+  photos: {},
+  coords:{
+    lat: 39.955980,
+    lng: -75.188032
+  },
   currentlySending: false,
   errorMessage: '',
   tabKey: 'info'
@@ -96,6 +100,8 @@ function TourCreationReducer(state = initialState, action) {
         };
     case tourCreationConstants.SENDING_REQUEST:
       return {...state, currentlySending: action.sending};
+    case tourCreationConstants.UPDATE_COORDS:
+      return {...state, coords: action.newCoordinatesState};
     case tourCreationConstants.SET_ERROR_MESSAGE:
       return {...state, errorMessage: action.message};
     case tourCreationConstants.CLEAR_ERROR:

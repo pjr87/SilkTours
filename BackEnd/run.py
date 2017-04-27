@@ -1,6 +1,7 @@
 from flask import Flask, g
 from flask import jsonify
-from flask import request
+from flask import request, url_for
+import urllib.parse
 import json
 import time
 import math
@@ -128,14 +129,18 @@ def internal_server_error(e):
 
 @app.route("/")
 def hello():
-    if not checkLogin():
-        return notAuthorizedResponse()
-    user = get_session().query(User).get(1)
-    return "Hello " + user.first_name
+    """
+    Returns a simple message. Used to test if server is running.
+    """
+    return "Testing..."
 
 
 @app.route("/search", methods=['GET'])
 def search():
+    """
+    Searches tours.
+    <u>URL Args:</u> interests, keywords, rating, priceMin/Max, city, page, page_size
+    """
     interests = request.args.get("interests", None)
     keyWordsStr = request.args.get("keywords", None)
     rating = request.args.get("rating", None)
@@ -191,16 +196,24 @@ def search():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
+    """
+    Gets a user by id.
+    """
     print("Get User")
+    deep = request.args.get("deep", False) == "true"
+    print("deep: " + str(deep))
     #if not checkLogin():
     #    return notAuthorizedResponse()
 
     user = safe_call(get_session().query(User), "get", id)
-    return jsonify(user.serialize())
+    return jsonify(user.serialize(deep))
 
 
 @app.route('/users/email/<email>', methods=['GET'])
 def get_user_by_email(email):
+    """
+    Gets a user by thier email
+    """
     #if not checkLogin():
     #    return notAuthorizedResponse()
     query = get_session().query(User).filter(User.email == email)
@@ -222,6 +235,10 @@ def login(id, accessKeyID):
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])
 def check_auth():
+    """
+    Checks if the given token and username are value
+    <u>Form Args:</u> token=AWS logins object, username=AWS login token
+    """
     try:
         if not checkLoginWithArgs(json.loads(request.form.get('token')), request.form.get('username').replace(' ', ':')):
             return "false"
@@ -233,6 +250,9 @@ def check_auth():
 # Creates a new user
 @app.route('/users', methods=['POST'])
 def set_user():
+    """
+    Creates a user using the usual user JSON object
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     user = User()
@@ -243,6 +263,9 @@ def set_user():
 # Edits a user
 @app.route('/users/<id>', methods=['PUT'])
 def edit_user(id):
+    """
+    Edits a users object using the usual user JSON
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -250,19 +273,34 @@ def edit_user(id):
     user.create_or_edit(data)
     return jsonify(user.serialize())
 
+
 @app.route('/users/<userid>/profile', methods=['PUT'])
 def edit_user_profile(userid):
+    """
+    Uploads and sets a user's profile image
+    <u>JSON fields:</u> file=base 64 string, name=the filename
+    """
     if not checkLogin():
         return notAuthorizedResponse()
-    file = request.files['file']
+    data = request.get_json()
+    file_data = data['file']
+    filename = data['name']
+    media = Media()
+    result = media.upload(file_data, filename, userid=userid)
     user = safe_call(get_session().query(User), "get", userid)
-    user.upload_profile_image(file, userid)
-    return jsonify(user.serialize())
+    user.profile_picture = result["url"]
+    # TODO set profile image size in db
+    commitSession(user)
+    return jsonify(result)
 
 
 # Adds a new rating
 @app.route('/ratings', methods=['POST'])
 def add_rating():
+    """
+    Adds a new raing to the tour.
+    <u>JSON fields:</u> id_user_rated=the raters id, id_tour_rated=the tour to rate, rating=rating from 1-5, comment=string comment
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -287,6 +325,10 @@ def add_rating():
 # Adds a new rating
 @app.route('/stops', methods=['POST'])
 def add_stop():
+    """
+    Adds a new stop to a tour. Stops can also be set with POST /tour.
+    <u>JSON fields:</u> id_tour, lat, lon
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -302,15 +344,20 @@ def add_stop():
     return "Success"
 
 
-
 @app.route('/tours/<tourid>', methods=['GET'])
 def get_tour(tourid):
+    """
+    Gets a tour by id.
+    """
     tour = safe_call(get_session().query(Tour), "get", tourid)
     return jsonify(tour.serialize(True))
 
 
 @app.route('/tours', methods=['POST'])
 def set_tour():
+    """
+    Creates a new tour using the usual tour JSON.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -321,16 +368,29 @@ def set_tour():
 
 @app.route('/tours/<tourid>/profile', methods=['PUT'])
 def edit_tour_profile(tourid):
+    """
+    Uploads and sets a tour's profile image.
+    <u>JSON fields:</u>file=base64 encoded file, name=filename
+    """
     if not checkLogin():
         return notAuthorizedResponse()
-    file = request.files['file']
+    data = request.get_json()
+    file_data = data['file']
+    filename = data['name']
+    media = Media()
+    result = media.upload(file_data, filename, tourid=tourid)
     tour = safe_call(get_session().query(Tour), "get", tourid)
-    tour.upload_profile_image(file, tourid)
-    return jsonify(tour.serialize(False))
+    tour.profile_image = result["url"]
+    # TODO set profile image size in db
+    commitSession(tour)
+    return jsonify(result)
 
 
 @app.route('/tours/<tourid>', methods=['PUT'])
 def edit_tour(tourid):
+    """
+    Edits a tour. Takes the usual tour JSON.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -339,8 +399,20 @@ def edit_tour(tourid):
     return jsonify(tour.serialize(False))
 
 
+@app.route('/tourevents/<eventid>', methods=['GET'])
+def get_tourevent(eventid):
+    """
+    Gets a tour event by id.
+    """
+    event = safe_call(get_session().query(TourEvent), "get", eventid)
+    return jsonify(event.serialize(True))
+
+
 @app.route('/tour/<tourid>/events', methods=['GET'])
-def get_tourevent(tourid):
+def get_tourevents(tourid):
+    """
+    Gets a list of tour events for a tour.
+    """
     query = get_session().query(TourEvent).filter(TourEvent.id_tour == tourid)
     events = safe_call(query, "all", None)
     return jsonify([event.serialize() for event in events])
@@ -350,6 +422,9 @@ def get_tourevent(tourid):
 # TODO: When a tour is completed, the payment should be processed
 @app.route('/complete_tour_event/<eventId>', methods=['PUT'])
 def compute_tour_event(eventId):
+    """
+    Marks the given tour event as completed. Also creates a pending review.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     event = safe_call(get_session().query(TourEvent), "get", eventId)
@@ -360,6 +435,9 @@ def compute_tour_event(eventId):
 
 @app.route('/clear_pending_review/<eventId>', methods=['PUT'])
 def clear_pending_review(eventId):
+    """
+    Clears the pending review for the tour event.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     event = safe_call(get_session().query(TourEvent), "get", eventId)
@@ -371,6 +449,9 @@ def clear_pending_review(eventId):
 # TODO: Decide to use PR table or PR field
 @app.route('/pending_reviews/<id_user>', methods=['GET'])
 def get_prs(id_user):
+    """
+    Get a list of pending reviews for the user.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     query = get_session().query(TourEvent).filter(
@@ -388,6 +469,9 @@ def get_prs(id_user):
 
 @app.route('/tourevents', methods=['POST'])
 def set_tourevent():
+    """
+    Create a new tour event. Takes the usual tour event JSON.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -399,6 +483,9 @@ def set_tourevent():
 
 @app.route('/tourevents/<eventid>', methods=['PUT'])
 def edit_tourevent(eventid):
+    """
+    Edits a tour event. Takes the usual tour event JSON.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -410,6 +497,10 @@ def edit_tourevent(eventid):
 
 @app.route('/media/<tourid>', methods=['POST'])
 def upload(tourid):
+    """
+    Uploads a new image.
+    <u>JSON fields:</u> file=base64 encoded file, name=filename
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     data = request.get_json()
@@ -417,11 +508,15 @@ def upload(tourid):
     file_data = data['file']
     filename = data['name']
     media = Media()
-    return media.upload(file_data, filename, tourid)
+    result = media.upload(file_data, filename, tourid=tourid)
+    return jsonify(result)
 
 
 @app.route('/media/<tourid>', methods=['GET'])
 def get_image(tourid):
+    """
+    Gets all media for a given tour.
+    """
     if not checkLogin():
         return notAuthorizedResponse()
     query = get_session().query(Media).filter(Media.id_tour == tourid)
@@ -460,9 +555,14 @@ def check_for_event(events, dt_start, dt_end):
 
 @app.route('/tours/available_hours', methods=['GET'])
 def get_hours():
+    """
+    Gets a list of available times for a tour for a given week.
+    <u>URL Args:</u> tour_id, start_date=ISO standard date string, should be a monday
+    """
     tour_id = request.args.get("tour_id", None)
     start_date = parse(request.args.get("start_date", time.time())).date()
     end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
+    end_date = parse(request.args.get("end_date", str(end_date))).date()
 
     if tour_id is None:
         return 422, "No tour specified"
@@ -495,7 +595,8 @@ def get_hours():
     for sHour in specialHours:
         if sHour.date < start_date or sHour.date > end_date:
             continue
-        ds = sHour.date.weekday()
+        ds = str(sHour.date)
+        print("ds special: " + ds)
         if sHour.overrides:
             overridden.add(ds)
         add_hour_entries(hours[ds], sHour.open_time, sHour.close_time, length)
@@ -506,19 +607,26 @@ def get_hours():
         sh = start.hour
         eh = end.hour
         dow = hour.day_of_week
-        if dow in overridden:
-            continue
-        add_hour_entries(hours[dow], start, end, length)
+        offset = dow - start_date.weekday()
+        curr_date = datetime.date(start_date.year, start_date.month, start_date.day+offset)
+        while curr_date <= end_date:
+            curr_date += datetime.timedelta(days=7)
+            ds = str(curr_date)
+            print("ds base: " + ds)
+            if ds in overridden:
+                continue
+            add_hour_entries(hours[ds], start, end, length)
 
     for event in events:
         start = event.start_date_time
-        dow = start.weekday()
+        ds = str(start.date())
+        print("ds event: " + ds)
         sh = start.hour
         eh = event.end_date_time.hour
         if dow not in hours:
             continue
         i = 0
-        while i < len(hours[dow]):
+        while i < len(hours[ds]):
             # Check for overlapping hours
             if (sh <= hours[dow][i]["end"]) and (eh >= hours[dow][i]["start"]):
                 del hours[dow][i]
@@ -526,6 +634,106 @@ def get_hours():
                 i += 1
 
     return jsonify(hours)
+
+
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+
+
+@app.route("/docs")
+def site_map():
+    """
+    Returns this documentation.
+    """
+    html = """
+    <style>
+        .info {
+            margin-left: 30px
+        }
+    </style>
+    <h2>Endpoints</h2>
+    """
+    for rule in app.url_map.iter_rules():
+        print(rule)
+        options = {}
+        for arg in rule.arguments:
+            options[arg] = "[{0}]".format(arg)
+
+        desc = "None<br>"
+        if rule.endpoint in globals():
+            desc = globals()[rule.endpoint].__doc__
+            if desc is not None:
+                if desc[0] is "\n":
+                    desc = desc[1:]
+                if desc[-1] is "\n":
+                    desc = desc[:-1]
+                desc = desc.replace("\n", "<br>")
+
+        methods = ', '.join(
+            [i for i in rule.methods if i not in ["HEAD", "OPTIONS"]]
+        )
+        url = url_for(rule.endpoint, **options)
+        line = urllib.parse.unquote(
+            """
+                <b>{}</b>
+                <div class="info"
+                    <br>
+                    <u>URL:</u> {}
+                    <br>
+                    <u>Description:</u> {}
+                    <u>Methods:</u> {}
+                </div>
+                <br><br>
+            """.format(rule.endpoint, url, desc, methods)
+        )
+        html += line
+    user = safe_call(get_session().query(User), "get", 1).serialize(True)
+    clean_object(user)
+
+    tour = safe_call(get_session().query(Tour), "get", 1).serialize(True)
+    clean_object(tour)
+
+    tour_event = safe_call(get_session().query(TourEvent), "get", 1).serialize(include_tour=False)
+    clean_object(tour_event)
+
+    html += """
+    <br>
+    <h2>Schema</h2>
+    <b>User:</b><br>
+    """ + clean_json(user) + """
+    <br><br>
+    <b>Tour:</b><br>
+    """ + clean_json(tour) + """
+    <br><br>
+    <b>Tour Event:</b><br>
+    """ + clean_json(tour_event)
+    return html
+
+
+def clean_object(obj):
+    if obj is None:
+        return
+    for key in obj:
+        if type(obj[key]) is dict:
+            clean_object(obj[key])
+        elif type(obj[key]) is list:
+            if len(obj[key]) > 0:
+                if key is "tours_taking" or key is "tours_teaching":
+                    obj[key][0] = "#Tour Event Schema + Tour Schema"
+                elif type(obj[key][0]) is dict or type(obj[key][0]) is list:
+                    clean_object(obj[key][0])
+                obj[key] = [obj[key][0]]
+        else:
+            if obj[key] is None:
+                obj[key] = ""
+            obj[key] = type(obj[key]).__name__
+
+
+def clean_json(obj):
+    return json.dumps(obj, indent=4, sort_keys=True).replace("\"", "").replace("\n", "<br>").replace(" ", "	&nbsp;")
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, threaded=True)

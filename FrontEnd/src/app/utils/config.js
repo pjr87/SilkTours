@@ -16,5 +16,5 @@ export default {
   //Facebook
   facebookAppId: '606443696175641',
   facebookAppSecret: 'aea0d287a34debcb3e540b829c66b5db',
-  facebookVersion: 'v2.5',
+  facebookVersion: 'v2.8',
 }

@@ -83,6 +83,10 @@ class Tour(Base):
                 value = str(value)
             result[key] = value
 
+        result["guides"] = []
+        for guide in self.guides:
+            result["guides"].append(guide.serialize())
+
         if not deep:
             return result
 
@@ -93,10 +97,6 @@ class Tour(Base):
         result["interests"] = []
         for interest in self.interests:
             result["interests"].append(interest.serialize())
-
-        result["guides"] = []
-        for guide in self.guides:
-            result["guides"].append(guide.serialize())
 
         result["ratings"] = []
         for rating in self.ratings:
