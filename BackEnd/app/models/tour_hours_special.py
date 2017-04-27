@@ -36,14 +36,15 @@ class TourHoursSpecial(Base):
             data.get("close_time"),
             data.get("overrides"))
         if id_tour is not None:
-            result.id_tour = id_tour
+            result.tour_id = id_tour
         commitSession(result)
         return result
 
     def serialize(self):
         return {
-            "tour_hours_id": self.tour_hours_id,
-            "date": str(self.date),
+            "tour_hours_special_id": self.tour_hours_special_id,
+            "date": self.date,
             "open_time": str(self.open_time),
-            "close_time": str(self.lon)
+            "close_time": str(self.close_time),
+            "overrides": self.overrides
         }
