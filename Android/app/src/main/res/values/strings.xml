@@ -32,4 +32,8 @@
         <item>Tourist</item>
         <item>Guide</item>
     </string-array>
+
+    <!--activity_guide_registration-->
+    <string name="guide_registration_accept">Accept</string>
+    <string name="guide_registration_deny">Deny</string>
 </resources>
