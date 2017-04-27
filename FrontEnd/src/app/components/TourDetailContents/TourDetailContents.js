@@ -3,18 +3,8 @@ import { Link } from 'react-router';
 
 import style from "./style.css";
 
-import Image from 'react-bootstrap/lib/Image';
-import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import Grid from 'react-bootstrap/lib/Grid';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import Button from 'react-bootstrap/lib/Button';
-import Modal from 'react-bootstrap/lib/Modal';
+import {Image, Col, Row, Grid, Thumbnail, Button, Modal, Form, FormControl, FormGroup, ControlLabel, Panel, ListGroupItem, ListGroup} from 'react-bootstrap';
 
-import Form from 'react-bootstrap/lib/Form';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import {connect} from 'react-redux';
 
 import { browserHistory } from 'react-router';
@@ -49,7 +39,7 @@ class TourDetailContents extends React.Component{
       this.setState({ showModal: true });
     }
     else {
-      browserHistory.push('/sign');
+      browserHistory.push('/signredirect');
     }
   }
 
@@ -58,6 +48,8 @@ class TourDetailContents extends React.Component{
   }
 
   render(){
+
+
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
     if (guidesLength != '0') {
@@ -78,9 +70,11 @@ class TourDetailContents extends React.Component{
                         <Button bsStyle="default">Message</Button>
                       </Link>;
       }
+
     } else {
-      guideButton = null;
+     guideButton = null;
     }
+
     const getToken = () => {
       // Replace this with an actual promise to your Braintree-enabled server
       return new Promise((resolve) => {
@@ -154,11 +148,15 @@ class TourDetailContents extends React.Component{
                     <p className={style.content}>Min Group Size: {this.props.selectedTour.min_group_size}</p>
                     <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStart_date}</p>
                     <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEnd_date}</p>
+
                     <p className={style.contentSubTitle}>Stops: </p>
                     {this.props.selectedTour.stops.map((stops, i) => {
                       return (
                         <li key={i} className={style.content}>{i+1}</li>);
+
                       })}
+
+
                     <p className={style.contentSubTitle}>Guides: </p>
                     {this.props.selectedTour.guides.map((guides, i) => {
                       return (
@@ -169,7 +167,10 @@ class TourDetailContents extends React.Component{
                                         }}>
                                         {guides.first_name} {guides.last_name}
                                       </Link></li>);
+
                       })}
+
+
                     <p className={style.contentSubTitle}>Available Date: </p>
                     {this.props.selectedTourDates.map((availableDates, i) => {
                       return (
@@ -182,6 +183,7 @@ class TourDetailContents extends React.Component{
                   </Col>
                   <Col sm={12} md={7} lg={7}>
                     <br/>
+
                     <div className={style.mapContainer}>
                     <Gmaps
                       width={'94%'}
@@ -214,6 +216,7 @@ class TourDetailContents extends React.Component{
                       })}
                     </Gmaps>
                   </div>
+
                 </Col>
               </Row>
             </Grid>
@@ -227,20 +230,25 @@ class TourDetailContents extends React.Component{
               </Row>
             </Grid>
           </Thumbnail>
+
           <Thumbnail>
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <p className={style.contentSubTitle}>Reviews:</p>
+                <Panel header="Reviews">
+                <ListGroup fill>
                 {this.props.selectedTour.ratings.map((reviews, i) => {
                   return (
-                    <div key={i}>
+                    <ListGroupItem key={i}>
                       <p className={style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
                       <p className={style.reviewContent}>{reviews.comments}</p>
-                    </div>);
-                  })}
+                    </ListGroupItem>);
+                })}
+                </ListGroup>
+                </Panel>
               </Col>
             </Row>
           </Thumbnail>
+
         </div>
         <Modal show={this.state.showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>

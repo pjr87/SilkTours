@@ -17,4 +17,5 @@ export const SEARCH_CITY = 'SEARCH_CITY';
 export const UPDATE_SEARCH = 'UPDATE_SEARCH';
 export const SEARCH_PAGE = 'SEARCH_PAGE';
 export const SEARCH_PAGE_SIZE = 'SEARCH_PAGE_SIZE';
+export const SEARCH_PAGE_COUNT = 'SEARCH_PAGE_COUNT';
 export const SET_LOADED = 'SET_LOADED';

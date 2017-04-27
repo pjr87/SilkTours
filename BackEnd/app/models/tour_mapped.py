@@ -1,12 +1,15 @@
 import datetime
 from app.models.interests_mapped import Interests
+from app.models.address_mapped import Address
 from app.models.ratings_mapped import Rating
 from app.models.stop_mapped import Stop
 from app.models.tour_guide_mapped import TourGuides
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import session, commitSession, createSession
+from db_session import get_session, commitSession, createSession
+import boto3
+import uuid
 
 
 class Tour(Base):
@@ -36,11 +39,12 @@ class Tour(Base):
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
     guides = relationship("TourGuides", foreign_keys="TourGuides.id_tour")
     language = Column(String)
+    length = Column(Integer)
 
     def set_props(self, data):
         for key in data:
             print(key)
-            if key not in ["ratings", "stops", "interests", "guides"]:
+            if key not in ["ratings", "stops", "interests", "guides", "address"]:
                 print("setting")
                 setattr(self, key, data[key])
 
@@ -57,6 +61,10 @@ class Tour(Base):
             elif key == "guides":
                 for item in data[key]:
                     TourGuides.create(item, self.id_tour)
+            elif key == "address":
+                address = Address.create(data[key])
+                self.address_id = address.id_address
+                commitSession(self)
                 # self.guides = [TourGuides.create(item, self.id_tour) for item in data[key]]
 
     def createOrEdit(self, data):
@@ -75,6 +83,10 @@ class Tour(Base):
                 value = str(value)
             result[key] = value
 
+        result["guides"] = []
+        for guide in self.guides:
+            result["guides"].append(guide.serialize())
+
         if not deep:
             return result
 
@@ -86,11 +98,26 @@ class Tour(Base):
         for interest in self.interests:
             result["interests"].append(interest.serialize())
 
-        result["guides"] = []
-        for guide in self.guides:
-            result["guides"].append(guide.serialize())
-
         result["ratings"] = []
         for rating in self.ratings:
             result["ratings"].append(rating.serialize())
+
+        result["address"] = {}
+        if self.address is not None:
+            result["address"] = self.address.serialize()
         return result
+
+
+    def upload_to_s3(self, file, filename):
+        resource = boto3.resource('s3')
+        bucket = resource.Bucket('silktours-media')
+        bucket.put_object(Key='tour/profile/' + filename, Body=file, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
+
+    def upload_profile_image(self, file, tourid):
+        s = file.filename.split('.')
+        extension = s[-1]
+        url = 'https://s3.amazonaws.com/silktours-media/' + 'tour/profile/' + tourid + '.' + extension
+        self.upload_to_s3(file, tourid + '.' + extension)
+        self.profile_image = url
+        commitSession(self)
+        return self.serialize()

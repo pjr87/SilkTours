@@ -14,8 +14,8 @@ function getCookie(name){
  return null;
 }
 
-window.SERVER_URL = "http://34.197.42.24:5000";
-//window.SERVER_URL = "http://localhost:5000";
+//OLD window.SERVER_URL = "http://34.197.42.24:5000";
+window.SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
 
 /*
 Every call must use
@@ -88,7 +88,7 @@ export function newTour(data, auth){
 }
 
 export function newPhoto(data, id, auth){
-    let url = SERVER_URL + '/tours/image/' + id;
+    let url = SERVER_URL + '/media/' + id;
     return axios.post(url, data,
     {
       headers:{
@@ -97,6 +97,29 @@ export function newPhoto(data, id, auth){
       },
     });
 }
+
+export function newTourProfilePhoto(data, id, auth){
+    let url = SERVER_URL + '/tours/' + id + '/profile';
+    return axios.put(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function newUserProfilePhoto(data, id, auth){
+    let url = SERVER_URL + '/users/' + id + '/profile';
+    return axios.put(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 
 /*Yes, send a POST to "/users" to create or a PUT to "/users/<id>" to edit.
  The arguments should be put in the HTTP request's form, and the JSON structure
@@ -138,9 +161,9 @@ export function getMessages(){
 
 export function postSupportTicket(department, fname, lname, email, textBody) {
     var instance = axios.create({
-      baseURL: 'https://testtingsilk123.freshdesk.com/api/v2/tickets',
+      baseURL: 'https://silktoursinc.freshdesk.com/api/v2/tickets',
       headers: {'Content-Type': 'application/json'},
-      auth: { username: 'KgANyaywWNjVCyUyQCe', password: 'x'}
+      auth: { username: '0e7cUf93oqBAib5lwaN6', password: 'x'}
     });
 
     var namee = fname + " "  + lname;
@@ -161,4 +184,40 @@ export function postSupportTicket(department, fname, lname, email, textBody) {
 
     return instance.post('', dataa, instance);
 
+}
+
+export function getPendingReviewsByUserId(userId, auth){
+    let url = SERVER_URL + '/pending_reviews/' + userId;
+
+    return axios.get(url,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function postPendingReviewsByRatingComment(json, auth){
+    let url = SERVER_URL + '/ratings';
+
+    return axios.post(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
+export function putClearPendingReviewsByEventId(eventId, auth){
+    let url = SERVER_URL + '/clear_pending_review/' + eventId;
+
+    return axios.put(url,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
 }

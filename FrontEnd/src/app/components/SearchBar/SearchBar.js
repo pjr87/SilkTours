@@ -59,11 +59,11 @@ class SearchBar extends React.Component{
   }
   handlePageSizeChange(e) {
     this.props.dispatch(setSelectedPageSize(e.target.value));
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "&page="+this.props.page, "&page_size="+e.target.value));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
   }
   handlePageChange(e) {
-    this.props.dispatch(setSelectedPage(e));
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "&page="+e, "&page_size="+this.props.page_size));
+    this.props.dispatch(setSelectedPage(e-1));
+    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
 
   render(){
@@ -134,7 +134,7 @@ class SearchBar extends React.Component{
           <FormGroup controlId="page_size">
             <ControlLabel>View by</ControlLabel>
             {'  '}
-            <FormControl componentClass="select" placeholder="select" value={this.state.page_size}
+            <FormControl componentClass="select" placeholder="select" value={this.props.page_size}
               onChange={this.handlePageSizeChange}>
               <option value="10">10 items</option>
               <option value="20">20 items</option>
@@ -149,7 +149,7 @@ class SearchBar extends React.Component{
         <div>
           <Grid>
             <Row>
-              <ToursList tours={this.props.tours}/>
+              <ToursList tours={this.props.tours} tourDisplayProps={{display:"large"}} />
             </Row>
           </Grid>
         </div>
@@ -161,9 +161,9 @@ class SearchBar extends React.Component{
             last
             ellipsis
             boundaryLinks
-            items={20}
+            items={this.props.page_count}
             maxButtons={5}
-            activePage={Number.parseInt(this.props.page,10)}
+            activePage={Number.parseInt(this.props.page,10)+1}
             onSelect={this.handlePageChange} />
         </Pager>
       </div>
@@ -193,6 +193,7 @@ function select (state) {
     city: state.SearchReducer.city,
     page: state.SearchReducer.page,
     page_size: state.SearchReducer.page_size,
+    page_count: state.SearchReducer.page_count,
     isLoaded: state.SearchReducer.isLoaded
   };
 }

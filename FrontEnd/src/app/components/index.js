@@ -4,7 +4,9 @@ export BannerImage from './BannerImage/BannerImage';
 export TourDetailContents from './TourDetailContents/TourDetailContents';
 export TourConfirmationContents from './TourConfirmationContents/TourConfirmationContents';
 export TourModify from './Tours/TourModify';
-export TourInfo from './tours/TourInfo';
+export TourInfo from './Tours/TourInfo';
+export ToursList from './Tours/ToursList';
+export Tours from './Tours/Tours';
 export ProfileContents from './ProfileContents/ProfileContents';
 export AboutContents from './AboutContents/AboutContents';
 export SignInContents from './SignInContents/SignInContents';
@@ -26,3 +28,8 @@ export TourCreationContents from './TourCreationContents/TourCreationContents';
 export MessageBody from './MessageBody/MessageBody';
 export Footer from './Footer/Footer';
 export ProfileInfo from './Profile/ProfileInfo';
+
+export TermsOfService from './Policies/TermsOfService';
+export Privacy from './Policies/Privacy';
+
+export PendingReview from './PendingReview/PendingReview';

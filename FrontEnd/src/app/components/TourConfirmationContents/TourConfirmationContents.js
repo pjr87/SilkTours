@@ -39,7 +39,7 @@ class TourConfirmationContents extends React.Component{
                   <p>Credit Card: xxxx xxxx xxxx 1111</p>
                   <p>Paid Amount: ${this.props.selectedTour.price}</p>
                   <br/>
-                  <Link to={{pathname: '/' }}>
+                  <Link to={{pathname: '/explore' }}>
                     <Button>Ok</Button>
                   </Link>
                 </div>

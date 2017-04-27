@@ -25,3 +25,4 @@ export const UPDATE_TOUR_GUIDE = 'UPDATE_TOUR_GUIDE';
 export const UPDATE_TOUR_PHOTO = 'UPDATE_TOUR_PHOTO';
 export const SET_START_TIME = 'SET_START_TIME';
 export const SET_END_TIME = 'SET_END_TIME';
+export const UPDATE_COORDS = 'UPDATE_COORDS';

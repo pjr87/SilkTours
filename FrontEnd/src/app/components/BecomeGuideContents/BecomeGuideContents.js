@@ -22,12 +22,10 @@ onClickHandler(){
     return;
   }
   var modifiedUser = this.props.user;
+  console.log('this.props.user', this.props.user);
   modifiedUser.is_guide = true;
+  console.log('modifiedUser', modifiedUser);
   this.props.dispatch(updateUser(this.props.user_id, modifiedUser, this.props.auth));
-
-  /*service.updateExistingUser(this.props.user_id,json,this.props.auth).then(function(response){
-    console.log("response",response);
-  });*/
 }
 
 checkboxClicked(){

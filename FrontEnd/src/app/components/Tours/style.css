@@ -1,4 +1,31 @@
-.tour-image {
+.tour_image_large {
   border-color: $gray-lightest;
-  img { width: 100%; }
+  img { width: 100%; };
+}
+
+.tour_image_large_info {
+  border-color: $gray-lightest;
+  img { width: 100%; };
+  opacity: 0.5;
+}
+
+.tour_image_small {
+  border-color: $gray-lightest;
+  height: 110px;
+  left:0px;
+  bottom:0px;
+  float:left;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.tour_image_small_info {
+  border-color: $gray-lightest;
+  opacity: 0.5;
+  height: 110px;
+  left:0px;
+  bottom:0px;
+  float:left;
+  padding-right: 10px;
+  padding-bottom: 10px;
 }

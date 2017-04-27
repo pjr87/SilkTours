@@ -1,7 +1,7 @@
 # from interests import Interests
 from sqlalchemy import Column, Integer, String
 from base import Base
-from db_session import session, commitSession, createSession
+from db_session import get_session, commitSession, createSession
 
 
 class Address(Base):
@@ -27,7 +27,7 @@ class Address(Base):
     def create(data):
         result = None
         if "id_address" in data:
-            result = session.query(Address).get(data["id_address"])
+            result = get_session().query(Address).get(data["id_address"])
         if result is None:
             result = Address()
         result.setProps(data)
@@ -37,5 +37,5 @@ class Address(Base):
         for key in data:
             setattr(self, key, data[key])
         createSession()
-        session.add(self)
+        get_session().add(self)
         commitSession()

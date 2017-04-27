@@ -21,6 +21,7 @@ class TourCreationAdditional extends React.Component{
 
   previous(){
     this.props.dispatch(setTabKey("stops"));
+    window.location.reload();
   }
 
   _changeAccomodation(event) {

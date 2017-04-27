@@ -20,9 +20,10 @@ const initialState = {
   priceMin: '0',
   priceMax: '1000000',
   city: '',
-  page: '1',
+  page: '0',
   page_size: '10',
   tours: [],
+  page_count: '10',
   isLoaded: false
 };
 
@@ -47,6 +48,8 @@ function SearchReducer(state = initialState, action) {
       return {...state, page: action.newSearchPageFormState};
     case searchConstants.SEARCH_PAGE_SIZE:
       return {...state, page_size: action.newSearchPageSizeFormState};
+    case searchConstants.SEARCH_PAGE_COUNT:
+      return {...state, page_count: action.newSearchPageCountFormState};
     case searchConstants.SET_LOADED:
       return {...state, isLoaded: action.newLoadedState};
     default:

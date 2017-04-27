@@ -1,11 +1,10 @@
 import datetime
 from app.models.interests_mapped import Interests
-from app.models.tour_mapped import Tour
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
-from db_session import commitSession, session
+from db_session import commitSession, get_session
 
 
 class TourEvent(Base):
@@ -16,6 +15,7 @@ class TourEvent(Base):
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
     #id_rating = Column(Integer, ForeignKey("Ratings.id_rating"))
     tour = relationship("Tour", foreign_keys=[id_tour])
+    user = relationship("User", foreign_keys=[id_user])
     start_date_time = Column(DateTime)
     end_date_time = Column(DateTime)
     state = Column(String)
@@ -29,7 +29,7 @@ class TourEvent(Base):
     def create(data, id_tour=None, id_user=None):
         result = None
         if "id_tourEvent" in data:
-            result = session.query(TourEvent).get(data["id_tourEvent"])
+            result = get_session().query(TourEvent).get(data["id_tourEvent"])
         if result is None:
             result = TourEvent()
         result.set_props(data)
@@ -40,7 +40,7 @@ class TourEvent(Base):
         commitSession(result)
         return result
 
-    def serialize(self):
+    def serialize(self, deep=False, include_tour=True):
         start_date_time = None
         if self.start_date_time is not None:
             start_date_time = str(self.start_date_time)
@@ -56,7 +56,13 @@ class TourEvent(Base):
             "start_date_time": start_date_time,
             "end_date_time": end_date_time,
             "state": self.state,
-            "pending_review": self.pending_review,
+            "pending_review": self.pending_review
         }
-        result.update(self.tour.serialize(False))
+        if self.id_user is not None:
+            result["participants"] = [self.user.serialize(print_nested=False)]
+        else:
+            result["participants"] = []
+
+        if include_tour:
+            result.update(self.tour.serialize(deep))
         return result

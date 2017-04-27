@@ -1,11 +1,10 @@
 import React from 'react';
-
 import { Link } from 'react-router';
 import style from './style.css';
-import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import Button from 'react-bootstrap/lib/Button';
-import Image from 'react-bootstrap/lib/Image';
+
+import {Col, Thumbnail, Button, Image} from 'react-bootstrap';
+
+import StarRatingComponent from 'react-star-rating-component';
 
 import {connect} from 'react-redux';
 
@@ -13,37 +12,136 @@ class Tours extends React.Component{
   constructor (props) {
     super(props);
     this.state = {
-      additional_accomadation: this.props.additional_accomadation,
-      additional_food: this.props.additional_food,
-      additional_transport: this.props.additional_transport,
-      address_city: this.props.address_city,
-      address_country: this.props.address_country,
-      address_street: this.props.address_street,
-      address_suffix: this.props.address_suffix,
-      address_unit: this.props.address_unit,
-      address_unit_number: this.props.address_unit_number,
-      address_zip: this.props.address_zip,
-      average_rating: this.props.average_rating,
-      description: this.props.description,
-      firstStart_date: this.props.firstStart_date,
-      guides: this.props.guides,
-      id_rating: this.props.id_rating,
-      id_tour: this.props.id_tour,
-      is_deleted: this.props.is_deleted,
-      lastEnd_date: this.props.lastEnd_date,
-      max_group_size: this.props.max_group_size,
-      min_group_size: this.props.min_group_size,
-      name: this.props.name,
-      price: this.props.price,
-      profile_image: this.props.profile_image,
-      rating_count: this.props.rating_count,
-      stops: this.props.stops,
+      showTourInfo: false,
     };
+    this.mouseOver = this.mouseOver.bind(this);
+    this.mouseOut = this.mouseOut.bind(this);
+  }
+
+  mouseOver = () => {
+    this.setState({showTourInfo: true});
+  }
+  mouseOut() {
+    this.setState({showTourInfo: false});
   }
 
   render(){
-    const guidesLength = this.state.guides.length;
-    let guideButton = null;
+    //const guidesLength = this.state.guides.length;
+    let tourDisplay = null;
+    console.log("display", this.props.tourDisplayProps);
+
+    const modifyBtn = (this.props.tourDisplayProps.modifyBtn) ? (<p>
+        <Link
+          to={{
+            pathname: '/tourModify',
+            query: { tourId: this.state.id_tour }
+          }}>
+          <Button bsStyle="primary">Modify</Button>&nbsp;
+        </Link>
+      </p>) : null;
+
+    const contactGuideBtn = (this.props.tourDisplayProps.contactGuideBtn) ? (<p>
+        <Link
+          to={{
+            pathname: '/messages',
+            query: { tourId: this.state.id_tour }
+          }}>
+          <Button bsStyle="primary">Message Guide</Button>&nbsp;
+        </Link>
+      </p>) : null;
+
+      const summaryBtn = (this.props.tourDisplayProps.summaryBtn) ? (<p>
+          <Link
+            to={{
+              pathname: '/messages',
+              query: { tourId: this.state.id_tour }
+            }}>
+            <Button bsStyle="primary">Review Summary</Button>&nbsp;
+          </Link>
+        </p>) : null;
+
+      const contactTouristBtn = (this.props.tourDisplayProps.contactTouristBtn) ? (<p>
+          <Link
+            to={{
+              pathname: '/messages',
+              query: { tourId: this.state.id_tour }
+            }}>
+            <Button bsStyle="primary">Message Tourist</Button>&nbsp;
+          </Link>
+        </p>) : null;
+
+      const cancelBtn = (this.props.tourDisplayProps.cancelBtn) ? (<p>
+          <Link
+            to={{
+              pathname: '/cancelTour',
+              query: { tourId: this.state.id_tour }
+            }}>
+            <Button bsStyle="primary">Cancel Booking</Button>&nbsp;
+          </Link>
+        </p>) : null;
+
+
+    if(this.props.tourDisplayProps.display == "small"){
+
+      tourDisplay = (
+        <Col xs={12} md={6} lg={6}>
+          <Thumbnail>
+            <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
+              {this.state.showTourInfo ? (<img className={style.tour_image_small_info} src={this.props.tour.profile_image}/>) : (<img className={style.tour_image_small} src={this.props.tour.profile_image}/>)}
+            </div>
+            <span>
+            <p>{this.props.tour.name}</p>
+            <p>review: </p>
+            <p>price: ${this.props.tour.price}</p>
+            <p>
+              <Link
+                to={{
+                  pathname: '/tourdetail',
+                  query: { tourId: this.props.tour.id_tour }
+                }}>
+                <Button bsStyle="primary">More Info</Button>&nbsp;
+              </Link>
+
+            </p>{modifyBtn} {contactGuideBtn} {summaryBtn} {contactTouristBtn} {cancelBtn}</span>
+          </Thumbnail>
+        </Col>);
+
+
+
+    }
+    else{
+
+      tourDisplay = (
+      <Col xs={12} md={4} lg={3}>
+        <Thumbnail>
+          <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
+          </div>
+          <p>{this.props.tour.name}</p>
+          <p>${this.props.tour.price}</p>
+          <StarRatingComponent
+            name="rate1"
+            starCount={5}
+            value={this.props.tour.average_rating}
+            renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+          />
+        {this.props.tour.rating_count} reviews
+          <p>
+            <Link
+              to={{
+                pathname: '/tourdetail',
+                query: { tourId: this.props.tour.id_tour }
+              }}>
+              <Button bsStyle="primary">More Info</Button>&nbsp;
+            </Link>
+            {/*guideButton*/}
+          </p>
+        </Thumbnail>
+      </Col>);
+    }
+
+
+    /*let guideButton = null;
     if (guidesLength != '0') {
       if(this.props.loggedIn) {
         guideButton = <Link
@@ -64,34 +162,17 @@ class Tours extends React.Component{
       }
     } else {
       guideButton = null;
-    }
-    return (
-      <Col xs={12} md={6} lg={6}>
-        <Thumbnail>
-          <img className="card-img-top tour-image img-responsive"  src={this.state.profile_image}/>
-          <p>{this.state.name}</p>
-          <p>review: </p>
-          <p>price: ${this.state.price}</p>
-          <p>
-            <Link
-              to={{
-                pathname: '/tourdetail',
-                query: { tourId: this.state.id_tour }
-              }}>
-              <Button bsStyle="primary">More Info</Button>&nbsp;
-            </Link>
-            {guideButton}
-          </p>
-        </Thumbnail>
-      </Col>
-    );
+    }*/
+    return (<div>
+      {tourDisplay}
+    </div>);
   }
-};
+}
 
 function select (state) {
   return {
     loggedIn: state.AuthReducer.loggedIn,
-    selectedTour: state.TourDetailReducer.selectedTour,
+    selectedTour: state.TourDetailReducer.selectedTour
   };
 }
 

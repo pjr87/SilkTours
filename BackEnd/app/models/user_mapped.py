@@ -7,6 +7,7 @@ from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
 from db_session import commitSession
+import boto3
 
 
 class User(Base):
@@ -82,25 +83,8 @@ class User(Base):
         self.create_extras(data)
         commitSession(self)
 
-    def serialize(self):
+    def serialize(self, deep=False, print_nested=True):
         result = {}
-
-        result["interests"] = []
-        for interest in self.interests:
-            result["interests"].append(interest.serialize())
-
-        result["tours_teaching"] = []
-        for tourEvent in self.tours_teaching:
-            result["tours_teaching"].append(tourEvent.serialize())
-
-        result["tours_taking"] = []
-        for tourEvent in self.tours_taking:
-            result["tours_taking"].append(tourEvent.serialize())
-
-        if self.address is not None:
-            result["address"] = self.address.serialize()
-        else:
-            result["address"] = None
 
         for c in self.__table__.columns:
             key = c.name
@@ -109,4 +93,39 @@ class User(Base):
                 if type(value) is datetime.date:
                     value = str(value)
                 result[key] = value
+
+        if not print_nested:
+            return result
+
+        result["interests"] = []
+        for interest in self.interests:
+            result["interests"].append(interest.serialize())
+
+        result["tours_teaching"] = []
+        for tourEvent in self.tours_teaching:
+            result["tours_teaching"].append(tourEvent.serialize(deep))
+
+        result["tours_taking"] = []
+        for tourEvent in self.tours_taking:
+            result["tours_taking"].append(tourEvent.serialize(deep))
+
+        if self.address is not None:
+            result["address"] = self.address.serialize()
+        else:
+            result["address"] = None
+
         return result
+
+    def upload_to_s3(self, file, filename):
+        resource = boto3.resource('s3')
+        bucket = resource.Bucket('silktours-media')
+        bucket.put_object(Key='user/profile/' + filename, Body=file, GrantRead='uri=http://acs.amazonaws.com/groups/global/AllUsers')
+
+    def upload_profile_image(self, file, filename, userid):
+        s = filename.split('.')
+        extension = s[-1]
+        url = 'https://s3.amazonaws.com/silktours-media/' + 'user/profile/' + userid + '.' + extension
+        self.upload_to_s3(file, userid + '.' + extension)
+        self.profile_picture = url
+        commitSession(self)
+        return self.serialize()

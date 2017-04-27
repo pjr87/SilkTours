@@ -24,10 +24,21 @@ class ProfileContents extends React.Component{
   }
   getGuide(response){
       console.log("guide",response.data);
+      // var guide = response.data;
+      // var tours = guide.tours_teaching;
+      // for(var i =0;i< tours.length;i++){
+      //   if(tours.state=="A"){
+      //     service.getTourById(tours.id_tour).then(function(response){
+      //
+      //     });
+      //   }
+
+      // }
       this.setState({guide:response.data});
   }
   componentDidMount(){
     service.getUser(this.state.guideId,this.props.auth).then(this.getGuide.bind(this));
+
   }
 
 
