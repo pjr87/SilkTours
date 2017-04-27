@@ -86,3 +86,7 @@ captures/
 google-services.json
 
 FrontEnd/src/public/
+
+# IOS stuff
+IOS/BestOne/BestOne/BestOne.xcodeproj/project.xcworkspace/xcuserdata/
+IOS/BestOne/BestOne/BestOne.xcodeproj/xcuserdata/
