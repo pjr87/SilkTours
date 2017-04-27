@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 import style from './style.css';
-import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import Button from 'react-bootstrap/lib/Button';
-import Image from 'react-bootstrap/lib/Image';
+
+import {Col, Thumbnail, Button, Image} from 'react-bootstrap';
+
+import StarRatingComponent from 'react-star-rating-component';
 
 import {connect} from 'react-redux';
 
@@ -146,7 +146,19 @@ class Tours extends React.Component{
       profile_image: this.props.tour.profile_image,
       rating_count: this.props.tour.rating_count,
       stops: this.props.tour.stops,
+      showTourInfo: false,
     };
+    this.mouseOver = this.mouseOver.bind(this);
+    this.mouseOut = this.mouseOut.bind(this);
+  }
+
+  mouseOver = () => {
+    this.setState({showTourInfo: true});
+    console.log("true");
+  }
+  mouseOut() {
+    this.setState({showTourInfo: false});
+    console.log("false");
   }
 
   render(){
@@ -221,7 +233,10 @@ class Tours extends React.Component{
       tourDisplay = (
         <Col xs={12} md={6} lg={6}>
           <Thumbnail>
-            <img className={style.tour_image_small} src={this.state.profile_image}/><span>
+            <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
+              {this.state.showTourInfo ? (<img className={style.tour_image_small_info} src={this.state.profile_image}/>) : (<img className={style.tour_image_small} src={this.state.profile_image}/>)}
+            </div>
+            <span>
             <p>{this.state.name}</p>
             <p>review: </p>
             <p>price: ${this.state.price}</p>
@@ -244,12 +259,20 @@ class Tours extends React.Component{
     else{
 
       tourDisplay = (
-      <Col xs={12} md={6} lg={6}>
+      <Col xs={12} md={4} lg={3}>
         <Thumbnail>
-          <img className="card-img-top tour-image-large img-responsive"  src={this.state.profile_image}/>
+          <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.state.profile_image}/>) : (<Image className={style.tour_image_large} src={this.state.profile_image}/>)}
+          </div>
           <p>{this.state.name}</p>
-          <p>review: </p>
-          <p>price: ${this.state.price}</p>
+          <p>${this.state.price}</p>
+          <StarRatingComponent
+            name="rate1"
+            starCount={5}
+            value={this.state.average_rating}
+            renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+          />
+          {this.state.rating_count} reviews
           <p>
             <Link
               to={{
