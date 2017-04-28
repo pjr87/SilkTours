@@ -13,6 +13,7 @@ import MyGuide from './MyGuide';
 import MyTours from './MyTours';
 import Messages from './Messages';
 import WishList from './WishList';
+import { getUser } from '../../actions/AuthActions';
 
 class MyToursContents extends React.Component{
   constructor() {
@@ -24,6 +25,10 @@ class MyToursContents extends React.Component{
 
   buttonHandler(val){
     this.setState( {tab:val} );
+  }
+
+  componentDidMount(){
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   render(){

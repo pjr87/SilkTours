@@ -469,6 +469,7 @@ export function getUser(id_user, auth) {
 
     service.getUserById(id_user, auth).then(function(response){
       if(response.data){
+        console.log("user", response);
         dispatch(updateUserState(response.data));
       }
       else{

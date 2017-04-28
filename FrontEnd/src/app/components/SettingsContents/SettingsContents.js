@@ -20,10 +20,8 @@ class SettingsContents extends React.Component{
     this.props.dispatch(updateUser(this.props.id_user, this.props.user, this.props.auth));
   }
 
-  componentWillMount(){
-    console.log("this.props.id_user", this.props.id_user);
-    console.log("this.props.auth", this.props.auth);
-    //this.props.dispatch(getUser(this.props.id_user, this.props.auth));
+  componentDidMount(){
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   render(){
