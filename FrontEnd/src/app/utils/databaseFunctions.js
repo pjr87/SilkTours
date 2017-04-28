@@ -73,6 +73,16 @@ export function getUser(id){
     return axios.get(url);
 }
 
+export function getUserById(id, json) {
+  let url = SERVER_URL + '/users/' + id;
+  return axios.get(url, {
+    headers:{
+      'Silk-Logins': json.Logins,
+      'Silk-Identity-Id': json.IdentityId
+    }
+  });
+}
+
 export function newTour(data, auth){
     let url = SERVER_URL + '/tours';
     return axios.post(url, data,

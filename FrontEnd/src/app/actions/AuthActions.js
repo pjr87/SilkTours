@@ -273,7 +273,6 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
       if (response.authenticated) {
         //Update the store with relevant information
         dispatch(updateProviderState("Developer"));
-        //dispatch(updateUserState(response.data));
         dispatch(setCognitoUser(response.cognitoUser));
 
         // When the request is finished, hide the loading indicator
@@ -449,6 +448,31 @@ export function updateUser(id_user, user, auth) {
         // If there was a problem, show an error
         console.log('response.error: ' + response.error);
         dispatch(sendingRequest(false));
+        dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+      }
+    });
+  }
+}
+
+/**
+ * Gets user from database
+ * @param  {object} user The user to get
+ */
+export function getUser(id_user, auth) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ id_user, auth })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      return;
+    }
+
+    service.getUserById(id_user, auth).then(function(response){
+      if(response.data){
+        dispatch(updateUserState(response.data));
+      }
+      else{
+        // If there was a problem, show an error
         dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
       }
     });
