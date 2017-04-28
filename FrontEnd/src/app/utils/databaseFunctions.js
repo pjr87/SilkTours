@@ -43,8 +43,6 @@ export function getTourEventById(tourId){
 }
 
 export function putTourEventById(eventid, json, auth) {
-    console.log("url: " + url);
-    console.log("json: " + json);
     let url = SERVER_URL + '/tourevents/' + eventid;
     return axios.put(url, json,
     {
@@ -72,7 +70,6 @@ export function getAllTours() {
 
 export function getUser(id){
     var url = SERVER_URL + "/users/"+id;
-    console.log("url: "+url);
     return axios.get(url);
 }
 
@@ -126,7 +123,6 @@ export function newUserProfilePhoto(data, id, auth){
  of the params is the same as the result of "http://34.197.42.24:5000/users/1"
  (although you only need to supply the values that you want to set).*/
 export function registerNewUser(json) {
-  console.log("Sending: " + json);
   return axios.post(SERVER_URL + '/users', json);
 }
 
