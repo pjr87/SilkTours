@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silktours.android.database.Tour;
-import com.silktours.android.database.Tours;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +50,12 @@ public class MyToursAdapter extends ArrayAdapter<Tour>{
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
-                return getResizedBitmap(getBitmapFromURL(tour.getStr("profile_image")), 200, 200);
+                try {
+                    return getResizedBitmap(getBitmapFromURL(tour.getStr("profile_image")), 200, 200);
+                } catch (Exception e) {
+                    Log.e("MytourAdapter", "doInBackground: ", e);
+                }
+                return null;
             }
 
             @Override
