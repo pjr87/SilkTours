@@ -16,6 +16,8 @@ class Tours extends React.Component{
     };
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
+
+    this.cancelTourEvent = this.cancelTourEvent.bind(this);
   }
 
   mouseOver = () => {
@@ -23,6 +25,12 @@ class Tours extends React.Component{
   }
   mouseOut() {
     this.setState({showTourInfo: false});
+  }
+
+
+  cancelTourEvent(tourEventId, isGuide){
+    console.log(tourEventId, " ", isGuide);
+    console.log("CLICKED");
   }
 
   render(){
@@ -70,30 +78,85 @@ class Tours extends React.Component{
           </Link>
         </p>) : null;
 
-      const cancelBtn = (this.props.tourDisplayProps.cancelBtn) ? (<p>
-          <Link
-            to={{
-              pathname: '/cancelTour',
-              query: { tourId: this.state.id_tour }
-            }}>
-            <Button bsStyle="primary">Cancel Booking</Button>&nbsp;
-          </Link>
-        </p>) : null;
+
+      const cancelBtn = (this.props.tourDisplayProps.cancelBtn) ? (
+              <Button bsStyle="primary" onClick={() => this.cancelTourEvent(this.props.tour.id_tourEvent, this.props.tourDisplayProps.isGuide)}>Cancel Booking</Button>
+              ) : null;
+
+
+      console.log("Tour: ", this.props.tour);
+
+      let contactButton = null;
+      if(!this.props.loggedIn)
+      {
+        contactButton = <Link
+                      to={{
+                        pathname: '/sign'
+                        }}>
+                        <Button bsStyle="default">Message</Button>
+                      </Link>;
+      }else if( this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 )
+      {
+        contactButton = <Link
+                      to={{
+                        pathname: '/messages',
+                        query: { guideUserId: this.props.tour.participants[0].id_users }
+                        }}>
+                        <Button bsStyle="primary">Message</Button>
+                      </Link>;
+      }else if( !this.props.tourDisplayProps.isGuide )
+      {
+        contactButton = <Link
+                      to={{
+                        pathname: '/messages',
+                        query: { guideUserId: this.props.tour.guides[0].id_user }
+                        }}>
+                        <Button bsStyle="primary">Message</Button>
+                      </Link>;
+      }else
+      {
+        contactButton = null;
+      }
+
+
+      let guideButton = null;
+    if (this.props.tour.guides != null && this.props.tour.guides.length != '0') {
+      if(this.props.loggedIn) {
+        guideButton = <Link
+                      to={{
+                        pathname: '/messages',
+                        query: { guideUserId: this.props.tour.guides[0].id_user }
+                        }}>
+                        <Button bsStyle="primary">Message</Button>
+                      </Link>;
+      }
+      else {
+        guideButton = <Link
+                      to={{
+                        pathname: '/sign'
+                        }}>
+                        <Button bsStyle="primary">Message</Button>
+                      </Link>;
+      }
+    } else {
+      guideButton = null;
+    }
 
 
     if(this.props.tourDisplayProps.display == "small"){
 
+
+
+
+
       tourDisplay = (
         <Col xs={12} md={6} lg={6}>
-          <Thumbnail>
-            <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-              {this.state.showTourInfo ? (<img className={style.tour_image_small_info} src={this.props.tour.profile_image}/>) : (<img className={style.tour_image_small} src={this.props.tour.profile_image}/>)}
-            </div>
-            <span>
+          <Thumbnail src={this.props.tour.profile_image} >
+            <div>
             <p>{this.props.tour.name}</p>
             <p>review: </p>
             <p>price: ${this.props.tour.price}</p>
-            <p>
+            <div className={style.buttonContainer}>
               <Link
                 to={{
                   pathname: '/tourdetail',
@@ -102,13 +165,14 @@ class Tours extends React.Component{
                 <Button bsStyle="primary">More Info</Button>&nbsp;
               </Link>
 
-            </p>{modifyBtn} {contactGuideBtn} {summaryBtn} {contactTouristBtn} {cancelBtn}</span>
+            {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn}</div>
+            </div>
           </Thumbnail>
         </Col>);
 
 
 
-    }
+    } 
     else{
 
       tourDisplay = (
@@ -134,7 +198,7 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
-            {/*guideButton*/}
+            {guideButton}
           </p>
         </Thumbnail>
       </Col>);

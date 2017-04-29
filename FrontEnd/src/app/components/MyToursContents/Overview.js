@@ -33,7 +33,7 @@ class Overview extends React.Component{
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });
-    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>);
+    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideBookedT}/>);
 
 
   /*  const guideBookedTours = this.props.toursGuided.map(function(t,index){

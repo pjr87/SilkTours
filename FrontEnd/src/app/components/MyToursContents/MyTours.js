@@ -9,7 +9,7 @@ export default class MyTours extends React.Component{
     const takeCompletedT = this.props.toursTaken.filter(function(tour){
       return tour.state=="C";
     });
-    const takeCompletedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={takeCompletedT}/>);
+    const takeCompletedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeCompletedT}/>);
 
     /*const takeCompletedTours = this.props.toursTaken.map(function(t,index){
       console.log("key:",index)
@@ -21,7 +21,7 @@ export default class MyTours extends React.Component{
     const takeBookedT = this.props.toursTaken.filter(function(tour){
       return tour.state=="B";
     });
-    const takeBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={takeBookedT}/>);
+    const takeBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeBookedT}/>);
 
     /*
     const takeBookedTours = this.props.toursTaken.map(function(t,index){
