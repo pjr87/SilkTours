@@ -98,7 +98,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     ArrayAdapter<String> stopsAdapter;
 
     JSONArray stopJSON = new JSONArray();
-    JSONObject stop = new JSONObject();
 
     private CredentialHandler credentialHandler;
     private User user;
@@ -208,10 +207,11 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                             stopsAdapter.notifyDataSetChanged();
                             Log.d("STOPSSSSSSSSSS", stops.toString());
                             placeSelected = place;
-                            LatLng loca = place.getLatLng();
+                            LatLng loca = placeSelected.getLatLng();
                             mGoogleMap.addMarker(new MarkerOptions().position(loca));
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
 
+                            JSONObject stop = new JSONObject();
 
                             try {
                                 stop.put("lat", loca.latitude);
@@ -257,7 +257,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 //Log.d("user iddddddddddddd", user.getStr(user.ID_USERS));
                 tour.set("guides", guides);
 
-                tour.set("stops", stop);
+                tour.set("stops", stopJSON);
 
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
