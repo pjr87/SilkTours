@@ -15,6 +15,8 @@ import HostedField from 'hosted-fields-react';
 
 import * as service from '../../utils/databaseFunctions';
 
+import StarRatingComponent from 'react-star-rating-component';
+
 import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDateEnd } from '../../actions/TourDetailActions';
 
 class TourDetailContents extends React.Component{
@@ -130,7 +132,19 @@ class TourDetailContents extends React.Component{
         <div>
           <div className={style.boxed}>
             <p className={style.tourTitle}>{this.props.selectedTour.name}</p>
-            <p className={style.tourSubTitle}>review: {this.props.selectedTour.average_rating}</p>
+            <p className={style.tourSubTitle}>
+              <StarRatingComponent
+                name="rate1"
+                starColor="#ffb400"
+                emptyStarColor="#ffb400"
+                starCount={5}
+                value={this.props.selectedTour.average_rating}
+                renderStarIcon={(index, value) => {
+                  return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+                }}
+                renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+              /> {this.props.selectedTour.rating_count} reviews
+            </p>
           </div>
           <div className = {style.thumbnailContainer}>
             <Thumbnail>
