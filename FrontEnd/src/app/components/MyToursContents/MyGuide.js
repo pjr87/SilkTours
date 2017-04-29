@@ -3,18 +3,25 @@ import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 class MyGuide extends React.Component{
+
+  constructor(props)
+  {
+    super(props);
+  }
+
+
   render(){
 
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });
-    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideBookedT}/>);
+    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideBookedT} cancelTourEvent={this.props.cancelTourEvent} />);
 
 
     const guideUnbookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="A";
     });
-    const guideUnbookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideUnbookedT}/>);
+    const guideUnbookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideUnbookedT} cancelTourEvent={this.props.cancelTourEvent} />);
 
     /*const guideUnbookedTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
@@ -26,7 +33,7 @@ class MyGuide extends React.Component{
       return tour.state=="C";
     });
 
-    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideCompleteT}/>);
+    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideCompleteT} cancelTourEvent={this.props.cancelTourEvent} />);
 
     /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)

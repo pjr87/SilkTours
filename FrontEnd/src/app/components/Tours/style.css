@@ -33,3 +33,21 @@
 .buttonContainer{
   line-height: 275%;
 }
+
+.confirmBody{
+  padding-left:10%;
+  margin: 0;
+}
+
+.confirmBodySideHeader{
+  font-weight: bold;
+  width: 15%;
+}
+
+.confirmBody p{
+  margin: 0;
+}
+
+.buttonWidth{
+  min-width: 86px;
+}

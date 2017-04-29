@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import style from './style.css';
+import {Confirm} from 'components';
 
 import {Col, Thumbnail, Button, Image} from 'react-bootstrap';
 
@@ -16,8 +17,6 @@ class Tours extends React.Component{
     };
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
-
-    this.cancelTourEvent = this.cancelTourEvent.bind(this);
   }
 
   mouseOver = () => {
@@ -27,11 +26,6 @@ class Tours extends React.Component{
     this.setState({showTourInfo: false});
   }
 
-
-  cancelTourEvent(tourEventId, isGuide){
-    console.log(tourEventId, " ", isGuide);
-    console.log("CLICKED");
-  }
 
   render(){
     //const guidesLength = this.state.guides.length;
@@ -78,9 +72,38 @@ class Tours extends React.Component{
           </Link>
         </p>) : null;
 
+      const cancelTourBody =  <div>
+                                Are you sure you want to delete the following scheduled tour?
+                                <div className={style.confirmBody}>
+                                  <p><span className={style.confirmBodySideHeader}>Name:</span> {this.props.tour.name}</p>
+                                  <p><span className={style.confirmBodySideHeader}>Start Time:</span> {this.props.tour.start_date_time}</p>
+                                  <p><span className={style.confirmBodySideHeader}>End Time:</span> {this.props.tour.end_date_time}</p>
+                                  
+                                  { this.props.tourDisplayProps.isGuide && 
+                                  <p>
+                                    <span className={style.confirmBodySideHeader}>Tourist:</span> 
+                                      {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
+                                  </p>
+                                  }
+
+                                  { !this.props.tourDisplayProps.isGuide && 
+                                  <p>
+                                    <span className={style.confirmBodySideHeader}>Guide:</span> 
+                                      {this.props.tour.guides[0].first_name + " " + this.props.tour.guides[0].last_name}
+                                  </p>
+                                  }
+
+                                </div>
+                              </div>;
 
       const cancelBtn = (this.props.tourDisplayProps.cancelBtn) ? (
-              <Button bsStyle="primary" onClick={() => this.cancelTourEvent(this.props.tour.id_tourEvent, this.props.tourDisplayProps.isGuide)}>Cancel Booking</Button>
+          <Confirm
+          onConfirm={()=>this.props.cancelTourEvent(this.props.tour.id_tourEvent, this.props.tourDisplayProps.isGuide)}
+          body={cancelTourBody}
+          confirmText="Cancel Tour"
+          title="Tour Cancellation">
+          <Button className={style.buttonWidth} bsStyle="primary">Cancel</Button>
+          </Confirm>              
               ) : null;
 
 
@@ -93,7 +116,7 @@ class Tours extends React.Component{
                       to={{
                         pathname: '/sign'
                         }}>
-                        <Button bsStyle="default">Message</Button>
+                        <Button className={style.buttonWidth} bsStyle="default">Message</Button>
                       </Link>;
       }else if( this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 )
       {
@@ -102,7 +125,7 @@ class Tours extends React.Component{
                         pathname: '/messages',
                         query: { guideUserId: this.props.tour.participants[0].id_users }
                         }}>
-                        <Button bsStyle="primary">Message</Button>
+                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
                       </Link>;
       }else if( !this.props.tourDisplayProps.isGuide )
       {
@@ -111,7 +134,7 @@ class Tours extends React.Component{
                         pathname: '/messages',
                         query: { guideUserId: this.props.tour.guides[0].id_user }
                         }}>
-                        <Button bsStyle="primary">Message</Button>
+                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
                       </Link>;
       }else
       {
@@ -127,7 +150,7 @@ class Tours extends React.Component{
                         pathname: '/messages',
                         query: { guideUserId: this.props.tour.guides[0].id_user }
                         }}>
-                        <Button bsStyle="primary">Message</Button>
+                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
                       </Link>;
       }
       else {
@@ -135,7 +158,7 @@ class Tours extends React.Component{
                       to={{
                         pathname: '/sign'
                         }}>
-                        <Button bsStyle="primary">Message</Button>
+                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
                       </Link>;
       }
     } else {
@@ -162,7 +185,7 @@ class Tours extends React.Component{
                   pathname: '/tourdetail',
                   query: { tourId: this.props.tour.id_tour }
                 }}>
-                <Button bsStyle="primary">More Info</Button>&nbsp;
+                <Button bsStyle="primary" className={style.buttonWidth}>More Info</Button>&nbsp;
               </Link>
 
             {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn}</div>

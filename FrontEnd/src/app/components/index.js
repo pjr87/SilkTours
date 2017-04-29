@@ -33,3 +33,5 @@ export TermsOfService from './Policies/TermsOfService';
 export Privacy from './Policies/Privacy';
 
 export PendingReview from './PendingReview/PendingReview';
+
+export Confirm from './Confirm/Confirm'

@@ -2,8 +2,8 @@ import React from 'react';
 import style from '../../style/style.css';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router'
 import {connect} from 'react-redux';
-import {PageTitle, ProfileHeader} from 'components';
-import Nav from 'react-bootstrap/lib/Nav';
+import {PageTitle, ProfileHeader, Confirm} from 'components';
+import {Nav, Modal, Button} from 'react-bootstrap/lib/';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import {LinkContainer} from 'react-router-bootstrap';
@@ -18,25 +18,33 @@ class MyToursContents extends React.Component{
   constructor() {
      super();
      this.state = {
-       tab: 'overview'
+       tab: 'overview',
+       showModal: false
      }
+  
+    this.cancelTourEvent = this.cancelTourEvent.bind(this);
   }
 
   buttonHandler(val){
     this.setState( {tab:val} );
   }
 
+  cancelTourEvent(tourEventId, isGuide){
+    console.log(tourEventId, " ", isGuide);
+    console.log("CLICKED222");
+  }
+
   render(){
     if(this.state.tab == 'overview'){
-      var tabPag = <Overview toursGuided={this.props.user.tours_teaching}/>;
+      var tabPag = <Overview toursGuided={this.props.user.tours_teaching} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
     if(this.state.tab == 'myguide'){
 
-      var tabPag = <MyGuide toursGuided={this.props.user.tours_teaching}/>;
+      var tabPag = <MyGuide toursGuided={this.props.user.tours_teaching} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
     if(this.state.tab == 'mytour'){
       console.log("user:",this.props.user);
-      var tabPag = <MyTours toursTaken={this.props.user.tours_taking}/>;
+      var tabPag = <MyTours toursTaken={this.props.user.tours_taking} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
     if(this.state.tab == 'messages'){
       var tabPag = <Messages/>;

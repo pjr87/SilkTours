@@ -3,13 +3,15 @@ import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 export default class MyTours extends React.Component{
-
+  constructor(props) {
+    super();
+  }
   render(){
 
     const takeCompletedT = this.props.toursTaken.filter(function(tour){
       return tour.state=="C";
     });
-    const takeCompletedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeCompletedT}/>);
+    const takeCompletedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeCompletedT} cancelTourEvent={this.props.cancelTourEvent}/>);
 
     /*const takeCompletedTours = this.props.toursTaken.map(function(t,index){
       console.log("key:",index)
@@ -21,7 +23,7 @@ export default class MyTours extends React.Component{
     const takeBookedT = this.props.toursTaken.filter(function(tour){
       return tour.state=="B";
     });
-    const takeBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeBookedT}/>);
+    const takeBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeBookedT} cancelTourEvent={this.props.cancelTourEvent}/>);
 
     /*
     const takeBookedTours = this.props.toursTaken.map(function(t,index){
