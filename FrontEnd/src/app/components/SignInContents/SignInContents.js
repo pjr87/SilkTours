@@ -12,9 +12,8 @@ import { Button, ControlLabel, Form, FormControl, HelpBlock, FormGroup } from 'r
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-
-import auth from '../../utils/cognitoFunctions';
-import { login, changeLoginForm, clearError } from '../../actions/AuthActions';
+import config from '../../utils/config';
+import { login, facebookLogin, changeLoginForm, clearError } from '../../actions/AuthActions';
 
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
@@ -26,6 +25,7 @@ class SignInContents extends React.Component{
     super();
 
     this.loginSubmit = this.loginSubmit.bind(this)
+    this.loginFBSubmit = this.loginFBSubmit.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
     this._clearError = this._clearError.bind(this)
@@ -46,6 +46,45 @@ class SignInContents extends React.Component{
   loginSubmit(event) {
     event.preventDefault()
     this.props.dispatch(login(this.props.loginFormState.username, this.props.loginFormState.password));
+  }
+
+  loginFBSubmit(event) {
+    event.preventDefault()
+    FB.login(function(response) {
+      if (response.status === 'connected') {
+        var accessToken = response.authResponse.accessToken;
+        var expiresIn = response.authResponse.expiresIn;
+        FB.api('/me', {
+          locale: 'en_US',
+          fields: 'id,cover,first_name,last_name,age_range,link,gender,locale,picture,timezone,verified,email'},
+        function(response) {
+          this.props.dispatch(facebookLogin(response, accessToken, expiresIn));
+        }.bind(this));
+      } else {
+        // The person is not logged into this app or we are unable to tell.
+      }
+    }.bind(this), {scope: 'public_profile,email'});
+  }
+
+  componentDidMount(){
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : config.facebookAppId,
+        cookie     : true,  // enable cookies to allow the server to access
+        // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : config.facebookVersion
+      });
+    }.bind(this);
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=606443696175641";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   }
 
   render() {
@@ -97,9 +136,13 @@ class SignInContents extends React.Component{
                   onClick={!isLoading ? this.loginSubmit : null}>
                   {isLoading ? 'Logging in...' : 'Login'}
                 </Button>
+                <Button
+                  disabled={isLoading}
+                  onClick={!isLoading ? this.loginFBSubmit : null}>
+                  {isLoading ? 'Logging in...' : 'Login with facebook'}
+                </Button>
               </Col>
             </FormGroup>
-            <br/>
             <Col sm={4} smOffset={4}>
               <p>Don't have a travel profile?</p>
               <Link to='/signup' onClick={this._clearError}>Sign up!</Link>

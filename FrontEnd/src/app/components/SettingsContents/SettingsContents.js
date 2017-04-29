@@ -6,7 +6,7 @@ import Interests from '../Interests/Interests';
 import { Button, HelpBlock, FormGroup, Col } from 'react-bootstrap';
 import * as service from '../../utils/databaseFunctions';
 import {connect} from 'react-redux';
-import { updateUser } from '../../actions/AuthActions';
+import { updateUser, getUser } from '../../actions/AuthActions';
 
 class SettingsContents extends React.Component{
 
@@ -18,6 +18,10 @@ class SettingsContents extends React.Component{
 
   onSubmitClick(){
     this.props.dispatch(updateUser(this.props.id_user, this.props.user, this.props.auth));
+  }
+
+  componentDidMount(){
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   render(){
