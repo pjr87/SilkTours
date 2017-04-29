@@ -24,15 +24,12 @@ class SignUpContents extends React.Component{
     super();
 
     this.signUpSubmit = this.signUpSubmit.bind(this)
+    this.signUpFBSubmit = this.signUpFBSubmit.bind(this)
     this._changeFirstName = this._changeFirstName.bind(this)
     this._changeLastName = this._changeLastName.bind(this)
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
     this._changePhoneNumber = this._changePhoneNumber.bind(this)
-
-    this.state ={
-      loggedIn: false
-    };
   }
 
   _changeFirstName (event) {
@@ -72,6 +69,24 @@ class SignUpContents extends React.Component{
     );
   }
 
+  signUpFBSubmit(event) {
+    event.preventDefault()
+    FB.login(function(response) {
+      if (response.status === 'connected') {
+        var accessToken = response.authResponse.accessToken;
+        var expiresIn = response.authResponse.expiresIn;
+        FB.api('/me', {
+          locale: 'en_US',
+          fields: 'id,cover,first_name,last_name,age_range,link,gender,locale,picture,timezone,verified,email'},
+        function(response) {
+          this.props.dispatch(facebookSignUp(response, accessToken, expiresIn));
+        }.bind(this));
+      } else {
+        // The person is not logged into this app or we are unable to tell.
+      }
+    }.bind(this), {scope: 'public_profile,email'});
+  }
+
   componentDidMount(){
     window.fbAsyncInit = function() {
       FB.init({
@@ -81,27 +96,6 @@ class SignUpContents extends React.Component{
         xfbml      : true,  // parse social plugins on this page
         version    : config.facebookVersion
       });
-
-      FB.Event.subscribe('auth.statusChange', function(response) {
-        if (response.authResponse) {
-          var accessToken = response.authResponse.accessToken;
-          var expiresIn = response.authResponse.expiresIn;
-          FB.api('/me', {
-            locale: 'en_US',
-            fields: 'id,cover,first_name,last_name,age_range,link,gender,locale,picture,timezone,verified,email' },
-          function(response) {
-            //Set the data that was received from facebook
-            this.setState({
-              response: response,
-              accessToken: accessToken,
-              expiresIn: expiresIn,
-              loggedIn: true});
-          }.bind(this), 1000);
-        }
-        else {
-          console.log('User cancelled login or did not fully authorize.');
-        }
-      }.bind(this), 1000);
     }.bind(this);
 
     // Load the SDK asynchronously
@@ -115,10 +109,6 @@ class SignUpContents extends React.Component{
   }
 
   render() {
-    if(this.state.loggedIn == true){
-      this.props.dispatch(facebookSignUp(this.state.response, this.state.accessToken, this.state.expiresIn));
-    }
-
     let isLoading = this.props.currentlySending;
     function ErrorFunc(props){
 
@@ -196,7 +186,6 @@ class SignUpContents extends React.Component{
             </FormGroup>
             <FormGroup
               validationState = {this.props.errorMessage ? "error" : "success"}>
-
               <Row>
                 <Col sm={8} smOffset={4}>
                   <ErrorFunc errorText = {this.props.errorMessage} />
@@ -209,22 +198,13 @@ class SignUpContents extends React.Component{
                     onClick={!isLoading ? this.signUpSubmit : null}>
                     {isLoading ? 'Signing up...' : 'Sign up!'}
                   </Button>
+                  <Button
+                    disabled={isLoading}
+                    onClick={!isLoading ? this.signUpFBSubmit : null}>
+                    {isLoading ? 'Signing up...' : 'Sign up with Facebook!'}
+                  </Button>
                 </Col>
               </Row>
-              <br/>
-              <Col sm={8} smOffset={4}>
-                <div
-                  className="fb-login-button"
-                  data-max-rows="1"
-                  data-size="large"
-                  data-button-type="continue_with"
-                  data-show-faces="true"
-                  data-auto-logout-link="true"
-                  data-use-continue-as="true"
-                  data-scope="public_profile,email"
-                  href="javascript:void(0)">
-                </div>
-              </Col>
             </FormGroup>
           </Form>
         </Grid>
@@ -232,13 +212,6 @@ class SignUpContents extends React.Component{
     );
   }
 }
-/*
-<Button
-  disabled={isLoading}
-  onClick={!isLoading ? this.signUpFacebook : null}>
-  {isLoading ? 'Signing up...' : 'Sign up with Facebook!'}
-</Button>
-*/
 
 SignUpContents.propTypes = {
   currentlySending: React.PropTypes.bool,

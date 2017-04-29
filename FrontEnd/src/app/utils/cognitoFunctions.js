@@ -477,6 +477,74 @@ var cognitoFunctions = {
       }
     });
   },
+  /**
+   * Logs in a user using facebook
+   * @param  {object}   user The cognitoUser of the user
+   * @param  {string}   accessToken The cognitoUser of the user
+   * @param  {int}   expiresIn The cognitoUser of the user
+   * @param  {Function} callback Called after a user was registered on the remote server
+   */
+  facebookLogin(user, accessToken, expiresIn, callback){
+    let loginsIdpData = {};
+    let loginsCognitoKey = 'graph.facebook.com';
+    loginsIdpData[loginsCognitoKey] = accessToken;
+
+    var cognitoParams = {
+      IdentityPoolId: appConfig.identityPoolId,
+      Logins: loginsIdpData
+    };
+
+    // set region if not set (as not set by the SDK by default)
+    config.update({
+      credentials: config.credentials,
+      region: appConfig.region
+    });
+
+    // Add the Facebook access token to the Cognito credentials login map.
+    config.credentials = new AWS.CognitoIdentityCredentials(cognitoParams);
+
+    // Obtain AWS credentials
+    config.credentials.get(function(err){
+      if (err) {
+        if (callback) callback({
+          authenticated: false,
+          error: err
+        });
+      }
+      else{
+        var id = config.credentials._identityId;
+        var auth = {
+          Logins: loginsIdpData,
+          IdentityId: id
+        };
+
+        var response;
+
+        service.getUserByEmail(user.email, auth).then(function(response){
+          if(response.data.email == user.email){
+            service.updateExistingUser(response.data.id_users, auth, auth).then(function(response){
+              config.credentials.clearCachedId();
+
+              if (callback) callback({
+                authenticated: true,
+                auth: auth,
+                id_user: response.data.id_users,
+                data: response.data,
+                error: ''
+              });
+            });
+          }
+          else{
+            config.credentials.clearCachedId();
+            if (callback) callback({
+              authenticated: false,
+              error: 'User account logged in with another provider'
+            });
+          }
+        });
+      }
+    });
+  },
   onChange() {}
 }
 

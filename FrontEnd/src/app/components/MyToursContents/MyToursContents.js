@@ -13,6 +13,7 @@ import MyGuide from './MyGuide';
 import MyTours from './MyTours';
 import Messages from './Messages';
 import WishList from './WishList';
+import { getUser } from '../../actions/AuthActions';
 
 class MyToursContents extends React.Component{
   constructor() {
@@ -32,6 +33,10 @@ class MyToursContents extends React.Component{
   cancelTourEvent(tourEventId, isGuide){
     console.log(tourEventId, " ", isGuide);
     console.log("CLICKED222");
+  }
+
+  componentDidMount(){
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   render(){

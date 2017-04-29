@@ -578,12 +578,12 @@ def create_hours(tourid):
 @app.route('/tours/available_hours', methods=['GET'])
 def get_hours():
     """
-    Gets a list of available times for a tour for a given week.
-    <u>URL Args:</u> tour_id, start_date=ISO standard date string, should be a monday
+    Gets a list of available times for a tour based on base hours, special hours, and booked tours. The end_date parameter will default to one week after start_date if not specified.
+    <u>URL Args:</u> tour_id, start_date=ISO standard date string, end_date
     """
     tour_id = request.args.get("tour_id", None)
     start_date = parse(request.args.get("start_date", time.time())).date()
-    end_date = datetime.date(start_date.year, start_date.month, start_date.day+6)
+    end_date = start_date + datetime.timedelta(days=7)
     end_date = parse(request.args.get("end_date", str(end_date))).date()
 
     if tour_id is None:

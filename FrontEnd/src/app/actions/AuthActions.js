@@ -46,7 +46,6 @@ export function login(username, password) {
     }
 
     if (cognitoFunctions.loggedIn()) {
-      console.log("Logged In");
       // When the request is finished, hide the loading indicator
       dispatch(sendingRequest(false));
       dispatch(setAuthState(true));
@@ -80,6 +79,7 @@ export function login(username, password) {
           username: "",
           password: ""
         }));
+
         dispatch(clearError());
         forwardTo('/explore');
       } else {
@@ -87,6 +87,67 @@ export function login(username, password) {
         // form
         //TODO error handling
         //TODO implement error types
+        dispatch(sendingRequest(false));
+        switch (response.error) {
+          case 'user-doesnt-exist':
+            dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
+            return;
+          case 'password-wrong':
+            dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
+            return;
+          case 'database-error':
+            dispatch(setErrorMessage(errorMessages.DATABASE_ERROR));
+            return;
+          default:
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+            return;
+        }
+      }
+    });
+  }
+}
+
+/**
+ * Registers a user with facebook
+ * @param  {object}   user The cognitoUser of the user
+ * @param  {string}   accessToken The cognitoUser of the user
+ * @param  {int}      expiresIn The cognitoUser of the user
+ */
+export function facebookLogin(user, accessToken, expiresIn) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    // If no response was specified, throw a field-missing error
+    if (anyElementsEmpty({user, accessToken, expiresIn})) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+
+    cognitoFunctions.facebookLogin(user, accessToken, expiresIn, (response) => {
+      // If the user was signed up successfully
+      if (response.authenticated) {
+        //Update the store with relevant information
+        dispatch(updateProviderState("Facebook"));
+        dispatch(updateIDState(response.id_user));
+        dispatch(updateAuthState(response.auth));
+        dispatch(updateUserState(response.data));
+
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
+        dispatch(setAuthState(true));
+
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeLoginForm({
+          username: "",
+          password: ""
+        }));
+
+        dispatch(clearError());
+        forwardTo('/explore');
+      }
+      else{
+        // If there was a problem signin up the user, show an error
         dispatch(sendingRequest(false));
         switch (response.error) {
           case 'user-doesnt-exist':
@@ -212,7 +273,6 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
       if (response.authenticated) {
         //Update the store with relevant information
         dispatch(updateProviderState("Developer"));
-        //dispatch(updateUserState(response.data));
         dispatch(setCognitoUser(response.cognitoUser));
 
         // When the request is finished, hide the loading indicator
@@ -296,7 +356,6 @@ export function facebookSignUp(user, accessToken, expiresIn) {
         }
       }
     });
-    dispatch(sendingRequest(false));
   }
 }
 
@@ -389,6 +448,32 @@ export function updateUser(id_user, user, auth) {
         // If there was a problem, show an error
         console.log('response.error: ' + response.error);
         dispatch(sendingRequest(false));
+        dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+      }
+    });
+  }
+}
+
+/**
+ * Gets user from database
+ * @param  {object} user The user to get
+ */
+export function getUser(id_user, auth) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ id_user, auth })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      return;
+    }
+
+    service.getUserById(id_user, auth).then(function(response){
+      if(response.data){
+        console.log("user", response);
+        dispatch(updateUserState(response.data));
+      }
+      else{
+        // If there was a problem, show an error
         dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
       }
     });

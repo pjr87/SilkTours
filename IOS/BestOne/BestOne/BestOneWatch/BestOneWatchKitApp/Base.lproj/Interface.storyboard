@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Raleway-Medium.ttf">
+            <string>Raleway-Medium</string>
+        </array>
+        <array key="Raleway-Regular.ttf">
+            <string>Raleway-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--MainInterfaceController-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller identifier="MainInterfaceController" id="AgC-eL-Hgc" customClass="MainInterfaceController" customModule="BestOneWatchKitExtension"/>
+            </objects>
+            <point key="canvasLocation" x="161" y="374"/>
+        </scene>
+        <!--Shop-->
+        <scene sceneID="csL-JI-IGI">
+            <objects>
+                <controller identifier="ShopInterfaceController" title="Shop" hidesWhenLoading="NO" id="GvK-au-eZI" customClass="ShopInterfaceController" customModule="BestOneWatchKitExtension">
+                    <items>
+                        <table alignment="left" id="x5b-g4-Ucn">
+                            <items>
+                                <tableRow identifier="ShopRowType" id="KIh-rj-RPt" customClass="ShopRowType" customModule="BestOneWatchKitExtension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" contentMode="scaleAspectFill" layout="vertical" radius="10" id="rkx-PI-GiJ">
+                                        <items>
+                                            <group width="1" height="100" alignment="right" backgroundImage="shop_item1.png" contentMode="scaleAspectFill" id="7de-t0-1sV"/>
+                                            <label alignment="center" verticalAlignment="bottom" id="Wpl-ew-d9o">
+                                                <color key="textColor" red="0.18523010611534119" green="0.29952996969223022" blue="0.52893102169036865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="font" name="Raleway-Medium" family="Raleway" pointSize="24"/>
+                                            </label>
+                                        </items>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="2"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="imageGroup" destination="7de-t0-1sV" id="2dz-rx-jAO"/>
+                                        <outlet property="priceLabel" destination="Wpl-ew-d9o" id="Siq-85-x1M"/>
+                                        <segue destination="09O-QV-FXn" kind="modal" identifier="itemDetails" id="N15-Xv-OWW"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="shopTable" destination="x5b-g4-Ucn" id="zpI-jv-m4M"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="405" y="374"/>
+        </scene>
+        <!--Cart-->
+        <scene sceneID="m21-Mb-Sm8">
+            <objects>
+                <controller identifier="CartInterfaceController" title="Cart" hidesWhenLoading="NO" id="dCh-bS-IIh" customClass="CartInterfaceController" customModule="BestOneWatchKitExtension">
+                    <items>
+                        <table alignment="left" id="GeB-zP-gy0">
+                            <items>
+                                <tableRow identifier="ShopRowType" id="BV5-jN-qnL" customClass="ShopRowType" customModule="BestOneWatchKitExtension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" contentMode="scaleAspectFill" layout="vertical" radius="10" id="8dz-Yi-Pup">
+                                        <items>
+                                            <group width="1" height="100" alignment="right" backgroundImage="shop_item1.png" contentMode="scaleAspectFill" id="DBv-aZ-ev0"/>
+                                            <label alignment="center" verticalAlignment="bottom" id="DIG-UP-qUi">
+                                                <color key="textColor" red="0.18523010611534119" green="0.29952996969223022" blue="0.52893102169036865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="font" name="Raleway-Medium" family="Raleway" pointSize="24"/>
+                                            </label>
+                                        </items>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="2"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="imageGroup" destination="DBv-aZ-ev0" id="O3F-V5-GeN"/>
+                                        <outlet property="priceLabel" destination="DIG-UP-qUi" id="f3E-Mr-cHN"/>
+                                        <segue destination="09O-QV-FXn" kind="modal" identifier="itemDetails" id="0xQ-A7-ls8"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                        <label alignment="center" text="Total:" textAlignment="center" id="KAT-KJ-Vsi">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="13"/>
+                        </label>
+                        <label alignment="center" text="$0" textAlignment="center" numberOfLines="0" id="ed1-Sh-SLE">
+                            <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="25"/>
+                        </label>
+                        <button width="1" alignment="left" title="Empty Cart?" id="dHW-ZR-s7d">
+                            <color key="backgroundColor" red="1" green="0.59015772578163883" blue="0.43887501201427537" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="15"/>
+                            <connections>
+                                <action selector="onEmptyCartClicked" destination="dCh-bS-IIh" id="Hks-ER-kVK"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="shopTable" destination="GeB-zP-gy0" id="tEJ-OF-3mf"/>
+                        <outlet property="totalLabel" destination="ed1-Sh-SLE" id="5oj-NO-aMv"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="405" y="672"/>
+        </scene>
+        <!--Details-->
+        <scene sceneID="dmV-Hv-KGF">
+            <objects>
+                <controller identifier="DetailsInterfaceController" title="Details" hidesWhenLoading="NO" id="09O-QV-FXn" customClass="DetailsInterfaceController" customModule="BestOneWatchKitExtension">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" radius="10" id="GL0-rD-RBv">
+                            <items>
+                                <imageView alignment="left" image="shop_item1.png" contentMode="scaleAspectFill" id="417-UE-HbX"/>
+                                <group width="1" alignment="left" layout="vertical" id="IHa-ym-IJI">
+                                    <items>
+                                        <label alignment="left" textAlignment="left" numberOfLines="0" id="QeC-Ng-jJI">
+                                            <color key="textColor" red="0.18523010611534119" green="0.29952996969223022" blue="0.52893102169036865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="16"/>
+                                        </label>
+                                        <label alignment="left" textAlignment="left" numberOfLines="0" id="qHP-SA-Pvz">
+                                            <color key="textColor" red="0.18523010611534119" green="0.29952996969223022" blue="0.52893102169036865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="13"/>
+                                        </label>
+                                        <group width="1" height="0.10000000000000001" alignment="left" id="dC6-Hn-Wc4"/>
+                                        <label alignment="left" textAlignment="left" id="sea-eY-88Z">
+                                            <color key="textColor" red="0.18523010611534119" green="0.29952996969223022" blue="0.52893102169036865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="24"/>
+                                        </label>
+                                    </items>
+                                    <edgeInsets key="margins" left="3" right="3" top="0.0" bottom="4"/>
+                                </group>
+                            </items>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="qHP-SA-Pvz" id="mLv-QT-mbf"/>
+                        <outlet property="image" destination="417-UE-HbX" id="M9P-dd-poB"/>
+                        <outlet property="priceLabel" destination="sea-eY-88Z" id="3ja-ew-Wg7"/>
+                        <outlet property="titleLabel" destination="QeC-Ng-jJI" id="Gko-9H-3rp"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="651" y="374"/>
+        </scene>
+        <!--Collections-->
+        <scene sceneID="aak-L7-EUe">
+            <objects>
+                <controller identifier="CollectionsInterfaceController" title="Collections" hidesWhenLoading="NO" id="lxz-c2-N6H" customClass="CollectionsInterfaceController" customModule="BestOneWatchKitExtension">
+                    <items>
+                        <table alignment="left" id="Bv5-nC-OAk">
+                            <items>
+                                <tableRow identifier="CollectionRowType" id="Jav-l7-6a5" customClass="CollectionRowType" customModule="BestOneWatchKitExtension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" backgroundImage="collections_elegant_collection.png" contentMode="scaleAspectFill" layout="vertical" radius="10" id="PM7-4L-zRY">
+                                        <items>
+                                            <label width="0.90000000000000002" alignment="center" textAlignment="center" numberOfLines="0" id="Jrj-i3-LRe">
+                                                <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="16.700000762939453"/>
+                                            </label>
+                                            <label width="1" alignment="center" verticalAlignment="bottom" textAlignment="center" numberOfLines="0" id="g4a-sT-YeJ">
+                                                <fontDescription key="font" name="Raleway-Regular" family="Raleway" pointSize="10"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="backgroundGroup" destination="PM7-4L-zRY" id="T1u-1T-9FZ"/>
+                                        <outlet property="subTitleLabel" destination="g4a-sT-YeJ" id="6c6-zo-ffk"/>
+                                        <outlet property="titleLabel" destination="Jrj-i3-LRe" id="k3i-b6-A2s"/>
+                                        <segue destination="GvK-au-eZI" kind="modal" identifier="selectCategory" id="nxa-FD-87w"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="collectionsTable" destination="Bv5-nC-OAk" id="CPE-L5-AJa"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="405" y="117"/>
+        </scene>
+    </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="0xQ-A7-ls8"/>
+    </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+</document>
