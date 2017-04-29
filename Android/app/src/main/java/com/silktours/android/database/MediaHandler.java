@@ -88,14 +88,14 @@ public class MediaHandler {
             httpConn.setRequestProperty("Content-Type", "application/json");
             httpConn.setRequestProperty("Accept", "application/json");
             httpConn.setRequestMethod("POST");
-            outputStream = httpConn.getOutputStream();
-            writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
-                    true);
         }
 
         @Override
         protected String doInBackground(Void... params) {
             try {
+                outputStream = httpConn.getOutputStream();
+                writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
+                        true);
                 writer.write(json.toString());
                 writer.flush();
                 StringBuilder sb = new StringBuilder();
@@ -120,6 +120,7 @@ public class MediaHandler {
 
         @Override
         protected void onPostExecute(String s) {
+            Log.d(TAG, "onPostExecute: upload image: " + s);
 
         }
 
