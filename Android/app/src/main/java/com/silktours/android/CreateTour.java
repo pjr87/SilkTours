@@ -1,5 +1,6 @@
 package com.silktours.android;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -7,13 +8,17 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +38,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,6 +73,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.security.PrivateKey;
@@ -76,6 +83,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.silktours.android.R.id.login_progress_layout;
 import static com.silktours.android.R.id.status;
 import static com.silktours.android.R.id.stopsList;
 
@@ -86,7 +94,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private EditText tourName, tourDesc, price, language, additionalAccommodation, additionalTransport, additionalFood;
     private TextView startDateText, endDateText, addedLocationText;
     private ListView stopsList;
-    private Button startDateBtn, endDateBtn;
+    private Button startDateBtn, endDateBtn, profilePicButton;
     private Calendar start = Calendar.getInstance();
     private Calendar end = Calendar.getInstance();
     private GoogleMap mGoogleMap;
@@ -94,9 +102,12 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private DateFormat formatDate = DateFormat.getDateInstance();
     private Place placeSelected;
 
+    public static final int GET_FROM_GALLERY = 3;
+
     ArrayList<String> stops = new ArrayList<String>();
     ArrayAdapter<String> stopsAdapter;
 
+    ImageView ivCamera, ivGallery, ivUpload, ivImage;
     JSONArray stopJSON = new JSONArray();
 
     private CredentialHandler credentialHandler;
@@ -125,6 +136,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         additionalAccommodation = (EditText) rootView.findViewById((R.id.additionalAccommodation));
         additionalTransport = (EditText) rootView.findViewById((R.id.additionalTransport));
         additionalFood = (EditText) rootView.findViewById((R.id.additionalFood));
+        profilePicButton = (Button) rootView.findViewById(R.id.profilePicButton);
+
         stopsList = (ListView) rootView.findViewById(R.id.stopsList);
         stopsAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.tours_stops_list, stops);
         stopsList.setAdapter(stopsAdapter);
@@ -319,6 +332,20 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 adb.show();
             }
         });
+
+        profilePicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+                //startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GET_FROM_GALLERY);
+                Log.d("fool", "lol");
+            }
+        });
+
     }
 
     private void updateStartDate(){
@@ -348,6 +375,29 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             else
                 endDateText.setText(formatDate.format(end.getTime()));
     }};
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        //Detects request codes
+        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            Log.d("image", selectedImage.toString());
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selectedImage);
+                ImageView testProfilePicView = (ImageView) rootView.findViewById (R.id.testProfilePicView);
+                testProfilePicView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void commitTour() {
         new Thread(new Runnable() {
@@ -401,4 +451,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
     }
+
+
 }
