@@ -79,8 +79,7 @@ public class Search extends Fragment {
                 MainActivity.getInstance().getMenu().startFragment(new CreateTour(), 1);
             }
         });
-
-
+        
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         makeLayoutManager();

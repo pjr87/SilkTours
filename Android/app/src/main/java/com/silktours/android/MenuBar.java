@@ -93,7 +93,7 @@ public class MenuBar {
                 }
         );
     }
-    private static void startActivity(Activity from, Class<?> to) {
+    protected static void startActivity(Activity from, Class<?> to) {
         Intent intent = new Intent(from, to);
         from.startActivity(intent);
     }

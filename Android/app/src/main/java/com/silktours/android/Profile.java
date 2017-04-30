@@ -1,9 +1,15 @@
 package com.silktours.android;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +27,15 @@ import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
 import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.LocationPrompt;
+import com.silktours.android.utils.URIHelper;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,9 +66,57 @@ public class Profile extends Fragment {
         email = (EditText) rootView.findViewById(R.id.email);
         location = (TextView) rootView.findViewById(R.id.locationTextView);
         profileImage = (ImageView) rootView.findViewById(R.id.profileImage);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setProfileImage();
+            }
+        });
         filloutFields();
         setUpListeners();
         return rootView;
+    }
+
+    private void setProfileImage() {
+        MainActivity.getImage(true, new MainActivity.GetImageResult() {
+            @Override
+            public void onResult(String path) {
+                Log.d("SilkPath", path);
+                Bitmap bm;
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(MainActivity.getInstance().getContentResolver(), Uri.parse("file://" + path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] b = baos.toByteArray();
+                final String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            User user = CredentialHandler.getUser(MainActivity.getInstance());
+                            if (user != null)
+                                user.editProfileImage("test.png", encodedImage);
+                            resetImage();
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
+    private void resetImage() {
+        MainActivity.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                filloutFields();
+            }
+        });
     }
 
     private void filloutFields() {
