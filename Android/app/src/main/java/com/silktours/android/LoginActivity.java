@@ -3,7 +3,6 @@ package com.silktours.android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -40,9 +40,6 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.cognito.CognitoSyncManager;
-import com.amazonaws.mobileconnectors.cognito.Dataset;
-import com.amazonaws.mobileconnectors.cognito.DefaultSyncCallback;
-import com.amazonaws.mobileconnectors.cognito.internal.storage.CognitoSyncStorage;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
@@ -55,11 +52,7 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.securitytoken.model.FederatedUser;
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
-import com.applozic.mobicomkit.api.account.user.UserLoginTask;
-import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
-import com.applozic.mobicommons.people.contact.Contact;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -73,9 +66,9 @@ import com.silktours.android.utils.StringPrompt;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,11 +114,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private CognitoUserPool userPool;
     private boolean authSuccess = false;
     private CountDownLatch loginLatch;
+    private Class<?> resumeClass = null;
+    private Bundle resumeBundle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent != null) {
+            Serializable s_resume_session = intent.getSerializableExtra("resumeClass");
+            this.resumeBundle = intent.getBundleExtra("resumeArguments");
+            if (s_resume_session != null) {
+                this.resumeClass = (Class<?>) s_resume_session;
+            }
+        }
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         setupFacebook();
@@ -340,6 +343,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void goHome() {
+        if (resumeClass != null) {
+            finish();
+            try {
+                Fragment fragment = (Fragment) resumeClass.getConstructor().newInstance();
+                if (this.resumeBundle != null)
+                    fragment.setArguments(this.resumeBundle);
+                MainActivity.getInstance().getMenu().startFragment(fragment);
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
         finish();

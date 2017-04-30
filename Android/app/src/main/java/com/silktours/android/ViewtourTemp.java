@@ -92,7 +92,7 @@ public class ViewtourTemp extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!loggedIn) {
-                    MainActivity.getInstance().logoutWithMessage();
+                    MainActivity.getInstance().logoutWithMessage(ViewtourTemp.this);
                     return;
                 }
                 new Thread(new Runnable() {
@@ -131,7 +131,7 @@ public class ViewtourTemp extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!loggedIn) {
-                    MainActivity.getInstance().logoutWithMessage();
+                    MainActivity.getInstance().logoutWithMessage(ViewtourTemp.this);
                     return;
                 }
                 User user = CredentialHandler.getUser(MainActivity.getInstance());
