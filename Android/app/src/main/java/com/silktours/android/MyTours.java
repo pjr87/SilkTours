@@ -16,7 +16,6 @@ import android.widget.Spinner;
 
 import com.silktours.android.database.Controller;
 import com.silktours.android.database.Tour;
-import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
 
@@ -40,6 +39,7 @@ public class MyTours extends Fragment {
     private Bundle bundle;
     private Spinner spinner;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +53,6 @@ public class MyTours extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new itemOnSelectedListener());
-        getTours();
         return rootView;
     }
 

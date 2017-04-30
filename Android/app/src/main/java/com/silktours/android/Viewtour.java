@@ -1,6 +1,5 @@
 package com.silktours.android;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -12,11 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.silktours.android.database.Controller;
 import com.silktours.android.database.Media;
+import com.silktours.android.database.MediaHandler;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
@@ -228,7 +226,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
             protected ArrayList<Bitmap> doInBackground(Void... params) {
 
                 try {
-                    String response =  Controller.sendGet("/tours/image/" + tourId);
+                    String response =  Controller.sendGet("/media/" + tourId + "?bypass=true");
                     JSONArray jsArray = new JSONArray(response);
                     Log.d(TAG, "doInBackground: " + jsArray.length());
                     medias = new Media[jsArray.length()];
@@ -262,6 +260,13 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                 } catch (Exception e) {
                     Log.e(TAG, "onPostExecute: ", e);
                 }
+                Bitmap bitmao = BitmapFactory.decodeResource(MainActivity.getInstance().getResources(), R.drawable.ic_message_bubble1);
+                try {
+                    MediaHandler.uploadProfileImage("tours", "2", bitmao);
+                } catch (Exception e ) {
+                    Log.e(TAG, "onPostExecute: ", e);
+                }
+
             }
         }.execute();
     }
