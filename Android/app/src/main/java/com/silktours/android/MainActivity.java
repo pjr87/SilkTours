@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,30 +17,31 @@ import android.widget.Toast;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
-import com.applozic.mobicomkit.api.conversation.service.ConversationService;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
-import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.applozic.mobicommons.people.contact.Contact;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.ErrorDisplay;
+import com.silktours.android.utils.URIHelper;
+import com.yalantis.ucrop.UCrop;
 
-import org.json.JSONException;
-
-import java.io.IOException;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private static final String CURRENT_TAG = "CURRENT";
     private static final int REQUEST_CODE = 1;
+    private static final int SELECT_PICTURE = 2;
     private static MainActivity instance = null;
+    private static GetImageResult getImageCallback;
     private MenuBar menu;
     private PaymentListener paymentListener;
+    private BrowsePicture browserPicture;
 
     public static MainActivity getInstance() {
         return instance;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logOut();
+                //LoginManager.getInstance().logOut();
                 CredentialHandler.logout(MainActivity.this);
             }
         });
@@ -77,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void logoutWithMessage() {
+        ErrorDisplay.show("You need to login first", this);
+        //LoginManager.getInstance().logOut();
+        CredentialHandler.logout(MainActivity.this);
+    }
+
     public void launchMessaging(final User to) {
         User user = CredentialHandler.getUser(this);
         if (user == null) {
@@ -86,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             launchMessaging(user, to);
         }
+    }
+
+    public void setBrowserPicture(BrowsePicture browserPicture) {
+        this.browserPicture = browserPicture;
     }
 
 
@@ -141,22 +154,65 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(dropInRequest.getIntent(this), REQUEST_CODE);
     }
 
+    public interface GetImageResult {
+        void onResult(String path);
+    }
+
+    public static void getImage(final boolean crop, final GetImageResult callback) {
+        new BrowsePicture().getImage(new BrowsePicture.OnImageSelected() {
+            @Override
+            public void selected(Uri uri) {
+                String path = URIHelper.getPath(getInstance(), uri);
+                if (!crop) {
+                    callback.onResult(path);
+                    return;
+                }
+                getImageCallback = callback;
+                UCrop.Options cropOptions = new UCrop.Options();
+                cropOptions.setCompressionFormat(Bitmap.CompressFormat.PNG);
+                Uri outputUri = Uri.fromFile(new File(getInstance().getCacheDir(), "SampleCropImage.png"));
+                UCrop.of(Uri.parse("file://" + path), outputUri)
+                        .withAspectRatio(1, 1)
+                        .withMaxResultSize(200, 200)
+                        .withOptions(cropOptions)
+                        .start(MainActivity.getInstance());
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-                // use the result to update your UI and send the payment method nonce to your server
                 Log.d("Payment", result.toString());
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                // the user canceled
+
             } else {
-                // handle errors here, an exception may be available in
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
                 error.printStackTrace();
             }
             paymentListener.done(resultCode == Activity.RESULT_OK);
+        } else if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                if (browserPicture != null) {
+                    browserPicture.imageSelected(data.getData());
+                }
+            } else if (requestCode == UCrop.REQUEST_CROP) {
+                final Uri resultUri = UCrop.getOutput(data);
+                if (getImageCallback != null && resultUri != null) {
+                    getImageCallback.onResult(resultUri.getPath());
+                }
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        getMenu().backPressed();
     }
 
     public boolean googleServicesAvailable() {

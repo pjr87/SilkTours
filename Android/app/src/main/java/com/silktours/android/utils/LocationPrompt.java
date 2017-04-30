@@ -20,38 +20,48 @@ import com.silktours.android.MainActivity;
 import com.silktours.android.R;
 
 /**
- * Created by andrew on 2/10/17.
+ * Prompts the user for their location
  */
 public class LocationPrompt {
     private final Activity activity;
     private AlertDialog filterDialog;
     public String selection = null;
     private static View view;
+    private Place placeSelected;
 
+    /**
+     * Initializes the prompt but does not display anything. build should likely be called after this.
+     * @param activity
+     */
     public LocationPrompt(Activity activity) {
         this.activity = activity;
     }
 
+    /**
+     * Creates an displays the location prompt.
+     * @param activity
+     * @param listener
+     */
     public LocationPrompt(Activity activity, final OnLocationSetListener listener) {
         this.activity = activity;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Enter Your Location");
         build(builder)
-                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         if (filterDialog == null) {
-                            listener.onLocationSet(null);
+                            listener.onLocationSet(null, null);
                             return;
                         }
-                        listener.onLocationSet(selection);
+                        listener.onLocationSet(selection, placeSelected);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         filterDialog = null;
-                        listener.onLocationSet(null);
+                        listener.onLocationSet(null, null);
                     }
                 });
         filterDialog = builder.create();
@@ -67,6 +77,11 @@ public class LocationPrompt {
         });*/
     }
 
+    /**
+     * Adds content to an alert dialog builder
+     * @param builder The builder to add content to
+     * @return The same as the builder argument
+     */
     public AlertDialog.Builder build(AlertDialog.Builder builder) {
         LayoutInflater inflater = activity.getLayoutInflater();
         if (view != null) {
@@ -86,6 +101,7 @@ public class LocationPrompt {
             @Override
             public void onPlaceSelected(Place place) {
                 selection = place.getAddress().toString();
+                placeSelected = place;
             }
 
             @Override
@@ -96,6 +112,7 @@ public class LocationPrompt {
     }
 
     public interface OnLocationSetListener {
-        void onLocationSet(String location);
+        void onLocationSet(String location, Place place);
     }
+
 }

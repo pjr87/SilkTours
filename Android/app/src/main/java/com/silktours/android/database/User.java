@@ -50,6 +50,16 @@ public class User extends Base implements Serializable {
         return result;
     }
 
+    public String editProfileImage(String filename, String data) throws IOException, JSONException {
+        String url = Common.SERVER_URL + "/users/" + getInt(ID_USERS) + "/profile";
+        JSONObject json = new JSONObject();
+        json.put("file", data);
+        json.put("name", filename);
+        String result = Common.request(url, json.toString(), "PUT");
+        JSONObject resultJSON = new JSONObject(result);
+        JSON.put(User.PROFILE_PICTURE, resultJSON.getString("url"));
+        return resultJSON.getString("url");
+    }
 
     public void create() throws IOException {
         String url = Common.SERVER_URL + "/users";

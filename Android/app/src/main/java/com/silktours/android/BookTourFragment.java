@@ -28,7 +28,9 @@ import com.roomorama.caldroid.CaldroidListener;
 import com.silktours.android.database.PaymentInfo;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.TourEvent;
+import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
+import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.ListViewUtils;
 
 import org.json.JSONException;
@@ -44,9 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.SimpleFormatter;
 
-/**
- * Created by andrew on 2/23/17.
- */
 public class BookTourFragment extends Fragment {
     private Tour tour;
     private User user;
@@ -63,7 +62,7 @@ public class BookTourFragment extends Fragment {
         args.putSerializable("user", user);
         BookTourFragment fragment = new BookTourFragment();
         fragment.setArguments(args);
-        MainActivity.getInstance().getMenu().startFragment(fragment, 2);
+        MainActivity.getInstance().getMenu().startFragment(fragment, 3);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class BookTourFragment extends Fragment {
         t.replace(R.id.bookTourCalendar, caldroidFragment);
         t.commit();
 
-        new GetEvents().execute(1);
+        new GetEvents().execute(tour.getInt("id_tour"));
     }
 
     final CaldroidListener listener = new CaldroidListener() {
@@ -100,7 +99,13 @@ public class BookTourFragment extends Fragment {
             if (eventMap.containsKey(df)) {
                 Toast.makeText(MainActivity.getInstance().getApplicationContext(), formatter.format(date),
                         Toast.LENGTH_SHORT).show();
-                TourEventsAdapter adapter = new TourEventsAdapter(MainActivity.getInstance(), eventMap.get(df));
+                List<TourEvent> _events = eventMap.get(df);
+                List<TourEvent> events = new ArrayList<>();
+                for (TourEvent event : _events) {
+                    if (event.getStr("state").equals("A"))
+                        events.add(event);
+                }
+                TourEventsAdapter adapter = new TourEventsAdapter(MainActivity.getInstance(), events);
 
                 adapter.setClickListener(new TourEventsAdapter.TourEventClicked() {
                     @Override
@@ -173,8 +178,11 @@ public class BookTourFragment extends Fragment {
                             public void done(boolean success) {
                                 if (success) {
                                     bookTour(payment);
+                                    Toast.makeText(MainActivity.getInstance(), "Tour Booked Successfully", Toast.LENGTH_SHORT).show();
+                                    ViewtourTemp.start(tour);
+                                    Viewtour.start(tour);
                                 } else {
-
+                                    ErrorDisplay.show("Unable to process payment, please try again.", MainActivity.getInstance());
                                 }
                             }
                         });

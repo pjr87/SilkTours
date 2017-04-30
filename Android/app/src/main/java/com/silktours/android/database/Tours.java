@@ -1,40 +1,63 @@
 package com.silktours.android.database;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 /**
  * Created by yongqiangfan on 2/6/17.
  */
 
-public class Tours {
-    private JSONObject jsObj;
+public class Tours extends Base implements Serializable  {
     private String firstStart_date;
     private String lastEnd_date;
     private String address_city;
     private String address_country;
-    private String id_guide;
-    private Integer id_tour;
+    private String[] guides;
+    public Integer id_tour;
     private Boolean is_deleted;
     private String name;
     private String profile_image;
-    
+    private String description;
+    private String price;
+    private Double[][] stops;
+
+    public JSONObject getJSON() {
+        return JSON;
+    }
 
     public Tours(JSONObject jsObj) throws JSONException{
-        this.jsObj = jsObj;
+        this.JSON = jsObj;
         getInfo();
     }
 
     public void getInfo() throws JSONException{
-        this.address_city = jsObj.getString("address_city");
-        this.address_country = jsObj.getString("address_country");
-        this.id_guide = jsObj.getString("id_guide");
-        this.id_tour = jsObj.getInt("id_tour");
-        this.is_deleted = jsObj.getBoolean("is_deleted");
-        this.name = jsObj.getString("name");
-        this.profile_image = jsObj.getString("profile_image");
-        this.firstStart_date = jsObj.getString("firstStart_date");
-        this.lastEnd_date = jsObj.getString("lastEnd_date");
+        JSONArray jsonGuide = JSON.getJSONArray("guides");
+        guides = new String[jsonGuide.length()];
+        for(int i = 0; i < jsonGuide.length(); i++) {
+            guides[i] = jsonGuide.getJSONObject(i).getString("first_name") + " " + jsonGuide.getJSONObject(i).getString("last_name");
+        }
+        id_tour = JSON.getInt("id_tour");
+//        is_deleted = JSON.getBoolean("is_deleted");
+        name = JSON.getString("name");
+        profile_image = JSON.getString("profile_image");
+        firstStart_date = JSON.getString("firstStart_date");
+        lastEnd_date = JSON.getString("lastEnd_date");
+        description = JSON.getString("description");
+        price = JSON.getString("price");
+        if (!JSON.has("stops")) {
+            JSON.put("stops", new JSONArray());
+        }
+        JSONArray jsonStop = JSON.getJSONArray("stops");
+        stops = new Double[jsonStop.length()][2];
+
+        for (int i = 0; i < jsonStop.length(); i++) {
+            stops[i][0] = jsonStop.getJSONObject(i).getDouble("lat");
+            stops[i][1] = jsonStop.getJSONObject(i).getDouble("lon");
+        }
+
     }
 
     public String getName(){
@@ -53,6 +76,24 @@ public class Tours {
         return address_city;
     }
 
+    public String getProfileImage() {
+        return profile_image;
+    }
 
+    public String getDescription() {
+        return  description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public Double[][] getStops() {
+        return stops;
+    }
+
+    public Integer getId_tour() {
+        return id_tour;
+    }
 
 }

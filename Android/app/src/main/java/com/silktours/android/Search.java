@@ -2,22 +2,27 @@ package com.silktours.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.SearchView;
 
+import com.silktours.android.database.Create_Tour;
 import com.silktours.android.database.Tour;
+import com.silktours.android.utils.ErrorDisplay;
 
 import org.json.JSONException;
 
@@ -34,6 +39,11 @@ public class Search extends Fragment {
     private SearchView searchView;
     private StaggeredGridLayoutManager manager;
     private RecyclerView recyclerView;
+    private int page = 0;
+
+    // Items needed for pagination
+    private boolean loading = true;
+    int pastVisibleItems, visibleItemCount, totalItemCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +59,7 @@ public class Search extends Fragment {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                search();
+                search(0);
                 return false;
             }
         });
@@ -62,12 +72,45 @@ public class Search extends Fragment {
             }
         });
 
+        Button createTourButton = (Button) rootView.findViewById(R.id.createTour);
+        createTourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.getInstance().getMenu().startFragment(new CreateTour(), 1);
+            }
+        });
+        
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         makeLayoutManager();
         recyclerView.setLayoutManager(manager);
+        setupScrollListener();
         searchDefault();
         return rootView;
+    }
+
+    private void setupScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                visibleItemCount = manager.getChildCount();
+                totalItemCount = manager.getItemCount();
+                int[] firstVisibleItems = null;
+                firstVisibleItems = manager.findFirstVisibleItemPositions(null);
+                if (firstVisibleItems != null && firstVisibleItems.length > 0) {
+                    pastVisibleItems = firstVisibleItems[0];
+                }
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        ErrorDisplay.show("Making new items", MainActivity.getInstance());
+                        page++;
+                        search(page);
+                    }
+                }
+            }
+        });
     }
 
     private void makeLayoutManager() {
@@ -105,7 +148,7 @@ public class Search extends Fragment {
                         filterParams.priceMax = stringToFloat(priceMax.getText().toString());
                         filterParams.minRating = minRating.getRating();
                         filterDialog = null;
-                        search();
+                        search(0);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -143,13 +186,15 @@ public class Search extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                updateResults(tours);
+                updateResults(tours, 0);
             }
         }).start();
     }
 
-    private void search() {
+    private void search(final int page) {
+        this.page = page;
         filterParams.query = searchView.getQuery().toString();
+        filterParams.page = page;
 
         new Thread(new Runnable() {
             @Override
@@ -161,22 +206,28 @@ public class Search extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                updateResults(tours);
+                updateResults(tours, page);
             }
         }).start();
     }
 
-    private void updateResults(final List<Tour> tours) {
+    private void updateResults(final List<Tour> tours, final int page) {
         MainActivity.getInstance().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                RecyclerView.Adapter i = new SearchResultsAdapter(
-                        MainActivity.getInstance(),
-                        tours,
-                        recyclerView.getWidth(),
-                        recyclerView.getHeight()
-                );
-                recyclerView.swapAdapter(i, false);
+                if (page == 0) {
+                    RecyclerView.Adapter i = new SearchResultsAdapter(
+                            MainActivity.getInstance(),
+                            tours,
+                            recyclerView.getWidth(),
+                            recyclerView.getHeight()
+                    );
+                    recyclerView.swapAdapter(i, false);
+                }else{
+                    SearchResultsAdapter adapter = (SearchResultsAdapter) recyclerView.getAdapter();
+                    adapter.add(tours);
+                }
+                loading = true;
             }
         });
     }

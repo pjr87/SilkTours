@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,38 +16,21 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by andrew on 1/26/17.
+ * Represents an SQL tour
  */
 public class Tour extends Base implements Serializable {
     private static List<Tour> defaultSearch;
-    public String additional_accomadation;
-    public String additional_food;
-    public String additional_transport;
-    public String address_city;
-    public String address_country;
-    public String address_street;
-    public String address_suffix;
-    public String address_unit;
-    public String address_unit_number;
-    public String address_zip;
-    public Double average_rating;
     public static final String description = "description";
-    public String firstStart_date;
-    public String lastEnd_date;
-    public Integer id_guide;
-    public Integer id_rating;
-    public Integer id_tour;
-    public Boolean is_deleted;
-    public Integer max_group_size;
-    public Integer min_group_size;
     public static final String name = "name";
-    public Double price;
+    public static final Integer id_tour = 1;
+    public static final Double price = 0.0;
     public String profile_image;
     public Integer profile_image_width;
     public Integer profile_image_height;
-    public Integer rating_count;
-    public Object stops;
 
+    /**
+     * Used by search to specify filters
+     */
     public static class FilterParams {
         public String query;
         public String location;
@@ -57,6 +39,7 @@ public class Tour extends Base implements Serializable {
         public double priceMin;
         public double priceMax;
         public double minRating;
+        public int page = 0;
 
         public FilterParams() {
             query = "";
@@ -70,6 +53,11 @@ public class Tour extends Base implements Serializable {
         return tour;
     }
 
+    /**
+     * Gets the default seach results from the cache if available else from the server
+     * @throws IOException
+     * @throws JSONException
+     */
     public static List<Tour> getDefaultSearch() throws IOException, JSONException {
         if (defaultSearch == null) {
             FilterParams defaultParams = new FilterParams();
@@ -78,8 +66,16 @@ public class Tour extends Base implements Serializable {
         return defaultSearch;
     }
 
+    /**
+     * Gets search results from the server
+     * @param params The search to perform
+     * @return A list of results
+     * @throws IOException
+     * @throws JSONException
+     */
     public static List<Tour> getBySearch(FilterParams params) throws IOException, JSONException {
         URIBuilder uri = new URIBuilder(Common.SERVER_URL + "/search");
+        uri.addParam("page", Integer.toString(params.page));
         if (params.query != null) {
             List<String> keywords = Arrays.asList(params.query.split(" "));
             if (keywords.size() > 0) {
@@ -124,11 +120,27 @@ public class Tour extends Base implements Serializable {
         return result;
     }
 
-    public void commit() throws IOException {
+    /**
+     * Call after creating a new object to commit the changes to the database
+     * @throws IOException
+     */
+    public void commitCreate() throws IOException {
         String url = Common.SERVER_URL + "/tours";
         set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "POST");
+        Log.d("Server", result);
+    }
+
+    /**
+     * Call after editing this object to commit the changes to the database
+     * @throws IOException
+     */
+    public void commitModify() throws IOException {
+        String url = Common.SERVER_URL + "/tours/" + id_tour;
+        set("bypass", true); // Bypass auth
+        Log.d("JSON", JSON.toString());
+        String result = Common.request(url, JSON.toString(), "PUT");
         Log.d("Server", result);
     }
 }

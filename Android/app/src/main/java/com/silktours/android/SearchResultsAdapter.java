@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silktours.android.database.Tour;
+import com.silktours.android.database.Tours;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,6 +42,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         this.parentHeight = height;
     }
 
+    public void add (List<Tour> newPage) {
+        int prevTourCount = tourList.size();
+        tourList.addAll(newPage);
+        this.notifyItemRangeInserted(prevTourCount, newPage.size());
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         parentWidth = parent.getWidth();
@@ -59,29 +68,37 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         View convertView = holder.itemView;
         TextView title = (TextView) convertView.findViewById(R.id.searchResultTitle);
         title.setText(tour.getStr("name"));
-
-        final ImageView image = (ImageView) convertView.findViewById(R.id.searchResultImage);
-        image.getLayoutParams().width = parentWidth/2;
-        image.getLayoutParams().height = tour.profile_image_height*(parentWidth/2)/tour.profile_image_width;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL thumb_u = new URL(tour.profile_image);
-                    final Drawable thumb_d = Drawable.createFromStream(thumb_u.openStream(), "src");
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            image.setImageDrawable(thumb_d);
-                        }
-                    });
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if (tour.profile_image_width != null && tour.profile_image_width != 0) {
+            final ImageView image = (ImageView) convertView.findViewById(R.id.searchResultImage);
+            image.getLayoutParams().width = parentWidth / 2;
+            image.getLayoutParams().height = tour.profile_image_height * (parentWidth / 2) / tour.profile_image_width;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        URL thumb_u = new URL(tour.profile_image);
+                        final Drawable thumb_d = Drawable.createFromStream(thumb_u.openStream(), "src");
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                image.setImageDrawable(thumb_d);
+                            }
+                        });
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+            }).start();
+        }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Viewtour.start(tour);
+
             }
-        }).start();
+        });
     }
 
     @Override
