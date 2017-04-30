@@ -98,6 +98,10 @@ public class MenuBar {
         from.startActivity(intent);
     }
 
+    public void startFragment(final Fragment fragment) {
+        startFragment(fragment, indexStack.pop());
+    }
+
     public void startFragment(final Fragment fragment, final int index) {
         if (isMessaging) {
             activity.finish();
@@ -105,7 +109,6 @@ public class MenuBar {
             return;
         }
         bottomNavigationView.getMenu().getItem(index).setChecked(true);
-
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
 

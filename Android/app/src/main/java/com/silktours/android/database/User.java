@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.silktours.android.LoginActivity;
+import com.silktours.android.utils.ErrorDisplay;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,6 +65,11 @@ public class User extends Base implements Serializable {
     public void create() throws IOException {
         String url = Common.SERVER_URL + "/users";
         String result = Common.request(url, JSON.toString(), "POST");
+        try {
+            JSON = new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void commit() throws IOException {

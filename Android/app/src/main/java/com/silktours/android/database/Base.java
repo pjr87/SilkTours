@@ -1,13 +1,22 @@
 package com.silktours.android.database;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for all database objects
  * All key fields accept key1:key2 format to lookup nested values
  */
-public class Base {
+public class Base implements Serializable{
     public JSONObject JSON;
 
     public Base() {
@@ -23,6 +32,7 @@ public class Base {
         try {
             return (String) get(key);
         } catch (ClassCastException e) {
+            e.printStackTrace();
             return "";
         }
     }
@@ -76,6 +86,11 @@ public class Base {
             }
             return obj.get(key);
         } catch (JSONException e) {
+            if (!key.equals("city")) {
+                Log.d("Silk", "City Not Found");
+                return null;
+            }
+            e.printStackTrace();
             return null;
         }
     }
@@ -106,6 +121,24 @@ public class Base {
             }
 
             obj.put(key, value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeObject(ObjectOutputStream oos)
+            throws IOException {
+        // default serialization
+        //oos.defaultWriteObject();
+        oos.writeObject(JSON.toString());
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        // default deserialization
+        //ois.defaultReadObject();
+        try {
+            JSON = new JSONObject((String)ois.readObject());
         } catch (JSONException e) {
             e.printStackTrace();
         }

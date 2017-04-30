@@ -18,6 +18,7 @@ import com.silktours.android.database.Tour;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.HashSet;
 
 /**
  * Created by yongqiangfan on 2/6/17.
@@ -28,13 +29,13 @@ public class MyToursAdapter extends ArrayAdapter<Tour>{
     private TextView txtCity;
     private TextView txtName;
     private ImageView imgProfile;
-
+    private HashSet<Integer> foundImages = new HashSet<>();
     public MyToursAdapter(Context context, Tour[] tours) {
         super(context, 0, tours);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater tourInflater = LayoutInflater.from(getContext());
         final View tourView = tourInflater.inflate(R.layout.my_tours_item, parent, false);
 
@@ -47,10 +48,14 @@ public class MyToursAdapter extends ArrayAdapter<Tour>{
         txtCity.setText(tour.getStr("address:city"));
         txtName.setText(tour.getStr("name"));
 
+        if (foundImages.contains(0))
+            return tourView;
+
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
                 try {
+                    foundImages.add(position);
                     return getResizedBitmap(getBitmapFromURL(tour.getStr("profile_image")), 200, 200);
                 } catch (Exception e) {
                     Log.e("MytourAdapter", "doInBackground: ", e);
@@ -76,11 +81,10 @@ public class MyToursAdapter extends ArrayAdapter<Tour>{
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return BitmapFactory.decodeResource(MainActivity.getInstance().getApplication().getResources(),R.mipmap.ic_launcher);
         }
     }
 

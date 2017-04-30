@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //LoginManager.getInstance().logOut();
-                CredentialHandler.logout(MainActivity.this);
+                CredentialHandler.logout(MainActivity.this, null);
             }
         });
 
@@ -75,23 +75,19 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void login() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+    public void login(Fragment resumeFrom) {
+        CredentialHandler.logout(MainActivity.this, resumeFrom);
     }
 
-    public void logoutWithMessage() {
+    public void logoutWithMessage(Fragment resumeFrom) {
         ErrorDisplay.show("You need to login first", this);
-        //LoginManager.getInstance().logOut();
-        CredentialHandler.logout(MainActivity.this);
+        login(resumeFrom);
     }
 
     public void launchMessaging(final User to) {
         User user = CredentialHandler.getUser(this);
         if (user == null) {
-            Toast.makeText(this, "Please login to continue.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+            logoutWithMessage(null);
         } else {
             launchMessaging(user, to);
         }

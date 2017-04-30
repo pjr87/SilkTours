@@ -123,7 +123,7 @@ public class Profile extends Fragment {
         if (id_user == -1) {
             user = CredentialHandler.getUser(MainActivity.getInstance());
             if (user == null) {
-                MainActivity.getInstance().login();
+                MainActivity.getInstance().login(Profile.this);
                 return;
             }
             editable = true;

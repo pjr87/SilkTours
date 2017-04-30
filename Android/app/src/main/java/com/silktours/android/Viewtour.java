@@ -144,7 +144,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
             public void onClick(View v) {
                 User user = CredentialHandler.getUser(MainActivity.getInstance());
                 if (user == null) {
-                    MainActivity.getInstance().logoutWithMessage();
+                    MainActivity.getInstance().logoutWithMessage(Viewtour.this);
                     return;
                 } else {
                     Tour _tour = new Tour();
