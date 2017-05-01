@@ -19,6 +19,10 @@ from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
+import urllib
+from io import StringIO
+from PIL import Image
+from io import BytesIO
 from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
 import sys
@@ -662,6 +666,41 @@ def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
+
+
+@app.route("/resize_images", methods=['GET'])
+def resize_images():
+    query = get_session().query(Tour)
+    tours = safe_call(query, "all", None)
+    i = 0
+    for tour in tours:
+        print("Tour %d of %d" % (i, len(tours)))
+        i += 1
+        URL = tour.profile_image
+        print(URL)
+        if URL is None or URL == "":
+            continue
+
+        file = None
+        try:
+            with urllib.request.urlopen(URL) as url:
+                file = url.read()
+        except:
+            continue
+        im = None
+        try:
+            im = Image.open(BytesIO(file))
+        except Exception as e:
+            print(e)
+            print("fail")
+            continue
+        width, height = im.size
+        tour.profile_image_width = width
+        tour.profile_image_height = height
+        print("success: w: %d, h: %d" % (width, height))
+        get_session().add(tour)
+    commitSession()
+    return "done"
 
 
 @app.route("/docs")
