@@ -1,4 +1,5 @@
 import React from 'react';
+import style from './style.css';
 
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Form from 'react-bootstrap/lib/Form';
@@ -67,6 +68,22 @@ class SearchBar extends React.Component{
   }
 
   render(){
+    var colTourSizes = [0,0,0,0];
+    var colTours = [[], [], [], []];
+    for (var tourId in this.props.tours) {
+        var minCol = -1;
+        var minVal = Infinity;
+        for (var t in colTourSizes) {
+            if (colTourSizes[t] < minVal) {
+                minVal = colTourSizes[t];
+                minCol = t;
+            }
+        }
+        colTours[minCol].push(this.props.tours[tourId]);
+        colTourSizes[minCol] += this.props.tours[tourId].profile_image_height/this.props.tours[tourId].profile_image_width;
+    }
+    console.log(colTours)
+
     return(
       <div>
         <Pager>
@@ -146,12 +163,19 @@ class SearchBar extends React.Component{
           </Form>
         </Pager>
         <br/>
-        <div>
-          <Grid>
-            <Row>
-              <ToursList tours={this.props.tours} tourDisplayProps={{display:"large"}} />
-            </Row>
-          </Grid>
+        <div className={style.TourColumnContainer}>
+          <div className={style.TourColumn}>
+            <ToursList col="0" colTotal="4" tours={colTours[0]} tourDisplayProps={{display:"large"}} />
+          </div>
+          <div className={style.TourColumn}>
+            <ToursList col="1" colTotal="4" tours={colTours[1]} tourDisplayProps={{display:"large"}} />
+          </div>
+          <div className={style.TourColumn}>
+            <ToursList col="2" colTotal="4" tours={colTours[2]} tourDisplayProps={{display:"large"}} />
+          </div>
+          <div className={style.TourColumn}>
+            <ToursList col="3" colTotal="4" tours={colTours[3]} tourDisplayProps={{display:"large"}} />
+          </div>
         </div>
         <Pager>
           <Pagination

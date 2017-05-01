@@ -1,0 +1,34 @@
+/*.TourColumn {
+   width: 33%;
+   display: inline-block;
+   zoom: 1;
+   vertical-align: top;
+}*/
+.TourColumnContainer {
+    font-size: 0; /*fix white space*/
+}
+.TourColumnContainer > .TourColumn {
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+    border: 1px solid red;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+@media (max-width: 1000px) {
+    .TourColumnContainer > .TourColumn {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+        border: 1px solid red;
+        box-sizing: border-box;
+        text-align: center;
+    }
+}
+@media (max-width: 500px) { /*breakpoint*/
+    .TourColumnContainer > .TourColumn {
+        display: block;
+        width: 100%;
+    }
+}
