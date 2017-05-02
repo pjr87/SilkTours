@@ -28,7 +28,6 @@ class Tours extends React.Component{
   render(){
     //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
-    console.log("display", this.props.tourDisplayProps);
 
     const modifyBtn = (this.props.tourDisplayProps.modifyBtn) ? (<p>
         <Link
@@ -84,7 +83,7 @@ class Tours extends React.Component{
     if(this.props.tourDisplayProps.display == "small"){
 
       tourDisplay = (
-        <Col xs={12} md={6} lg={6}>
+        <div xs={12} md={6} lg={6}>
           <Thumbnail>
             <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
               {this.state.showTourInfo ? (<img className={style.tour_image_small_info} src={this.props.tour.profile_image}/>) : (<img className={style.tour_image_small} src={this.props.tour.profile_image}/>)}
@@ -104,7 +103,7 @@ class Tours extends React.Component{
 
             </p>{modifyBtn} {contactGuideBtn} {summaryBtn} {contactTouristBtn} {cancelBtn}</span>
           </Thumbnail>
-        </Col>);
+        </div>);
 
 
 
@@ -112,10 +111,10 @@ class Tours extends React.Component{
     else{
 
       tourDisplay = (
-      <Col xs={12} md={4} lg={3}>
+      <div xs={12} md={4} lg={3}>
         <Thumbnail>
           <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image} src={this.props.tour.profile_image}/>)}
           </div>
           <p>{this.props.tour.name}</p>
           <p>${this.props.tour.price}</p>
@@ -137,7 +136,7 @@ class Tours extends React.Component{
             {/*guideButton*/}
           </p>
         </Thumbnail>
-      </Col>);
+      </div>);
     }
 
 

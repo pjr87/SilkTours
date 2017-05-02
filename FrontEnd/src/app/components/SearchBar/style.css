@@ -1,0 +1,26 @@
+.TourColumnContainer > .TourColumn {
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+}
+
+@media (max-width: 1250px) {
+    .TourColumnContainer > .TourColumn {
+        display: inline-block;
+        vertical-align: top;
+        width: 33.33%;
+    }
+}
+@media (max-width: 950px) {
+    .TourColumnContainer > .TourColumn {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+    }
+}
+@media (max-width: 600px) { /*breakpoint*/
+    .TourColumnContainer > .TourColumn {
+        display: block;
+        width: 100%;
+    }
+}
