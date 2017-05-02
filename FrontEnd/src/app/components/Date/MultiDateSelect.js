@@ -1,22 +1,22 @@
 import React from 'react';
-import InfiniteCalendar from 'react-infinite-calendar';
-import 'react-infinite-calendar/styles.css'; // Make sure to import the default stylesheet
+import InfiniteCalendar, {
+  Calendar,
+  defaultMultipleDateInterpolation,
+  withMultipleDates,
+} from 'react-infinite-calendar';
 
 export default class MultiDateSelect extends React.Component{
-
   render(){
-
     var today = new Date();
-
+    var lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
     return(
       <InfiniteCalendar
-        width={400}
-        height={600}
-        selectedDates={[today]}
-        disabledDays={[0,6]}
-        keyboardSupport={true}
+        Component={withMultipleDates(Calendar)}
+        interpolateSelection={defaultMultipleDateInterpolation}
+        selected={[new Date(2017, 1, 10), new Date(2017, 1, 18), new Date()]}
       />
     );
   }
-
 }
+/*
+*/

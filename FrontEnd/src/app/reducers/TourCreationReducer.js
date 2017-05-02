@@ -54,6 +54,25 @@ const initialState = {
     lat: 39.955980,
     lng: -75.188032
   },
+  base_hours: [
+    {
+      close_time: "",
+      day_of_week: "",
+      end_date: "",
+      open_time: "",
+      start_date: "",
+      tour_hours_id: ""
+    }
+  ],
+  hours_special: [
+    {
+      close_time: "",
+      date: "",
+      open_time: "",
+      overrides: "",
+      tour_hours_special_id: ""
+    }
+  ],
   currentlySending: false,
   errorMessage: '',
   tabKey: 'info'

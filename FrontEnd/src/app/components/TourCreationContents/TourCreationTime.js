@@ -1,23 +1,18 @@
 import React from 'react';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
-import { Pager } from 'react-bootstrap';
-import { updateTimeState, setStartTime, setEndTime, setTabKey } from '../../actions/TourCreationActions';
-import DatePicker from 'react-datepicker'
+import {
+  updateTimeState,
+  setStartTime,
+  setEndTime,
+  setTabKey } from '../../actions/TourCreationActions';
+import MultiDateSelect from '../Date/MultiDateSelect';
 import moment from 'moment';
-import {Grid, Col, Row, ControlLabel} from 'react-bootstrap';
-import TimePicker from 'react-bootstrap-time-picker';
-require('react-datepicker/dist/react-datepicker-cssmodules.css');
-
+import {Grid, Col, Row, ControlLabel, Pager} from 'react-bootstrap';
 
 class TourCreationTime extends React.Component{
   constructor() {
     super();
-
-    this.state = {
-      startDate: moment(),
-      endDate: moment()
-    }
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
@@ -79,41 +74,13 @@ class TourCreationTime extends React.Component{
   }
 
   render(){
-    const format = 'h:mm a';
-    const now = moment().hour(0).minute(0);
-
     return (
       <div>
         <br/>
         <p className={style.HeaderStyle}>What is the start and end date of the tour?</p>
         <br/>
-        <EditableFieldClass style={style.BodyStyle} label="Start Date" onChange={this._changeStartTime} value={this.props.tour.firstStart_date}/>
         <br/>
-        <Col smOffset={4} sm={10}>
-          <DatePicker
-            inline
-            dateFormat="YYYY/MM/DD"
-            selected={this.state.startDate}
-            selectsStart  startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onChange={this.handleStartChange}
-            popoverAttachment="bottom center"
-            popoverTargetAttachment="top center" />
-        </Col>
-        <TimePicker onChange={this.onStartChange} value={this.props.startTime}/>
-        <EditableFieldClass style={style.BodyStyle} label="End Date" onChange={this._changeEndTime} value={this.props.tour.lastEnd_date}/>
-        <br/>
-        <Col smOffset={4} sm={10}>
-          <DatePicker
-            inline
-            dateFormat="YYYY/MM/DD"
-            selected={this.state.endDate}
-            selectsEnd  startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onChange={this.handleEndChange} />
-        </Col>
-        <TimePicker onChange={this.onEndChange} value={this.props.endTime}/>
-        <br/>
+        <MultiDateSelect/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
