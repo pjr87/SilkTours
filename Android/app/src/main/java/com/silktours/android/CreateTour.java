@@ -28,6 +28,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -338,11 +340,12 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             public void onClick(View v) {
                 //startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
                 //startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GET_FROM_GALLERY);
-                Log.d("fool", "lol");
+                //Intent intent = new Intent();
+                //intent.setType("image/*");
+                //intent.setAction(Intent.ACTION_GET_CONTENT);
+                //startActivityForResult(Intent.createChooser(intent, "Select Picture"), GET_FROM_GALLERY);
+                //Log.d("fool", "lol");
+                setTourProfilePicture();
             }
         });
 
@@ -376,6 +379,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 endDateText.setText(formatDate.format(end.getTime()));
     }};
 
+    /*
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -397,6 +401,29 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 e.printStackTrace();
             }
         }
+    }
+    */
+    private void setTourProfilePicture() {
+        MainActivity.getImage(true, new MainActivity.GetImageResult() {
+            @Override
+            public void onResult(String path) {
+                Log.d("SilkPath", path);
+                Bitmap bm;
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(MainActivity.getInstance().getContentResolver(), Uri.parse("file://" + path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] b = baos.toByteArray();
+                final String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                ImageView testProfilePicView = (ImageView) rootView.findViewById (R.id.testProfilePicView);
+                testProfilePicView.setImageBitmap(bm);
+
+            }
+        });
     }
 
     private void commitTour() {
