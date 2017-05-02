@@ -139,6 +139,12 @@ def hello():
     return "Testing..."
 
 
+@app.route("/invalidate", methods=['GET'])
+def invalidate():
+    get_session().expire_all()
+    return 'done'
+
+
 @app.route("/search", methods=['GET'])
 def search():
     """
