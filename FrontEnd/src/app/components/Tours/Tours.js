@@ -28,7 +28,6 @@ class Tours extends React.Component{
   render(){
     //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
-    console.log("display", this.props.tourDisplayProps);
 
     const modifyBtn = (this.props.tourDisplayProps.modifyBtn) ? (<p>
         <Link

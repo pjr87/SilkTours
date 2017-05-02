@@ -5,18 +5,24 @@
    vertical-align: top;
 }*/
 .TourColumnContainer {
-    font-size: 0; /*fix white space*/
 }
 .TourColumnContainer > .TourColumn {
     display: inline-block;
     vertical-align: top;
     width: 25%;
-    border: 1px solid red;
-    box-sizing: border-box;
-    text-align: center;
 }
 
 @media (max-width: 1000px) {
+    .TourColumnContainer > .TourColumn {
+        display: inline-block;
+        vertical-align: top;
+        width: 33.33%;
+        border: 1px solid red;
+        box-sizing: border-box;
+        text-align: center;
+    }
+}
+@media (max-width: 750px) {
     .TourColumnContainer > .TourColumn {
         display: inline-block;
         vertical-align: top;

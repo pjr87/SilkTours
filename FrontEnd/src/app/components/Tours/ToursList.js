@@ -52,12 +52,9 @@ class ToursList extends React.Component{
   }
 
   render(){
-    console.log("displayprops", this.props.tourDisplayProps);
     const col = this.props.col;
     const colTotal = this.props.colTotal
-    console.log(this.props.tours)
     const tours = this.props.tours.map(function(tour,index) {
-      console.log("tpropsinlist:",this.props);
       return (
             <Tours tour={tour} key={index} tourDisplayProps={this.props.tourDisplayProps}/>
       )

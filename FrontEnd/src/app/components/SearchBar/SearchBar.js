@@ -34,6 +34,8 @@ class SearchBar extends React.Component{
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.handleKeywordsChange = this.handleKeywordsChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.nc = this.numColumns();
+    window.addEventListener("resize", this.handlePageSizeChange);
   }
 
   handleSubmit(e) {
@@ -59,31 +61,40 @@ class SearchBar extends React.Component{
     this.setState({ keywords: e.target.value });
   }
   handlePageSizeChange(e) {
+    console.log("resize");
+    console.log(e);
     this.props.dispatch(setSelectedPageSize(e.target.value));
     this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
+    var _nc = this.numColumns()
+    if (_nc != this.nc) {
+        this.nc = _nc;
+        this.forceUpdate();
+    }
   }
   handlePageChange(e) {
     this.props.dispatch(setSelectedPage(e-1));
     this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
-
+  getTourList(tours) {
+      var nc = this.nc;
+      var colTourSizes = [0,nc<2?Infinity:0,nc<3?Infinity:0,nc<4?Infinity:0];
+      var colTours = [[], [], [], []];
+      for (var tourId in tours) {
+          var minCol = -1;
+          var minVal = Infinity;
+          for (var t in colTourSizes) {
+              if (colTourSizes[t] < minVal) {
+                  minVal = colTourSizes[t];
+                  minCol = t;
+              }
+          }
+          colTours[minCol].push(tours[tourId]);
+          colTourSizes[minCol] += tours[tourId].profile_image_height/tours[tourId].profile_image_width;
+      }
+      return colTours;
+  }
   render(){
-    var colTourSizes = [0,0,0,0];
-    var colTours = [[], [], [], []];
-    for (var tourId in this.props.tours) {
-        var minCol = -1;
-        var minVal = Infinity;
-        for (var t in colTourSizes) {
-            if (colTourSizes[t] < minVal) {
-                minVal = colTourSizes[t];
-                minCol = t;
-            }
-        }
-        colTours[minCol].push(this.props.tours[tourId]);
-        colTourSizes[minCol] += this.props.tours[tourId].profile_image_height/this.props.tours[tourId].profile_image_width;
-    }
-    console.log(colTours)
-
+    var colTours = this.getTourList(this.props.tours);
     return(
       <div>
         <Pager>
@@ -192,6 +203,16 @@ class SearchBar extends React.Component{
         </Pager>
       </div>
     );
+  }
+  numColumns() {
+      var w = window.innerWidth
+      if (w < 500)
+        return 1;
+      if (w < 750)
+        return 2;
+      if (w < 1000)
+        return 3;
+      return 4;
   }
 }
 
