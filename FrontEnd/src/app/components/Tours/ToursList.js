@@ -52,8 +52,6 @@ class ToursList extends React.Component{
   }
 
   render(){
-    const col = this.props.col;
-    const colTotal = this.props.colTotal
     const tours = this.props.tours.map(function(tour,index) {
       return (
             <Tours tour={tour} key={index} tourDisplayProps={this.props.tourDisplayProps}/>

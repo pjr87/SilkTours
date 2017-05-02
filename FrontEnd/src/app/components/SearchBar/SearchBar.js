@@ -61,37 +61,16 @@ class SearchBar extends React.Component{
     this.setState({ keywords: e.target.value });
   }
   handlePageSizeChange(e) {
-    console.log("resize");
-    console.log(e);
+    var _nc = this.numColumns()
+    if (_nc == this.nc) return;
+    this.nc = _nc;
+    this.forceUpdate();
     this.props.dispatch(setSelectedPageSize(e.target.value));
     this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
-    var _nc = this.numColumns()
-    if (_nc != this.nc) {
-        this.nc = _nc;
-        this.forceUpdate();
-    }
   }
   handlePageChange(e) {
     this.props.dispatch(setSelectedPage(e-1));
     this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
-  }
-  getTourList(tours) {
-      var nc = this.nc;
-      var colTourSizes = [0,nc<2?Infinity:0,nc<3?Infinity:0,nc<4?Infinity:0];
-      var colTours = [[], [], [], []];
-      for (var tourId in tours) {
-          var minCol = -1;
-          var minVal = Infinity;
-          for (var t in colTourSizes) {
-              if (colTourSizes[t] < minVal) {
-                  minVal = colTourSizes[t];
-                  minCol = t;
-              }
-          }
-          colTours[minCol].push(tours[tourId]);
-          colTourSizes[minCol] += tours[tourId].profile_image_height/tours[tourId].profile_image_width;
-      }
-      return colTours;
   }
   render(){
     var colTours = this.getTourList(this.props.tours);
@@ -176,16 +155,16 @@ class SearchBar extends React.Component{
         <br/>
         <div className={style.TourColumnContainer}>
           <div className={style.TourColumn}>
-            <ToursList col="0" colTotal="4" tours={colTours[0]} tourDisplayProps={{display:"large"}} />
+            <ToursList tours={colTours[0]} tourDisplayProps={{display:"large"}} />
           </div>
           <div className={style.TourColumn}>
-            <ToursList col="1" colTotal="4" tours={colTours[1]} tourDisplayProps={{display:"large"}} />
+            <ToursList tours={colTours[1]} tourDisplayProps={{display:"large"}} />
           </div>
           <div className={style.TourColumn}>
-            <ToursList col="2" colTotal="4" tours={colTours[2]} tourDisplayProps={{display:"large"}} />
+            <ToursList tours={colTours[2]} tourDisplayProps={{display:"large"}} />
           </div>
           <div className={style.TourColumn}>
-            <ToursList col="3" colTotal="4" tours={colTours[3]} tourDisplayProps={{display:"large"}} />
+            <ToursList tours={colTours[3]} tourDisplayProps={{display:"large"}} />
           </div>
         </div>
         <Pager>
@@ -206,13 +185,31 @@ class SearchBar extends React.Component{
   }
   numColumns() {
       var w = window.innerWidth
-      if (w < 500)
+      if (w < 600)
         return 1;
-      if (w < 750)
+      if (w < 950)
         return 2;
-      if (w < 1000)
+      if (w < 1250)
         return 3;
       return 4;
+  }
+  getTourList(tours) {
+      var nc = this.nc;
+      var colTourSizes = [0,nc<2?Infinity:0,nc<3?Infinity:0,nc<4?Infinity:0];
+      var colTours = [[], [], [], []];
+      for (var tourId in tours) {
+          var minCol = -1;
+          var minVal = Infinity;
+          for (var t in colTourSizes) {
+              if (colTourSizes[t] < minVal) {
+                  minVal = colTourSizes[t];
+                  minCol = t;
+              }
+          }
+          colTours[minCol].push(tours[tourId]);
+          colTourSizes[minCol] += tours[tourId].profile_image_height/tours[tourId].profile_image_width;
+      }
+      return colTours;
   }
 }
 

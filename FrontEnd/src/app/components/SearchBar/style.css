@@ -1,38 +1,24 @@
-/*.TourColumn {
-   width: 33%;
-   display: inline-block;
-   zoom: 1;
-   vertical-align: top;
-}*/
-.TourColumnContainer {
-}
 .TourColumnContainer > .TourColumn {
     display: inline-block;
     vertical-align: top;
     width: 25%;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1250px) {
     .TourColumnContainer > .TourColumn {
         display: inline-block;
         vertical-align: top;
         width: 33.33%;
-        border: 1px solid red;
-        box-sizing: border-box;
-        text-align: center;
     }
 }
-@media (max-width: 750px) {
+@media (max-width: 950px) {
     .TourColumnContainer > .TourColumn {
         display: inline-block;
         vertical-align: top;
         width: 50%;
-        border: 1px solid red;
-        box-sizing: border-box;
-        text-align: center;
     }
 }
-@media (max-width: 500px) { /*breakpoint*/
+@media (max-width: 600px) { /*breakpoint*/
     .TourColumnContainer > .TourColumn {
         display: block;
         width: 100%;
