@@ -77,7 +77,6 @@ public class MyTours extends Fragment {
                 try {
                     JSONObject jsObj = new JSONObject(response);
                     JSONArray jsArray = jsObj.getJSONArray(guide?"tours_teaching":"tours_taking");
-                    Log.d(TAG, "onPostExecute: finished JSON1");
                     tours = new Tour[jsArray.length()];
                     for(int i = 0; i < jsArray.length(); i++) {
                         tours[i] = new Tour();

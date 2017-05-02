@@ -1,14 +1,11 @@
 package com.silktours.android.database;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
-
-import com.silktours.android.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -211,15 +208,6 @@ public class MediaHandler {
         js.put("name", UUID.randomUUID() + ".jpg");
         js.put("file", encodedImage);
         return js;
-    }
-
-    public static String chooseFile() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        MainActivity.getInstance().startActivityForResult(Intent.createChooser(intent,
-                "Select Picture"), SELECT_PICTURE);
-        return null;
     }
 
     public static Bitmap getBitmapFromURL(String src) {

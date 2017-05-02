@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.silktours.android.database.Controller;
 import com.silktours.android.database.Media;
-import com.silktours.android.database.MediaHandler;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
@@ -187,11 +186,11 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         stops = tour.getStops();
         for(int i = 0; i < stops.length; i++) {
-            LatLng sydney = new LatLng(stops[i][0], stops[i][1]);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+            LatLng cordinates = new LatLng(stops[i][0], stops[i][1]);
+            googleMap.addMarker(new MarkerOptions().position(cordinates).title("Marker Title").snippet("Marker Description"));
 
             // For zooming automatically to the location of the marker
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(cordinates).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
 
@@ -260,13 +259,6 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                 } catch (Exception e) {
                     Log.e(TAG, "onPostExecute: ", e);
                 }
-                Bitmap bitmao = BitmapFactory.decodeResource(MainActivity.getInstance().getResources(), R.drawable.ic_message_bubble1);
-                try {
-                    MediaHandler.uploadProfileImage("tours", "2", bitmao);
-                } catch (Exception e ) {
-                    Log.e(TAG, "onPostExecute: ", e);
-                }
-
             }
         }.execute();
     }
