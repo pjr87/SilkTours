@@ -26,6 +26,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -111,6 +112,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
     ImageView ivCamera, ivGallery, ivUpload, ivImage;
     JSONArray stopJSON = new JSONArray();
+    private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
+
 
     private CredentialHandler credentialHandler;
     private User user;
@@ -404,6 +407,25 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     }
     */
     private void setTourProfilePicture() {
+
+        if (ContextCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+
+            //return;
+        }
+
         MainActivity.getImage(true, new MainActivity.GetImageResult() {
             @Override
             public void onResult(String path) {
