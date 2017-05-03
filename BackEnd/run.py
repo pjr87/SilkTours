@@ -228,6 +228,8 @@ def get_user_by_email(email):
     #    return notAuthorizedResponse()
     query = get_session().query(User).filter(User.email == email)
     user = safe_call(query, "first", None)
+    if user is None:
+        return jsonify({}), 404
     return jsonify(user.serialize())
 
 
