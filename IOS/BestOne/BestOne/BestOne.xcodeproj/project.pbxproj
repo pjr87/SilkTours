@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01F0EB0C8D3C66D33F051C56 /* Pods_BestOneWatchKitApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E81C95829604E30BAF4665A8 /* Pods_BestOneWatchKitApp.framework */; };
 		05BBFB6B1EB81F2700D7123C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BBFB551EB81E5200D7123C /* Alamofire.framework */; };
-		05BBFB6C1EB81F2700D7123C /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 05BBFB551EB81E5200D7123C /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		05BBFB721EB81F7D00D7123C /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
+		6396FD3F984A88223525973E /* Pods_BestOneWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */; };
 		848C23AE1BFB9748002BB239 /* BestOneWatchKitExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BB237E671BCF982C00FB9445 /* BestOneWatchKitExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		848C23B11BFB9748002BB239 /* BestOneWatchKitApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BB237E701BCF982C00FB9445 /* BestOneWatchKitApp.app */; };
+		B2E3019F4FBE6DA5BE523A18 /* Pods_BestOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */; };
 		BB048B2E1B6A147C00938583 /* LeftShopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB048B2C1B6A147C00938583 /* LeftShopTableViewCell.xib */; };
 		BB048B2F1B6A147C00938583 /* RightShopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB048B2D1B6A147C00938583 /* RightShopTableViewCell.xib */; };
 		BB048B311B6A14B100938583 /* RightShopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB048B301B6A14B100938583 /* RightShopTableViewCell.swift */; };
@@ -308,6 +310,7 @@
 		BB7D74F81B87B30900CCE68E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7D74F71B87B30900CCE68E /* AudioToolbox.framework */; };
 		BB7D74FA1B87B33D00CCE68E /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7D74F91B87B33D00CCE68E /* libz.1.dylib */; };
 		BBD5655D1BD02615005243B6 /* DetailsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD5655C1BD02615005243B6 /* DetailsInterfaceController.swift */; };
+		BFF1209EC6C5977B25AC50D4 /* Pods_BestOneWatchKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65948FD28637CBA95556A4CE /* Pods_BestOneWatchKitExtension.framework */; };
 		E040FB9B1BA7531900E9743C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E040FB9A1BA7531900E9743C /* NotificationCenter.framework */; };
 		E040FB9E1BA7531900E9743C /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E040FB9D1BA7531900E9743C /* TodayViewController.swift */; };
 		E040FBA11BA7531900E9743C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E040FB9F1BA7531900E9743C /* MainInterface.storyboard */; };
@@ -422,7 +425,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				05BBFB6C1EB81F2700D7123C /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +467,15 @@
 /* Begin PBXFileReference section */
 		05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		05BBFB711EB81F7D00D7123C /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPI.swift; sourceTree = "<group>"; };
+		24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.release.xcconfig"; sourceTree = "<group>"; };
+		3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOneWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3297BB0C3C5FFE2FC30134F2 /* Pods-BestOneWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.debug.xcconfig"; sourceTree = "<group>"; };
+		330D109A343D02C4D24685AC /* Pods-BestOneWatchKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitApp/Pods-BestOneWatchKitApp.release.xcconfig"; sourceTree = "<group>"; };
+		4677DAC891DAF83EE835FBA6 /* Pods-BestOneWatchKitExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension.release.xcconfig"; sourceTree = "<group>"; };
+		65948FD28637CBA95556A4CE /* Pods_BestOneWatchKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOneWatchKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A91498FCA52F59763A610DD /* Pods-BestOneWatchKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitApp/Pods-BestOneWatchKitApp.debug.xcconfig"; sourceTree = "<group>"; };
+		B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOne.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6A7F478614EB73EFE482B26 /* Pods-BestOne.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOne.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOne/Pods-BestOne.debug.xcconfig"; sourceTree = "<group>"; };
 		BB048B2C1B6A147C00938583 /* LeftShopTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftShopTableViewCell.xib; sourceTree = "<group>"; };
 		BB048B2D1B6A147C00938583 /* RightShopTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RightShopTableViewCell.xib; sourceTree = "<group>"; };
 		BB048B301B6A14B100938583 /* RightShopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightShopTableViewCell.swift; sourceTree = "<group>"; };
@@ -725,6 +736,7 @@
 		BB7D74F71B87B30900CCE68E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BB7D74F91B87B33D00CCE68E /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libz.1.dylib; sourceTree = "<group>"; };
 		BBD5655C1BD02615005243B6 /* DetailsInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsInterfaceController.swift; sourceTree = "<group>"; };
+		BDDE769C55D84B161FE6696F /* Pods-BestOne.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOne.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOne/Pods-BestOne.release.xcconfig"; sourceTree = "<group>"; };
 		E040FB991BA7531900E9743C /* BestOneWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BestOneWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E040FB9A1BA7531900E9743C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		E040FB9D1BA7531900E9743C /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -753,6 +765,8 @@
 		E040FBC61BA7535F00E9743C /* shop_item1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shop_item1@3x.png"; sourceTree = "<group>"; };
 		E0EF16221BE396940037D2F3 /* BestOneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestOneUITests.swift; sourceTree = "<group>"; };
 		E0EF16241BE396940037D2F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E60C2AE676C54F43D1C803B7 /* Pods-BestOneWatchKitExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		E81C95829604E30BAF4665A8 /* Pods_BestOneWatchKitApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOneWatchKitApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -760,6 +774,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFF1209EC6C5977B25AC50D4 /* Pods_BestOneWatchKitExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,6 +804,15 @@
 				BB39C8CC1B6906A500681FB2 /* MessageUI.framework in Frameworks */,
 				BB7D74DB1B87AFB500CCE68E /* GoogleMobileAds.framework in Frameworks */,
 				BB59449B1B6FADA200D780AC /* libFlurry_6.7.0.a in Frameworks */,
+				B2E3019F4FBE6DA5BE523A18 /* Pods_BestOne.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C70266C8FA4AEE61B6FDF7D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01F0EB0C8D3C66D33F051C56 /* Pods_BestOneWatchKitApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +821,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E040FB9B1BA7531900E9743C /* NotificationCenter.framework in Frameworks */,
+				6396FD3F984A88223525973E /* Pods_BestOneWidget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,6 +857,21 @@
 				BB048B381B6A250A00938583 /* BaseViewController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		2C20651B6D464F98BA7FF16B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B6A7F478614EB73EFE482B26 /* Pods-BestOne.debug.xcconfig */,
+				BDDE769C55D84B161FE6696F /* Pods-BestOne.release.xcconfig */,
+				7A91498FCA52F59763A610DD /* Pods-BestOneWatchKitApp.debug.xcconfig */,
+				330D109A343D02C4D24685AC /* Pods-BestOneWatchKitApp.release.xcconfig */,
+				E60C2AE676C54F43D1C803B7 /* Pods-BestOneWatchKitExtension.debug.xcconfig */,
+				4677DAC891DAF83EE835FBA6 /* Pods-BestOneWatchKitExtension.release.xcconfig */,
+				3297BB0C3C5FFE2FC30134F2 /* Pods-BestOneWidget.debug.xcconfig */,
+				24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		BB14B0961B6B5F8D0032E7CC /* MSSlidingPanelController */ = {
@@ -907,6 +947,7 @@
 				BB39C7571B66AAEE00681FB2 /* Frameworks */,
 				BB39C72F1B66A6A200681FB2 /* BestOne */,
 				BB39C72E1B66A6A200681FB2 /* Products */,
+				2C20651B6D464F98BA7FF16B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1042,6 +1083,10 @@
 				BB5944931B6FABBB00D780AC /* Security.framework */,
 				BB39C8CB1B6906A500681FB2 /* MessageUI.framework */,
 				E040FB9A1BA7531900E9743C /* NotificationCenter.framework */,
+				B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */,
+				E81C95829604E30BAF4665A8 /* Pods_BestOneWatchKitApp.framework */,
+				65948FD28637CBA95556A4CE /* Pods_BestOneWatchKitExtension.framework */,
+				3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */,
 			);
 			name = Frameworks;
 			path = BestOne/Frameworks;
@@ -1338,9 +1383,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB237E831BCF982C00FB9445 /* Build configuration list for PBXNativeTarget "BestOneWatchKitExtension" */;
 			buildPhases = (
+				5E7131CD592D954EA91586C3 /* [CP] Check Pods Manifest.lock */,
 				BB237E631BCF982C00FB9445 /* Sources */,
 				BB237E641BCF982C00FB9445 /* Frameworks */,
 				BB237E651BCF982C00FB9445 /* Resources */,
+				920DEFEF4E064890C6CFABDB /* [CP] Embed Pods Frameworks */,
+				55B0F6933A7A4C3D39524816 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1355,8 +1403,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB237E821BCF982C00FB9445 /* Build configuration list for PBXNativeTarget "BestOneWatchKitApp" */;
 			buildPhases = (
+				E3933DF788C8B6497EF32ECC /* [CP] Check Pods Manifest.lock */,
 				BB237E6E1BCF982C00FB9445 /* Resources */,
 				848C23B21BFB9748002BB239 /* Embed App Extensions */,
+				C70266C8FA4AEE61B6FDF7D0 /* Frameworks */,
+				E0A0A4B5554D3CDAD1DF9D12 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1372,12 +1423,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB39C74A1B66A6A200681FB2 /* Build configuration list for PBXNativeTarget "BestOne" */;
 			buildPhases = (
+				BAA9A1F4E672C89363E95E29 /* [CP] Check Pods Manifest.lock */,
 				BB39C7291B66A6A200681FB2 /* Sources */,
 				BB39C72A1B66A6A200681FB2 /* Frameworks */,
 				BB39C72B1B66A6A200681FB2 /* Resources */,
 				E040FBA91BA7531900E9743C /* Embed App Extensions */,
 				848C23B31BFB9748002BB239 /* Embed Watch Content */,
 				05BBFB6F1EB81F2700D7123C /* Embed Frameworks */,
+				3CEE8A4E5A105A8851F9D434 /* [CP] Embed Pods Frameworks */,
+				3A399966C6050BB6BBD8011C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1395,9 +1449,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E040FBA81BA7531900E9743C /* Build configuration list for PBXNativeTarget "BestOneWidget" */;
 			buildPhases = (
+				5D6787F357FA8EB6EC5A5A6B /* [CP] Check Pods Manifest.lock */,
 				E040FB951BA7531900E9743C /* Sources */,
 				E040FB961BA7531900E9743C /* Frameworks */,
 				E040FB971BA7531900E9743C /* Resources */,
+				030BB34C1E8E51D6903A970A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1845,6 +1901,159 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		030BB34C1E8E51D6903A970A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3A399966C6050BB6BBD8011C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOne/Pods-BestOne-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3CEE8A4E5A105A8851F9D434 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOne/Pods-BestOne-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		55B0F6933A7A4C3D39524816 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5D6787F357FA8EB6EC5A5A6B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5E7131CD592D954EA91586C3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		920DEFEF4E064890C6CFABDB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAA9A1F4E672C89363E95E29 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E0A0A4B5554D3CDAD1DF9D12 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWatchKitApp/Pods-BestOneWatchKitApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E3933DF788C8B6497EF32ECC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BB237E631BCF982C00FB9445 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1975,6 +2184,7 @@
 /* Begin XCBuildConfiguration section */
 		BB237E7E1BCF982C00FB9445 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E60C2AE676C54F43D1C803B7 /* Pods-BestOneWatchKitExtension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1995,6 +2205,7 @@
 		};
 		BB237E7F1BCF982C00FB9445 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4677DAC891DAF83EE835FBA6 /* Pods-BestOneWatchKitExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2015,6 +2226,7 @@
 		};
 		BB237E801BCF982C00FB9445 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A91498FCA52F59763A610DD /* Pods-BestOneWatchKitApp.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2033,6 +2245,7 @@
 		};
 		BB237E811BCF982C00FB9445 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 330D109A343D02C4D24685AC /* Pods-BestOneWatchKitApp.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2141,8 +2354,9 @@
 		};
 		BB39C74B1B66A6A200681FB2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6A7F478614EB73EFE482B26 /* Pods-BestOne.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2150,13 +2364,17 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = F2A662GW7A;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/BestOne/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/BestOne/Frameworks",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = BestOne/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/BestOne/3rdParty/Flurry/Flurry";
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
+					"$(inherited)",
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne;
@@ -2170,8 +2388,9 @@
 		};
 		BB39C74C1B66A6A200681FB2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BDDE769C55D84B161FE6696F /* Pods-BestOne.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -2179,7 +2398,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = F2A662GW7A;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/BestOne/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/BestOne/Frameworks",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = BestOne/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2187,6 +2409,7 @@
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
 					"-ObjC",
+					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2198,6 +2421,7 @@
 		};
 		E040FBA61BA7531900E9743C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3297BB0C3C5FFE2FC30134F2 /* Pods-BestOneWidget.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2215,6 +2439,7 @@
 		};
 		E040FBA71BA7531900E9743C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
