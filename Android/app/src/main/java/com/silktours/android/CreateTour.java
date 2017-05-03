@@ -65,6 +65,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.silktours.android.database.Media;
+import com.silktours.android.database.MediaHandler;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
@@ -95,7 +97,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private View rootView;
     private Tour tour = new Tour();
     private EditText tourName, tourDesc, price, language, additionalAccommodation, additionalTransport, additionalFood;
-    private TextView startDateText, endDateText, addedLocationText;
+    private ImageView profilePicView;
+    private TextView startDateText, endDateText, addedLocationText, profilePicViewHint;
     private ListView stopsList;
     private Button startDateBtn, endDateBtn, profilePicButton;
     private Calendar start = Calendar.getInstance();
@@ -104,8 +107,10 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private MapView mMapView;
     private DateFormat formatDate = DateFormat.getDateInstance();
     private Place placeSelected;
+    private String encodedProfileImage;
+    Bitmap bm;
+    private String postResult;
 
-    public static final int GET_FROM_GALLERY = 3;
 
     ArrayList<String> stops = new ArrayList<String>();
     ArrayAdapter<String> stopsAdapter;
@@ -142,6 +147,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         additionalTransport = (EditText) rootView.findViewById((R.id.additionalTransport));
         additionalFood = (EditText) rootView.findViewById((R.id.additionalFood));
         profilePicButton = (Button) rootView.findViewById(R.id.profilePicButton);
+        profilePicView = (ImageView)rootView.findViewById(R.id.profilePicView);
+        profilePicViewHint = (TextView) rootView.findViewById(R.id.profilePicViewHint);
 
         stopsList = (ListView) rootView.findViewById(R.id.stopsList);
         stopsAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.tours_stops_list, stops);
@@ -280,6 +287,13 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
 
+                for (int i = 0; i < postResult.length(); i++){
+                    char c = postResult.charAt(i);
+                    //Process char
+                }
+
+                //MediaHandler.uploadProfileImage("tour", tour.get, bm);
+
                 /*
                 final User user = new User();
                 user.set(User.FIRST_NAME, "Andrew");
@@ -341,13 +355,13 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         profilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
-                //startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-                //Intent intent = new Intent();
-                //intent.setType("image/*");
-                //intent.setAction(Intent.ACTION_GET_CONTENT);
-                //startActivityForResult(Intent.createChooser(intent, "Select Picture"), GET_FROM_GALLERY);
-                //Log.d("fool", "lol");
+                setTourProfilePicture();
+            }
+        });
+
+        profilePicView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 setTourProfilePicture();
             }
         });
@@ -382,30 +396,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 endDateText.setText(formatDate.format(end.getTime()));
     }};
 
-    /*
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        //Detects request codes
-        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            Log.d("image", selectedImage.toString());
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selectedImage);
-                ImageView testProfilePicView = (ImageView) rootView.findViewById (R.id.testProfilePicView);
-                testProfilePicView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    */
     private void setTourProfilePicture() {
 
         if (ContextCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -430,7 +420,6 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             @Override
             public void onResult(String path) {
                 Log.d("SilkPath", path);
-                Bitmap bm;
                 try {
                     bm = MediaStore.Images.Media.getBitmap(MainActivity.getInstance().getContentResolver(), Uri.parse("file://" + path));
                 } catch (IOException e) {
@@ -440,9 +429,9 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] b = baos.toByteArray();
-                final String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                ImageView testProfilePicView = (ImageView) rootView.findViewById (R.id.testProfilePicView);
-                testProfilePicView.setImageBitmap(bm);
+                encodedProfileImage = Base64.encodeToString(b, Base64.DEFAULT);
+                profilePicView.setImageBitmap(bm);
+                profilePicViewHint.setText("");
 
             }
         });
@@ -453,7 +442,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
             @Override
             public void run() {
                 try {
-                    tour.commitCreate();
+                    postResult =  tour.commitCreate();
                     postCommit(false);
                 } catch (IOException e) {
                     postCommit(true);

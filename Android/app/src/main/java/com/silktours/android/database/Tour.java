@@ -124,12 +124,13 @@ public class Tour extends Base implements Serializable {
      * Call after creating a new object to commit the changes to the database
      * @throws IOException
      */
-    public void commitCreate() throws IOException {
+    public String commitCreate() throws IOException {
         String url = Common.SERVER_URL + "/tours";
         set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "POST");
         Log.d("Server", result);
+        return result;
     }
 
     /**
