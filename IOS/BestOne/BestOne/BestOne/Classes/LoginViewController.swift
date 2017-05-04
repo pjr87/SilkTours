@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AWSCognito
 
 class LoginViewController: UIViewController {
     
@@ -39,6 +40,7 @@ class LoginViewController: UIViewController {
     // MARK: - Actions
     @IBAction func onSignInBtnClicked(_ sender: AnyObject) {
         print("Button \"Sign in\" was clicked")
+        //email = emailTxtFld?.text
         performSegue(withIdentifier: "showMenu", sender: self)
     }
     

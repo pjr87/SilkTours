@@ -306,7 +306,7 @@
                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="9.3400001525878906"/>
                                         <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="15" maxY="0.0"/>
-                                        <state key="normal" title="Sign in with Twitter" image="twitter_icon.png">
+                                        <state key="normal" title="Sign in with Google" image="twitter_icon.png">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -1754,7 +1754,7 @@
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="LJH-r3-oww"/>
         <segue reference="p3z-8s-3MO"/>
-        <segue reference="XLT-FS-Lmx"/>
     </inferredMetricsTieBreakers>
 </document>
