@@ -25,6 +25,8 @@ from PIL import Image
 from io import BytesIO
 from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
+from srptools import SRPContext
+from warrant.aws_srp import AWSSRP
 import sys
 
 #outputFile = open('out.log', 'w')
@@ -35,8 +37,14 @@ app = application
 app.config['DEBUG'] = True
 CORS(app)
 
-client = boto3.client('cognito-identity', region_name='us-east-1')
+identityPoolId = "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349"
+userPoolId = "us-east-1_917Igx5Ld"
+clientId = "2bs9l9t5ol4m09fgfmadk3jmh7"
+awsAccountId = "803858137669"
+region = "us-east-1"
 
+client = boto3.client('cognito-identity', region_name='us-east-1')
+id_provider = boto3.client('cognito-idp', region_name='us-east-1')
 
 def checkLogin():
     if request.args.get("bypass") == 'true':
@@ -233,16 +241,47 @@ def get_user_by_email(email):
     return jsonify(user.serialize())
 
 
-'''
-@app.route('/users/<id>/login/<accessKeyID>', methods=['PUT'])
-def login(id, accessKeyID):
-    user = session.query(User).get(id)
-    session.add(user)
-    session.commit()
-    commitSession()
-    return jsonify(user.serialize())
-'''
+@app.route('/login', methods=['POST', 'PUT'])
+def login():
+    customLoginKey = "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld"
+    data = request.get_json()
+    loginType = data.get("type", None)
 
+    if loginType is None:
+        return "type not specified", 422
+
+    if loginType == "custom":
+        username = data.get("username")
+        password = data.get("password")
+        aws = AWSSRP(username=username, password=password, pool_id=userPoolId,
+             client_id=clientId)
+        tokens = aws.authenticate_user()["AuthenticationResult"]
+        idObj = client.get_id(
+            AccountId=awsAccountId,
+            IdentityPoolId=identityPoolId,
+            Logins={
+                customLoginKey: tokens["IdToken"]
+            }
+        )
+        result = {
+            "IdentityId": idObj["IdentityId"],
+            "Logins": {
+                customLoginKey: tokens["IdToken"]
+            }
+        }
+        return jsonify(result)
+    elif loginType == "facebook":
+        return "not implemented", 501
+    elif loginType == "google":
+        return "not implemented", 501
+    else:
+        return "not implemented", 501
+
+
+@app.route('/create_account', methods=['POST', 'PUT'])
+def create_account():
+    data = request.get_json()
+    return jsonify({})
 
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])

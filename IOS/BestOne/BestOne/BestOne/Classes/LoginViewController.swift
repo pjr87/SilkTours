@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AWSCore
 import AWSCognito
 
 class LoginViewController: UIViewController {
@@ -16,10 +17,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var mainScrollViewBottomConstraint: NSLayoutConstraint?
     @IBOutlet weak var scrollView: UIScrollView?
     fileprivate var isKeyboardShown: Bool = false
+    var devAuthClient: DeveloperAuthenticationClient?
+    var fake: FakeClass?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //add observers for keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillChangeFrame(_:)), name: NSNotification.Name(rawValue: "UIKeyboardWillChangeFrameNotification"), object: nil)
     }
