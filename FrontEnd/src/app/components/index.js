@@ -35,3 +35,5 @@ export Privacy from './Policies/Privacy';
 export PendingReview from './PendingReview/PendingReview';
 
 export Confirm from './Confirm/Confirm'
+
+export TourEditContents from './TourEditContents/TourEditContents';

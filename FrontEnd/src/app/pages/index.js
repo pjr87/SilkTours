@@ -20,3 +20,4 @@ export LandingPage from './LandingPage/LandingPage';
 export TermsPage from './Policies/Terms';
 export PrivacyPage from './Policies/Privacy';
 export PolicyPage from './Policies/Policies';
+export TourEditPage from './TourEditPage/TourEditPage';

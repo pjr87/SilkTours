@@ -177,8 +177,19 @@ class Tours extends React.Component{
           <Thumbnail src={this.props.tour.profile_image} >
             <div>
             <p>{this.props.tour.name}</p>
-            <p>review: </p>
-            <p>price: ${this.props.tour.price}</p>
+            { this.props.tourDisplayProps.isGuide && 
+              <p>
+                <span className={style.confirmBodySideHeader}>Tourist:</span> 
+                  {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
+              </p>
+            }
+
+            { !this.props.tourDisplayProps.isGuide && 
+              <p>
+                <span className={style.confirmBodySideHeader}>Guide:</span> 
+                  {this.props.tour.guides[0].first_name + " " + this.props.tour.guides[0].last_name}
+              </p>
+            }
             <div className={style.buttonContainer}>
               <Link
                 to={{
