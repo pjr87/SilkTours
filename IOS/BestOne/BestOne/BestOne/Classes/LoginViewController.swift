@@ -9,17 +9,16 @@
 import UIKit
 import AWSCore
 import AWSCognito
+import AWSCognitoIdentityProvider
 
 class LoginViewController: UIViewController {
     
-    @IBOutlet weak var emailTxtFld: UITextField?
-    @IBOutlet weak var passwordTxtFld: UITextField?
+    @IBOutlet weak var emailTxtFld: UITextField!
+    @IBOutlet weak var passwordTxtFld: UITextField!
     @IBOutlet weak var mainScrollViewBottomConstraint: NSLayoutConstraint?
     @IBOutlet weak var scrollView: UIScrollView?
     fileprivate var isKeyboardShown: Bool = false
-    var devAuthClient: DeveloperAuthenticationClient?
-    var fake: FakeClass?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         //add observers for keyboard
@@ -43,7 +42,9 @@ class LoginViewController: UIViewController {
     @IBAction func onSignInBtnClicked(_ sender: AnyObject) {
         print("Button \"Sign in\" was clicked")
         //email = emailTxtFld?.text
-        performSegue(withIdentifier: "showMenu", sender: self)
+        BackendAPI.login(email: emailTxtFld.text!, password: passwordTxtFld.text!, completion: {() -> Void in
+            self.performSegue(withIdentifier: "showMenu", sender: self)
+        })
     }
     
     @IBAction func onSignInWithFacebookClicked(_ sender: AnyObject) {
