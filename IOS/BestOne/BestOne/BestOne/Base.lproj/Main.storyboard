@@ -1754,7 +1754,7 @@
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LJH-r3-oww"/>
         <segue reference="p3z-8s-3MO"/>
+        <segue reference="XLT-FS-Lmx"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -7,7 +7,9 @@ target 'BestOne' do
 
   # Pods for BestOne
   pod 'AWSCognito'
+  pod 'AWSCognitoIdentityProvider'
   pod 'Alamofire', '~> 4.4'
+  pod 'UICKeyChainStore'
 end
 
 target 'BestOneWatchKitApp' do
