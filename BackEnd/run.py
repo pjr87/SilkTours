@@ -292,7 +292,7 @@ def create_account():
     if email is None or password is None:
         return "Must specify username and password", 422
 
-    u = Cognito(userPoolId, clientId)
+    u = Cognito(userPoolId, clientId, user_pool_region=region)
     data = u.register(email, password, email=email)
     print(data)
     return jsonify({})
@@ -307,7 +307,7 @@ def confirm_sign_up():
     if email is None or password is None or code is None:
         return "Must specify username, password, and confirmation code", 422
 
-    u = Cognito(userPoolId, clientId)
+    u = Cognito(userPoolId, clientId, user_pool_region=region)
     try:
         u.confirm_sign_up(code, username=email)
     except Exception:
