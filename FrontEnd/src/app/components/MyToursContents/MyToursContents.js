@@ -40,7 +40,7 @@ class MyToursContents extends React.Component{
     if(isGuide)
     {
       obj = {
-      "state": "C",
+      "state": "D",
       "id_user": null
       };
     }

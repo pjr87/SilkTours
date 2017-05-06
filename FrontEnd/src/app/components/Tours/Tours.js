@@ -72,6 +72,13 @@ class Tours extends React.Component{
           </Link>
         </p>) : null;
 
+    let containsParticipants = false;
+    if( this.props.tour.participants.length > 0 )
+    {
+      containsParticipants = true;
+    }
+    console.log("contains: ", containsParticipants);
+
       const cancelTourBody =  <div>
                                 Are you sure you want to delete the following scheduled tour?
                                 <div className={style.confirmBody}>
@@ -79,7 +86,7 @@ class Tours extends React.Component{
                                   <p><span className={style.confirmBodySideHeader}>Start Time:</span> {this.props.tour.start_date_time}</p>
                                   <p><span className={style.confirmBodySideHeader}>End Time:</span> {this.props.tour.end_date_time}</p>
                                   
-                                  { this.props.tourDisplayProps.isGuide && 
+                                  { this.props.tourDisplayProps.isGuide && containsParticipants &&
                                   <p>
                                     <span className={style.confirmBodySideHeader}>Tourist:</span> 
                                       {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
@@ -166,6 +173,8 @@ class Tours extends React.Component{
     }
 
 
+
+
     if(this.props.tourDisplayProps.display == "small"){
 
 
@@ -176,10 +185,10 @@ class Tours extends React.Component{
         <Col xs={12} md={6} lg={6}>
           <Thumbnail src={this.props.tour.profile_image} >
             <div>
-            <p>{this.props.tour.name}</p>
-            { this.props.tourDisplayProps.isGuide && 
+            <p>{this.props.tour.name}  {this.props.tour.id_tourEvent}</p>
+            { this.props.tourDisplayProps.isGuide && this.props.tour.participants.length > 0 && 
               <p>
-                <span className={style.confirmBodySideHeader}>Tourist:</span> 
+                <span className={style.confirmBodySideHeader}>Tourist:</span>
                   {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
               </p>
             }
