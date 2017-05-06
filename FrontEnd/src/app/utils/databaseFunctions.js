@@ -138,6 +138,8 @@ export function registerNewUser(json) {
 
 export function updateExistingUser(id, json, auth) {
   let url = SERVER_URL + '/users/' + id;
+  console.log("user");
+  console.log(json);
   return axios.put(url, json,
     {
       headers:{

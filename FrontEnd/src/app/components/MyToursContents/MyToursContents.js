@@ -14,6 +14,7 @@ import MyTours from './MyTours';
 import Messages from './Messages';
 import WishList from './WishList';
 import { getUser } from '../../actions/AuthActions';
+import * as service from '../../utils/databaseFunctions.js';
 
 class MyToursContents extends React.Component{
   constructor() {
@@ -33,6 +34,27 @@ class MyToursContents extends React.Component{
   cancelTourEvent(tourEventId, isGuide){
     console.log(tourEventId, " ", isGuide);
     console.log("CLICKED222");
+
+    var obj = {};
+
+    if(isGuide)
+    {
+      obj = {
+      "state": "C",
+      "id_user": null
+      };
+    }
+    else
+    {
+      obj = {
+      "state": "A",
+      "id_user": null
+      }
+    }
+   
+    service.putTourEventById(tourEventId, JSON.parse(JSON.stringify(obj)), this.props.auth).then(function(response){
+      console.log("response", response);
+    });
   }
 
   componentDidMount(){

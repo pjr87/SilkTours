@@ -46,6 +46,10 @@ class TourEditContents extends React.Component{
         this.setState({isLoading:true});
   }
 
+  componentWillUpdate(nextProps){
+    console.log("nextProps");
+    console.log(nextProps);
+  }
 
   render(){
     console.log("mytour");
@@ -64,6 +68,21 @@ class TourEditContents extends React.Component{
       return (
         <option value={option.value}>{option.optionName}</option>
     )}, this);
+
+    const numTourists = [];
+
+    for(var i = 1; i <= 20; i++)
+    {
+      numTourists.push(i);
+    }
+
+
+    const touristOptions = numTourists.map(function(option){
+      return(
+        <option value={option}>{option}</option>
+        )
+    }, this)
+
 
     return (
       <div>
@@ -131,6 +150,61 @@ class TourEditContents extends React.Component{
                         </FormControl>
                       </Col>
                     </FormGroup>
+
+
+                    <FormGroup controlId={this.props.id}>
+                      <Col smOffset={2} xs={4} md={2}>
+                        <ControlLabel>Food</ControlLabel>
+                      </Col>
+                      <Col xs={8} md={6} >
+                            <FormControl style={{resize: "vertical"}} componentClass="textarea" onChange={this.handleChange.bind(this, 'additional_food')} value={this.props.selectedTour.additional_food} />
+                      </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId={this.props.id}>
+                      <Col smOffset={2} xs={4} md={2}>
+                        <ControlLabel>Transport</ControlLabel>
+                      </Col>
+                      <Col xs={8} md={6} >
+                            <FormControl style={{resize: "vertical"}} componentClass="textarea" onChange={this.handleChange.bind(this, 'additional_transport')} value={this.props.selectedTour.additional_transport} />
+                      </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId={this.props.id}>
+                      <Col smOffset={2} xs={4} md={2}>
+                        <ControlLabel>Accomodations</ControlLabel>
+                      </Col>
+                      <Col xs={8} md={6} >
+                            <FormControl style={{resize: "vertical"}} componentClass="textarea" onChange={this.handleChange.bind(this, 'additional_accomadation')} value={this.props.selectedTour.additional_accomadation} />
+                      </Col>
+                    </FormGroup>
+
+
+                    <FormGroup controlId={this.props.id}>
+                      <Col smOffset={2} xs={4} md={2}  >
+                        <ControlLabel>Min Group Size</ControlLabel>
+                      </Col>
+                      <Col xs={8} md={2}>
+                        <FormControl componentClass="select" onChange={this.handleChange.bind(this, 'min_group_size')} defaultValue={this.props.selectedTour.min_group_size} selected={this.props.selectedTour.length}>
+                          {touristOptions}
+                        </FormControl>
+                      </Col>
+
+                      <Col xs={4} md={2}  >
+                        <ControlLabel>Max Group Size</ControlLabel>
+                      </Col>
+                      <Col xs={8} md={2}>
+                        <FormControl componentClass="select" onChange={this.handleChange.bind(this, 'max_group_size')} defaultValue={this.props.selectedTour.max_group_size} selected={this.props.selectedTour.length}>
+                          {touristOptions}
+                        </FormControl>
+                      </Col>
+                    </FormGroup>
+
+                    <div>
+                      <Col smOffset={2}>
+                        <div className={style.formHeader}>Address Fields</div>
+                      </Col>
+                    </div>
 
 
                     <FormGroup validationState = {this.props.errorMessage ? "error" : "success"}>
