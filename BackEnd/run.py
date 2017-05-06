@@ -19,8 +19,15 @@ from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
 from sqlalchemy import func, or_, and_
 import boto3
+import urllib
+from io import StringIO
+#from PIL import Image
+from io import BytesIO
 from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
+from srptools import SRPContext
+from warrant.aws_srp import AWSSRP
+from warrant import Cognito
 import sys
 
 #outputFile = open('out.log', 'w')
@@ -31,8 +38,14 @@ app = application
 app.config['DEBUG'] = True
 CORS(app)
 
-client = boto3.client('cognito-identity', region_name='us-east-1')
+identityPoolId = "us-east-1:5d00c8d9-83d3-47d3-ad69-8fd5b8b70349"
+userPoolId = "us-east-1_917Igx5Ld"
+clientId = "2bs9l9t5ol4m09fgfmadk3jmh7"
+awsAccountId = "803858137669"
+region = "us-east-1"
 
+client = boto3.client('cognito-identity', region_name='us-east-1')
+id_provider = boto3.client('cognito-idp', region_name='us-east-1')
 
 def checkLogin():
     if request.args.get("bypass") == 'true':
@@ -135,6 +148,12 @@ def hello():
     return "Testing..."
 
 
+@app.route("/invalidate", methods=['GET'])
+def invalidate():
+    get_session().expire_all()
+    return 'done'
+
+
 @app.route("/search", methods=['GET'])
 def search():
     """
@@ -218,19 +237,52 @@ def get_user_by_email(email):
     #    return notAuthorizedResponse()
     query = get_session().query(User).filter(User.email == email)
     user = safe_call(query, "first", None)
+    if user is None:
+        return jsonify({}), 404
     return jsonify(user.serialize())
 
 
-'''
-@app.route('/users/<id>/login/<accessKeyID>', methods=['PUT'])
-def login(id, accessKeyID):
-    user = session.query(User).get(id)
-    session.add(user)
-    session.commit()
-    commitSession()
-    return jsonify(user.serialize())
-'''
+@app.route('/login', methods=['POST', 'PUT'])
+def login():
+    customLoginKey = "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld"
+    data = request.get_json()
+    loginType = data.get("type", None)
 
+    if loginType is None:
+        return "type not specified", 422
+
+    if loginType == "custom":
+        username = data.get("username")
+        password = data.get("password")
+        aws = AWSSRP(username=username, password=password, pool_id=userPoolId,
+             client_id=clientId, client=id_provider)
+        tokens = aws.authenticate_user(id_provider)["AuthenticationResult"]
+        idObj = client.get_id(
+            AccountId=awsAccountId,
+            IdentityPoolId=identityPoolId,
+            Logins={
+                customLoginKey: tokens["IdToken"]
+            }
+        )
+        result = {
+            "IdentityId": idObj["IdentityId"],
+            "Logins": {
+                customLoginKey: tokens["IdToken"]
+            }
+        }
+        return jsonify(result)
+    elif loginType == "facebook":
+        return "not implemented", 501
+    elif loginType == "google":
+        return "not implemented", 501
+    else:
+        return "not implemented", 501
+
+
+@app.route('/create_account', methods=['POST', 'PUT'])
+def create_account():
+    data = request.get_json()
+    return jsonify({})
 
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])
@@ -523,14 +575,22 @@ def get_image(tourid):
     medias = safe_call(query, "all", None)
     return jsonify([media.serialize() for media in medias])
 
+def hour_to_ts(hour):
+    "HH:MM AM"
+    zone = "AM"
+    if hour > 12:
+        hour -= 12
+        zone = "PM"
+    minute = (hour - int(hour)) * 60
+    return "%d:%02d %s" % (int(hour), int(minute), zone)
 
 def add_hour_entries(l, start, end, length):
     sh = start.hour + start.minute/60.0
     eh = end.hour + end.minute/60.0
     while sh <= eh:
         l.append({
-            "start": sh,
-            "end": sh+length
+            "start": hour_to_ts(sh),
+            "end": hour_to_ts(sh+length)
         })
         sh += length
 
@@ -663,6 +723,41 @@ def has_no_empty_params(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
+'''
+@app.route("/resize_images", methods=['GET'])
+def resize_images():
+    query = get_session().query(Tour)
+    tours = safe_call(query, "all", None)
+    i = 0
+    for tour in tours:
+        print("Tour %d of %d" % (i, len(tours)))
+        i += 1
+        URL = tour.profile_image
+        print(URL)
+        if URL is None or URL == "":
+            continue
+
+        file = None
+        try:
+            with urllib.request.urlopen(URL) as url:
+                file = url.read()
+        except:
+            continue
+        im = None
+        try:
+            im = Image.open(BytesIO(file))
+        except Exception as e:
+            print(e)
+            print("fail")
+            continue
+        width, height = im.size
+        tour.profile_image_width = width
+        tour.profile_image_height = height
+        print("success: w: %d, h: %d" % (width, height))
+        get_session().add(tour)
+    commitSession()
+    return "done"
+'''
 
 @app.route("/docs")
 def site_map():

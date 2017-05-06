@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.silktours.android.LoginActivity;
 import com.silktours.android.MainActivity;
+import com.silktours.android.Profile;
 import com.silktours.android.database.User;
 
 import org.json.JSONException;
@@ -34,7 +36,7 @@ public class CredentialHandler {
 
 
 
-    public static void logout(Activity context) {
+    public static void logout(Activity context, Fragment resumeFrom) {
         expireDate = 0;
         if (user == null)
             user = new User();
@@ -43,14 +45,20 @@ public class CredentialHandler {
         user.set(User.IDENTITY_ID, identityId);
         persist(context);
         Intent intent = new Intent(context, LoginActivity.class);
+        if (resumeFrom != null) {
+            intent.putExtra("resumeArguments", resumeFrom.getArguments());
+            intent.putExtra("resumeClass", resumeFrom.getClass());
+        }
         context.startActivity(intent);
-        context.finish();
+        //context.finish();
     }
 
     public static void persist(Activity context) {
         if (user == null) return;
         try {
             user.set(User.EXPIRE_TIME, expireDate);
+            user.set(User.LOGINS, logins);
+            user.set(User.IDENTITY_ID, identityId);
             FileOutputStream fos = context.openFileOutput(PERSIST_LOCATION, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(user.JSON.toString());
@@ -91,14 +99,16 @@ public class CredentialHandler {
             load(context);
         }
         if (System.currentTimeMillis() < expireDate) {
-            refresh(context);
+            //refresh(context);
             return user;
         }
-        refresh(context);
+        //refresh(context);
         return null;
     }
 
-    public static void setUser(Activity context, User user, long expireDate) {
+    public static void setUser(Activity context, User user, long expireDate, String identityId, String logins) {
+        CredentialHandler.identityId = identityId;
+        CredentialHandler.logins = logins;
         CredentialHandler.expireDate = expireDate;
         CredentialHandler.user = user;
         persist(context);

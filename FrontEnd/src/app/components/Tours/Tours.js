@@ -30,7 +30,6 @@ class Tours extends React.Component{
   render(){
     //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
-    console.log("display", this.props.tourDisplayProps);
 
     const modifyBtn = (this.props.tourDisplayProps.modifyBtn) ? (<p>
         <Link
@@ -211,7 +210,7 @@ class Tours extends React.Component{
             {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn}</div>
             </div>
           </Thumbnail>
-        </Col>);
+        </div>);
 
 
 
@@ -219,10 +218,10 @@ class Tours extends React.Component{
     else{
 
       tourDisplay = (
-      <Col xs={12} md={4} lg={3}>
+      <div xs={12} md={4} lg={3}>
         <Thumbnail>
           <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image} src={this.props.tour.profile_image}/>)}
           </div>
           <p>{this.props.tour.name}</p>
           <p>${this.props.tour.price}</p>
@@ -244,7 +243,7 @@ class Tours extends React.Component{
             {guideButton}
           </p>
         </Thumbnail>
-      </Col>);
+      </div>);
     }
 
 

@@ -32,11 +32,22 @@
 
           </-->
         <TextView
+            android:id="@+id/headingCreateTour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:text="Modify Tour" />
+
+        <TextView
             android:id="@+id/nameTextView"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/picture"
+            android:layout_below="@+id/headingCreateTour"
+            android:textStyle="bold"
             android:text="Tour Name"/>
         <LinearLayout
             android:id="@+id/nameFields"
@@ -60,6 +71,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="Tour Description"/>
         <EditText
             android:id="@+id/tourDesc"
@@ -70,22 +82,38 @@
             android:hint="Enter tour description"/>
 
         <TextView
-            android:id="@+id/mapText"
+            android:id="@+id/languageText"
             android:layout_below="@+id/tourDesc"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Locations"/>
+            android:textStyle="bold"
+            android:text="Language"/>
+        <EditText
+            android:id="@+id/language"
+            android:layout_below="@+id/languageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter Language"/>
+
+        <TextView
+            android:id="@+id/mapText"
+            android:layout_below="@+id/language"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Locations/Stops"/>
 
         <fragment
             android:id="@+id/mapFragment"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/mapText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="600px"
             android:orientation="horizontal"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:minHeight="500px"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:padding="5dp"/>
 
         <TextView
@@ -100,9 +128,7 @@
             android:layout_below="@+id/addedLocations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:hint="Add a location"/>
-
 
         <TextView
             android:id="@+id/additionalPicText"
@@ -110,14 +136,15 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Pictures"/>
+            android:textStyle="bold"
+            android:hint="Add Pictures"/>
         <Button
             android:id="@+id/additionalPicButton"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/additionalPicText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload"/>
+            android:hint="Upload"/>
 
         <TextView
             android:id="@+id/addDateText"
@@ -125,23 +152,117 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="Add Dates"/>
 
-        <CalendarView
-            android:id="@+id/calender"
+        <Button
+            android:id="@+id/startDate"
+            android:layout_below="@+id/addDateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/addDateText"
-            android:layout_marginTop="10dp"
-            >
-        </CalendarView>
+            android:hint="Start Date"
+            android:onClick=" "/>
+        <TextView
+            android:id="@+id/startDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:layout_alignBaseline="@+id/startDate"
+            android:layout_alignBottom="@+id/startDate"
+            android:layout_toRightOf="@+id/startDate"
+            android:layout_toEndOf="@+id/startDate"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp" />
 
         <Button
-            android:id="@+id/createTour"
+            android:id="@+id/endDate"
+            android:layout_below="@+id/startDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="End Date"
+            android:onClick=" "/>
+        <TextView
+            android:id="@+id/endDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:layout_alignBaseline="@+id/endDate"
+            android:layout_alignBottom="@+id/endDate"
+            android:layout_toRightOf="@+id/endDate"
+            android:layout_toEndOf="@+id/endDate"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp" />
+
+        <TextView
+            android:id="@+id/priceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Price"
+            android:layout_below="@+id/endDate"
+            android:layout_toRightOf="@+id/addedLocations"
+            android:layout_toEndOf="@+id/addedLocations" />
+        <EditText
+            android:id="@+id/price"
+            android:layout_below="@+id/priceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter Price" />
+
+        <TextView
+            android:id="@+id/additionalFoodText"
+            android:layout_below="@+id/price"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Additional Services - Food"/>
+
+        <EditText
+            android:id="@+id/additionalFood"
+            android:layout_below="@+id/additionalFoodText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+        <TextView
+            android:id="@+id/additionalAccommodationText"
+            android:layout_below="@+id/additionalFood"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Additional Services - Accommodation"/>
+        <EditText
+            android:id="@+id/additionalAccommodation"
+            android:layout_below="@+id/additionalAccommodationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+        <TextView
+            android:id="@+id/additionalTransportText"
+            android:layout_below="@+id/additionalAccommodation"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Additional Services - Transport"/>
+        <EditText
+            android:id="@+id/additionalTransport"
+            android:layout_below="@+id/additionalTransportText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:layout_marginBottom="50dp"/>
+
+        <Button
+            android:id="@+id/modifyTour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="Create Tour"/>
+            android:text="Modify Tour"/>
 
     </RelativeLayout>
 </ScrollView>

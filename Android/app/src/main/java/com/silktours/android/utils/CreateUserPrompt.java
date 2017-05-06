@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by andrew on 3/5/17.
+ * Prompts the user for information about themselves
  */
 public class CreateUserPrompt {
     private static final String[] prompts = new String[]{"First Name", "Last Name", "Phone Number", "Location"};
@@ -28,18 +28,29 @@ public class CreateUserPrompt {
     private LocationPrompt locactionPrompt;
     private Activity context;
 
+    /**
+     * Initializes the object, but does not yet show the prompt
+     */
     public CreateUserPrompt() {
         for (String ignored : prompts) {
             results.add("");
         }
     }
 
+    /**
+     * Called on completion or cancel
+     */
     public interface CreateUserPromptListener {
         void onResult(List<String> keys, List<String> values);
 
         void onCancel();
     }
 
+    /**
+     * Show the prompt
+     * @param context
+     * @param listener
+     */
     public void promptUIThread(final Activity context, final CreateUserPromptListener listener) {
         context.runOnUiThread(new Runnable() {
             @Override
@@ -49,6 +60,11 @@ public class CreateUserPrompt {
         });
     }
 
+    /**
+     * Show the prompt
+     * @param context
+     * @param listener
+     */
     public void prompt(final Activity context, final CreateUserPromptListener listener) {
         this.context = context;
         showKeyboard();

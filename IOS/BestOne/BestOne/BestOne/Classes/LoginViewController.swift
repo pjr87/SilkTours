@@ -7,18 +7,20 @@
 //
 
 import UIKit
+import AWSCore
+import AWSCognito
+import AWSCognitoIdentityProvider
 
 class LoginViewController: UIViewController {
     
-    @IBOutlet weak var emailTxtFld: UITextField?
-    @IBOutlet weak var passwordTxtFld: UITextField?
+    @IBOutlet weak var emailTxtFld: UITextField!
+    @IBOutlet weak var passwordTxtFld: UITextField!
     @IBOutlet weak var mainScrollViewBottomConstraint: NSLayoutConstraint?
     @IBOutlet weak var scrollView: UIScrollView?
     fileprivate var isKeyboardShown: Bool = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //add observers for keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillChangeFrame(_:)), name: NSNotification.Name(rawValue: "UIKeyboardWillChangeFrameNotification"), object: nil)
     }
@@ -39,7 +41,10 @@ class LoginViewController: UIViewController {
     // MARK: - Actions
     @IBAction func onSignInBtnClicked(_ sender: AnyObject) {
         print("Button \"Sign in\" was clicked")
-        performSegue(withIdentifier: "showMenu", sender: self)
+        //email = emailTxtFld?.text
+        BackendAPI.login(email: emailTxtFld.text!, password: passwordTxtFld.text!, completion: {() -> Void in
+            self.performSegue(withIdentifier: "showMenu", sender: self)
+        })
     }
     
     @IBAction func onSignInWithFacebookClicked(_ sender: AnyObject) {

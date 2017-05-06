@@ -14,7 +14,7 @@ def get_session():
     tid = threading.get_ident()
     if tid not in sessions or sessions[tid] is None:
         sessions[tid] = Session()
-    return sessions[tid]    
+    return sessions[tid]
 
 def createSession():
     get_session()
