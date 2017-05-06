@@ -244,7 +244,6 @@ def get_user_by_email(email):
 
 @app.route('/login', methods=['POST', 'PUT'])
 def login():
-    customLoginKey = "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld"
     data = request.get_json()
     loginType = data.get("type", None)
 
@@ -254,23 +253,8 @@ def login():
     if loginType == "custom":
         username = data.get("username")
         password = data.get("password")
-        aws = AWSSRP(username=username, password=password, pool_id=userPoolId,
-             client_id=clientId, client=id_provider)
-        tokens = aws.authenticate_user(id_provider)["AuthenticationResult"]
-        idObj = client.get_id(
-            AccountId=awsAccountId,
-            IdentityPoolId=identityPoolId,
-            Logins={
-                customLoginKey: tokens["IdToken"]
-            }
-        )
-        result = {
-            "IdentityId": idObj["IdentityId"],
-            "Logins": {
-                customLoginKey: tokens["IdToken"]
-            }
-        }
-        return jsonify(result)
+        return login_email(username, password)
+
     elif loginType == "facebook":
         return "not implemented", 501
     elif loginType == "google":
@@ -278,11 +262,57 @@ def login():
     else:
         return "not implemented", 501
 
+def login_email(username, password):
+    customLoginKey = "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld"
+    aws = AWSSRP(username=username, password=password, pool_id=userPoolId,
+         client_id=clientId, client=id_provider)
+    tokens = aws.authenticate_user(id_provider)["AuthenticationResult"]
+    idObj = client.get_id(
+        AccountId=awsAccountId,
+        IdentityPoolId=identityPoolId,
+        Logins={
+            customLoginKey: tokens["IdToken"]
+        }
+    )
+    result = {
+        "IdentityId": idObj["IdentityId"],
+        "Logins": {
+            customLoginKey: tokens["IdToken"]
+        }
+    }
+    return jsonify(result)
 
-@app.route('/create_account', methods=['POST', 'PUT'])
+
+@app.route('/register', methods=['POST', 'PUT'])
 def create_account():
     data = request.get_json()
+    email = data.get("username", None)
+    password = data.get("password", None)
+
+    if email is None or password is None:
+        return "Must specify username and password", 422
+
+    u = Cognito(userPoolId, clientId)
+    data = u.register(email, password, email=email)
+    print(data)
     return jsonify({})
+
+@app.route('/confirm_sign_up', methods=['POST', 'PUT'])
+def confirm_sign_up():
+    data = request.get_json()
+    email = data.get("username", None)
+    password = data.get("password", None)
+    code = data.get("code", None)
+
+    if email is None or password is None or code is None:
+        return "Must specify username, password, and confirmation code", 422
+
+    u = Cognito(userPoolId, clientId)
+    try:
+        u.confirm_sign_up(code, username=email)
+    except Exception:
+        return jsonify({"error": "invalid code"}), 401
+    return login_email(email, password)
 
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])
