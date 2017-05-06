@@ -27,6 +27,7 @@ from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
 from srptools import SRPContext
 from warrant.aws_srp import AWSSRP
+from warrant import Cognito
 import sys
 
 #outputFile = open('out.log', 'w')
@@ -574,14 +575,22 @@ def get_image(tourid):
     medias = safe_call(query, "all", None)
     return jsonify([media.serialize() for media in medias])
 
+def hour_to_ts(hour):
+    "HH:MM AM"
+    zone = "AM"
+    if hour > 12:
+        hour -= 12
+        zone = "PM"
+    minute = (hour - int(hour)) * 60
+    return "%d:%02d %s" % (int(hour), int(minute), zone)
 
 def add_hour_entries(l, start, end, length):
     sh = start.hour + start.minute/60.0
     eh = end.hour + end.minute/60.0
     while sh <= eh:
         l.append({
-            "start": sh,
-            "end": sh+length
+            "start": hour_to_ts(sh),
+            "end": hour_to_ts(sh+length)
         })
         sh += length
 
