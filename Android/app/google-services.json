@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "929115108443",
+    "project_id": "firebase-silktours"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929115108443:android:f3a67adc4ebc40c4",
+        "android_client_info": {
+          "package_name": "com.silktours.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929115108443-1stajpjh1pjcsevj2os53oifp6rbb9lv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.silktours.android",
+            "certificate_hash": "2d99ab7ba8c311de63482f69782274fadeadb6bc"
+          }
+        },
+        {
+          "client_id": "929115108443-trd037hvikplhqse596n0t5ufniggt08.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSy_XvlPqKKGS36g_N8uzb0ptZBky7A2c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
