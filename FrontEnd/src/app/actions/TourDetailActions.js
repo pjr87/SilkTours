@@ -44,27 +44,15 @@ export function selectTour(tourId) {
         if(response.data){
           console.log("getTourById", response.data);
           dispatch(setSelectedTour(response.data));
-          service.getTourEventById(tourId).then(function(response){
-            if(response.data){
-              console.log("getTourEventById", response.data);
-              const availableDates = response.data;
-              dispatch(updateTourDates(availableDates));
-              dispatch(updateTourDateId(availableDates[0].id_tourEvent.toString()));
-              dispatch(setLoadedState(true));
-            }
-            else{
-              // If there was a problem, show an error
-              console.log('response.error: ' + response.error);
-              //dispatch(sendingRequest(false));
-              //dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
-            }
-          });
+          var t = new Date();
+          var todayDate = t.getFullYear() + '-' + (t.getMonth()+1) + '-' + t.getDate()
+          dispatch(selectDates(tourId, todayDate));
         }
         else{
           // If there was a problem, show an error
           console.log('response.error: ' + response.error);
-          //dispatch(sendingRequest(false));
-          //dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+          dispatch(sendingRequest(false));
+          dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
         }
       });
     } catch(e) {
@@ -72,6 +60,28 @@ export function selectTour(tourId) {
     }
   };
 }
+
+export function selectDates(tourId, startEndDate) {
+  return (dispatch) => {
+    try {
+      service.getAvailableHours(tourId, startEndDate).then(function(response) {
+        if(response.data) {
+          console.log("Get Available Hours");
+          console.log(response.data);
+          const av = response.data;
+          for (const key in av) {
+            dispatch(updateTourDateString(key));
+            dispatch(updateTourDates(av[key]));
+            dispatch(updateTourDateStart(av[key][0].start));
+            dispatch(updateTourDateEnd(av[key][0].end));
+            break;
+          }
+        }
+      });
+    } catch(e) {
+      console.log("error occured pulling tour data");
+    }
+  }}
 
 /**
  * Selects a tour
@@ -87,9 +97,9 @@ export function setSelectedTour(newTourFormState) {
  * Selects a tour
  * @param  {string} date The selected tour
  */
-export function setSelectedDateId(newTourDateIdFormState) {
+export function setSelectedDateString(newTourDateStringFormState) {
   return (dispatch) => {
-    dispatch(updateTourDateId(newTourDateIdFormState));
+    dispatch(updateTourDateString(newTourDateStringFormState));
   };
 }
 
@@ -149,8 +159,8 @@ export function updateTourDates(newTourDatesState) {
  * Updates a selected tour information
  * @param  {string} tourId
  */
-export function updateTourDateId(newTourDateIdFormState) {
-  return { type: tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_ID, newTourDateIdFormState };
+export function updateTourDateString(newTourDateStringFormState) {
+  return { type: tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_STRING, newTourDateStringFormState };
 }
 
 /**

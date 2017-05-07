@@ -23,7 +23,8 @@ class TourConfirmationContents extends React.Component{
                   <img src={this.props.selectedTour.profile_image}/>
                   <p>Name: {this.props.user.first_name} {this.props.user.last_name}</p>
                   <p>Phone Number: {this.props.user.phone_number}</p>
-                  <p>Date: {this.props.selectedTourDateStart} ~ {this.props.selectedTourDateEnd}</p>
+                  <p>Date: {this.props.selectedTourDateString}</p>
+                  <p>Time: {this.props.selectedTourDateStart} ~ {this.props.selectedTourDateEnd}</p>
                   <p>Tour Name: {this.props.selectedTour.name}</p>
                   <p>Description: {this.props.selectedTour.description}</p>
                   <p>Guide: </p>
@@ -56,6 +57,7 @@ function select (state) {
   return {
     user: state.AuthReducer.user,
     selectedTour: state.TourDetailReducer.selectedTour,
+    selectedTourDateString: state.TourDetailReducer.selectedTourDateString,
     selectedTourDateStart: state.TourDetailReducer.selectedTourDateStart,
     selectedTourDateEnd: state.TourDetailReducer.selectedTourDateEnd,
     isLoaded: state.TourDetailReducer.isLoaded

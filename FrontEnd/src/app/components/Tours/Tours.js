@@ -123,7 +123,7 @@ class Tours extends React.Component{
     else{
 
       tourDisplay = (
-      <Col xs={12} md={4} lg={3}>
+      <Col xs={12} md={6} lg={4}>
         <Thumbnail>
           <div className={style.image_container} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
             {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
