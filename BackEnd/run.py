@@ -43,6 +43,8 @@ userPoolId = "us-east-1_917Igx5Ld"
 clientId = "2bs9l9t5ol4m09fgfmadk3jmh7"
 awsAccountId = "803858137669"
 region = "us-east-1"
+access_key = "AKIAJHASGAXJ6VSJONKA"
+secret_key = "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"
 
 client = boto3.client('cognito-identity', region_name='us-east-1')
 id_provider = boto3.client('cognito-idp', region_name='us-east-1')
@@ -292,7 +294,7 @@ def create_account():
     if email is None or password is None:
         return "Must specify username and password", 422
 
-    u = Cognito(userPoolId, clientId, user_pool_region=region)
+    u = Cognito(userPoolId, clientId, user_pool_region=region, access_key=access_key, secret_key=secret_key)
     data = u.register(email, password, email=email)
     print(data)
     return jsonify({})
@@ -307,7 +309,7 @@ def confirm_sign_up():
     if email is None or password is None or code is None:
         return "Must specify username, password, and confirmation code", 422
 
-    u = Cognito(userPoolId, clientId, user_pool_region=region)
+    u = Cognito(userPoolId, clientId, user_pool_region=region, access_key=access_key, secret_key=secret_key)
     try:
         u.confirm_sign_up(code, username=email)
     except Exception:

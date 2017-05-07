@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import AWSCognito
 
 class BackendAPI{
 
@@ -42,6 +43,43 @@ class BackendAPI{
                 }
                 print(response)
             }
+    }
+    
+    static func register(email:String, password:String, completion: @escaping () -> Void) {
+        let url = "\(SERVER_URL)/register"
+        let parameters: [String: Any] = [
+            "username" : email,
+            "password" : password
+        ]
+        
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                completion()
+            }
+    }
+    
+    static func sendConformCode(email:String, password:String, code:String, completion: @escaping (Bool) -> Void) {
+        let url = "\(SERVER_URL)/confirm_sign_up"
+        let parameters: [String: Any] = [
+            "username" : email,
+            "password" : password,
+            "code": code
+        ]
+        
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    let json = result as? NSDictionary
+                    if (json?.value(forKey: "error") != nil) {
+                        completion(true)
+                    } else {
+                        credentials = json
+                        completion(false)
+                    }
+                }
+        }
     }
     
    

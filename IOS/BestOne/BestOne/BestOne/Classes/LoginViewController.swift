@@ -47,6 +47,34 @@ class LoginViewController: UIViewController {
         })
     }
     
+    @IBAction func onRegisterBtnClicked(_ sender: Any) {
+        let email = emailTxtFld.text!
+        let password = passwordTxtFld.text!
+        BackendAPI.register(email: email, password: password, completion: {() -> Void in
+            self.promptAndSendCode(email:email, password:password)
+        })
+    }
+    
+    func promptAndSendCode(email:String, password:String, retry:Bool=false) {
+        let title = (retry ? "Invalid Code" : "Enter Conformation Code")
+        let alert = UIAlertController(title: title, message: "A confirmation code was sent to \(email). Please enter it bellow.", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = "Confirmation Code"
+        }
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0]
+            print("Text field: \(textField!.text ?? "Text not found")")
+            BackendAPI.sendConformCode(email: email, password: password, code: (textField?.text)!, completion: {(error: Bool) -> Void in
+                if (error) {
+                    self.promptAndSendCode(email: email, password: password)
+                } else {
+                    self.performSegue(withIdentifier: "showMenu", sender: self)
+                }
+            })
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func onSignInWithFacebookClicked(_ sender: AnyObject) {
         print("Button \"Sign in with facebook\" was clicked")
         performSegue(withIdentifier: "showMenu", sender: self)
