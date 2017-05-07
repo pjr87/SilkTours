@@ -90,8 +90,19 @@ class Tours extends React.Component{
             </div>
             <span>
             <p>{this.props.tour.name}</p>
-            <p>review: </p>
-            <p>price: ${this.props.tour.price}</p>
+            <p>${this.props.tour.price}</p>
+            <StarRatingComponent
+              name="rate1"
+              starColor="#ffb400"
+              emptyStarColor="#ffb400"
+              starCount={5}
+              value={this.props.tour.average_rating}
+              renderStarIcon={(index, value) => {
+              return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+              }}
+              renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+            />
+            {this.props.tour.rating_count} reviews
             <p>
               <Link
                 to={{
@@ -114,17 +125,23 @@ class Tours extends React.Component{
       <div xs={12} md={4} lg={3}>
         <Thumbnail>
           <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourInfo ? (<p className={style.image_text}>{this.props.tour.description}</p>): null}
           </div>
           <p>{this.props.tour.name}</p>
           <p>${this.props.tour.price}</p>
           <StarRatingComponent
             name="rate1"
+            starColor="#ffb400"
+            emptyStarColor="#ffb400"
             starCount={5}
             value={this.props.tour.average_rating}
+            renderStarIcon={(index, value) => {
+              return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+            }}
             renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
           />
-        {this.props.tour.rating_count} reviews
+          {this.props.tour.rating_count} reviews
           <p>
             <Link
               to={{

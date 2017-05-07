@@ -15,19 +15,34 @@ import HostedField from 'hosted-fields-react';
 
 import * as service from '../../utils/databaseFunctions';
 
-import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDateEnd } from '../../actions/TourDetailActions';
+import StarRatingComponent from 'react-star-rating-component';
+
+import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDateEnd, selectDates } from '../../actions/TourDetailActions';
+
+import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
+
+import dateFormat from 'dateFormat';
+
 
 class TourDetailContents extends React.Component{
   constructor(props) {
     super();
     this.state = {
       showModal: false,
-      selectedDate: "",
-      validationState: null
+      showModalCal: false,
+      showCal: false,
+      selectedDate: dateFormat(new Date(), "yyyy-mm-dd"),
+      validationState: null,
+      today: new Date(),
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.openModalCal = this.openModalCal.bind(this);
+    this.closeModalCal = this.closeModalCal.bind(this);
+    this.expandCal = this.expandCal.bind(this);
+    this.compressCal = this.compressCal.bind(this);
     this.handleSelectedDateChange = this.handleSelectedDateChange.bind(this);
+    this.handleSelectedTimeChange = this.handleSelectedTimeChange.bind(this);
   }
 
   closeModal() {
@@ -43,12 +58,58 @@ class TourDetailContents extends React.Component{
     }
   }
 
-  handleSelectedDateChange(e) {
-    this.props.dispatch(setSelectedDateId(e.target.value))
+  closeModalCal() {
+    this.setState({ showModalCal: false });
+  }
+
+  openModalCal() {
+    this.setState({ showModalCal: true });
+  }
+
+  expandCal() {
+    this.setState({ showCal: true });
+  }
+
+  compressCal() {
+    this.setState({ showCal: false });
+  }
+
+  handleSelectedDateChange(date) {
+    // this.props.dispatch(setSelectedDateId(e.target.value))
+    var year = date.getFullYear();
+    var month = (date.getMonth()+1);
+    var date = date.getDate();
+    var yearMonthDate = (year + '-' + month + '-' + date)
+    this.setState({ selectedDate: yearMonthDate})
+    this.props.dispatch(selectDates(this.props.selectedTourId, yearMonthDate));
+  }
+
+  handleSelectedTimeChange (e) {
+    var ar = e.target.value.split(',');
+    this.props.dispatch(setSelectedDateStart(ar[0]));
+    this.props.dispatch(setSelectedDateEnd(ar[1]));
   }
 
   render(){
-
+    let showExpandedCal = null;
+    if(this.state.showCal) {
+      showExpandedCal =
+      <div>
+      <Button onClick={this.compressCal}>Compress</Button>
+        <p className={style.contentSubTitle}>Available Time: </p>
+        {this.props.tourDates.map((avTime, i) => {
+          return (
+            <li key={i} className={style.content}>{avTime.start} ~ {avTime.end}</li>);
+        })}
+      <InfiniteCalendar
+        width={400}
+        height={400}
+        selected={this.state.today}
+        minDate={this.state.today}
+        onSelect={this.handleSelectedDateChange}
+        />
+      </div>
+    }
 
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
@@ -92,23 +153,30 @@ class TourDetailContents extends React.Component{
         })
         console.log(`Charge the card: ${nonce}`);
         var tourEvent = {
+          end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
+          id_tour: this.props.selectedTourId,
+          participants:	 [
+ 	 	 	 	 	 	 	 {
+ 	 	 	 	 	 	 	 	 	 	 	 id_users:	 this.props.id_user,
+ 	 	 	 	 	 	 	 }
+ 	 	 	    ],
+          start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
           state: 'B'
         }
-        console.log('tureventID ' + this.props.selectedTourDateId)
-        service.putTourEventById(this.props.selectedTourDateId, tourEvent, this.props.auth).then(function(response){
+        console.log(tourEvent);
+        console.log('tureventID ' + this.props.selectedTourDateString)
+        service.setTourEvent(tourEvent, this.props.auth).then(function(response){
           console.log(response);
         })
         .catch(function (error) {
           console.log(error);
         });
-        this.props.dispatch(setSelectedDateId(this.props.selectedTourDateId));
-        for(var i=0; i < this.props.selectedTourDates.length; i++){
-          if(this.props.selectedTourDates[i].id_tourEvent == this.props.selectedTourDateId){
-            this.props.dispatch(setSelectedDateStart(this.props.selectedTourDates[i].start_date_time));
-            this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDates[i].end_date_time));
-            break;
-          }
-        }
+
+        // this.props.dispatch(setSelectedDateStart(this.props.selectedTourDateStart));
+        // this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDateEnd));
+        console.log("test date time");
+        console.log(this.props.selectedTourDateStart);
+        console.log(this.props.selectedTourDateEnd);
         browserHistory.push('/tourconfirmation');
       }
       else {
@@ -130,7 +198,19 @@ class TourDetailContents extends React.Component{
         <div>
           <div className={style.boxed}>
             <p className={style.tourTitle}>{this.props.selectedTour.name}</p>
-            <p className={style.tourSubTitle}>review: {this.props.selectedTour.average_rating}</p>
+            <div className={style.tourSubTitle}>
+              <StarRatingComponent
+                name="rate1"
+                starColor="#ffb400"
+                emptyStarColor="#ffb400"
+                starCount={5}
+                value={this.props.selectedTour.average_rating}
+                renderStarIcon={(index, value) => {
+                  return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+                }}
+                renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+              /> {this.props.selectedTour.rating_count} reviews
+            </div>
           </div>
           <div className = {style.thumbnailContainer}>
             <Thumbnail>
@@ -172,10 +252,39 @@ class TourDetailContents extends React.Component{
 
 
                     <p className={style.contentSubTitle}>Available Date: </p>
-                    {this.props.selectedTourDates.map((availableDates, i) => {
+
+                    <form>
+                    <FormGroup>
+                      <FormControl
+                        type="text"
+                        value={this.props.selectedTourDateString}
+                        placeholder="Click to choose date"
+                        onClick={this.openModalCal}
+                        readOnly
+                        />
+                    </FormGroup>
+                    </form>
+
+                    <p className={style.contentSubTitle}>Available Time: </p>
+                    {this.props.tourDates.map((avTime, i) => {
                       return (
-                        <li key={i} className={style.content}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</li>);
+                        <li key={i} className={style.content}>{avTime.start} ~ {avTime.end}</li>);
                       })}
+                    <Modal show={this.state.showModalCal} onHide={this.closeModalCal} dialogClassName={style.modalCal}>
+                    <InfiniteCalendar
+                      width={400}
+                      height={400}
+                      selected={this.state.today}
+                      minDate={this.state.today}
+                      onSelect={this.handleSelectedDateChange}
+                      />
+                    <p className={style.contentSubTitle}>Available Time: </p>
+                    {this.props.tourDates.map((avTime, i) => {
+                      return (
+                        <li key={i} className={style.content}>{avTime.start} ~ {avTime.end}</li>);
+                    })}
+                    <Button onClick={this.closeModalCal}>Close</Button>
+                    </Modal>
                     <p className={style.contentSubTitle}>Additional:</p>
                     <li className={style.content}>Accomodation: {this.props.selectedTour.additional_accomadation}</li>
                     <li className={style.content}>Food: {this.props.selectedTour.additional_food}</li>
@@ -216,7 +325,6 @@ class TourDetailContents extends React.Component{
                       })}
                     </Gmaps>
                   </div>
-
                 </Col>
               </Row>
             </Grid>
@@ -230,7 +338,6 @@ class TourDetailContents extends React.Component{
               </Row>
             </Grid>
           </Thumbnail>
-
           <Thumbnail>
             <Row>
               <Col sm={12} md={12} lg={12}>
@@ -255,19 +362,28 @@ class TourDetailContents extends React.Component{
             <Modal.Title>Reserve {this.props.selectedTour.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <FormGroup controlId="priceMin">
-                <ControlLabel>Select Available Date:</ControlLabel>
-                {'  '}
-                <FormControl componentClass="select" placeholder="select" value={this.props.selectedTourDateId}
-                  onChange={this.handleSelectedDateChange}>
-                  {this.props.selectedTourDates.map((availableDates, i) => {
-                    return (
-                      <option value={availableDates.id_tourEvent} key={i}>{availableDates.start_date_time} ~ {availableDates.end_date_time}</option>);
-                    })}
-                </FormControl>
-              </FormGroup>
-            </Form>
+            <form>
+            <FormGroup>
+              <ControlLabel>Selected Date: (Click to change)</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.props.selectedTourDateString}
+                placeholder="Click to choose date"
+                onClick={this.expandCal}
+                readOnly
+                />
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Select Time</ControlLabel>
+              <FormControl componentClass="select" placeholder="select" onChange={this.handleSelectedTimeChange}>
+                {this.props.tourDates.map((avTime, i) => {
+                  return (
+                    <option key={i} value={avTime.start+','+avTime.end}>{avTime.start} ~ {avTime.end}</option>);
+                })}
+              </FormControl>
+            </FormGroup>
+            </form>
+            {showExpandedCal}
             <hr />
             <FormGroup controlId="cardValidationError" validationState={this.state.validationState}>
               <ControlLabel>Please check your card information</ControlLabel>
@@ -290,19 +406,21 @@ TourDetailContents.propTypes = {
   auth: React.PropTypes.object,
   selectedTourId: React.PropTypes.string,
   selectedTour: React.PropTypes.object,
-  selectedTourDateId: React.PropTypes.string,
-  selectedTourDates: React.PropTypes.array,
+  selectedTourDateString: React.PropTypes.string,
   isLoaded: React.PropTypes.bool
 }
 
 function select (state) {
   return {
     auth: state.AuthReducer.auth,
+    id_user: state.AuthReducer.id_user,
     loggedIn: state.AuthReducer.loggedIn,
+    tourDates: state.TourDetailReducer.tourDates,
     selectedTourId: state.TourDetailReducer.selectedTourId,
     selectedTour: state.TourDetailReducer.selectedTour,
-    selectedTourDateId: state.TourDetailReducer.selectedTourDateId,
-    selectedTourDates: state.TourDetailReducer.tourDates,
+    selectedTourDateString: state.TourDetailReducer.selectedTourDateString,
+    selectedTourDateStart: state.TourDetailReducer.selectedTourDateStart,
+    selectedTourDateEnd: state.TourDetailReducer.selectedTourDateEnd,
     isLoaded: state.TourDetailReducer.isLoaded
   };
 }
