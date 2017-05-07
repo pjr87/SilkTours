@@ -12,16 +12,38 @@
     tools:context="com.silktours.android.MyTours"
     tools:showIn="@layout/content_my_tours">
 
-
-    <ListView
-        android:id="@+id/tourListView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:paddingBottom="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/role"
+                android:textSize="@dimen/normal_text"
+                android:layout_weight="1"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/spnRole">
+            </Spinner>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/tourListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:paddingBottom="10dp"/>
+    </LinearLayout>
 
 </RelativeLayout>

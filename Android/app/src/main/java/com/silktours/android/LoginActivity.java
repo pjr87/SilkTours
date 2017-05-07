@@ -1,5 +1,7 @@
 package com.silktours.android;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -7,8 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -38,9 +42,6 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.cognito.CognitoSyncManager;
-import com.amazonaws.mobileconnectors.cognito.Dataset;
-import com.amazonaws.mobileconnectors.cognito.DefaultSyncCallback;
-import com.amazonaws.mobileconnectors.cognito.internal.storage.CognitoSyncStorage;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
@@ -53,25 +54,30 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.Authentic
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.securitytoken.model.FederatedUser;
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
-import com.applozic.mobicomkit.api.account.user.UserLoginTask;
-import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
-import com.applozic.mobicommons.people.contact.Contact;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.silktours.android.database.Common;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CreateUserPrompt;
 import com.silktours.android.utils.CredentialHandler;
+import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.StringPrompt;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_GOOGLE_LOGIN = 2;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -106,7 +113,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
+    private View mProgressLayout;
     private View mLoginFormView;
+    private TextView mProgressMsg;
     private CallbackManager callbackManager;
     private CognitoCachingCredentialsProvider credentialsProvider;
     private CognitoSyncManager syncClient;
@@ -115,13 +124,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private CognitoUserPool userPool;
     private boolean authSuccess = false;
     private CountDownLatch loginLatch;
+    private Class<?> resumeClass = null;
+    private Bundle resumeBundle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent != null) {
+            Serializable s_resume_session = intent.getSerializableExtra("resumeClass");
+            this.resumeBundle = intent.getBundleExtra("resumeArguments");
+            if (s_resume_session != null) {
+                this.resumeClass = (Class<?>) s_resume_session;
+            }
+        }
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         setupFacebook();
+        setupGoogle();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -154,6 +175,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mProgressLayout = findViewById(R.id.login_progress_layout);
+        mProgressMsg = (TextView) findViewById(R.id.login_progress_msg);
 
         credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplication(),
@@ -164,10 +187,79 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,
                 resultCode, data);
+        if (requestCode == REQUEST_GOOGLE_LOGIN) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    googleResultsHandler(data);
+                }
+            }).start();
+        }
+    }
+
+    private void googleResultsHandler(Intent data) {
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            if (acct == null) {
+                ErrorDisplay.show("Could not locate Google account", LoginActivity.this);
+                return;
+            }
+            String email = acct.getEmail();
+            String picture = null;
+            if (acct.getPhotoUrl() != null)
+                picture = acct.getPhotoUrl().getPath();
+            String name = acct.getDisplayName();
+            String accessToken;// = acct.getServerAuthCode();
+            AccountManager am = AccountManager.get(this);
+            Account[] accounts = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+            try {
+                String client = "929115108443-trd037hvikplhqse596n0t5ufniggt08.apps.googleusercontent.com";
+                client  = "audience:server:client_id:" + client;
+                accessToken = GoogleAuthUtil.getToken(LoginActivity.this, accounts[0], client);
+                Log.d("SilkToken", accessToken);
+            } catch (IOException | GoogleAuthException e) {
+                e.printStackTrace();
+                ErrorDisplay.show("Error signing in", LoginActivity.this);
+                return;
+            }
+            final Map<String, String> logins = new HashMap<>();
+            logins.put("accounts.google.com", accessToken);
+            credentialsProvider.setLogins(logins);
+            CredentialHandler.credentialsProvider = credentialsProvider;
+            syncClient = new CognitoSyncManager(
+                    getApplication(),
+                    Regions.US_EAST_1,
+                    credentialsProvider
+            );
+            finalizeLogin(email, name, picture, logins, System.currentTimeMillis()*2);
+        } else {
+            ErrorDisplay.show("Unable to Login using Google", LoginActivity.this);
+        }
+    }
+
+    private void setupGoogle() {
+        findViewById(R.id.google_signin_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress(true);
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+                GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                        .enableAutoManage(LoginActivity.this /* FragmentActivity */, null /* OnConnectionFailedListener */)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                        .build();
+
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, REQUEST_GOOGLE_LOGIN);
+            }
+        });
     }
     
     private void setupFacebook() {
@@ -178,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
+                showProgress(true);
                 final Map<String, String> logins = new HashMap<>();
                 String accessToken = loginResult.getAccessToken().getToken();
                 logins.put("graph.facebook.com", accessToken);
@@ -189,56 +282,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         credentialsProvider
                 );
 
+                setProgress("Getting data from Facebook");
                 getFBInfo(loginResult, new GetFBInfoCallback() {
                     @Override
                     public void done(String email, String name, String picture) {
-                        User user = null;
-                        CredentialHandler.logins = new JSONObject(logins).toString();
-                        CredentialHandler.identityId = credentialsProvider.getIdentityId();
-                        try {
-                            user = User.getByEmail(email);
-                        } catch (IOException | JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if (user == null) {
-                            String[] names = name.split(" ");
-                            user = new User();
-                            user.set(User.EMAIL, email);
-                            user.set(User.FIRST_NAME, names[0]);
-                            if (names.length > 1) {
-                                user.set(User.LAST_NAME, names[names.length - 1]);
-                            }
-                            user.set(User.PROFILE_PICTURE, picture);
-                            try {
-                                user.create();
-                                CredentialHandler.setUser(LoginActivity.this,
-                                        user,
-                                        loginResult.getAccessToken().getExpires().getTime());
-                                applozicSignup(user);
-                                goHome();
-                                finish();
-                                return;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            credentialsProvider.refresh();
-                            CredentialHandler.setUser(LoginActivity.this,
-                                    user,
-                                    loginResult.getAccessToken().getExpires().getTime());
-                            if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
-                                applozicSignup(user);
-                                goHome();
-                                finish();
-                                return;
-                            }
-                        }
-                        LoginActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        finalizeLogin(email, name, picture, logins, loginResult.getAccessToken().getExpires().getTime());
                     }
                 });
             }
@@ -251,6 +299,69 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onError(FacebookException e) {
                 Log.d("Silk", "On error");
+            }
+        });
+    }
+
+    private void finalizeLogin(String email, String name, String picture, Map<String, String> logins, long expireTime) {
+        User user = null;
+        CredentialHandler.logins = new JSONObject(logins).toString();
+        CredentialHandler.identityId = credentialsProvider.getIdentityId();
+        try {
+            setProgress("Getting user information");
+            user = User.getByEmail(email);
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        if (user == null) {
+            String[] names = name.split(" ");
+            user = new User();
+            user.set(User.EMAIL, email);
+            user.set(User.FIRST_NAME, names[0]);
+            if (names.length > 1) {
+                user.set(User.LAST_NAME, names[names.length - 1]);
+            }
+            if (picture != null)
+                user.set(User.PROFILE_PICTURE, picture);
+            try {
+                setProgress("Creating new user");
+                user.create();
+                CredentialHandler.setUser(LoginActivity.this,
+                        user,
+                        expireTime,
+                        credentialsProvider.getIdentityId(),
+                        new JSONObject(logins).toString());
+                applozicSignup(user);
+                setProgress("Done. Going Home...");
+                goHome();
+                finish();
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            setProgress("Logging user in");
+            credentialsProvider.refresh();
+            CredentialHandler.setUser(LoginActivity.this,
+                    user,
+                    expireTime,
+                    credentialsProvider.getIdentityId(),
+                    new JSONObject(logins).toString());
+            if (Common.checkAuth(logins, credentialsProvider.getIdentityId())) {
+                applozicSignup(user);
+                setProgress("Done. Going Home...");
+                goHome();
+                finish();
+                return;
+            } else {
+                ErrorDisplay.show("Failed to login in user. Please try again.", LoginActivity.this);
+                LoginActivity.this.recreate();
+            }
+        }
+        LoginActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -318,6 +429,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void goHome() {
+        if (resumeClass != null) {
+            finish();
+            try {
+                Fragment fragment = (Fragment) resumeClass.getConstructor().newInstance();
+                if (this.resumeBundle != null)
+                    fragment.setArguments(this.resumeBundle);
+                MainActivity.getInstance().getMenu().startFragment(fragment);
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
         finish();
@@ -447,19 +570,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    mProgressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressLayout.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private void setProgress(final String msg) {
+        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+            mProgressMsg.setText(msg);
+        } else {
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setProgress(msg);
+                }
+            });
         }
     }
 
@@ -548,13 +684,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 logins.put("cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld", userSession.getIdToken().getJWTToken());
                 credentialsProvider.clear();
                 credentialsProvider.setLogins(logins);
-                CredentialHandler.identityId = credentialsProvider.getIdentityId();
-                CredentialHandler.logins = new JSONObject(logins).toString();
+                setProgress("Fetching user profile");
                 User user = User.getByEmail(mEmail);
                 CredentialHandler.setUser(
                         LoginActivity.this,
                         user,
-                        userSession.getAccessToken().getExpiration().getTime()
+                        userSession.getAccessToken().getExpiration().getTime(),
+                        credentialsProvider.getIdentityId(),
+                        new JSONObject(logins).toString()
                 );
                 applozicSignup(user);
             } catch (IOException | JSONException e) {
@@ -576,6 +713,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         public void onFailure(Exception exception) {
             if (! (exception instanceof AmazonServiceException)) {
+                ErrorDisplay.show("An unexpected error occurred:\n" + exception.getMessage(), LoginActivity.this);
                 exception.printStackTrace();
                 return;
             }
@@ -583,6 +721,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (serviceException.getErrorCode().equals("UserNotFoundException")) {
                 CognitoUserAttributes userAttributes = new CognitoUserAttributes();
                 userAttributes.addAttribute("email", mEmail);
+                setProgress("Creating new user");
                 userPool.signUp(mEmail, mPassword, userAttributes, null, signupCallback);
             }else if (serviceException.getErrorCode().toLowerCase().contains("confirm")) {
                 confirmUser(userPool.getUser(mEmail));
@@ -613,15 +752,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             loginDone(true);
                             cognitoUser.getSession(authHandler);
                         }
-
                     } catch (IOException e) {
+                        ErrorDisplay.show("Error Creating User: \n" + e.getMessage(), LoginActivity.this);
+                        showProgress(false);
                         e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onCancel() {
-
+                    ErrorDisplay.show("Signup Process Canceled", LoginActivity.this);
+                    showProgress(false);
                 }
             });
         }
@@ -633,19 +774,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     };
 
     private void confirmUser(final CognitoUser cognitoUser) {
+        setProgress("Enter confirmation code");
         StringPrompt.promptInUIThread("A confirmation code has been sent to " + mEmail + ". Please enter the code below.",
                 LoginActivity.this,
                 new StringPrompt.StringPromptListener() {
                     @Override
                     public void onResult(String result) {
+                        setProgress("Confirming user");
                         cognitoUser.confirmSignUpInBackground(result, false, new GenericHandler() {
                             @Override
                             public void onSuccess() {
+                                setProgress("User confirmed, getting session");
                                 cognitoUser.getSession(authHandler);
                             }
 
                             @Override
                             public void onFailure(Exception exception) {
+                                ErrorDisplay.show("Confirmation Code is Incorrect", LoginActivity.this);
                                 confirmUser(cognitoUser);
                             }
                         });
@@ -654,6 +799,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     void loginDone(boolean status) {
+        setProgress(status?"Login successful":"Login unsuccessful");
         authSuccess = status;
         loginLatch.countDown();
     }
@@ -683,6 +829,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             editor.putString("email", mEmail);
             editor.putString("password", mPassword);
             editor.apply();
+            setProgress("Logging in user");
             userPool.getUser(mEmail).authenticateUser(new AuthenticationDetails(mEmail, mPassword, null), authHandler);
 
             try {
@@ -701,6 +848,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 goHome();
             } else {
+                ErrorDisplay.show("Incorrect Password", LoginActivity.this);
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }

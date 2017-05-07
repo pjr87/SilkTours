@@ -7,13 +7,12 @@ class ToursList extends React.Component{
   }
 
   render(){
-    console.log("displayprops", this.props.tourDisplayProps);
-
     const tours = this.props.tours.map(function(tour,index) {
-      console.log("tpropsinlist:",this.props);
-        return (
-          <Tours tour={tour} key={index} tourDisplayProps={this.props.tourDisplayProps}/>
-      )}, this);
+      return (
+            <Tours tour={tour} key={index} tourDisplayProps={this.props.tourDisplayProps}/>
+      )
+    }, this);
+
 
     return (<div>
       {tours}
