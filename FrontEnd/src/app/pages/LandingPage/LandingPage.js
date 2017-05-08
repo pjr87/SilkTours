@@ -19,6 +19,9 @@ import {
   PlaceHolder
 } from 'landricks-components';
 
+import { Button } from 'react-bootstrap';
+
+
 import ReactPlayer from 'react-player';
 import baiada from '../../style/images/baiada.jpg';
 import drexel from '../../style/images/drexel.png';
@@ -27,6 +30,9 @@ import genericCity from '../../style/images/genericCity.png';
 import BWcity from '../../style/images/BWcity.png';
 import CitySkylineDock from '../../style/images/CitySkylineDock.jpg';
 import philadelphiaCityView from '../../style/images/philadelphiaCityView.jpg';
+import iphone from '../../style/images/iphone.png';
+import building from '../../style/images/building.jpg';
+import forrest from '../../style/images/forrest.jpg';
 //heading="News about silk"
 
 //heading="About Company"
@@ -87,23 +93,91 @@ class LandingPage extends React.Component{
       secondaryColor: '#AB619E'
     }
 
+    const FIRST_BAND_THEME = {
+      ...BASE_THEME,
+      backgroundColor: '#FFFFFF',
+      textColor: '#000000',
+      primaryColor: '#FFFFFF',
+      secondaryColor: '#AB619E'
+    }
+
     return (
       <div>
         <BannerImage/>
 
         <LandingCanvas>
+          {/*
           <StrongMessageBrick
             theme={ HEADER_BAND_THEME }
             messageLevel1="Welcome to Silk Tours!"
             CTAs={ <CallToAction label="Sign Up Now!" onClick={this.handleClick}/> }
           />
+          */}
 
-          <ReactPlayer
-            className={Style.player}
-            url='https://www.youtube.com/watch?v=qcLqPX46Yak'
-            width='100%'
-             />
+          <DoubleContentBrick theme={ FIRST_BAND_THEME } hasHeader={ false }>
+            <Image className="img-responsive center-block" src={iphone}/>
+            <ThemePropagator>
+            <p className={Style.landingHeader}>So you're going on a trip.</p>
+            <p className={Style.landingHeader}>Where do you begin&#63;</p>
+            <br/>
+            <p className={Style.landingSubHeader}>Meet Someone New</p>
+            <p className={Style.landingContent}>Aenean sollicitudin, erat a elementum rutrum, neque sem</p>
+            <p className={Style.landingContent}>pretium metus, quis mollis nisl nunc et massa.</p>
+            <br/>
+            <p className={Style.landingSubHeader}>Find places Easily</p>
+            <p className={Style.landingContent}>Vestibulum sed metus in lorem tristique ullamcorper id vitae</p>
+            <p className={Style.landingContent}>erat. Nulla mollis sapien sollicitudin lacinia lacinia.</p>
+            </ThemePropagator>
+          </DoubleContentBrick>
 
+          <GenericBrick
+            backgroundImage={building}>
+            <br/>
+            <br/>
+            <p className={Style.landingHeader2}>Start Exploring</p>
+            <br/>
+            <p className={Style.landingContent2}>Opportunities to discover new cities</p>
+            <p className={Style.landingContent2}>abound with Silk Tours.</p>
+            <br/>
+            <p className={Style.landingContent2}>Silk tour guides will deliver a personal,</p>
+            <p className={Style.landingContent2}>valuable, and communicable</p>
+            <p className={Style.landingContent2}>experience while in a destination city.</p>
+            <br/>
+            <Button className={Style.bannerButton} onClick={this.handleClickExplore}>explore ></Button>
+            <br/>
+            <br/>
+          </GenericBrick>
+
+
+          <GenericBrick theme={{backgroundColor: "#FFFFFF"}}>
+            <p className={Style.landingHeader}>See How it Works</p>
+            <br/>
+            <ReactPlayer
+              className={Style.player}
+              url='https://www.youtube.com/watch?v=qcLqPX46Yak'
+              width='100%'/>
+          </GenericBrick>
+
+          <GenericBrick
+            backgroundImage={forrest}>
+            <br/>
+            <br/>
+            <p className={Style.landingHeader3}>Why Guide&#63;</p>
+            <br/>
+            <p className={Style.landingContent3}>Silk has a simple mission statement: to</p>
+            <p className={Style.landingContent3}>foster cultural exchange and inprove</p>
+            <p className={Style.landingContent3}>traveling experience by seamlessly</p>
+            <p className={Style.landingContent3}>connecting tourists with tour guides.</p>
+            <br/>
+            <Button className={Style.bannerButton2} onClick={this.handleClick}>apply now ></Button>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+          </GenericBrick>
+          {/*
           <EnumerationBrick
             theme={ HEAVY_BAND_THEME }
             subtitle="Silk Tours is the only solution which connects cultures">
@@ -154,6 +228,7 @@ class LandingPage extends React.Component{
             messageLevel1="Break your barries and experience culture like a local!"
             CTAs={ <CallToAction label="View Tours!" onClick={this.handleClickExplore}/> }
           />
+          */}
 
         </LandingCanvas>
       </div>
