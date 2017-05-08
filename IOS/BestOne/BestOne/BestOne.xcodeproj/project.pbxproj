@@ -10,6 +10,9 @@
 		01F0EB0C8D3C66D33F051C56 /* Pods_BestOneWatchKitApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E81C95829604E30BAF4665A8 /* Pods_BestOneWatchKitApp.framework */; };
 		05BBFB6B1EB81F2700D7123C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BBFB551EB81E5200D7123C /* Alamofire.framework */; };
 		05BBFB721EB81F7D00D7123C /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
+		05EB20AC1EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
+		05EB20B41EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
+		05EB20B71EBE5C2D002FD2A0 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */; };
 		6396FD3F984A88223525973E /* Pods_BestOneWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */; };
 		848C23AE1BFB9748002BB239 /* BestOneWatchKitExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BB237E671BCF982C00FB9445 /* BestOneWatchKitExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		848C23B11BFB9748002BB239 /* BestOneWatchKitApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BB237E701BCF982C00FB9445 /* BestOneWatchKitApp.app */; };
@@ -466,7 +469,8 @@
 
 /* Begin PBXFileReference section */
 		05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
-		05BBFB711EB81F7D00D7123C /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPI.swift; sourceTree = "<group>"; };
+		05BBFB711EB81F7D00D7123C /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackendAPI.swift; path = ../Classes/BackendAPI.swift; sourceTree = "<group>"; };
+		05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/BestOne-bbzamvtjdcwfxwdweqgmmcvqdxnf/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.release.xcconfig"; sourceTree = "<group>"; };
 		3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOneWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3297BB0C3C5FFE2FC30134F2 /* Pods-BestOneWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.debug.xcconfig"; sourceTree = "<group>"; };
@@ -782,6 +786,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05EB20B71EBE5C2D002FD2A0 /* SwiftyJSON.framework in Frameworks */,
 				BB7D74F81B87B30900CCE68E /* AudioToolbox.framework in Frameworks */,
 				BB7D74F61B87B30200CCE68E /* AVFoundation.framework in Frameworks */,
 				BB7D74F31B87B2F700CCE68E /* EventKit.framework in Frameworks */,
@@ -998,7 +1003,6 @@
 				05BBFB701EB81F5100D7123C /* Controllers */,
 				BB39CA071B6960B400681FB2 /* Cells */,
 				BB39CA081B6960B400681FB2 /* Segues */,
-				05BBFB711EB81F7D00D7123C /* BackendAPI.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1006,6 +1010,7 @@
 		BB39C7521B66AABE00681FB2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				05BBFB711EB81F7D00D7123C /* BackendAPI.swift */,
 				BB39C8C11B67B9A200681FB2 /* FavoriteItemsManager.swift */,
 				BB39C8C31B68176B00681FB2 /* ShopManager.swift */,
 				BB39C8C51B68E85600681FB2 /* ThemeManager.swift */,
@@ -1062,6 +1067,7 @@
 		BB39C7571B66AAEE00681FB2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */,
 				BB7D74F91B87B33D00CCE68E /* libz.1.dylib */,
 				BB7D74F71B87B30900CCE68E /* AudioToolbox.framework */,
 				BB7D74F51B87B30200CCE68E /* AVFoundation.framework */,
@@ -2064,6 +2070,7 @@
 				BB237EC61BCFB55200FB9445 /* ShopItem.swift in Sources */,
 				BB237EC91BCFB55D00FB9445 /* CartManager.swift in Sources */,
 				BB237EE51BCFCB4700FB9445 /* ShopRowType.swift in Sources */,
+				05EB20B41EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */,
 				BB237EC71BCFB55D00FB9445 /* FavoriteItemsManager.swift in Sources */,
 				BBD5655D1BD02615005243B6 /* DetailsInterfaceController.swift in Sources */,
 				BB237EA21BCFACCF00FB9445 /* MainInterfaceController.swift in Sources */,
@@ -2126,6 +2133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E040FB9E1BA7531900E9743C /* TodayViewController.swift in Sources */,
+				05EB20AC1EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

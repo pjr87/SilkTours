@@ -7,7 +7,10 @@
 //
 
 import Foundation
-//import Alamofire
+//import UIKit
+
+//import SwiftyJSON
+import Alamofire
 
 class BackendAPI{
 
@@ -58,9 +61,137 @@ class BackendAPI{
 //    });
     }
     
-     func getAllTours() {
-        //return axios.get(SERVER_URL + "/search");
+    func getAllTours(completion:@escaping (_ String:Any) -> Void)
+    {
+        
+        
+        
+         Alamofire.request(SERVER_URL+"/search").responseJSON { response in
+            switch response.result {
+            case .success(let data):
+                
+                let json = data as? NSDictionary
+                if ((json?.value(forKey: "data")) != nil){
+                    
+                    var d = json?.value(forKey: "data")
+                    
+                   // d = NSArray(d?)[0]
+                    
+                    completion(json?.value(forKey:"data"))
+                    
+                }
+                
+                
+               // let json = JSON(data: dataFromNetworking)
+                
+                //let data = d.data(using: String.Encoding.utf8, allowLossyConversion: false)!
+
+                
+                
+                
+               /* if let data = d as? [String:Any]{
+                do{
+                if let myJSON = try! JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
+                    //For getting customer_id try like this
+                    if let data = myJSON["data"] as? [[String: Any]] {
+                        for jsonDict in data {
+                            //var try = jsonDict["customer_id"] as? String
+                        } 
+                    }
+                }
+                }catch{
+                
+                
+                }
+                }*/
+               /*
+                
+                
+                
+                if let json = data as? [String:Any]{
+                    let j = json["data"] as? [String:Any]
+                    if let statusesArray = try? JSONSerialization.jsonObject(with: j, options: .allowFragments) as? [[String: Any]],
+                        let user = statusesArray[0]["user"] as? [String: Any],
+                        let username = user["name"] as? String {
+                        // Finally we got the username
+                    }
+                
+                }
+                
+                
+                
+                
+                
+                if let json = data as? [String:Any]{
+                    //if let val = json["data"]![0] as? [String:Any]{
+                    //}
+                    ///let v = val?[0] as? [String:Any]
+                    //completion(v)
+                    
+                
+                
+                
+                do {
+                    let allContacts = try JSONSerialization.jsonObject(with: json, options: JSONSerialization.ReadingOptions.allowFragments) as! [String : NSArray]                } catch {
+                    print(error)
+                }
+                    
+                    
+                guard let item = json?.first as? [String: Any],
+                    let person = item["person"] as? [String: Any],
+                    let age = person["age"] as? Int else {
+                        return
+                }
+                }
+                /*do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    
+                    
+                    if let countries = json["Countries"] as? [String: AnyObject] {
+                        for country in countries {
+                            if let couname = country["countryname"] as? [AnyObject] {
+                                country_names.append(couname)
+                            }
+                            
+                            if let coucode = country["code"] as? [AnyObject] {
+                                country_codes.append(coucode)
+                            }
+                            
+                        }
+                    }
+                } catch {
+                    print("Error Serializing JSON: \(error)")
+                }
+                
+                 */
+ */
+ 
+//                if let json = data as? [String: Any] {
+//                    let j = json["data"] as? [String:Any]
+//                    
+//                    completion(j)
+//                }
+ 
+                //let json = JSONSerialization.jsonObject(with: JSON) as? [String: Any]
+                
+                //JSON[0]["first"]
+                //let info = String(describing: JSON)
+                
+            case .failure(let data):
+                let JSON = data as! String
+                    completion(JSON)
+                
+            }
+ 
+        }
     }
+    
+    
+   /*  func getAllTours() -> String {
+        Alamofire.request(SERVER_URL+"/search").responseJSON(completionHandler: <#T##(DataResponse<Any>) -> Void#>)
+        
+        //return axios.get(SERVER_URL + "/search");
+    }*/
     
     func getUser(id:UInt64){
         //var url = SERVER_URL + "/users/"+id;

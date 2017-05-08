@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "E5AB2BDF831B85DAE61466197A016923C2F0B1E3",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "67620B5EFA902936DF04070AF595B76AB0333747" : 9223372036854775807,
+    "E5AB2BDF831B85DAE61466197A016923C2F0B1E3" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C3639229-5B9D-40F4-8E32-BF4BA65D701A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "67620B5EFA902936DF04070AF595B76AB0333747" : "SilkTours\/IOS\/BestOne\/BestOne\/Alamofire\/",
+    "E5AB2BDF831B85DAE61466197A016923C2F0B1E3" : "SilkTours\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "BestOne",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "IOS\/BestOne\/BestOne\/BestOne.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Alamofire\/Alamofire.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "67620B5EFA902936DF04070AF595B76AB0333747"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AndrewShidel\/SilkTours.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E5AB2BDF831B85DAE61466197A016923C2F0B1E3"
+    }
+  ]
+}

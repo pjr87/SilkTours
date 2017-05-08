@@ -8,6 +8,7 @@ target 'BestOne' do
   # Pods for BestOne
   pod 'AWSCognito'
   pod 'Alamofire', '~> 4.4'
+  pod 'SwiftyJSON', :git =>'https://github.com/SwiftyJSON/SwiftyJSON.git'
 end
 
 target 'BestOneWatchKitApp' do
