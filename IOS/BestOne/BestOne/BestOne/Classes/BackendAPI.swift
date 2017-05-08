@@ -7,10 +7,12 @@
 //
 
 import Foundation
+
 //import UIKit
 
 //import SwiftyJSON
 import Alamofire
+import AWSCognito
 
 class BackendAPI{
 
@@ -21,10 +23,68 @@ class BackendAPI{
      secretAccessKey and identityID - Used with all ajax calls
      */
     
-    let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
+    static var credentials: NSDictionary?
+    
+    static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
 //    func getUser(String id) {
 //        Alamofire.request();
 //    }
+    
+    static func login(email:String, password:String, completion: @escaping () -> Void) {
+        let url = "\(SERVER_URL)/login"
+        let parameters: [String: Any] = [
+            "type" : "custom",
+            "username" : email,
+            "password" : password
+        ]
+        
+
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    credentials = result as? NSDictionary
+                    completion()
+                }
+                print(response)
+            }
+    }
+    
+    static func register(email:String, password:String, completion: @escaping () -> Void) {
+        let url = "\(SERVER_URL)/register"
+        let parameters: [String: Any] = [
+            "username" : email,
+            "password" : password
+        ]
+        
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                completion()
+            }
+    }
+    
+    static func sendConformCode(email:String, password:String, code:String, completion: @escaping (Bool) -> Void) {
+        let url = "\(SERVER_URL)/confirm_sign_up"
+        let parameters: [String: Any] = [
+            "username" : email,
+            "password" : password,
+            "code": code
+        ]
+        
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    let json = result as? NSDictionary
+                    if (json?.value(forKey: "error") != nil) {
+                        completion(true)
+                    } else {
+                        credentials = json
+                        completion(false)
+                    }
+                }
+        }
+    }
     
    
     func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
@@ -39,7 +99,7 @@ class BackendAPI{
     //return axios.get(SERVER_URL + "/tour/"+tourId+"/events");
     }
     
-    func putTourEventById(eventid:UInt64, json:String, auth:String) {
+    static func putTourEventById(eventid:UInt64, json:String, auth:String) {
         let url = SERVER_URL + "/tourevents/" + String(eventid);
 //    return axios.put(url, json,
 //        {
@@ -50,7 +110,7 @@ class BackendAPI{
 //    });
     }
     
-    func putTourEvent(json:String, auth:String) {
+    static func putTourEvent(json:String, auth:String) {
         let url = SERVER_URL + "/tourevents";
     //return axios.post(url, json,
 //    {
@@ -198,7 +258,7 @@ class BackendAPI{
         //return axios.get(url);
     }
     
-    func getUserById(id:UInt64, json:String) {
+    static func getUserById(id:UInt64, json:String) {
         let url = SERVER_URL + "/users/" + String(id);
 //    return axios.get(url, {
 //    headers:{
@@ -208,7 +268,7 @@ class BackendAPI{
 //    });
     }
     
-    func newTour(data:String, auth:String){
+    static func newTour(data:String, auth:String){
         let url = SERVER_URL + "/tours";
 //    return axios.post(url, data,
 //    {
