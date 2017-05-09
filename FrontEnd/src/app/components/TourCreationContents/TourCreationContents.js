@@ -112,8 +112,9 @@ class TourCreationContents extends React.Component{
                     <TourCreationTime
                       tour={this.props.tour}
                       dispatch={this.props.dispatch}
-                      startTime={this.props.startTime}
-                      endTime={this.props.endTime}/>
+                      hours_special={this.props.hours_special}
+                      hours_special_dates={this.props.hours_special_dates}
+                      base_hours={this.props.base_hours}/>
                   </Tab.Pane>
                   <Tab.Pane eventKey="photos">
                     <TourCreationPhotos
@@ -151,8 +152,9 @@ class TourCreationContents extends React.Component{
                       dispatch={this.props.dispatch}
                       auth={this.props.auth}
                       photos={this.props.photos}
-                      startTime={this.props.startTime}
-                      endTime={this.props.endTime}/>
+                      hours_special={this.props.hours_special}
+                      hours_special_dates={this.props.hours_special_dates}
+                      base_hours={this.props.base_hours}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
@@ -174,7 +176,10 @@ TourCreationContents.propTypes = {
   startTime: React.PropTypes.number,
   errorMessage: React.PropTypes.string,
   tabKey: React.PropTypes.string,
-  photos: React.PropTypes.object
+  photos: React.PropTypes.object,
+  hours_special: React.PropTypes.array,
+  hours_special_dates: React.PropTypes.array,
+  base_hours: React.PropTypes.array
 }
 
 function select (state) {
@@ -187,7 +192,10 @@ function select (state) {
     errorMessage: state.TourCreationReducer.errorMessage,
     tour: state.TourCreationReducer.tour,
     photos: state.TourCreationReducer.photos,
-    tabKey: state.TourCreationReducer.tabKey
+    tabKey: state.TourCreationReducer.tabKey,
+    hours_special: state.TourCreationReducer.hours_special,
+    hours_special_dates: state.TourCreationReducer.hours_special_dates,
+    base_hours: state.TourCreationReducer.base_hours,
   };
 }
 

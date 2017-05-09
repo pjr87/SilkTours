@@ -353,8 +353,6 @@ var cognitoFunctions = {
                     IdentityId: id
                   };
                   var response;
-                  // TODO check if user already exists, then user already signed in
-                  //with another provider
                   var user = {
                     Logins: loginsIdpData,
                     IdentityId: id
@@ -364,7 +362,7 @@ var cognitoFunctions = {
                   /*service.getUserByEmail(username, user).then(function(response){
                     //If the user matches then proceed
                     if(response.data.email == username){
-                      //TODO clear user from cognito
+                      config.credentials.clearCachedId();
                       if (callback) callback({
                         authenticated: false,
                         error: 'User account logged in with another provider'
