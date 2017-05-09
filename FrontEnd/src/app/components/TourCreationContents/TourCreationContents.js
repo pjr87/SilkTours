@@ -187,7 +187,10 @@ function select (state) {
     errorMessage: state.TourCreationReducer.errorMessage,
     tour: state.TourCreationReducer.tour,
     photos: state.TourCreationReducer.photos,
-    tabKey: state.TourCreationReducer.tabKey
+    tabKey: state.TourCreationReducer.tabKey,
+    hours_special: state.TourCreationReducer.hours_special,
+    hours_special_dates: state.TourCreationReducer.hours_special_dates,
+    base_hours: state.TourCreationReducer.base_hours,
   };
 }
 

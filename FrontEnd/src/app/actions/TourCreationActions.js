@@ -171,6 +171,22 @@ export function updateTourState(newTourState) {
 
 /**
  * Updates a tour's information
+ * @param  {object} newSpecialTimeState //The user json
+ */
+export function updateSpecialTimeState(newSpecialTimeState) {
+  return { type: tourCreationConstants.UPDATE_SPECIAL_TIME, newSpecialTimeState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newSpecialTimeState //The user json
+ */
+export function updateSpecialTimeDateState(newSpecialTimeDateState) {
+  return { type: tourCreationConstants.UPDATE_SPECIAL_TIME_DATE, newSpecialTimeDateState };
+}
+
+/**
+ * Updates a tour's information
  * @param  {object} newGuideState //The user json
  */
 export function updateGuideState(newGuideState) {
@@ -239,6 +255,14 @@ export function updateNameState(newNameState) {
  */
 export function updateTimeState(newTimeState) {
   return { type: tourCreationConstants.UPDATE_TOUR_TIME, newTimeState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
+export function updateSpecialTimeHoursState(newTimeState) {
+  return { type: tourCreationConstants.UPDATE_SPECIAL_TIME_HOURS, newTimeState };
 }
 
 /**

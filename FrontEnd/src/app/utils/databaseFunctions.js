@@ -94,6 +94,17 @@ export function newTour(data, auth){
     });
 }
 
+export function addTourHours(tourId, data, auth){
+    let url = SERVER_URL + '/tours/' + tourId + "/hours";
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 export function newPhoto(data, id, auth){
     let url = SERVER_URL + '/media/' + id;
     return axios.post(url, data,

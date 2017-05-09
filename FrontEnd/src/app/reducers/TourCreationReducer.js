@@ -64,15 +64,8 @@ const initialState = {
       tour_hours_id: ""
     }
   ],
-  hours_special: [
-    {
-      close_time: "",
-      date: "",
-      open_time: "",
-      overrides: "",
-      tour_hours_special_id: ""
-    }
-  ],
+  hours_special: [],
+  hours_special_dates: [],
   currentlySending: false,
   errorMessage: '',
   tabKey: 'info'
@@ -93,6 +86,8 @@ function TourCreationReducer(state = initialState, action) {
       return {...state, endTime : action.newEndState};
     case tourCreationConstants.UPDATE_TOUR_TIME:
       return {...state, tour : action.newTimeState};
+    case tourCreationConstants.UPDATE_SPECIAL_TIME_HOURS:
+      return {...state, hours_special : action.newTimeState};
     case tourCreationConstants.UPDATE_TOUR_DESCRIPTION:
       return {...state, tour : action.newDescriptionState};
     case tourCreationConstants.UPDATE_TOUR_INTEREST:
@@ -119,6 +114,10 @@ function TourCreationReducer(state = initialState, action) {
         };
     case tourCreationConstants.SENDING_REQUEST:
       return {...state, currentlySending: action.sending};
+    case tourCreationConstants.UPDATE_SPECIAL_TIME:
+      return {...state, hours_special: action.newSpecialTimeState};
+    case tourCreationConstants.UPDATE_SPECIAL_TIME_DATE:
+      return {...state, hours_special_dates: action.newSpecialTimeDateState};
     case tourCreationConstants.UPDATE_COORDS:
       return {...state, coords: action.newCoordinatesState};
     case tourCreationConstants.SET_ERROR_MESSAGE:

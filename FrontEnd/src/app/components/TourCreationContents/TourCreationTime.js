@@ -5,10 +5,12 @@ import {
   updateTimeState,
   setStartTime,
   setEndTime,
-  setTabKey } from '../../actions/TourCreationActions';
+  setTabKey,
+  updateSpecialTimeState,
+  updateSpecialTimeDateState} from '../../actions/TourCreationActions';
 import MultiDateSelect from '../Date/MultiDateSelect';
 import moment from 'moment';
-import {Grid, Col, Row, ControlLabel, Pager} from 'react-bootstrap';
+import {Grid, Col, Row, ControlLabel, Pager, FormGroup, Form, FormControl} from 'react-bootstrap';
 
 class TourCreationTime extends React.Component{
   constructor() {
@@ -16,33 +18,8 @@ class TourCreationTime extends React.Component{
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
-    this._changeStartTime = this._changeStartTime.bind(this)
-    this._changeEndTime = this._changeEndTime.bind(this)
-    this.handleStartChange = this.handleStartChange.bind(this)
-    this.handleEndChange = this.handleEndChange.bind(this)
-    this.onStartChange = this.onStartChange.bind(this)
-    this.onEndChange = this.onEndChange.bind(this)
-  }
-
-  handleStartChange(date) {
-    console.log("start day", date._d.getDate());
-    console.log("start month", date._d.getMonth()+1);
-    console.log("start year", date._d.getFullYear());
-    let startDate =  date._d.getFullYear() +  "-" + (date._d.getMonth()+1) + "-" + date._d.getDate()
-    console.log("start full", startDate);
-    this.setState({
-      startDate: date
-    });
-    this._emitUserChange({...this.props.tour, firstStart_date: startDate});
-  }
-
-  handleEndChange(date) {
-    console.log("end date", date);
-    let endDate =  date._d.getFullYear() +  "-" + (date._d.getMonth()+1) + "-" + date._d.getDate()
-    this.setState({
-      endDate: date
-    });
-    this._emitUserChange({...this.props.tour, lastEnd_date: endDate});
+    this._emitSpecialHourChange = this._emitSpecialHourChange.bind(this)
+    this._emitSpecialHourDateChange = this._emitSpecialHourDateChange.bind(this)
   }
 
   next(){
@@ -53,24 +30,12 @@ class TourCreationTime extends React.Component{
     this.props.dispatch(setTabKey("title"));
   }
 
-  _changeStartTime(event) {
-    this._emitUserChange({...this.props.tour, firstStart_date: event.target.value});
+  _emitSpecialHourChange (newSpecialTimeState) {
+    this.props.dispatch(updateSpecialTimeState(newSpecialTimeState))
   }
 
-  _changeEndTime(event) {
-    this._emitUserChange({...this.props.tour, lastEnd_date: event.target.value});
-  }
-
-  _emitUserChange (newTimeState) {
-    this.props.dispatch(updateTimeState(newTimeState))
-  }
-
-  onStartChange(time) {
-    this.props.dispatch(setStartTime(time));
-  }
-
-  onEndChange(time) {
-    this.props.dispatch(setEndTime(time));
+  _emitSpecialHourDateChange (newSpecialTimeDateState) {
+    this.props.dispatch(updateSpecialTimeDateState(newSpecialTimeDateState))
   }
 
   render(){
@@ -80,7 +45,9 @@ class TourCreationTime extends React.Component{
         <p className={style.HeaderStyle}>What is the start and end date of the tour?</p>
         <br/>
         <br/>
-        <MultiDateSelect/>
+        <MultiDateSelect
+          emitChange={this._emitSpecialHourChange}
+          emitDateChange={this._emitSpecialHourDateChange}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
