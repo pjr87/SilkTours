@@ -57,31 +57,25 @@ export function login(username, password) {
     return hours+':'+minutes+':'+seconds;
 }
 
-export function buildTourEvent(startTime, endTime, startDay, endDay, tourId, guideId){
-  var start = startDay + " " + toHHMMSS(startTime);
-  var end = endDay + " " + toHHMMSS(endTime);
-
-  var tourEvent = {
-    end_date_time: start,
-    id_tour: tourId,
-    id_guide: guideId,
-    start_date_time: end,
-    state: "A"
-  };
-
-  return tourEvent;
+export function convertTimes(hours_special){
+  var arrayLength = hours_special.length;
+  for (var i = 0; i < arrayLength; i++) {
+      hours_special[i].open_time = toHHMMSS(hours_special[i].open_time);
+      hours_special[i].close_time = toHHMMSS(hours_special[i].close_time);
+  }
+  return hours_special;
 }
 
 /**
  * Create a Tour in the database
  * @param  {object} tour The tour to create
  */
-export function createTour(tour, auth, photos, startTime, endTime) {
+export function createTour(tour, auth, photos, hours_special, base_hours) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ tour, auth, photos, startTime, endTime })) {
+    if (anyElementsEmpty({ tour, auth, photos, hours_special, base_hours })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
@@ -90,19 +84,13 @@ export function createTour(tour, auth, photos, startTime, endTime) {
     service.newTour(tour, auth).then(function(response){
       if(response.data){
         var tour_id = response.data.id_tour;
-        console.log("response.data", tour_id);
-        console.log("Addidng photo");
         service.newTourProfilePhoto(photos, tour_id, auth).then(function(response){
           if(response.data){
-            var tourEvent = buildTourEvent(
-              startTime,
-              endTime,
-              tour.firstStart_date,
-              tour.lastEnd_date,
-              tour_id,
-              tour.guides[0].id_user);
-            console.log('tourEvent', tourEvent);
-            service.putTourEvent(tourEvent, auth).then(function(response){
+            var times =
+            {
+              hours_special: convertTimes(hours_special)
+            }
+            service.addTourHours(tour_id, times, auth).then(function(response){
               if(response.data){
                 dispatch(sendingRequest(false));
                 forwardTo('/explore');

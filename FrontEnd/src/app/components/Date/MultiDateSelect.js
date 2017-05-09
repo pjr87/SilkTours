@@ -15,7 +15,7 @@ require('react-datepicker/dist/react-datepicker-cssmodules.css');
 const format = 'hh:mm a';
 const now = moment().hour(0).minute(0);
 
-class MultiDateSelect extends React.Component{
+export default class MultiDateSelect extends React.Component{
   constructor(props){
     super(props);
 
@@ -24,7 +24,6 @@ class MultiDateSelect extends React.Component{
     this.findDate = this.findDate.bind(this)
     this.handleStartChange = this.handleStartChange.bind(this)
     this.handleEndChange = this.handleEndChange.bind(this)
-    this.toHHMMSS = this.toHHMMSS.bind(this)
   }
 
   formatDate(date) {
@@ -68,24 +67,14 @@ class MultiDateSelect extends React.Component{
     this.props.emitDateChange(this.props.hours_special_dates);
   }
 
-  toHHMMSS(sec_num) {
-     var hours   = Math.floor(sec_num / 3600);
-     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-     var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-     if (hours   < 10) {hours   = "0"+hours;}
-     if (minutes < 10) {minutes = "0"+minutes;}
-     if (seconds < 10) {seconds = "0"+seconds;}
-
-     return hours+':'+minutes+':'+seconds;
- }
-
   handleStartChange(i, time) {
-    this._emitUserChange({...this.props.hours_special[i], open_time: time});
+    this.props.hours_special[i].open_time = time;
+    this._emitUserChange(this.props.hours_special);
   }
 
   handleEndChange(i, time) {
-    this._emitUserChange({...this.props.hours_special[i], end_time: time});
+    this.props.hours_special[i].close_time = time;
+    this._emitUserChange(this.props.hours_special);
   }
 
   _emitUserChange (newTimeState) {
@@ -94,9 +83,25 @@ class MultiDateSelect extends React.Component{
 
   renderDates(){
     return this.props.hours_special.map((hours_special, index) =>
-      <li key={index}>
-          <p className={style.BodyStyle}>{hours_special.date}</p>
-      </li>
+      <ul key={index}>
+        <Row>
+          <Col sm={3}>
+            <p className={style.BodyStyle}>{hours_special.date}</p>
+          </Col>
+          <Col sm={3}>
+            <TimePicker
+              format={12}
+              onChange={this.handleStartChange.bind(this,index)}
+              value={hours_special.open_time}/>
+          </Col>
+          <Col sm={3}>
+            <TimePicker
+              format={12}
+              onChange={this.handleEndChange.bind(this,index)}
+              value={hours_special.close_time}/>
+          </Col>
+        </Row>
+      </ul>
     );
   }
 
@@ -137,46 +142,3 @@ class MultiDateSelect extends React.Component{
     );
   }
 }
-
-MultiDateSelect.propTypes = {
-  dispatch: React.PropTypes.func,
-  emitChange: React.PropTypes.func,
-  emitDateChange: React.PropTypes.func,
-  hours_special: React.PropTypes.array,
-  hours_special_dates: React.PropTypes.array,
-  base_hours: React.PropTypes.array,
-  handleStartChange: React.PropTypes.func,
-  handleEndChange: React.PropTypes.func
-}
-
-function select (state) {
-  return {
-    hours_special: state.TourCreationReducer.hours_special,
-    hours_special_dates: state.TourCreationReducer.hours_special_dates,
-    base_hours: state.TourCreationReducer.base_hours,
-  };
-}
-
-export default connect(select)(MultiDateSelect);
-
-/*
-
-<div>
-  <Row>
-    <p className={style.BodyStyle}>{hours_special.date}</p>
-    <Col sm={3}>
-      <TimePicker
-        format="12"
-        onChange={this.handleStartChange.bind(this,i)}
-        value={hours_special.open_time}/>
-    </Col>
-    <Col sm={3}>
-      <TimePicker
-        format="12"
-        onChange={this.handleEndChange.bind(this,i)}
-        value={hours_special.close_time}/>
-    </Col>
-  </Row>
-</div>
-
-*/

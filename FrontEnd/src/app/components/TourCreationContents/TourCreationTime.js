@@ -47,7 +47,11 @@ class TourCreationTime extends React.Component{
         <br/>
         <MultiDateSelect
           emitChange={this._emitSpecialHourChange}
-          emitDateChange={this._emitSpecialHourDateChange}/>
+          emitDateChange={this._emitSpecialHourDateChange}
+          dispatch={this.props.dispatch}
+          hours_special={this.props.hours_special}
+          hours_special_dates={this.props.hours_special_dates}
+          base_hours={this.props.base_hours}/>
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
