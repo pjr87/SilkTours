@@ -10,7 +10,7 @@ import Foundation
 
 //import UIKit
 
-//import SwiftyJSON
+import SwiftyJSON
 import Alamofire
 import AWSCognito
 
@@ -26,7 +26,7 @@ class BackendAPI{
     static var credentials: NSDictionary?
     
     static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
-//    func getUser(String id) {
+//  static func getUser(String id) {
 //        Alamofire.request();
 //    }
     
@@ -87,15 +87,15 @@ class BackendAPI{
     }
     
    
-    func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
+  static func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
        // return Alamofire.request();
     }
     
-    func getTourById(tourId:UInt64) {
+  static func getTourById(tourId:UInt64) {
     //return axios.get(SERVER_URL + "/tours/"+tourId);
     }
     
-    func getTourEventById(tourId:UInt64){
+  static func getTourEventById(tourId:UInt64){
     //return axios.get(SERVER_URL + "/tour/"+tourId+"/events");
     }
     
@@ -121,7 +121,7 @@ class BackendAPI{
 //    });
     }
     
-    func getAllTours(completion:@escaping (_ String:Any) -> Void)
+  static func getAllTours(completion:@escaping (_ String:Any) -> Void)
     {
         
         
@@ -247,13 +247,13 @@ class BackendAPI{
     }
     
     
-   /*  func getAllTours() -> String {
+   /*static func getAllTours() -> String {
         Alamofire.request(SERVER_URL+"/search").responseJSON(completionHandler: <#T##(DataResponse<Any>) -> Void#>)
         
         //return axios.get(SERVER_URL + "/search");
     }*/
     
-    func getUser(id:UInt64){
+  static func getUser(id:UInt64){
         //var url = SERVER_URL + "/users/"+id;
         //return axios.get(url);
     }
@@ -279,7 +279,7 @@ class BackendAPI{
 //    });
     }
     
-//     func newPhoto(data, id, auth){
+//   static func newPhoto(data, id, auth){
 //    let url = SERVER_URL + '/media/' + id;
 //    return axios.post(url, data,
 //    {
@@ -290,7 +290,7 @@ class BackendAPI{
 //    });
 //    }
 //    
-//     func newTourProfilePhoto(data, id, auth){
+//   static func newTourProfilePhoto(data, id, auth){
 //    let url = SERVER_URL + '/tours/' + id + '/profile';
 //    return axios.put(url, data,
 //    {
@@ -301,7 +301,7 @@ class BackendAPI{
 //    });
 //    }
 //    
-//     func newUserProfilePhoto(data, id, auth){
+//   static func newUserProfilePhoto(data, id, auth){
 //    let url = SERVER_URL + '/users/' + id + '/profile';
 //    return axios.put(url, data,
 //    {
@@ -317,7 +317,7 @@ class BackendAPI{
      The arguments should be put in the HTTP request's form, and the JSON structure
      of the params is the same as the result of "http://34.197.42.24:5000/users/1"
      (although you only need to supply the values that you want to set).*/
-    func registerNewUser(json: String) {
+  static func registerNewUser(json: String) {
     //return axios.post(SERVER_URL + '/users', json);
     }
     
@@ -343,14 +343,14 @@ class BackendAPI{
   //  }
     
     
-   //  func getMessages(){
+   //static func getMessages(){
    // var url = 'https://demo5229068.mockable.io/messages';
     
  //   return axios.get(url);
 //    }
     
     
-//     func postSupportTicket(department, fname, lname, email, textBody) {
+//   static func postSupportTicket(department, fname, lname, email, textBody) {
 //    var instance = axios.create({
 //    baseURL: 'https://silktoursinc.freshdesk.com/api/v2/tickets',
 //    headers: {'Content-Type': 'application/json'},

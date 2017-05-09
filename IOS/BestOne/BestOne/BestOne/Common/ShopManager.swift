@@ -11,7 +11,7 @@ import UIKit
 class ShopManager: NSObject {
     
     static let sharedManager = ShopManager()
-    let backend = BackendAPI()
+    //let backend = BackendAPI()
     
     fileprivate override init() {}
 
@@ -19,7 +19,7 @@ class ShopManager: NSObject {
     
     func loadData() -> [ShopItem] {
         
-        backend.getAllTours() { (data) in
+        BackendAPI.getAllTours() { (data) in
             //let subject = data["subject"] as? [AnyObject]
             print(data)
         }

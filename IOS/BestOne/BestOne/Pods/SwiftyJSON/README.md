@@ -19,7 +19,6 @@ SwiftyJSON makes it easy to deal with JSON data in Swift.
    - [Literal convertibles](#literal-convertibles)
    - [Merging](#merging)
 5. [Work with Alamofire](#work-with-alamofire)
-6. [Work with Moya](#work-with-moya)
 
 > For Legacy Swift support, take a look at the [swift2 branch](https://github.com/SwiftyJSON/SwiftyJSON/tree/swift2)
 
@@ -213,18 +212,11 @@ for (index,subJson):(String, JSON) in json {
 
 #### Error
 
-##### SwiftyJSON 4.x
-
-SwiftyJSON 4.x introduces an enum type called `SwiftyJSONError`, which includes `unsupportedType`, `indexOutOfBounds`, `elementTooDeep`, `wrongType`, `notExist` and `invalidJSON`, at the same time, `ErrorDomain` are being replaced by `SwiftyJSONError.errorDomain`. 
-Note: Those old error types are deprecated in SwiftyJSON 4.x and will be removed in the future release.
-
-##### SwiftyJSON 3.x
-
 Use a subscript to get/set a value in an Array or Dictionary
 
 If the JSON is:
 *  an array, the app may crash with "index out-of-bounds."
-*  a dictionary, it will be assigned to `nil` without a reason.
+*  a dictionary, it will be assigned `nil` without a reason.
 *  not an array or a dictionary, the app may crash with an "unrecognised selector" exception.
 
 This will never happen in SwiftyJSON.
@@ -524,24 +516,4 @@ Alamofire.request(url, method: .get).validate().responseJSON { response in
         print(error)
     }
 }
-```
-
-
-## Work with Moya
-
-SwiftyJSON parse data to JSON:
-
-```swift
-let provider = MoyaProvider<Backend>()
-provider.request(.showProducts) { result in
-    switch result {
-    case let .success(moyaResponse):
-        let data = moyaResponse.data
-        let json = JSON(data: data) // convert network data to json
-        print(json)
-    case let .failure(error):
-        print("error: \(error)")
-    }
-}
-
 ```

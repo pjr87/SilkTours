@@ -7,15 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01F0EB0C8D3C66D33F051C56 /* Pods_BestOneWatchKitApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E81C95829604E30BAF4665A8 /* Pods_BestOneWatchKitApp.framework */; };
-		05BBFB6B1EB81F2700D7123C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BBFB551EB81E5200D7123C /* Alamofire.framework */; };
 		05BBFB721EB81F7D00D7123C /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
-		05EB20AC1EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
-		05EB20B41EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
 		05EB20B71EBE5C2D002FD2A0 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */; };
-		6396FD3F984A88223525973E /* Pods_BestOneWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */; };
-		848C23AE1BFB9748002BB239 /* BestOneWatchKitExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BB237E671BCF982C00FB9445 /* BestOneWatchKitExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		848C23B11BFB9748002BB239 /* BestOneWatchKitApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BB237E701BCF982C00FB9445 /* BestOneWatchKitApp.app */; };
 		B2E3019F4FBE6DA5BE523A18 /* Pods_BestOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */; };
 		BB048B2E1B6A147C00938583 /* LeftShopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB048B2C1B6A147C00938583 /* LeftShopTableViewCell.xib */; };
 		BB048B2F1B6A147C00938583 /* RightShopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB048B2D1B6A147C00938583 /* RightShopTableViewCell.xib */; };
@@ -26,16 +19,6 @@
 		BB048B391B6A250A00938583 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB048B381B6A250A00938583 /* BaseViewController.swift */; };
 		BB048B3B1B6A2C4D00938583 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB048B3A1B6A2C4D00938583 /* CartViewController.swift */; };
 		BB048B3D1B6A4DA200938583 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB048B3C1B6A4DA200938583 /* LoginViewController.swift */; };
-		BB0575851BFA6F9100EE2C06 /* euro-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7591B67734400681FB2 /* euro-regular.ttf */; };
-		BB0575861BFA6F9100EE2C06 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75A1B67734400681FB2 /* Raleway-Bold.ttf */; };
-		BB0575871BFA6F9100EE2C06 /* Raleway-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75B1B67734400681FB2 /* Raleway-Light.ttf */; };
-		BB0575881BFA6F9100EE2C06 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75C1B67734400681FB2 /* Raleway-Medium.ttf */; };
-		BB0575891BFA6F9100EE2C06 /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75D1B67734400681FB2 /* Raleway-Regular.ttf */; };
-		BB05758A1BFA6F9100EE2C06 /* euro-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7591B67734400681FB2 /* euro-regular.ttf */; };
-		BB05758B1BFA6F9100EE2C06 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75A1B67734400681FB2 /* Raleway-Bold.ttf */; };
-		BB05758C1BFA6F9100EE2C06 /* Raleway-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75B1B67734400681FB2 /* Raleway-Light.ttf */; };
-		BB05758D1BFA6F9100EE2C06 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75C1B67734400681FB2 /* Raleway-Medium.ttf */; };
-		BB05758E1BFA6F9100EE2C06 /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75D1B67734400681FB2 /* Raleway-Regular.ttf */; };
 		BB14B0B11B6B61720032E7CC /* MSSlidingPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB14B0AF1B6B61720032E7CC /* MSSlidingPanelController.m */; };
 		BB14B0B21B6B61720032E7CC /* MSViewControllerSlidingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BB14B0B01B6B61720032E7CC /* MSViewControllerSlidingPanel.m */; };
 		BB14B0B61B6B67170032E7CC /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14B0B51B6B67170032E7CC /* ContainerViewController.swift */; };
@@ -44,60 +27,10 @@
 		BB14B0BC1B6B96300032E7CC /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14B0BB1B6B96300032E7CC /* ItemViewController.swift */; };
 		BB14B0BE1B6BAA5A0032E7CC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14B0BD1B6BAA5A0032E7CC /* SettingsViewController.swift */; };
 		BB14B0C01B6BB77F0032E7CC /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14B0BF1B6BB77F0032E7CC /* ShopViewController.swift */; };
-		BB237E941BCF98EC00FB9445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB237E8B1BCF98B200FB9445 /* Assets.xcassets */; };
-		BB237E971BCF98FF00FB9445 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB237E871BCF98B200FB9445 /* Interface.storyboard */; };
-		BB237E981BCF990400FB9445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB237E861BCF98B200FB9445 /* Assets.xcassets */; };
-		BB237E9C1BCFABF400FB9445 /* CollectionsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237E9A1BCFABEA00FB9445 /* CollectionsInterfaceController.swift */; };
-		BB237E9F1BCFAC9000FB9445 /* ShopInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237E9D1BCFAC8D00FB9445 /* ShopInterfaceController.swift */; };
-		BB237EA21BCFACCF00FB9445 /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EA01BCFACCB00FB9445 /* MainInterfaceController.swift */; };
-		BB237EA51BCFAE6C00FB9445 /* CollectionRowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EA41BCFAE6C00FB9445 /* CollectionRowType.swift */; };
-		BB237EA61BCFAF8000FB9445 /* euro-regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7591B67734400681FB2 /* euro-regular.ttf */; };
-		BB237EA71BCFAF8000FB9445 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75A1B67734400681FB2 /* Raleway-Bold.ttf */; };
-		BB237EA81BCFAF8000FB9445 /* Raleway-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75B1B67734400681FB2 /* Raleway-Light.ttf */; };
-		BB237EA91BCFAF8000FB9445 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75C1B67734400681FB2 /* Raleway-Medium.ttf */; };
-		BB237EAA1BCFAF8000FB9445 /* Raleway-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB39C75D1B67734400681FB2 /* Raleway-Regular.ttf */; };
 		BB237EBA1BCFB29400FB9445 /* MenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EB91BCFB29400FB9445 /* MenuManager.swift */; };
 		BB237EBC1BCFB2F100FB9445 /* CollectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EBB1BCFB2F100FB9445 /* CollectionsManager.swift */; };
 		BB237EBE1BCFB32900FB9445 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EBD1BCFB32900FB9445 /* SettingsManager.swift */; };
-		BB237EC31BCFB52900FB9445 /* CollectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EBB1BCFB2F100FB9445 /* CollectionsManager.swift */; };
-		BB237EC41BCFB55200FB9445 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C8B71B67B2A700681FB2 /* Constants.swift */; };
-		BB237EC51BCFB55200FB9445 /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C8B01B67AC2500681FB2 /* CollectionItem.swift */; };
-		BB237EC61BCFB55200FB9445 /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C8B21B67AFB800681FB2 /* ShopItem.swift */; };
-		BB237EC71BCFB55D00FB9445 /* FavoriteItemsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C8C11B67B9A200681FB2 /* FavoriteItemsManager.swift */; };
-		BB237EC81BCFB55D00FB9445 /* ShopManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C8C31B68176B00681FB2 /* ShopManager.swift */; };
-		BB237EC91BCFB55D00FB9445 /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C8C71B69004200681FB2 /* CartManager.swift */; };
-		BB237ECA1BCFB8A100FB9445 /* shop_item1.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F51B67734500681FB2 /* shop_item1.png */; };
-		BB237ECB1BCFB8A100FB9445 /* shop_item1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F61B67734500681FB2 /* shop_item1@2x.png */; };
-		BB237ECC1BCFB8A100FB9445 /* shop_item1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F71B67734500681FB2 /* shop_item1@3x.png */; };
-		BB237ECD1BCFB8A100FB9445 /* shop_item2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F81B67734500681FB2 /* shop_item2.png */; };
-		BB237ECE1BCFB8A100FB9445 /* shop_item2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F91B67734500681FB2 /* shop_item2@2x.png */; };
-		BB237ECF1BCFB8A100FB9445 /* shop_item2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7FA1B67734500681FB2 /* shop_item2@3x.png */; };
-		BB237ED01BCFB8C400FB9445 /* favorite_item1.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7AD1B67734400681FB2 /* favorite_item1.png */; };
-		BB237ED11BCFB8C400FB9445 /* favorite_item1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7AE1B67734400681FB2 /* favorite_item1@2x.png */; };
-		BB237ED21BCFB8C400FB9445 /* favorite_item1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7AF1B67734400681FB2 /* favorite_item1@3x.png */; };
-		BB237ED31BCFB8C400FB9445 /* favorite_item2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7B01B67734400681FB2 /* favorite_item2.png */; };
-		BB237ED41BCFB8C400FB9445 /* favorite_item2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7B11B67734400681FB2 /* favorite_item2@2x.png */; };
-		BB237ED51BCFB8C400FB9445 /* favorite_item2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7B21B67734400681FB2 /* favorite_item2@3x.png */; };
-		BB237ED61BCFB8D700FB9445 /* collections_spring_collection.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C78F1B67734400681FB2 /* collections_spring_collection.png */; };
-		BB237ED71BCFB8D700FB9445 /* collections_spring_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7901B67734400681FB2 /* collections_spring_collection@2x.png */; };
-		BB237ED81BCFB8D700FB9445 /* collections_spring_collection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7911B67734400681FB2 /* collections_spring_collection@3x.png */; };
-		BB237ED91BCFB8D700FB9445 /* collections_summer_collections.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7921B67734400681FB2 /* collections_summer_collections.png */; };
-		BB237EDA1BCFB8D700FB9445 /* collections_summer_collections@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7931B67734400681FB2 /* collections_summer_collections@2x.png */; };
-		BB237EDB1BCFB8D700FB9445 /* collections_summer_collections@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7941B67734400681FB2 /* collections_summer_collections@3x.png */; };
-		BB237EDC1BCFB8DD00FB9445 /* collections_elegant_collection.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7891B67734400681FB2 /* collections_elegant_collection.png */; };
-		BB237EDD1BCFB8DD00FB9445 /* collections_elegant_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C78A1B67734400681FB2 /* collections_elegant_collection@2x.png */; };
-		BB237EDE1BCFB8DD00FB9445 /* collections_elegant_collection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C78B1B67734400681FB2 /* collections_elegant_collection@3x.png */; };
-		BB237EE11BCFB90300FB9445 /* CollectionItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB39C8B91B67B75C00681FB2 /* CollectionItems.plist */; };
-		BB237EE21BCFB90300FB9445 /* ShopItems.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB39C8BC1B67B75C00681FB2 /* ShopItems.plist */; };
-		BB237EE51BCFCB4700FB9445 /* ShopRowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EE31BCFCB4300FB9445 /* ShopRowType.swift */; };
 		BB237EEA1BCFE77200FB9445 /* BestOneWatchKitExtension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB237EE91BCFE77200FB9445 /* BestOneWatchKitExtension.entitlements */; };
-		BB237EEB1BCFEDFF00FB9445 /* shop_item1.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F51B67734500681FB2 /* shop_item1.png */; };
-		BB237EEC1BCFEDFF00FB9445 /* shop_item1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F61B67734500681FB2 /* shop_item1@2x.png */; };
-		BB237EED1BCFEDFF00FB9445 /* shop_item1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F71B67734500681FB2 /* shop_item1@3x.png */; };
-		BB237EEE1BCFEDFF00FB9445 /* shop_item2.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F81B67734500681FB2 /* shop_item2.png */; };
-		BB237EEF1BCFEDFF00FB9445 /* shop_item2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7F91B67734500681FB2 /* shop_item2@2x.png */; };
-		BB237EF01BCFEDFF00FB9445 /* shop_item2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7FA1B67734500681FB2 /* shop_item2@3x.png */; };
-		BB237EF21BCFF10F00FB9445 /* CartInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB237EF11BCFF10F00FB9445 /* CartInterfaceController.swift */; };
 		BB273E8F1B6A654D00EE2985 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB273E8E1B6A654D00EE2985 /* MenuViewController.swift */; };
 		BB39C7311B66A6A200681FB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39C7301B66A6A200681FB2 /* AppDelegate.swift */; };
 		BB39C7361B66A6A200681FB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7341B66A6A200681FB2 /* Main.storyboard */; };
@@ -312,114 +245,7 @@
 		BB7D74F61B87B30200CCE68E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7D74F51B87B30200CCE68E /* AVFoundation.framework */; };
 		BB7D74F81B87B30900CCE68E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7D74F71B87B30900CCE68E /* AudioToolbox.framework */; };
 		BB7D74FA1B87B33D00CCE68E /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7D74F91B87B33D00CCE68E /* libz.1.dylib */; };
-		BBD5655D1BD02615005243B6 /* DetailsInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD5655C1BD02615005243B6 /* DetailsInterfaceController.swift */; };
-		BFF1209EC6C5977B25AC50D4 /* Pods_BestOneWatchKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65948FD28637CBA95556A4CE /* Pods_BestOneWatchKitExtension.framework */; };
-		E040FB9B1BA7531900E9743C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E040FB9A1BA7531900E9743C /* NotificationCenter.framework */; };
-		E040FB9E1BA7531900E9743C /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E040FB9D1BA7531900E9743C /* TodayViewController.swift */; };
-		E040FBA11BA7531900E9743C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E040FB9F1BA7531900E9743C /* MainInterface.storyboard */; };
-		E040FBA51BA7531900E9743C /* BestOneWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E040FB991BA7531900E9743C /* BestOneWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E040FBCC1BA7535F00E9743C /* add_item.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB21BA7535F00E9743C /* add_item.png */; };
-		E040FBCD1BA7535F00E9743C /* add_item@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB31BA7535F00E9743C /* add_item@2x.png */; };
-		E040FBCE1BA7535F00E9743C /* add_item@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB41BA7535F00E9743C /* add_item@3x.png */; };
-		E040FBCF1BA7535F00E9743C /* arrow-right-active-white.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB51BA7535F00E9743C /* arrow-right-active-white.png */; };
-		E040FBD01BA7535F00E9743C /* arrow-right-active-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB61BA7535F00E9743C /* arrow-right-active-white@2x.png */; };
-		E040FBD11BA7535F00E9743C /* arrow-right-active-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB71BA7535F00E9743C /* arrow-right-active-white@3x.png */; };
-		E040FBD21BA7535F00E9743C /* best_price.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB81BA7535F00E9743C /* best_price.png */; };
-		E040FBD31BA7535F00E9743C /* best_price@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBB91BA7535F00E9743C /* best_price@2x.png */; };
-		E040FBD41BA7535F00E9743C /* best_price@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBBA1BA7535F00E9743C /* best_price@3x.png */; };
-		E040FBD51BA7535F00E9743C /* chosen-favorite-white.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBBB1BA7535F00E9743C /* chosen-favorite-white.png */; };
-		E040FBD61BA7535F00E9743C /* chosen-favorite-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBBC1BA7535F00E9743C /* chosen-favorite-white@2x.png */; };
-		E040FBD71BA7535F00E9743C /* chosen-favorite-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBBD1BA7535F00E9743C /* chosen-favorite-white@3x.png */; };
-		E040FBD81BA7535F00E9743C /* item-marker-white.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBBE1BA7535F00E9743C /* item-marker-white.png */; };
-		E040FBD91BA7535F00E9743C /* item-marker-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBBF1BA7535F00E9743C /* item-marker-white@2x.png */; };
-		E040FBDA1BA7535F00E9743C /* item-marker-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC01BA7535F00E9743C /* item-marker-white@3x.png */; };
-		E040FBDB1BA7535F00E9743C /* not-chosen-favorite-white.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC11BA7535F00E9743C /* not-chosen-favorite-white.png */; };
-		E040FBDC1BA7535F00E9743C /* not-chosen-favorite-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC21BA7535F00E9743C /* not-chosen-favorite-white@2x.png */; };
-		E040FBDD1BA7535F00E9743C /* not-chosen-favorite-white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC31BA7535F00E9743C /* not-chosen-favorite-white@3x.png */; };
-		E040FBDE1BA7535F00E9743C /* shop_item1.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC41BA7535F00E9743C /* shop_item1.png */; };
-		E040FBDF1BA7535F00E9743C /* shop_item1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC51BA7535F00E9743C /* shop_item1@2x.png */; };
-		E040FBE01BA7535F00E9743C /* shop_item1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E040FBC61BA7535F00E9743C /* shop_item1@3x.png */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		05BBFB541EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F8111E3319A95C8B0040E7D1;
-			remoteInfo = "Alamofire iOS";
-		};
-		05BBFB561EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F8111E3E19A95C8B0040E7D1;
-			remoteInfo = "Alamofire iOS Tests";
-		};
-		05BBFB581EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4DD67C0B1A5C55C900ED2280;
-			remoteInfo = "Alamofire macOS";
-		};
-		05BBFB5A1EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F829C6B21A7A94F100A2CD59;
-			remoteInfo = "Alamofire macOS Tests";
-		};
-		05BBFB5C1EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4CF626EF1BA7CB3E0011A099;
-			remoteInfo = "Alamofire tvOS";
-		};
-		05BBFB5E1EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4CF626F81BA7CB3E0011A099;
-			remoteInfo = "Alamofire tvOS Tests";
-		};
-		05BBFB601EB81E5200D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E4202FE01B667AA100C997FB;
-			remoteInfo = "Alamofire watchOS";
-		};
-		05BBFB6D1EB81F2700D7123C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
-			remoteInfo = "Alamofire iOS";
-		};
-		848C23AC1BFB9748002BB239 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB39C7251B66A6A200681FB2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BB237E661BCF982C00FB9445;
-			remoteInfo = BestOneWatchKitExtension;
-		};
-		848C23AF1BFB9748002BB239 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB39C7251B66A6A200681FB2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BB237E6F1BCF982C00FB9445;
-			remoteInfo = BestOneWatchKitApp;
-		};
-		E040FBA31BA7531900E9743C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB39C7251B66A6A200681FB2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E040FB981BA7531900E9743C;
-			remoteInfo = BestOneWidget;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		05BBFB6F1EB81F2700D7123C /* Embed Frameworks */ = {
@@ -432,24 +258,12 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		848C23B21BFB9748002BB239 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				848C23AE1BFB9748002BB239 /* BestOneWatchKitExtension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		848C23B31BFB9748002BB239 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				848C23B11BFB9748002BB239 /* BestOneWatchKitApp.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,7 +274,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				E040FBA51BA7531900E9743C /* BestOneWidget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,7 +281,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		05BBFB711EB81F7D00D7123C /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackendAPI.swift; path = ../Classes/BackendAPI.swift; sourceTree = "<group>"; };
 		05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/BestOne-bbzamvtjdcwfxwdweqgmmcvqdxnf/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.release.xcconfig"; sourceTree = "<group>"; };
@@ -499,8 +311,6 @@
 		BB14B0BB1B6B96300032E7CC /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		BB14B0BD1B6BAA5A0032E7CC /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BB14B0BF1B6BB77F0032E7CC /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
-		BB237E671BCF982C00FB9445 /* BestOneWatchKitExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BestOneWatchKitExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB237E701BCF982C00FB9445 /* BestOneWatchKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BestOneWatchKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB237E861BCF98B200FB9445 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB237E881BCF98B200FB9445 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		BB237E891BCF98B200FB9445 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -741,7 +551,6 @@
 		BB7D74F91B87B33D00CCE68E /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libz.1.dylib; sourceTree = "<group>"; };
 		BBD5655C1BD02615005243B6 /* DetailsInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsInterfaceController.swift; sourceTree = "<group>"; };
 		BDDE769C55D84B161FE6696F /* Pods-BestOne.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOne.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOne/Pods-BestOne.release.xcconfig"; sourceTree = "<group>"; };
-		E040FB991BA7531900E9743C /* BestOneWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BestOneWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E040FB9A1BA7531900E9743C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		E040FB9D1BA7531900E9743C /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		E040FBA01BA7531900E9743C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -774,14 +583,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BB237E641BCF982C00FB9445 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BFF1209EC6C5977B25AC50D4 /* Pods_BestOneWatchKitExtension.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB39C72A1B66A6A200681FB2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -794,7 +595,6 @@
 				BB7D74F01B87B2E900CCE68E /* WebKit.framework in Frameworks */,
 				BB7D74EA1B87B2E100CCE68E /* CoreGraphics.framework in Frameworks */,
 				BB7D74EB1B87B2E100CCE68E /* CoreLocation.framework in Frameworks */,
-				05BBFB6B1EB81F2700D7123C /* Alamofire.framework in Frameworks */,
 				BB7D74EC1B87B2E100CCE68E /* CoreMedia.framework in Frameworks */,
 				BB7D74ED1B87B2E100CCE68E /* CoreTelephony.framework in Frameworks */,
 				BB7D74EE1B87B2E100CCE68E /* QuartzCore.framework in Frameworks */,
@@ -813,40 +613,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C70266C8FA4AEE61B6FDF7D0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				01F0EB0C8D3C66D33F051C56 /* Pods_BestOneWatchKitApp.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E040FB961BA7531900E9743C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E040FB9B1BA7531900E9743C /* NotificationCenter.framework in Frameworks */,
-				6396FD3F984A88223525973E /* Pods_BestOneWidget.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		05BBFB4A1EB81E5100D7123C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				05BBFB551EB81E5200D7123C /* Alamofire.framework */,
-				05BBFB571EB81E5200D7123C /* Alamofire iOS Tests.xctest */,
-				05BBFB591EB81E5200D7123C /* Alamofire.framework */,
-				05BBFB5B1EB81E5200D7123C /* Alamofire macOS Tests.xctest */,
-				05BBFB5D1EB81E5200D7123C /* Alamofire.framework */,
-				05BBFB5F1EB81E5200D7123C /* Alamofire tvOS Tests.xctest */,
-				05BBFB611EB81E5200D7123C /* Alamofire.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		05BBFB701EB81F5100D7123C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -945,7 +714,6 @@
 		BB39C7241B66A6A200681FB2 = {
 			isa = PBXGroup;
 			children = (
-				05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */,
 				BB237E841BCF98B200FB9445 /* BestOneWatch */,
 				E040FB9C1BA7531900E9743C /* BestOneWidget */,
 				E0EF16211BE396940037D2F3 /* BestOneUITests */,
@@ -960,9 +728,6 @@
 			isa = PBXGroup;
 			children = (
 				BB39C72D1B66A6A200681FB2 /* BestOne.app */,
-				E040FB991BA7531900E9743C /* BestOneWidget.appex */,
-				BB237E671BCF982C00FB9445 /* BestOneWatchKitExtension.appex */,
-				BB237E701BCF982C00FB9445 /* BestOneWatchKitApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1385,46 +1150,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BB237E661BCF982C00FB9445 /* BestOneWatchKitExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB237E831BCF982C00FB9445 /* Build configuration list for PBXNativeTarget "BestOneWatchKitExtension" */;
-			buildPhases = (
-				5E7131CD592D954EA91586C3 /* [CP] Check Pods Manifest.lock */,
-				BB237E631BCF982C00FB9445 /* Sources */,
-				BB237E641BCF982C00FB9445 /* Frameworks */,
-				BB237E651BCF982C00FB9445 /* Resources */,
-				920DEFEF4E064890C6CFABDB /* [CP] Embed Pods Frameworks */,
-				55B0F6933A7A4C3D39524816 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BestOneWatchKitExtension;
-			productName = "BestOne WatchKit 1 Extension";
-			productReference = BB237E671BCF982C00FB9445 /* BestOneWatchKitExtension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
-		BB237E6F1BCF982C00FB9445 /* BestOneWatchKitApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB237E821BCF982C00FB9445 /* Build configuration list for PBXNativeTarget "BestOneWatchKitApp" */;
-			buildPhases = (
-				E3933DF788C8B6497EF32ECC /* [CP] Check Pods Manifest.lock */,
-				BB237E6E1BCF982C00FB9445 /* Resources */,
-				848C23B21BFB9748002BB239 /* Embed App Extensions */,
-				C70266C8FA4AEE61B6FDF7D0 /* Frameworks */,
-				E0A0A4B5554D3CDAD1DF9D12 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				848C23AD1BFB9748002BB239 /* PBXTargetDependency */,
-			);
-			name = BestOneWatchKitApp;
-			productName = "BestOne WatchKit 1 App";
-			productReference = BB237E701BCF982C00FB9445 /* BestOneWatchKitApp.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
 		BB39C72C1B66A6A200681FB2 /* BestOne */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB39C74A1B66A6A200681FB2 /* Build configuration list for PBXNativeTarget "BestOne" */;
@@ -1442,33 +1167,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				E040FBA41BA7531900E9743C /* PBXTargetDependency */,
-				848C23B01BFB9748002BB239 /* PBXTargetDependency */,
-				05BBFB6E1EB81F2700D7123C /* PBXTargetDependency */,
 			);
 			name = BestOne;
 			productName = BestOne;
 			productReference = BB39C72D1B66A6A200681FB2 /* BestOne.app */;
 			productType = "com.apple.product-type.application";
-		};
-		E040FB981BA7531900E9743C /* BestOneWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E040FBA81BA7531900E9743C /* Build configuration list for PBXNativeTarget "BestOneWidget" */;
-			buildPhases = (
-				5D6787F357FA8EB6EC5A5A6B /* [CP] Check Pods Manifest.lock */,
-				E040FB951BA7531900E9743C /* Sources */,
-				E040FB961BA7531900E9743C /* Frameworks */,
-				E040FB971BA7531900E9743C /* Resources */,
-				030BB34C1E8E51D6903A970A /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BestOneWidget;
-			productName = BestOneWidget;
-			productReference = E040FB991BA7531900E9743C /* BestOneWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1480,21 +1183,6 @@
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = AppsFoundation;
 				TargetAttributes = {
-					BB237E661BCF982C00FB9445 = {
-						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = F2A662GW7A;
-						LastSwiftMigration = 0810;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 0;
-							};
-						};
-					};
-					BB237E6F1BCF982C00FB9445 = {
-						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = F2A662GW7A;
-						LastSwiftMigration = 0810;
-					};
 					BB39C72C1B66A6A200681FB2 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = F2A662GW7A;
@@ -1504,16 +1192,6 @@
 								enabled = 0;
 							};
 							com.apple.InAppPurchase = {
-								enabled = 0;
-							};
-						};
-					};
-					E040FB981BA7531900E9743C = {
-						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = F2A662GW7A;
-						LastSwiftMigration = 0810;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
 								enabled = 0;
 							};
 						};
@@ -1562,131 +1240,14 @@
 			mainGroup = BB39C7241B66A6A200681FB2;
 			productRefGroup = BB39C72E1B66A6A200681FB2 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 05BBFB4A1EB81E5100D7123C /* Products */;
-					ProjectRef = 05BBFB491EB81E5100D7123C /* Alamofire.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				BB39C72C1B66A6A200681FB2 /* BestOne */,
-				E040FB981BA7531900E9743C /* BestOneWidget */,
-				BB237E661BCF982C00FB9445 /* BestOneWatchKitExtension */,
-				BB237E6F1BCF982C00FB9445 /* BestOneWatchKitApp */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		05BBFB551EB81E5200D7123C /* Alamofire.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Alamofire.framework;
-			remoteRef = 05BBFB541EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		05BBFB571EB81E5200D7123C /* Alamofire iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Alamofire iOS Tests.xctest";
-			remoteRef = 05BBFB561EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		05BBFB591EB81E5200D7123C /* Alamofire.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Alamofire.framework;
-			remoteRef = 05BBFB581EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		05BBFB5B1EB81E5200D7123C /* Alamofire macOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Alamofire macOS Tests.xctest";
-			remoteRef = 05BBFB5A1EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		05BBFB5D1EB81E5200D7123C /* Alamofire.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Alamofire.framework;
-			remoteRef = 05BBFB5C1EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		05BBFB5F1EB81E5200D7123C /* Alamofire tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Alamofire tvOS Tests.xctest";
-			remoteRef = 05BBFB5E1EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		05BBFB611EB81E5200D7123C /* Alamofire.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Alamofire.framework;
-			remoteRef = 05BBFB601EB81E5200D7123C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
-		BB237E651BCF982C00FB9445 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB237E941BCF98EC00FB9445 /* Assets.xcassets in Resources */,
-				BB0575891BFA6F9100EE2C06 /* Raleway-Regular.ttf in Resources */,
-				BB237EED1BCFEDFF00FB9445 /* shop_item1@3x.png in Resources */,
-				BB237EE21BCFB90300FB9445 /* ShopItems.plist in Resources */,
-				BB0575851BFA6F9100EE2C06 /* euro-regular.ttf in Resources */,
-				BB237EEE1BCFEDFF00FB9445 /* shop_item2.png in Resources */,
-				BB237EEC1BCFEDFF00FB9445 /* shop_item1@2x.png in Resources */,
-				BB0575881BFA6F9100EE2C06 /* Raleway-Medium.ttf in Resources */,
-				BB0575861BFA6F9100EE2C06 /* Raleway-Bold.ttf in Resources */,
-				BB237EE11BCFB90300FB9445 /* CollectionItems.plist in Resources */,
-				BB0575871BFA6F9100EE2C06 /* Raleway-Light.ttf in Resources */,
-				BB237EF01BCFEDFF00FB9445 /* shop_item2@3x.png in Resources */,
-				BB237EEF1BCFEDFF00FB9445 /* shop_item2@2x.png in Resources */,
-				BB237EEB1BCFEDFF00FB9445 /* shop_item1.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB237E6E1BCF982C00FB9445 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB237ED91BCFB8D700FB9445 /* collections_summer_collections.png in Resources */,
-				BB237ED61BCFB8D700FB9445 /* collections_spring_collection.png in Resources */,
-				BB237ECD1BCFB8A100FB9445 /* shop_item2.png in Resources */,
-				BB237EDD1BCFB8DD00FB9445 /* collections_elegant_collection@2x.png in Resources */,
-				BB237ECC1BCFB8A100FB9445 /* shop_item1@3x.png in Resources */,
-				BB237ED21BCFB8C400FB9445 /* favorite_item1@3x.png in Resources */,
-				BB237ED81BCFB8D700FB9445 /* collections_spring_collection@3x.png in Resources */,
-				BB237ECB1BCFB8A100FB9445 /* shop_item1@2x.png in Resources */,
-				BB237ED51BCFB8C400FB9445 /* favorite_item2@3x.png in Resources */,
-				BB237ED41BCFB8C400FB9445 /* favorite_item2@2x.png in Resources */,
-				BB237EDB1BCFB8D700FB9445 /* collections_summer_collections@3x.png in Resources */,
-				BB237EDC1BCFB8DD00FB9445 /* collections_elegant_collection.png in Resources */,
-				BB237E981BCF990400FB9445 /* Assets.xcassets in Resources */,
-				BB237ECE1BCFB8A100FB9445 /* shop_item2@2x.png in Resources */,
-				BB237EA91BCFAF8000FB9445 /* Raleway-Medium.ttf in Resources */,
-				BB237ECA1BCFB8A100FB9445 /* shop_item1.png in Resources */,
-				BB237EDE1BCFB8DD00FB9445 /* collections_elegant_collection@3x.png in Resources */,
-				BB237ED31BCFB8C400FB9445 /* favorite_item2.png in Resources */,
-				BB237EA81BCFAF8000FB9445 /* Raleway-Light.ttf in Resources */,
-				BB237EDA1BCFB8D700FB9445 /* collections_summer_collections@2x.png in Resources */,
-				BB237EAA1BCFAF8000FB9445 /* Raleway-Regular.ttf in Resources */,
-				BB237EA61BCFAF8000FB9445 /* euro-regular.ttf in Resources */,
-				BB237ED01BCFB8C400FB9445 /* favorite_item1.png in Resources */,
-				BB237ECF1BCFB8A100FB9445 /* shop_item2@3x.png in Resources */,
-				BB237E971BCF98FF00FB9445 /* Interface.storyboard in Resources */,
-				BB237EA71BCFAF8000FB9445 /* Raleway-Bold.ttf in Resources */,
-				BB237ED71BCFB8D700FB9445 /* collections_spring_collection@2x.png in Resources */,
-				BB237ED11BCFB8C400FB9445 /* favorite_item1@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB39C72B1B66A6A200681FB2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1871,58 +1432,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E040FB971BA7531900E9743C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E040FBCF1BA7535F00E9743C /* arrow-right-active-white.png in Resources */,
-				BB05758D1BFA6F9100EE2C06 /* Raleway-Medium.ttf in Resources */,
-				E040FBD91BA7535F00E9743C /* item-marker-white@2x.png in Resources */,
-				E040FBCC1BA7535F00E9743C /* add_item.png in Resources */,
-				BB05758E1BFA6F9100EE2C06 /* Raleway-Regular.ttf in Resources */,
-				E040FBDA1BA7535F00E9743C /* item-marker-white@3x.png in Resources */,
-				E040FBD01BA7535F00E9743C /* arrow-right-active-white@2x.png in Resources */,
-				E040FBDD1BA7535F00E9743C /* not-chosen-favorite-white@3x.png in Resources */,
-				BB05758C1BFA6F9100EE2C06 /* Raleway-Light.ttf in Resources */,
-				E040FBCD1BA7535F00E9743C /* add_item@2x.png in Resources */,
-				BB05758B1BFA6F9100EE2C06 /* Raleway-Bold.ttf in Resources */,
-				E040FBDF1BA7535F00E9743C /* shop_item1@2x.png in Resources */,
-				BB05758A1BFA6F9100EE2C06 /* euro-regular.ttf in Resources */,
-				E040FBD51BA7535F00E9743C /* chosen-favorite-white.png in Resources */,
-				E040FBA11BA7531900E9743C /* MainInterface.storyboard in Resources */,
-				E040FBCE1BA7535F00E9743C /* add_item@3x.png in Resources */,
-				E040FBD61BA7535F00E9743C /* chosen-favorite-white@2x.png in Resources */,
-				E040FBD81BA7535F00E9743C /* item-marker-white.png in Resources */,
-				E040FBDC1BA7535F00E9743C /* not-chosen-favorite-white@2x.png in Resources */,
-				E040FBE01BA7535F00E9743C /* shop_item1@3x.png in Resources */,
-				E040FBD41BA7535F00E9743C /* best_price@3x.png in Resources */,
-				E040FBD71BA7535F00E9743C /* chosen-favorite-white@3x.png in Resources */,
-				E040FBDE1BA7535F00E9743C /* shop_item1.png in Resources */,
-				E040FBD21BA7535F00E9743C /* best_price.png in Resources */,
-				E040FBD11BA7535F00E9743C /* arrow-right-active-white@3x.png in Resources */,
-				E040FBD31BA7535F00E9743C /* best_price@2x.png in Resources */,
-				E040FBDB1BA7535F00E9743C /* not-chosen-favorite-white.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		030BB34C1E8E51D6903A970A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		3A399966C6050BB6BBD8011C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1953,97 +1465,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOne/Pods-BestOne-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		55B0F6933A7A4C3D39524816 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5D6787F357FA8EB6EC5A5A6B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		5E7131CD592D954EA91586C3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		920DEFEF4E064890C6CFABDB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		BAA9A1F4E672C89363E95E29 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		E0A0A4B5554D3CDAD1DF9D12 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BestOneWatchKitApp/Pods-BestOneWatchKitApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E3933DF788C8B6497EF32ECC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2061,28 +1483,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BB237E631BCF982C00FB9445 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB237EC51BCFB55200FB9445 /* CollectionItem.swift in Sources */,
-				BB237EA51BCFAE6C00FB9445 /* CollectionRowType.swift in Sources */,
-				BB237EC61BCFB55200FB9445 /* ShopItem.swift in Sources */,
-				BB237EC91BCFB55D00FB9445 /* CartManager.swift in Sources */,
-				BB237EE51BCFCB4700FB9445 /* ShopRowType.swift in Sources */,
-				05EB20B41EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */,
-				BB237EC71BCFB55D00FB9445 /* FavoriteItemsManager.swift in Sources */,
-				BBD5655D1BD02615005243B6 /* DetailsInterfaceController.swift in Sources */,
-				BB237EA21BCFACCF00FB9445 /* MainInterfaceController.swift in Sources */,
-				BB237EF21BCFF10F00FB9445 /* CartInterfaceController.swift in Sources */,
-				BB237EC31BCFB52900FB9445 /* CollectionsManager.swift in Sources */,
-				BB237E9C1BCFABF400FB9445 /* CollectionsInterfaceController.swift in Sources */,
-				BB237E9F1BCFAC9000FB9445 /* ShopInterfaceController.swift in Sources */,
-				BB237EC41BCFB55200FB9445 /* Constants.swift in Sources */,
-				BB237EC81BCFB55D00FB9445 /* ShopManager.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB39C7291B66A6A200681FB2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2128,39 +1528,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E040FB951BA7531900E9743C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E040FB9E1BA7531900E9743C /* TodayViewController.swift in Sources */,
-				05EB20AC1EBE2CBA002FD2A0 /* BackendAPI.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		05BBFB6E1EB81F2700D7123C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Alamofire iOS";
-			targetProxy = 05BBFB6D1EB81F2700D7123C /* PBXContainerItemProxy */;
-		};
-		848C23AD1BFB9748002BB239 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BB237E661BCF982C00FB9445 /* BestOneWatchKitExtension */;
-			targetProxy = 848C23AC1BFB9748002BB239 /* PBXContainerItemProxy */;
-		};
-		848C23B01BFB9748002BB239 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BB237E6F1BCF982C00FB9445 /* BestOneWatchKitApp */;
-			targetProxy = 848C23AF1BFB9748002BB239 /* PBXContainerItemProxy */;
-		};
-		E040FBA41BA7531900E9743C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E040FB981BA7531900E9743C /* BestOneWidget */;
-			targetProxy = E040FBA31BA7531900E9743C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		BB237E871BCF98B200FB9445 /* Interface.storyboard */ = {
@@ -2190,86 +1558,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		BB237E7E1BCF982C00FB9445 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E60C2AE676C54F43D1C803B7 /* Pods-BestOneWatchKitExtension.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = F2A662GW7A;
-				INFOPLIST_FILE = "$(SRCROOT)/BestOneWatch/BestOneWatchKitExtension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		BB237E7F1BCF982C00FB9445 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4677DAC891DAF83EE835FBA6 /* Pods-BestOneWatchKitExtension.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = F2A662GW7A;
-				INFOPLIST_FILE = "$(SRCROOT)/BestOneWatch/BestOneWatchKitExtension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
-		BB237E801BCF982C00FB9445 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A91498FCA52F59763A610DD /* Pods-BestOneWatchKitApp.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = F2A662GW7A;
-				IBSC_MODULE = BestOne_WatchKit_1_Extension;
-				INFOPLIST_FILE = "$(SRCROOT)/BestOneWatch/BestOneWatchKitApp/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		BB237E811BCF982C00FB9445 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 330D109A343D02C4D24685AC /* Pods-BestOneWatchKitApp.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = F2A662GW7A;
-				IBSC_MODULE = BestOne_WatchKit_1_Extension;
-				INFOPLIST_FILE = "$(SRCROOT)/BestOneWatch/BestOneWatchKitApp/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
 		BB39C7481B66A6A200681FB2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2429,63 +1717,9 @@
 			};
 			name = Release;
 		};
-		E040FBA61BA7531900E9743C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3297BB0C3C5FFE2FC30134F2 /* Pods-BestOneWidget.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = F2A662GW7A;
-				INFOPLIST_FILE = BestOneWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne.BestOneWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		E040FBA71BA7531900E9743C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = F2A662GW7A;
-				INFOPLIST_FILE = BestOneWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AppsFoundation.BestOne.BestOneWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BB237E821BCF982C00FB9445 /* Build configuration list for PBXNativeTarget "BestOneWatchKitApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB237E801BCF982C00FB9445 /* Debug */,
-				BB237E811BCF982C00FB9445 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BB237E831BCF982C00FB9445 /* Build configuration list for PBXNativeTarget "BestOneWatchKitExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB237E7E1BCF982C00FB9445 /* Debug */,
-				BB237E7F1BCF982C00FB9445 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		BB39C7281B66A6A200681FB2 /* Build configuration list for PBXProject "BestOne" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2500,15 +1734,6 @@
 			buildConfigurations = (
 				BB39C74B1B66A6A200681FB2 /* Debug */,
 				BB39C74C1B66A6A200681FB2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E040FBA81BA7531900E9743C /* Build configuration list for PBXNativeTarget "BestOneWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E040FBA61BA7531900E9743C /* Debug */,
-				E040FBA71BA7531900E9743C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
