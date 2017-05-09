@@ -148,6 +148,8 @@ class TourCreationContents extends React.Component{
                   </Tab.Pane>
                   <Tab.Pane eventKey="review">
                     <TourCreationReview
+                      errorMessage={this.props.errorMessage}
+                      currentlySending={this.props.currentlySending}
                       tour={this.props.tour}
                       dispatch={this.props.dispatch}
                       auth={this.props.auth}

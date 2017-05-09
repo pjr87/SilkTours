@@ -75,7 +75,8 @@ export function createTour(tour, auth, photos, hours_special, base_hours) {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ tour, auth, photos, hours_special, base_hours })) {
+    if (anyElementsEmpty({ tour, auth, photos, hours_special, base_hours }) ||
+        hours_special == [] || base_hours == [] || tour.name == "") {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
@@ -86,8 +87,7 @@ export function createTour(tour, auth, photos, hours_special, base_hours) {
         var tour_id = response.data.id_tour;
         service.newTourProfilePhoto(photos, tour_id, auth).then(function(response){
           if(response.data){
-            var times =
-            {
+            var times = {
               hours_special: convertTimes(hours_special)
             }
             service.addTourHours(tour_id, times, auth).then(function(response){
@@ -96,6 +96,9 @@ export function createTour(tour, auth, photos, hours_special, base_hours) {
                 forwardTo('/explore');
                 dispatch(clearTour())
                 dispatch(updatePhotoState([]))
+                dispatch(updateSpecialTimeHoursState([]))
+                dispatch(updateSpecialTimeState([]))
+                dispatch(updateSpecialTimeDateState([]))
                 dispatch(setTabKey("info"))
               }
               else{

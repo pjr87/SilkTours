@@ -54,27 +54,34 @@ export default class MultiDateSelect extends React.Component{
     };
 
     if(index >= 0){
-      this.props.hours_special_dates.splice(index, 1);
       var hoursIndex = this.findDate(newdate);
-      this.props.hours_special.splice(hoursIndex, 1);
+      this.props.emitChange(
+        this.props.hours_special.slice(0,hoursIndex)
+                                .concat(this.props.hours_special.slice(hoursIndex+1)));
+      this.props.emitDateChange(
+        this.props.hours_special_dates.slice(0,index)
+                                      .concat(this.props.hours_special_dates.slice(index+1)));
     }
     else{
-      this.props.hours_special_dates.push(newdate);
-      this.props.hours_special.push(newHoursSpecial);
+      this.props.emitChange([...this.props.hours_special, newHoursSpecial]);
+      this.props.emitDateChange([...this.props.hours_special_dates, newdate]);
     }
-
-    this.props.emitChange(this.props.hours_special);
-    this.props.emitDateChange(this.props.hours_special_dates);
   }
 
-  handleStartChange(i, time) {
-    this.props.hours_special[i].open_time = time;
-    this._emitUserChange(this.props.hours_special);
+  handleStartChange(index, time) {
+    this.props.hours_special[index].open_time = time;
+    this._emitUserChange(
+      this.props.hours_special.slice(0, index)
+                              .concat([this.props.hours_special[index]])
+                              .concat(this.props.hours_special.slice(index + 1)));
   }
 
-  handleEndChange(i, time) {
-    this.props.hours_special[i].close_time = time;
-    this._emitUserChange(this.props.hours_special);
+  handleEndChange(index, time) {
+    this.props.hours_special[index].close_time = time;
+    this._emitUserChange(
+      this.props.hours_special.slice(0, index)
+                              .concat([this.props.hours_special[index]])
+                              .concat(this.props.hours_special.slice(index + 1)));
   }
 
   _emitUserChange (newTimeState) {
