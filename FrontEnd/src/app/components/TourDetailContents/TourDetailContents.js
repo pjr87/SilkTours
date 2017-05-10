@@ -21,7 +21,7 @@ import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDa
 
 import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
 
-import dateFormat from 'dateFormat';
+import dateFormat from 'dateformat';
 
 
 class TourDetailContents extends React.Component{
