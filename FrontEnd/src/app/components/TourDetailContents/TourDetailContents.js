@@ -21,7 +21,7 @@ import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDa
 
 import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
 
-import dateFormat from 'dateFormat';
+import dateFormat from 'dateformat';
 
 
 class TourDetailContents extends React.Component{
@@ -201,6 +201,7 @@ class TourDetailContents extends React.Component{
             <div className={style.tourSubTitle}>
               <StarRatingComponent
                 name="rate1"
+                editing={false}
                 starColor="#ffb400"
                 emptyStarColor="#ffb400"
                 starCount={5}

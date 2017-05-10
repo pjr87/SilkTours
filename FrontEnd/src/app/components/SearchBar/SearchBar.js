@@ -16,16 +16,22 @@ import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 
 import ToursList from '../Tours/ToursList';
-import { setSelectedKeywords, setSelectedRating, setSelectedPriceMin, setSelectedPriceMax, setSelectedCity, setSelectedInterests, searchTour, setSelectedPage, setSelectedPageSize } from '../../actions/SearchActions';
+import * as service from '../../utils/databaseFunctions';
 
 class SearchBar extends React.Component{
   constructor(props){
     super();
     this.state = {
-      rating: props.rating,
-      priceMin: props.priceMin,
-      priceMax: props.priceMax,
-      keywords: props.keywords,
+      rating: '0',
+      priceMin: '0',
+      priceMax: '1000000',
+      keywords: '',
+      page_size: 10,
+      page: 0,
+      page_count: 10,
+      tours: [],
+      interests: '',
+      city: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
@@ -34,18 +40,79 @@ class SearchBar extends React.Component{
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.handleKeywordsChange = this.handleKeywordsChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.nc = this.numColumns();
-    window.addEventListener("resize", this.handlePageSizeChange);
+    // this.nc = this.numColumns();
+    // window.addEventListener("resize", this.handlePageSizeChange);
   }
+
+  componentDidMount() {
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, this.state.page, this.state.page_size);
+  }
+
+  fetchPostInfo = async (rating, priceMin, priceMax, keywords, page, page_size) => {
+     try {
+       var rating_prop = "";
+       var priceMin_prop = "";
+       var priceMax_prop = "";
+       var keywords_prop = "";
+       var page_prop = "";
+       var page_size_prop = "";
+
+       if (rating != "0") {
+         rating_prop = "&rating="+rating;
+       }
+       if (priceMin != "0") {
+         priceMin_prop = "&priceMin="+priceMin;
+       }
+       if (priceMax != "1000000") {
+         priceMax_prop = "&priceMax="+priceMax;
+       }
+       if (keywords != "") {
+         keywords_prop = "&keywords="+keywords;
+       }
+       if (page != "") {
+         page_prop = "&page="+page;
+       }
+       if (page_size != "") {
+         page_size_prop = "&page_size="+page_size
+       }
+
+       console.log('rating: ' + rating_prop);
+       console.log('priceMin: ' + priceMin_prop);
+       console.log('priceMax: ' + priceMax_prop);
+       console.log('keywords: ' + keywords_prop);
+       console.log('page: ' + page);
+       console.log('page_size: ' + page_size);
+      //  console.log('interests: ' + this.state.interests);
+      //  console.log('city: ' + this.state.city);
+
+       const info = await Promise.all([
+         service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop)
+       ]);
+
+       // Object destructuring Syntax,
+       // takes out required values and create references to them
+       const tours = info[0].data.data;
+       console.log(info[0].data.data);
+      //  const page_size = info[0].data.page_size;
+       console.log(info[0].data.page_count);
+       this.setState({
+         tours,
+         page_count: info[0].data.page_count,
+       });
+
+     } catch(e) {
+       console.log("error occured pulling tour data");
+     }
+   }
 
   handleSubmit(e) {
     e.preventDefault();
-
-    this.props.dispatch(setSelectedRating(this.state.rating))
-    this.props.dispatch(setSelectedPriceMin(this.state.priceMin))
-    this.props.dispatch(setSelectedPriceMax(this.state.priceMax))
-    this.props.dispatch(setSelectedKeywords(this.state.keywords))
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "", ""));
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, 0, 10);
+    // this.props.dispatch(setSelectedRating(this.state.rating))
+    // this.props.dispatch(setSelectedPriceMin(this.state.priceMin))
+    // this.props.dispatch(setSelectedPriceMax(this.state.priceMax))
+    // this.props.dispatch(setSelectedKeywords(this.state.keywords))
+    // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", "", ""));
   }
 
   handleRatingChange(e) {
@@ -61,19 +128,22 @@ class SearchBar extends React.Component{
     this.setState({ keywords: e.target.value });
   }
   handlePageSizeChange(e) {
-    var _nc = this.numColumns()
-    if (_nc == this.nc) return;
-    this.nc = _nc;
-    this.forceUpdate();
-    this.props.dispatch(setSelectedPageSize(e.target.value));
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
+    // var _nc = this.numColumns()
+    // if (_nc == this.nc) return;
+    // this.nc = _nc;
+    // this.forceUpdate();
+
+    this.setState({ page_size: e.target.value });
+    // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
   }
   handlePageChange(e) {
-    this.props.dispatch(setSelectedPage(e-1));
-    this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
+    // this.props.dispatch(setSelectedPage(e-1));
+    this.setState({ page: e-1 });
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, e-1, this.state.page_size);
+    // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
   render(){
-    var colTours = this.getTourList(this.props.tours);
+    // var colTours = this.getTourList(this.state.tours);
     return(
       <div>
         <Pager>
@@ -141,7 +211,7 @@ class SearchBar extends React.Component{
           <FormGroup controlId="page_size">
             <ControlLabel>View by</ControlLabel>
             {'  '}
-            <FormControl componentClass="select" placeholder="select" value={this.props.page_size}
+            <FormControl componentClass="select" placeholder="select" value={this.state.page_size}
               onChange={this.handlePageSizeChange}>
               <option value="10">10 items</option>
               <option value="20">20 items</option>
@@ -153,6 +223,7 @@ class SearchBar extends React.Component{
           </Form>
         </Pager>
         <br/>
+        {/*
         <div className={style.TourColumnContainer}>
           <div className={style.TourColumn}>
             <ToursList tours={colTours[0]} tourDisplayProps={{display:"large"}} />
@@ -167,6 +238,13 @@ class SearchBar extends React.Component{
             <ToursList tours={colTours[3]} tourDisplayProps={{display:"large"}} />
           </div>
         </div>
+        */}
+        <Grid>
+          <Row>
+            <ToursList tours={this.state.tours} tourDisplayProps={{display:"large"}} />
+          </Row>
+        </Grid>
+
         <Pager>
           <Pagination
             prev
@@ -175,9 +253,9 @@ class SearchBar extends React.Component{
             last
             ellipsis
             boundaryLinks
-            items={this.props.page_count}
+            items={this.state.page_count}
             maxButtons={5}
-            activePage={Number.parseInt(this.props.page,10)+1}
+            activePage={Number.parseInt(this.state.page,10)+1}
             onSelect={this.handlePageChange} />
         </Pager>
       </div>
@@ -213,31 +291,4 @@ class SearchBar extends React.Component{
   }
 }
 
-SearchBar.propTypes = {
-  tours: React.PropTypes.array,
-  keywords: React.PropTypes.string,
-  interests: React.PropTypes.string,
-  rating: React.PropTypes.string,
-  priceMin: React.PropTypes.string,
-  priceMax: React.PropTypes.string,
-  city: React.PropTypes.string,
-  isLoaded: React.PropTypes.bool
-}
-
-function select (state) {
-  return {
-    tours: state.SearchReducer.tours,
-    keywords: state.SearchReducer.keywords,
-    interests: state.SearchReducer.interests,
-    rating: state.SearchReducer.rating,
-    priceMin: state.SearchReducer.priceMin,
-    priceMax: state.SearchReducer.priceMax,
-    city: state.SearchReducer.city,
-    page: state.SearchReducer.page,
-    page_size: state.SearchReducer.page_size,
-    page_count: state.SearchReducer.page_count,
-    isLoaded: state.SearchReducer.isLoaded
-  };
-}
-
-export default connect(select)(SearchBar);
+export default SearchBar;

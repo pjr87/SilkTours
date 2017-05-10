@@ -93,6 +93,7 @@ class Tours extends React.Component{
             <p>${this.props.tour.price}</p>
             <StarRatingComponent
               name="rate1"
+              editing={false}
               starColor="#ffb400"
               emptyStarColor="#ffb400"
               starCount={5}
@@ -122,7 +123,7 @@ class Tours extends React.Component{
     else{
 
       tourDisplay = (
-      <div xs={12} md={4} lg={3}>
+      <Col xs={12} md={4} lg={3}>
         <Thumbnail>
           <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
             {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
@@ -132,6 +133,7 @@ class Tours extends React.Component{
           <p>${this.props.tour.price}</p>
           <StarRatingComponent
             name="rate1"
+            editing={false}
             starColor="#ffb400"
             emptyStarColor="#ffb400"
             starCount={5}
@@ -153,7 +155,7 @@ class Tours extends React.Component{
             {/*guideButton*/}
           </p>
         </Thumbnail>
-      </div>);
+      </Col>);
     }
 
 
