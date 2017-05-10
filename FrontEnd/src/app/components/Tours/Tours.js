@@ -93,6 +93,7 @@ class Tours extends React.Component{
             <p>${this.props.tour.price}</p>
             <StarRatingComponent
               name="rate1"
+              editing={false}
               starColor="#ffb400"
               emptyStarColor="#ffb400"
               starCount={5}
@@ -132,6 +133,7 @@ class Tours extends React.Component{
           <p>${this.props.tour.price}</p>
           <StarRatingComponent
             name="rate1"
+            editing={false}
             starColor="#ffb400"
             emptyStarColor="#ffb400"
             starCount={5}
