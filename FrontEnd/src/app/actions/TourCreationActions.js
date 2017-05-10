@@ -88,7 +88,7 @@ export function createTour(tour, auth, photos, hours_special, base_hours) {
         service.newTourProfilePhoto(photos, tour_id, auth).then(function(response){
           if(response.data){
             var times = {
-              hours_special: convertTimes(hours_special)
+              special_hours: convertTimes(hours_special)
             }
             service.addTourHours(tour_id, times, auth).then(function(response){
               if(response.data){
@@ -262,6 +262,14 @@ export function updateSpecialTimeHoursState(newTimeState) {
  */
 export function updateDescriptionState(newDescriptionState) {
   return { type: tourCreationConstants.UPDATE_TOUR_DESCRIPTION, newDescriptionState };
+}
+
+/**
+ * Updates a tour's length
+ * @param  {object} newLengthState //The user json
+ */
+export function updateLengthState(newLengthState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_LENGTH, newLengthState };
 }
 
 /**
