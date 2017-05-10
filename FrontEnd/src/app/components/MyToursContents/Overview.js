@@ -5,6 +5,8 @@ import { getPendingReviewsByUserId, setShowPendingReview } from '../../actions/P
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import PendingReview from '../PendingReview/PendingReview';
+import { getUser } from '../../actions/AuthActions';
+
 
 class Overview extends React.Component{
   constructor(props){
@@ -15,9 +17,12 @@ class Overview extends React.Component{
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
+        console.log(this.props.id_user, this.props.auth);
+
     this.props.dispatch(getPendingReviewsByUserId(this.props.id_user, this.props.auth));
     // this.props.dispatch(getPendingReviewsByUserId("1", this.props.auth));
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   handleReviewChange(id_tour) {
@@ -29,7 +34,7 @@ class Overview extends React.Component{
   }
 
   render(){
-
+    
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });

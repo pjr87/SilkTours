@@ -54,10 +54,15 @@ class MyToursContents extends React.Component{
    
     service.putTourEventById(tourEventId, JSON.parse(JSON.stringify(obj)), this.props.auth).then(function(response){
       console.log("response", response);
+      location.reload();
     });
+
+
   }
 
-  componentDidMount(){
+  componentWillMount(){
+        console.log(this.props.id_user, this.props.auth);
+
     this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 

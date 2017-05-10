@@ -73,6 +73,47 @@ export function selectTour(tourId) {
   };
 }
 
+
+
+
+/**
+ * Updates a user in database
+ * @param  {object} user The user to update
+ */
+export function submitUpdatedTour(id_tour, selectedTour, auth) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    /*
+    if (anyElementsEmpty({ id_tour, selectedTour, auth })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+    */
+
+    service.editTour(id_tour, selectedTour, auth).then(function(response){
+      if(response.data){
+        console.log("response.data", response.data);
+        dispatch(sendingRequest(false));
+      }
+      else{
+        // If there was a problem, show an error
+        console.log('response.error: ' + response.error);
+        dispatch(sendingRequest(false));
+        dispatch(setErrorMessage(errorMessages.TOUR_UPDATE_FAILED));
+      }
+    });
+  }
+}
+
+
+export function sendingRequest(sending) {
+  return { type: TourEditConstants.SENDING_REQUEST, sending };
+}
+
+
+
 /**
  * Selects a tour
  * @param  {object} tour The selected tour

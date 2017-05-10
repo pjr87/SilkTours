@@ -72,12 +72,14 @@ class Tours extends React.Component{
         </p>) : null;
 
     let containsParticipants = false;
-    if( this.props.tour.participants.length > 0 )
+    if( this.props.tour.participants != null )
     {
-      containsParticipants = true;
+      if( this.props.tour.participants.length > 0 )
+      {
+        containsParticipants = true;
+      }
     }
-    console.log("contains: ", containsParticipants);
-
+    
       const cancelTourBody =  <div>
                                 Are you sure you want to delete the following scheduled tour?
                                 <div className={style.confirmBody}>
@@ -101,8 +103,8 @@ class Tours extends React.Component{
 
                                 </div>
                               </div>;
-
-      const cancelBtn = (this.props.tourDisplayProps.cancelBtn) ? (
+      console.log();
+      const cancelBtn = (this.props.tour.state != "D" && this.props.tourDisplayProps.cancelBtn) ? (
           <Confirm
           onConfirm={()=>this.props.cancelTourEvent(this.props.tour.id_tourEvent, this.props.tourDisplayProps.isGuide)}
           body={cancelTourBody}
@@ -112,7 +114,7 @@ class Tours extends React.Component{
           </Confirm>              
               ) : null;
 
-
+      
       console.log("Tour: ", this.props.tour);
 
       let contactButton = null;
@@ -187,7 +189,7 @@ class Tours extends React.Component{
             <p>{this.props.tour.name}  {this.props.tour.id_tourEvent}</p>
             { this.props.tourDisplayProps.isGuide && this.props.tour.participants.length > 0 && 
               <p>
-                <span className={style.confirmBodySideHeader}>Tourist:</span>
+                <span className={style.confirmBodySideHeader}>Tourist: </span>
                   {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
               </p>
             }
@@ -210,7 +212,7 @@ class Tours extends React.Component{
             {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn}</div>
             </div>
           </Thumbnail>
-        </div>);
+          </Col>);
 
 
 

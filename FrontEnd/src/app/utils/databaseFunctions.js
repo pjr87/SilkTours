@@ -229,3 +229,17 @@ export function putClearPendingReviewsByEventId(eventId, auth){
       },
     });
 }
+
+
+export function editTour(tourId, json, auth){
+  let url = SERVER_URL + '/tours/' + tourId;
+
+  return axios.put(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+
+}

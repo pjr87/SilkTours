@@ -16,7 +16,8 @@ import * as TourEditConstants from '../constants/TourEditConstants';
 const initialState = {
   selectedTourId: '',
   selectedTour: {},
-  isLoaded: false
+  isLoaded: false,
+  currentlySending: false
 };
 
 /*
@@ -34,6 +35,8 @@ function TourEditReducer(state = initialState, action) {
       return {...state, isLoaded: action.newLoadedState};
     case TourEditConstants.UPDATE_SELECTED_TOUR_FOR_EDIT:
       return {...state, selectedTour: action.newTourFormState};
+    case TourEditConstants.SENDING_REQUEST:
+      return {...state, currentlySending: action.sending};
     default:
       return state;
   }

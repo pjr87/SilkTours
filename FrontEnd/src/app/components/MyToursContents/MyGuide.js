@@ -1,12 +1,21 @@
 import React from 'react';
 import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import { getUser } from '../../actions/AuthActions';
+import {connect} from 'react-redux';
+
 
 class MyGuide extends React.Component{
 
   constructor(props)
   {
     super(props);
+  }
+
+  componentWillMount(){
+        console.log(this.props.id_user, this.props.auth);
+
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
 
@@ -34,6 +43,12 @@ class MyGuide extends React.Component{
     });
 
     const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideCompleteT} cancelTourEvent={this.props.cancelTourEvent} />);
+
+    const guideCancelT = this.props.toursGuided.filter(function(tour){
+      return tour.state=="D";
+    });
+
+    const guideCancelledTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideCancelT} cancelTourEvent={this.props.cancelTourEvent} />);
 
     /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
@@ -78,7 +93,7 @@ class MyGuide extends React.Component{
             </Col>
             <Col md={6} mdPush={0}>
               <Panel header="Cancelled Tours">
-                No Tours
+                {guideCancelledTours}
               </Panel>
             </Col>
           </Row>
@@ -88,4 +103,12 @@ class MyGuide extends React.Component{
   }
 }
 
-export default MyGuide;
+
+function select (state) {
+  return {
+    auth: state.AuthReducer.auth,
+    id_user: state.AuthReducer.id_user
+  };
+}
+
+export default connect(select)(MyGuide);

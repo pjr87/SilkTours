@@ -13,7 +13,7 @@ import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
 
 import * as service from '../../utils/databaseFunctions';
 
-import { updateTour, setSelectedTour } from '../../actions/TourEditActions';
+import { updateTour, setSelectedTour, submitUpdatedTour } from '../../actions/TourEditActions';
 
 import {EditableField, FormTitle, DoubleEditableField, FormButton, EditableTextField, EditableDropdownField} from '../Forms/Forms.js';
 
@@ -30,12 +30,23 @@ class TourEditContents extends React.Component{
 
     this.handleChange = this.handleChange.bind(this);
     this._emitSelectedTourChange = this._emitSelectedTourChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(name, e) {
+    console.log("here");
+    console.dir(e.target);
     //     this._emitUserChange({...this.props.user, last_name: event.target.value});
 
-    this._emitSelectedTourChange({...this.props.selectedTour, [name]: e.target.value});
+    if( e.target.id == "minNumTourists" || e.target.id == "maxNumTourists" ){
+      this._emitSelectedTourChange({...this.props.selectedTour, [name]: parseInt(e.target.value)});
+    }
+    else
+    {
+      this._emitSelectedTourChange({...this.props.selectedTour, [name]: e.target.value});
+    }
+
+    
   }
 
   _emitSelectedTourChange(newSelectedTourState){
@@ -43,7 +54,9 @@ class TourEditContents extends React.Component{
   }
 
   handleSubmit(){
-        this.setState({isLoading:true});
+    console.log(this.props.selectedTour);
+    // submitUpdatedTour(id_tour, selectedTour, auth) 
+    this.props.dispatch(submitUpdatedTour(this.props.selectedTourId, this.props.selectedTour, this.props.auth));
   }
 
   componentWillUpdate(nextProps){
@@ -185,7 +198,7 @@ class TourEditContents extends React.Component{
                         <ControlLabel>Min Group Size</ControlLabel>
                       </Col>
                       <Col xs={8} md={2}>
-                        <FormControl componentClass="select" onChange={this.handleChange.bind(this, 'min_group_size')} defaultValue={this.props.selectedTour.min_group_size} selected={this.props.selectedTour.length}>
+                        <FormControl id="minNumTourists" componentClass="select" onChange={this.handleChange.bind(this, 'min_group_size')} defaultValue={this.props.selectedTour.min_group_size} selected={this.props.selectedTour.length}>
                           {touristOptions}
                         </FormControl>
                       </Col>
@@ -194,7 +207,7 @@ class TourEditContents extends React.Component{
                         <ControlLabel>Max Group Size</ControlLabel>
                       </Col>
                       <Col xs={8} md={2}>
-                        <FormControl componentClass="select" onChange={this.handleChange.bind(this, 'max_group_size')} defaultValue={this.props.selectedTour.max_group_size} selected={this.props.selectedTour.length}>
+                        <FormControl id="maxNumTourists" componentClass="select" onChange={this.handleChange.bind(this, 'max_group_size')} defaultValue={this.props.selectedTour.max_group_size} selected={this.props.selectedTour.length}>
                           {touristOptions}
                         </FormControl>
                       </Col>
@@ -211,9 +224,9 @@ class TourEditContents extends React.Component{
                       <Col xsOffset={6} xs={4} componentClass="pullRight">
                         <Button
                           style={{"float": "right", "text-align":"right"}}                          
-                          disabled={this.state.isLoading}
-                          onClick={!this.state.isLoading ? this.onSubmitClick : null}>
-                          {this.state.isLoading ? 'Submitting Edits...' : 'Submit Tour Edits'}
+                          disabled={this.props.sendingRequest}
+                          onClick={!this.props.sendingRequest ? this.handleSubmit : null}>
+                          {this.props.sendingRequest ? 'Submitting Edits...' : 'Submit Tour Edits'}
                         </Button>
                       </Col>
                     </FormGroup>
@@ -244,7 +257,8 @@ function select (state) {
     loggedIn: state.AuthReducer.loggedIn,
     selectedTourId: state.TourEditReducer.selectedTourId,
     selectedTour: state.TourEditReducer.selectedTour,
-    isLoaded: state.TourEditReducer.isLoaded
+    isLoaded: state.TourEditReducer.isLoaded,
+    sendingRequest: state.TourEditReducer.currentlySending
   };
 }
 
