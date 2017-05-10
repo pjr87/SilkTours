@@ -4,12 +4,11 @@ from base import Base
 from db_session import get_session, commitSession, createSession
 
 
-class TourGuides(Base):
+class TourGuidesClass(Base):
     __tablename__ = 'TourGuides'
     id_tour_guide = Column(Integer, primary_key=True)
     id_user = Column(Integer, ForeignKey("User.id_users"))
     user = relationship("User", foreign_keys=[id_user])
-
     id_tour = Column(Integer, ForeignKey("Tour.id_tour"))
     tour = relationship("Tour", foreign_keys=[id_tour])
 
@@ -20,9 +19,9 @@ class TourGuides(Base):
     def create(data, id_tour=None):
         result = None
         if "id_tour_guide" in data:
-            result = get_session().query(TourGuides).get(data["id_tour_guide"])
+            result = get_session().query(TourGuidesClass).get(data["id_tour_guide"])
         if result is None:
-            result = TourGuides()
+            result = TourGuidesClass()
         result.set_props(data)
         if id_tour is not None:
             result.id_tour = id_tour

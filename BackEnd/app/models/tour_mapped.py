@@ -3,7 +3,7 @@ from app.models.interests_mapped import Interests
 from app.models.address_mapped import Address
 from app.models.ratings_mapped import Rating
 from app.models.stop_mapped import Stop
-from app.models.tour_guide_mapped import TourGuides
+from app.models.tour_guide_mapped import TourGuidesClass
 from sqlalchemy import Column, Integer, Float, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -37,7 +37,8 @@ class Tour(Base):
     ratings = relationship("Rating")
     stops = relationship("Stop")
     interests = relationship("Interests", foreign_keys="Interests.id_tour")
-    guides = relationship("TourGuides", foreign_keys="TourGuides.id_tour")
+    guides = relationship("TourGuidesClass", foreign_keys="TourGuidesClass.id_tour")
+    events = relationship("TourEvent", foreign_keys="TourEvent.id_tour")
     language = Column(String)
     length = Column(Integer)
 
@@ -60,7 +61,7 @@ class Tour(Base):
                 # self.interests = [Interests.create(item, self.id_tour) for item in data[key]]
             elif key == "guides":
                 for item in data[key]:
-                    TourGuides.create(item, self.id_tour)
+                    TourGuidesClass.create(item, self.id_tour)
             elif key == "address":
                 address = Address.create(data[key])
                 self.address_id = address.id_address
@@ -73,7 +74,7 @@ class Tour(Base):
         self.create_extras(data)
         commitSession(self)
 
-    def serialize(self, deep=True):
+    def serialize(self, deep=True, print_nested=False, print_events=False):
         result = {}
 
         for c in self.__table__.columns:
@@ -86,6 +87,13 @@ class Tour(Base):
         result["guides"] = []
         for guide in self.guides:
             result["guides"].append(guide.serialize())
+
+        if print_events:
+            print("self.events")
+            print(self.events)
+            result["events"] = []
+            for event in self.events:
+                result["events"].append(event.serialize())
 
         if not deep:
             return result

@@ -32,8 +32,9 @@ class User(Base):
 
     interests = relationship("Interests")
     interests = relationship("Interests", foreign_keys="Interests.id_user")
-    tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
+    #tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
     tours_taking = relationship("TourEvent", foreign_keys="TourEvent.id_user")
+    tours_teaching = relationship("Tour", secondary="TourGuides")
 
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
@@ -74,7 +75,8 @@ class User(Base):
                 # self.tours_taking = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
             elif key == "tours_teaching":
                 for item in data[key]:
-                    TourEvent.create(item, id_user=self.id_users)
+                    Tour.createOrEdit(item)
+                    #TourEvent.create(item, id_user=self.id_users)
                 # self.tours_teaching = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
 
     def create_or_edit(self, data):
@@ -102,8 +104,8 @@ class User(Base):
             result["interests"].append(interest.serialize())
 
         result["tours_teaching"] = []
-        for tourEvent in self.tours_teaching:
-            result["tours_teaching"].append(tourEvent.serialize(deep))
+        for tour in self.tours_teaching:
+            result["tours_teaching"].append(tour.serialize(deep, print_events=True))
 
         result["tours_taking"] = []
         for tourEvent in self.tours_taking:
