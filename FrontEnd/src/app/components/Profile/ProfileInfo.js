@@ -10,24 +10,27 @@ import React from 'react';
 
 export default class ProfileInfo extends React.Component{
 
+  constructor(props)
+  {
+    super(props);
+  }
+
   render(){
 
-    const offeredT = this.props.guide.tours_teaching.filter(function(tour){
-      return tour.state=="A";
-    });
-    const offeredTours = (<ToursList tourDisplayProps={{display:"small"}} tours={offeredT}/>);
+    const offeredT = this.props.user.tours_teaching;
+    const offeredTours = (<ToursList tourDisplayProps={{display:"small", messageButton:false}} tours={offeredT}/>);
 
     return (
       <Row>
         <Col xs={12} md={4} lg={4}>
         <Panel header="Contact Information">
 
-          <p>Email: {this.props.guide.email}</p>
-          <p>Phone: {this.props.guide.phone_number}</p>
+          <p>Email: {this.props.user.email}</p>
+          <p>Phone: {this.props.user.phone_number}</p>
           </Panel>
 
-            <Panel header={"About "+this.props.guide.first_name}>
-              {this.props.guide.description}
+            <Panel header={"About "+this.props.user.first_name}>
+              {this.props.user.description}
             </Panel>
         </Col>
         <Col xs={12} md={8} lg={8}>

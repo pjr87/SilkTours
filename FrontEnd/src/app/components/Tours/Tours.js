@@ -94,7 +94,7 @@ class Tours extends React.Component{
                                   </p>
                                   }
 
-                                  { !this.props.tourDisplayProps.isGuide && 
+                                  { !this.props.tourDisplayProps.isGuide && this.props.tour.guides != null && this.props.tour.guides.length > 0 &&
                                   <p>
                                     <span className={style.confirmBodySideHeader}>Guide:</span> 
                                       {this.props.tour.guides[0].first_name + " " + this.props.tour.guides[0].last_name}
@@ -118,40 +118,44 @@ class Tours extends React.Component{
       console.log("Tour: ", this.props.tour);
 
       let contactButton = null;
-      if(!this.props.loggedIn)
+      if(this.props.tourDisplayProps.messageButton != false)
       {
-        contactButton = <Link
-                      to={{
-                        pathname: '/sign'
-                        }}>
-                        <Button className={style.buttonWidth} bsStyle="default">Message</Button>
-                      </Link>;
-      }else if( this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 )
-      {
-        contactButton = <Link
-                      to={{
-                        pathname: '/messages',
-                        query: { guideUserId: this.props.tour.participants[0].id_users }
-                        }}>
-                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
-                      </Link>;
-      }else if( !this.props.tourDisplayProps.isGuide )
-      {
-        contactButton = <Link
-                      to={{
-                        pathname: '/messages',
-                        query: { guideUserId: this.props.tour.guides[0].id_user }
-                        }}>
-                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
-                      </Link>;
-      }else
-      {
-        contactButton = null;
+        if(!this.props.loggedIn)
+        {
+          contactButton = <Link
+                        to={{
+                          pathname: '/sign'
+                          }}>
+                          <Button className={style.buttonWidth} bsStyle="default">Message</Button>
+                        </Link>;
+        }else if( this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 )
+        {
+          contactButton = <Link
+                        to={{
+                          pathname: '/messages',
+                          query: { guideUserId: this.props.tour.participants[0].id_users }
+                          }}>
+                          <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
+                        </Link>;
+        }else if( !this.props.tourDisplayProps.isGuide && this.props.tour.guides != null && this.props.tour.guides.length > 0)
+        {
+          contactButton = <Link
+                        to={{
+                          pathname: '/messages',
+                          query: { guideUserId: this.props.tour.guides[0].id_user }
+                          }}>
+                          <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
+                        </Link>;
+        }else
+        {
+          contactButton = null;
+        }
       }
+      
 
 
       let guideButton = null;
-    if (this.props.tour.guides != null && this.props.tour.guides.length != '0') {
+    if (this.props.tour.guides != null && this.props.tour.guides.length > 0) {
       if(this.props.loggedIn) {
         guideButton = <Link
                       to={{
@@ -187,14 +191,14 @@ class Tours extends React.Component{
           <Thumbnail src={this.props.tour.profile_image} >
             <div>
             <p>{this.props.tour.name}  {this.props.tour.id_tourEvent}</p>
-            { this.props.tourDisplayProps.isGuide && this.props.tour.participants.length > 0 && 
+            { this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 && 
               <p>
                 <span className={style.confirmBodySideHeader}>Tourist: </span>
                   {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
               </p>
             }
 
-            { !this.props.tourDisplayProps.isGuide && 
+            { !this.props.tourDisplayProps.isGuide && this.props.tour.guides != null && this.props.tour.guides.length > 0 &&
               <p>
                 <span className={style.confirmBodySideHeader}>Guide:</span> 
                   {this.props.tour.guides[0].first_name + " " + this.props.tour.guides[0].last_name}

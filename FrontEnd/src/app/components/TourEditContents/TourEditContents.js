@@ -79,7 +79,7 @@ class TourEditContents extends React.Component{
 
     const dropdownOptions = options.map(function(option) {
       return (
-        <option value={option.value}>{option.optionName}</option>
+        <option key={option.value} value={option.value}>{option.optionName}</option>
     )}, this);
 
     const numTourists = [];
@@ -92,7 +92,7 @@ class TourEditContents extends React.Component{
 
     const touristOptions = numTourists.map(function(option){
       return(
-        <option value={option}>{option}</option>
+        <option key={option} value={option}>{option}</option>
         )
     }, this)
 
@@ -106,7 +106,10 @@ class TourEditContents extends React.Component{
           </div>
         </div>
         <div className = {style.thumbnailContainer}>
-          <Thumbnail src={this.props.selectedTour.profile_image}>
+          <Thumbnail>
+            <div className={style.imageContainer}>
+              <img src={this.props.selectedTour.profile_image}  />
+            </div>
             <Grid>
               <Row>
                 <Col sm={12}>
@@ -212,18 +215,18 @@ class TourEditContents extends React.Component{
                         </FormControl>
                       </Col>
                     </FormGroup>
-
+                    {/*
                     <div>
                       <Col smOffset={2}>
                         <div className={style.formHeader}>Address Fields</div>
                       </Col>
                     </div>
-
+                    */}
 
                     <FormGroup validationState = {this.props.errorMessage ? "error" : "success"}>
                       <Col xsOffset={6} xs={4} componentClass="pullRight">
                         <Button
-                          style={{"float": "right", "text-align":"right"}}                          
+                          style={{"float": "right", "textAlign":"right"}}                          
                           disabled={this.props.sendingRequest}
                           onClick={!this.props.sendingRequest ? this.handleSubmit : null}>
                           {this.props.sendingRequest ? 'Submitting Edits...' : 'Submit Tour Edits'}

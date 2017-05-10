@@ -67,12 +67,25 @@ class MyToursContents extends React.Component{
   }
 
   render(){
+
+    var toursTeaching =[];
+    for( var i = 0, len = this.props.user.tours_teaching.length; i < len; i++) {
+      for(var j=0, len2 = this.props.user.tours_teaching[i].events.length; j < len2; j++)
+      {
+        toursTeaching.push(this.props.user.tours_teaching[i].events[j]);
+        console.log(this.props.user.tours_teaching[i].events[j].id_tourEvent);
+      }
+    }
+
+
+    console.log("teaching", toursTeaching );
+
     if(this.state.tab == 'overview'){
-      var tabPag = <Overview toursGuided={this.props.user.tours_teaching} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
+      var tabPag = <Overview toursGuided={toursTeaching} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
     if(this.state.tab == 'myguide'){
 
-      var tabPag = <MyGuide toursGuided={this.props.user.tours_teaching} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
+      var tabPag = <MyGuide toursGuided={toursTeaching} cancelTourEvent={this.cancelTourEvent.bind(this)} allToursGuided={this.props.user.tours_teaching} />;
     }
     if(this.state.tab == 'mytour'){
       console.log("user:",this.props.user);

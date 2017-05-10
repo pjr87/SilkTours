@@ -41,7 +41,7 @@ export function selectTour(tourId) {
     try {
       service.getTourById(tourId).then(function(response){
         if(response.data){
-          console.log("getTourById", JSON.stringify(response.data));
+          console.log("getTourById", response.data);
           dispatch(setSelectedTour(response.data));
           service.getTourEventById(tourId).then(function(response){
             if(response.data){

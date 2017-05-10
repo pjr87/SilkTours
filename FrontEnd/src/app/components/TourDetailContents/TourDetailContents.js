@@ -52,15 +52,25 @@ class TourDetailContents extends React.Component{
 
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
+    let isGuide = false;
+    
     if (guidesLength != '0') {
+      isGuide = (this.props.selectedTour.guides[0].id_tour_guide == this.props.user.id_users) ? true : false;
       if(this.props.loggedIn) {
-        guideButton = <Link
+
+        if(isGuide){
+          guideButton = null;
+        }
+        else
+        {
+          guideButton = <Link
                       to={{
                         pathname: '/messages',
                         query: { guideUserId: this.props.selectedTour.guides[0].id_user }
                         }}>
                         <Button bsStyle="default">Message</Button>
                       </Link>;
+        }
       }
       else {
         guideButton = <Link
@@ -73,6 +83,19 @@ class TourDetailContents extends React.Component{
 
     } else {
      guideButton = null;
+    }
+
+    let reserveEditButton = null;
+
+    if( isGuide ){
+      reserveEditButton = <Link
+                to={{
+                  pathname: '/edittour',
+                  query: { tourId: this.props.selectedTourId }
+                }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
+    }
+    else{
+      reserveEditButton = <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
     }
 
     const getToken = () => {
@@ -224,7 +247,7 @@ class TourDetailContents extends React.Component{
             <Grid>
               <Row>
                 <Col sm={12} md={12} lg={12}>
-                  <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
+                  {reserveEditButton}
                   {guideButton}
                 </Col>
               </Row>
@@ -298,6 +321,7 @@ TourDetailContents.propTypes = {
 function select (state) {
   return {
     auth: state.AuthReducer.auth,
+    user: state.AuthReducer.user,
     loggedIn: state.AuthReducer.loggedIn,
     selectedTourId: state.TourDetailReducer.selectedTourId,
     selectedTour: state.TourDetailReducer.selectedTour,

@@ -44,12 +44,16 @@ class MyGuide extends React.Component{
 
     const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideCompleteT} cancelTourEvent={this.props.cancelTourEvent} />);
 
-    const guideCancelT = this.props.toursGuided.filter(function(tour){
-      return tour.state=="D";
-    });
+    /*
+      const guideCancelT = this.props.toursGuided.filter(function(tour){
+        return tour.state=="D";
+      });
 
-    const guideCancelledTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideCancelT} cancelTourEvent={this.props.cancelTourEvent} />);
+      const guideCancelledTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideCancelT} cancelTourEvent={this.props.cancelTourEvent} />);
+    */
 
+    const guideToursG = this.props.allToursGuided;
+    const guideToursGiving = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideToursG}  />);//
     /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
@@ -92,8 +96,8 @@ class MyGuide extends React.Component{
               </Panel>
             </Col>
             <Col md={6} mdPush={0}>
-              <Panel header="Cancelled Tours">
-                {guideCancelledTours}
+              <Panel header="Currently Active Tours">
+                {guideToursGiving}
               </Panel>
             </Col>
           </Row>
