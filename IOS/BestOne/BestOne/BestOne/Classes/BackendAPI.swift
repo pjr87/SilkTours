@@ -7,6 +7,10 @@
 //
 
 import Foundation
+
+//import UIKit
+
+import SwiftyJSON
 import Alamofire
 import AWSCognito
 
@@ -22,7 +26,7 @@ class BackendAPI{
     static var credentials: NSDictionary?
     
     static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
-//    func getUser(String id) {
+//  static func getUser(String id) {
 //        Alamofire.request();
 //    }
     
@@ -83,15 +87,15 @@ class BackendAPI{
     }
     
    
-    func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
+  static func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
        // return Alamofire.request();
     }
     
-    func getTourById(tourId:UInt64) {
+  static func getTourById(tourId:UInt64) {
     //return axios.get(SERVER_URL + "/tours/"+tourId);
     }
     
-    func getTourEventById(tourId:UInt64){
+  static func getTourEventById(tourId:UInt64){
     //return axios.get(SERVER_URL + "/tour/"+tourId+"/events");
     }
     
@@ -117,11 +121,139 @@ class BackendAPI{
 //    });
     }
     
-     func getAllTours() {
-        //return axios.get(SERVER_URL + "/search");
+  static func getAllTours(completion:@escaping (_ String:Any) -> Void)
+    {
+        
+        
+        
+         Alamofire.request(SERVER_URL+"/search").responseJSON { response in
+            switch response.result {
+            case .success(let data):
+                
+                let json = data as? NSDictionary
+                if ((json?.value(forKey: "data")) != nil){
+                    
+                    var d = json?.value(forKey: "data")
+                    
+                   // d = NSArray(d?)[0]
+                    
+                    completion(json?.value(forKey:"data"))
+                    
+                }
+                
+                
+               // let json = JSON(data: dataFromNetworking)
+                
+                //let data = d.data(using: String.Encoding.utf8, allowLossyConversion: false)!
+
+                
+                
+                
+               /* if let data = d as? [String:Any]{
+                do{
+                if let myJSON = try! JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
+                    //For getting customer_id try like this
+                    if let data = myJSON["data"] as? [[String: Any]] {
+                        for jsonDict in data {
+                            //var try = jsonDict["customer_id"] as? String
+                        } 
+                    }
+                }
+                }catch{
+                
+                
+                }
+                }*/
+               /*
+                
+                
+                
+                if let json = data as? [String:Any]{
+                    let j = json["data"] as? [String:Any]
+                    if let statusesArray = try? JSONSerialization.jsonObject(with: j, options: .allowFragments) as? [[String: Any]],
+                        let user = statusesArray[0]["user"] as? [String: Any],
+                        let username = user["name"] as? String {
+                        // Finally we got the username
+                    }
+                
+                }
+                
+                
+                
+                
+                
+                if let json = data as? [String:Any]{
+                    //if let val = json["data"]![0] as? [String:Any]{
+                    //}
+                    ///let v = val?[0] as? [String:Any]
+                    //completion(v)
+                    
+                
+                
+                
+                do {
+                    let allContacts = try JSONSerialization.jsonObject(with: json, options: JSONSerialization.ReadingOptions.allowFragments) as! [String : NSArray]                } catch {
+                    print(error)
+                }
+                    
+                    
+                guard let item = json?.first as? [String: Any],
+                    let person = item["person"] as? [String: Any],
+                    let age = person["age"] as? Int else {
+                        return
+                }
+                }
+                /*do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    
+                    
+                    if let countries = json["Countries"] as? [String: AnyObject] {
+                        for country in countries {
+                            if let couname = country["countryname"] as? [AnyObject] {
+                                country_names.append(couname)
+                            }
+                            
+                            if let coucode = country["code"] as? [AnyObject] {
+                                country_codes.append(coucode)
+                            }
+                            
+                        }
+                    }
+                } catch {
+                    print("Error Serializing JSON: \(error)")
+                }
+                
+                 */
+ */
+ 
+//                if let json = data as? [String: Any] {
+//                    let j = json["data"] as? [String:Any]
+//                    
+//                    completion(j)
+//                }
+ 
+                //let json = JSONSerialization.jsonObject(with: JSON) as? [String: Any]
+                
+                //JSON[0]["first"]
+                //let info = String(describing: JSON)
+                
+            case .failure(let data):
+                let JSON = data as! String
+                    completion(JSON)
+                
+            }
+ 
+        }
     }
     
-    func getUser(id:UInt64){
+    
+   /*static func getAllTours() -> String {
+        Alamofire.request(SERVER_URL+"/search").responseJSON(completionHandler: <#T##(DataResponse<Any>) -> Void#>)
+        
+        //return axios.get(SERVER_URL + "/search");
+    }*/
+    
+  static func getUser(id:UInt64){
         //var url = SERVER_URL + "/users/"+id;
         //return axios.get(url);
     }
@@ -147,7 +279,7 @@ class BackendAPI{
 //    });
     }
     
-//     func newPhoto(data, id, auth){
+//   static func newPhoto(data, id, auth){
 //    let url = SERVER_URL + '/media/' + id;
 //    return axios.post(url, data,
 //    {
@@ -158,7 +290,7 @@ class BackendAPI{
 //    });
 //    }
 //    
-//     func newTourProfilePhoto(data, id, auth){
+//   static func newTourProfilePhoto(data, id, auth){
 //    let url = SERVER_URL + '/tours/' + id + '/profile';
 //    return axios.put(url, data,
 //    {
@@ -169,7 +301,7 @@ class BackendAPI{
 //    });
 //    }
 //    
-//     func newUserProfilePhoto(data, id, auth){
+//   static func newUserProfilePhoto(data, id, auth){
 //    let url = SERVER_URL + '/users/' + id + '/profile';
 //    return axios.put(url, data,
 //    {
@@ -185,7 +317,7 @@ class BackendAPI{
      The arguments should be put in the HTTP request's form, and the JSON structure
      of the params is the same as the result of "http://34.197.42.24:5000/users/1"
      (although you only need to supply the values that you want to set).*/
-    func registerNewUser(json: String) {
+  static func registerNewUser(json: String) {
     //return axios.post(SERVER_URL + '/users', json);
     }
     
@@ -211,14 +343,14 @@ class BackendAPI{
   //  }
     
     
-   //  func getMessages(){
+   //static func getMessages(){
    // var url = 'https://demo5229068.mockable.io/messages';
     
  //   return axios.get(url);
 //    }
     
     
-//     func postSupportTicket(department, fname, lname, email, textBody) {
+//   static func postSupportTicket(department, fname, lname, email, textBody) {
 //    var instance = axios.create({
 //    baseURL: 'https://silktoursinc.freshdesk.com/api/v2/tickets',
 //    headers: {'Content-Type': 'application/json'},

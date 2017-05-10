@@ -94,6 +94,17 @@ export function newTour(data, auth){
     });
 }
 
+export function addTourHours(tourId, data, auth){
+    let url = SERVER_URL + '/tours/' + tourId + "/hours";
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 export function newPhoto(data, id, auth){
     let url = SERVER_URL + '/media/' + id;
     return axios.post(url, data,
@@ -226,4 +237,21 @@ export function putClearPendingReviewsByEventId(eventId, auth){
         'Silk-Identity-Id': auth.IdentityId
       },
     });
+}
+
+export function getAvailableHours(tourId, startEndDate) {
+    var url = SERVER_URL + '/tours/available_hours?tour_id=' + tourId + '&start_date=' + startEndDate +  '&end_date=' + startEndDate;
+    return axios.get(url);
+}
+
+export function setTourEvent(json, auth) {
+  let url = SERVER_URL + '/tourevents'
+
+  return axios.post(url, json,
+  {
+    headers:{
+      'Silk-Logins': auth.Logins,
+      'Silk-Identity-Id': auth.IdentityId
+    },
+  });
 }
