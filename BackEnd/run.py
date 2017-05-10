@@ -23,7 +23,7 @@ import urllib
 from io import StringIO
 #from PIL import Image
 from io import BytesIO
-from db_session import get_session, commitSession, safe_call, limiting_query
+from db_session import get_session, close_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
 from srptools import SRPContext
 from warrant.aws_srp import AWSSRP
@@ -112,29 +112,15 @@ def notAuthorizedResponse():
     href='http://localhost:5000/login'>here</a> to login.</h1>""", 403
 
 
-
-# engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
-#engine = create_engine(
-#    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
-
-#engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
-
-#Session = scoped_session(sessionmaker(bind=engine))
-#session = None
-
-'''
 @app.before_request
 def before_request():
-    createSession()
-
+    print("Before")
 
 @app.after_request
-def after_request(response):
-    for funct in getattr(g, 'call_after_request', ()):
-        response = funct(response)
-    get_session().close()
-    return response
-'''
+def after_request(data):
+    print("After")
+    close_session()
+    return data
 
 @app.errorhandler(500)
 def internal_server_error(e):
