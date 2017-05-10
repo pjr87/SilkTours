@@ -93,8 +93,11 @@ class SearchBar extends React.Component{
        // takes out required values and create references to them
        const tours = info[0].data.data;
        console.log(info[0].data.data);
+      //  const page_size = info[0].data.page_size;
+       console.log(info[0].data.page_count);
        this.setState({
-         tours
+         tours,
+         page_count: info[0].data.page_count,
        });
 
      } catch(e) {
@@ -140,7 +143,7 @@ class SearchBar extends React.Component{
     // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
   render(){
-    var colTours = this.getTourList(this.state.tours);
+    // var colTours = this.getTourList(this.state.tours);
     return(
       <div>
         <Pager>
@@ -220,6 +223,7 @@ class SearchBar extends React.Component{
           </Form>
         </Pager>
         <br/>
+        {/*
         <div className={style.TourColumnContainer}>
           <div className={style.TourColumn}>
             <ToursList tours={colTours[0]} tourDisplayProps={{display:"large"}} />
@@ -234,6 +238,13 @@ class SearchBar extends React.Component{
             <ToursList tours={colTours[3]} tourDisplayProps={{display:"large"}} />
           </div>
         </div>
+        */}
+        <Grid>
+          <Row>
+            <ToursList tours={this.state.tours} tourDisplayProps={{display:"large"}} />
+          </Row>
+        </Grid>
+
         <Pager>
           <Pagination
             prev
