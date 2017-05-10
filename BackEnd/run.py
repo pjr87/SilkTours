@@ -21,7 +21,7 @@ from sqlalchemy import func, or_, and_
 import boto3
 import urllib
 from io import StringIO
-from PIL import Image
+#from PIL import Image
 from io import BytesIO
 from db_session import get_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
@@ -758,7 +758,7 @@ def has_no_empty_params(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
-
+'''
 @app.route("/resize_images", methods=['GET'])
 def resize_images():
     query = get_session().query(Tour)
@@ -792,7 +792,7 @@ def resize_images():
         get_session().add(tour)
     commitSession()
     return "done"
-
+'''
 
 @app.route("/docs")
 def site_map():
