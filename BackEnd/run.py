@@ -14,6 +14,7 @@ from app.models.tour_mapped import Tour
 from app.models.stop_mapped import Stop
 from app.models.tour_hours import TourHours
 from app.models.tour_hours_special import TourHoursSpecial
+from app.models.favorites_mapped import FavoritesClass
 
 from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
@@ -141,6 +142,55 @@ def invalidate():
     get_session().expire_all()
     return 'done'
 
+@app.route("/toggle_favorite", methods=['POST'])
+def favorite_tour():
+    '''
+    Togggles whether a tour is favorited for a user. Returns "removed" or "created". Returns 422 if incorrect JSON arguments are provided.
+    <u>JSON Args:</u> user_id, tour_id
+    '''
+    if not checkLogin():
+        return notAuthorizedResponse()
+    data = request.get_json()
+    user_id = data.get("user_id")
+    tour_id = data.get("tour_id")
+    if user_id is None or tour_id is None:
+        return "must supply tour_id and user_id", 422
+
+    query = get_session().query(FavoritesClass).filter(
+            and_(
+                FavoritesClass.user_id == user_id,
+                FavoritesClass.tour_id == tour_id
+            )
+        )
+    fav = safe_call(query, "first", None)
+    deleted = False
+    print(fav)
+    if fav is None:
+        fav = FavoritesClass()
+        fav.user_id = user_id
+        fav.tour_id = tour_id
+        get_session().add(fav)
+    else:
+        get_session().delete(fav)
+        deleted = True
+    print(deleted)
+    commitSession()
+    return ("removed" if deleted else "created")
+
+@app.route("/favorite_details/<user_id>", methods=['POST'])
+def favorite_details(user_id):
+    '''
+    Returns an array of tour objects that the user has favorited.
+    <u>URL Args:</u> user_id
+    '''
+    if not checkLogin():
+        return notAuthorizedResponse()
+    query = get_session().query(FavoritesClass).filter(FavoritesClass.user_id == user_id)
+    favs = safe_call(query, "all", None)
+    result = []
+    for fav in favs:
+        result.append(fav.tour.serialize(deep=False))
+    return jsonify(result)
 
 @app.route("/search", methods=['GET'])
 def search():
