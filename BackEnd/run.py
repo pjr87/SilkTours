@@ -682,6 +682,9 @@ def get_hours():
         return 422, "No tour specified"
     tour = safe_call(get_session().query(Tour), "get", tour_id)
     length = tour.length
+    if length is None or length is 0:
+        length = 1
+
     query = get_session().query(TourHours).filter(TourHours.tour_id == tour_id)
     baseHours = safe_call(query, "all", None)
     query = get_session().query(TourHoursSpecial).filter(
@@ -838,17 +841,17 @@ def site_map():
             """.format(rule.endpoint, url, desc, methods)
         )
         html += line
-    user = safe_call(get_session().query(User), "get", 1).serialize(True)
+    user = safe_call(get_session().query(User), "first", None).serialize(True)
     clean_object(user)
 
-    tour = safe_call(get_session().query(Tour), "get", 1).serialize(True)
+    tour = safe_call(get_session().query(Tour), "first", None).serialize(True)
     clean_object(tour)
 
-    tour_event = safe_call(get_session().query(TourEvent), "get", 1).serialize(include_tour=False)
+    tour_event = safe_call(get_session().query(TourEvent), "first", None).serialize(include_tour=False)
     clean_object(tour_event)
 
-    hours = safe_call(get_session().query(TourHours), "get", 0).serialize()
-    hours_special = safe_call(get_session().query(TourHoursSpecial), "get", 0).serialize()
+    hours = safe_call(get_session().query(TourHours), "first", None).serialize()
+    hours_special = safe_call(get_session().query(TourHoursSpecial), "first", None).serialize()
     hours_input = {"base_hours": [hours], "hours_special": [hours_special]}
     clean_object(hours_special)
     clean_object(hours)
