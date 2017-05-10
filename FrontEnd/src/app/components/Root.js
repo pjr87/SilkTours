@@ -25,12 +25,8 @@ import{
   TermsPage,
   PolicyPage} from '../pages';
 import {ContactUsRedux} from '../pages';
-import TourSignup from './pages/TourSignup';
 import App from './App';
 import { loadState } from '../localStorage';
-import MessagesReact from './pages/MessageReact.js';
-
-import MessageBody from './MessageBody/MessageBody.js';
 
 /* Function used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
