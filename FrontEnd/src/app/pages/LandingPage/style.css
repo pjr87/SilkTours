@@ -57,3 +57,19 @@
   max-width: 100%;
   font: bold 2vw Helvetica, Sans-Serif;
 }
+
+.sideLeft {
+    display: inline-block;
+    width: 40%;
+}
+
+.sideRight {
+    display: inline-block;
+    margin-top: 100px;
+    width: 60%;
+}
+
+.pane {
+  width: 100%;
+  margin-top: -100px;
+}
