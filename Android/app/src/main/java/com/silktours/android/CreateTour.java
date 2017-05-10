@@ -110,7 +110,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private String encodedProfileImage;
     Bitmap bm;
     private String postResult;
-
+    private JSONObject jObject;
+    private String tID;
 
     ArrayList<String> stops = new ArrayList<String>();
     ArrayAdapter<String> stopsAdapter;
@@ -269,7 +270,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set("additional_food", additionalFood.getText().toString());
                 tour.set("additional_accomadation", additionalAccommodation.getText().toString());
                 tour.set("additional_transport", additionalTransport.getText().toString());
-
+                //default value. change later
+                tour.set("length", 2);
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();
                 try {
@@ -287,12 +289,24 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                // Log.d("json", "onClick: " + tour.get());
                 commitTour();
 
+                /*
                 for (int i = 0; i < postResult.length(); i++){
                     char c = postResult.charAt(i);
                     //Process char
                 }
+                */
 
-                //MediaHandler.uploadProfileImage("tour", tour.get, bm);
+
+                try {
+                    jObject = new JSONObject(postResult);
+                    tID = jObject.getString("id_tour");
+                    Log.d("Got it",tID);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("Got it again",tID);
+
+                MediaHandler.uploadProfileImage("tours", tID , bm);
 
                 /*
                 final User user = new User();
@@ -427,7 +441,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                     return;
                 }
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] b = baos.toByteArray();
                 encodedProfileImage = Base64.encodeToString(b, Base64.DEFAULT);
                 profilePicView.setImageBitmap(bm);

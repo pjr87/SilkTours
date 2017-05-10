@@ -82,7 +82,6 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         }
         tourId = tour.getId_tour().toString();
         txtName = (TextView) rootView.findViewById(R.id.txtName);
-        txtCountry = (TextView) rootView.findViewById(R.id.txtCountry);
         txtCity = (TextView) rootView.findViewById(R.id.txtCity);
         txtPrice = (TextView) rootView.findViewById(R.id.txtPrice);
         txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);

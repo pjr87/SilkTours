@@ -32,7 +32,7 @@
                 android:textSize="@dimen/title_text"
                 android:layout_margin="@dimen/text_margin"
                 android:gravity="start"
-                android:text="@string/loading"/>
+                android:text="didn't load!!"/>
 
             <LinearLayout
                 android:id="@+id/userInfo"
@@ -72,16 +72,6 @@
                             android:text="City"
                             android:layout_weight="1"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/txtCountryTag"
-                            android:textSize="@dimen/normal_text"
-                            android:layout_margin="@dimen/text_margin"
-                            android:textColor="#000000"
-                            android:gravity="end"
-                            android:text="Country"
-                            android:layout_weight="1"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -132,18 +122,10 @@
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
                             android:gravity="end"
-                            android:text="@string/loading"
+                            android:text="didn't load!!"
                             android:layout_weight="1"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/txtCountry"
-                            android:textSize="@dimen/normal_text"
-                            android:layout_margin="@dimen/text_margin"
-                            android:gravity="end"
-                            android:text="@string/loading"
-                            android:layout_weight="1"/>
+
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -152,7 +134,7 @@
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
                             android:gravity="end"
-                            android:text="@string/loading"
+                            android:text="didn't load!!"
                             android:layout_weight="1"/>
 
                         <TextView
@@ -162,7 +144,7 @@
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
                             android:gravity="end"
-                            android:text="@string/loading"
+                            android:text="didn't load!!"
                             android:layout_weight="1"/>
 
                         <TextView
@@ -172,7 +154,7 @@
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
                             android:gravity="end"
-                            android:text="@string/loading"
+                            android:text="didn't load!!"
                             android:layout_weight="1"/>
 
                     </LinearLayout>
@@ -196,8 +178,7 @@
                     android:id="@+id/btnMessage"
                     android:layout_weight="1"
                     android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:text="Message"
-                    android:background="#71dc64"/>
+                    android:text="Message"/>
 
                 <Button
                     android:layout_width="wrap_content"
@@ -206,8 +187,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/activity_horizontal_margin"
                     android:text="Join"
-                    android:visibility="visible"
-                    android:background="#2b90f5"/>
+                    android:visibility="visible"/>
             </LinearLayout>
 
             <Button
@@ -252,7 +232,7 @@
                     android:textSize="@dimen/normal_text"
                     android:layout_margin="@dimen/text_margin"
                     android:gravity="start"
-                    android:text="@string/loading"
+                    android:text="didn't load!!"
                     android:layout_weight="4"/>
 
             </LinearLayout>
