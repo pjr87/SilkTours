@@ -201,6 +201,7 @@ class TourDetailContents extends React.Component{
             <div className={style.tourSubTitle}>
               <StarRatingComponent
                 name="rate1"
+                editing={false}
                 starColor="#ffb400"
                 emptyStarColor="#ffb400"
                 starCount={5}
