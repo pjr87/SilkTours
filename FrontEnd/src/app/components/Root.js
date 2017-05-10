@@ -58,14 +58,12 @@ const Root = ({ store }) => (
         <Route path='/privacy' component={PrivacyPage} />
         <Route path='/policy' component={PolicyPage} />
         <Route onEnter={checkAuth}>
-          <Route path='/messagereact' component={MessagesReact} />
           <Route path='/profile' component ={ProfilePage} />
           <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route path='/tour-creation' component={TourCreationPage}/>
           <Route path='/become-guide' component={BecomeGuidePage}/>
-          <Route path='/tour-signup' component={TourSignup}/>
           <Route path='/messages' component={MessagesPage}/>
         </Route>
         <Route path="*" component={NotFound}/>
