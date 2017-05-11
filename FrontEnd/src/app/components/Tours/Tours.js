@@ -8,6 +8,8 @@ import StarRatingComponent from 'react-star-rating-component';
 
 import {connect} from 'react-redux';
 
+import * as service from '../../utils/databaseFunctions';
+
 class Tours extends React.Component{
   constructor (props) {
     super(props);
@@ -16,6 +18,7 @@ class Tours extends React.Component{
     };
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
+    this.handleAddFavorite = this.handleAddFavorite.bind(this);
   }
 
   mouseOver = () => {
@@ -24,7 +27,27 @@ class Tours extends React.Component{
   mouseOut() {
     this.setState({showTourInfo: false});
   }
-
+  handleAddFavorite() {
+    var userTourJson = {
+      user_id: this.props.id_user,
+      tour_id: this.props.tour.id_tour,
+    }
+    console.log("Favorite");
+    console.log(userTourJson);
+    try {
+      service.favorite_tour(userTourJson, this.props.auth).then(function(response){
+        if(response.data) {
+          console.log(response.data);
+        }
+        else{
+          // If there was a problem, show an error
+          console.log('response.error: ' + response.error);
+        }
+      });
+    } catch(e) {
+      console.log("error occured submitting data" + e);
+    }
+  }
   render(){
     //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
@@ -152,6 +175,7 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
+            <Button bsStyle="success" onClick={this.handleAddFavorite}>Add to Favorite</Button>&nbsp;
           </p>
           {contactGuideBtn}
         </Thumbnail>
@@ -190,7 +214,9 @@ class Tours extends React.Component{
 function select (state) {
   return {
     loggedIn: state.AuthReducer.loggedIn,
-    selectedTour: state.TourDetailReducer.selectedTour
+    auth: state.AuthReducer.auth,
+    selectedTour: state.TourDetailReducer.selectedTour,
+    id_user: state.AuthReducer.id_user,
   };
 }
 

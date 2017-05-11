@@ -1,5 +1,5 @@
 import React from 'react';
-import {PageTitle} from 'components';
+import {PageTitle, WishListContent} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 class WishList extends React.Component{
@@ -8,6 +8,7 @@ class WishList extends React.Component{
       <div>
         <Grid>
           <PageTitle title="WishList"/>
+          <WishListContent/>
         </Grid>
       </div>
     );
