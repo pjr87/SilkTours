@@ -199,8 +199,8 @@ var cognitoFunctions = {
    * @return {boolean} True if there is a logged in user, false if there isn't
    */
   loggedIn() {
-
     const persistedState = loadState();
+    console.log("persistedState", persistedState);
     if(persistedState == null){
       console.log("Set False");
       return false;
