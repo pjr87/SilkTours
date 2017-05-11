@@ -255,3 +255,27 @@ export function setTourEvent(json, auth) {
     },
   });
 }
+
+export function favorite_tour(json, auth) {
+  let url = SERVER_URL + '/toggle_favorite'
+
+  return axios.post(url, json,
+  {
+    headers:{
+      'Silk-Logins': auth.Logins,
+      'Silk-Identity-Id': auth.IdentityId
+    },
+  });
+}
+
+export function favorite_details(userId, auth) {
+  let url = SERVER_URL + '/favorite_details/' + userId
+
+  return axios.post(url,
+  {
+    headers:{
+      'Silk-Logins': auth.Logins,
+      'Silk-Identity-Id': auth.IdentityId
+    },
+  });
+}
