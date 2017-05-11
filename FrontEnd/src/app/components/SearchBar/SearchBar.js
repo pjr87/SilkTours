@@ -39,21 +39,25 @@ class SearchBar extends React.Component{
     this.handlePriceMaxChange = this.handlePriceMaxChange.bind(this);
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.handleKeywordsChange = this.handleKeywordsChange.bind(this);
+    this.handleCityChange = this.handleCityChange.bind(this);
+    this.handleInterestsChange = this.handleInterestsChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     // this.nc = this.numColumns();
     // window.addEventListener("resize", this.handlePageSizeChange);
   }
 
   componentDidMount() {
-    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, this.state.page, this.state.page_size);
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, this.state.page, this.state.page_size, this.state.city, this.state.interests);
   }
 
-  fetchPostInfo = async (rating, priceMin, priceMax, keywords, page, page_size) => {
+  fetchPostInfo = async (rating, priceMin, priceMax, keywords, page, page_size, city, interests) => {
      try {
        var rating_prop = "";
        var priceMin_prop = "";
        var priceMax_prop = "";
        var keywords_prop = "";
+       var city_prop = "";
+       var interests_prop = "";
        var page_prop = "";
        var page_size_prop = "";
 
@@ -69,6 +73,12 @@ class SearchBar extends React.Component{
        if (keywords != "") {
          keywords_prop = "&keywords="+keywords;
        }
+       if (city != "") {
+         city_prop = "&city="+city;
+       }
+       if (interests != "") {
+         interests_prop = "&interests="+interests;
+       }
        if (page != "") {
          page_prop = "&page="+page;
        }
@@ -80,13 +90,15 @@ class SearchBar extends React.Component{
        console.log('priceMin: ' + priceMin_prop);
        console.log('priceMax: ' + priceMax_prop);
        console.log('keywords: ' + keywords_prop);
+       console.log('city: ' + city_prop);
+       console.log('interests: ' + interests_prop);
        console.log('page: ' + page);
        console.log('page_size: ' + page_size);
       //  console.log('interests: ' + this.state.interests);
       //  console.log('city: ' + this.state.city);
 
        const info = await Promise.all([
-         service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop)
+         service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop, city_prop, interests_prop)
        ]);
 
        // Object destructuring Syntax,
@@ -107,7 +119,7 @@ class SearchBar extends React.Component{
 
   handleSubmit(e) {
     e.preventDefault();
-    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, 0, 10);
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, 0, 10, this.state.city, this.state.interests);
     // this.props.dispatch(setSelectedRating(this.state.rating))
     // this.props.dispatch(setSelectedPriceMin(this.state.priceMin))
     // this.props.dispatch(setSelectedPriceMax(this.state.priceMax))
@@ -127,19 +139,26 @@ class SearchBar extends React.Component{
   handleKeywordsChange(e) {
     this.setState({ keywords: e.target.value });
   }
+  handleCityChange(e) {
+    this.setState({ city: e.target.value });
+  }
+  handleInterestsChange(e) {
+    this.setState({ interests: e.target.value });
+  }
   handlePageSizeChange(e) {
     // var _nc = this.numColumns()
     // if (_nc == this.nc) return;
     // this.nc = _nc;
     // this.forceUpdate();
 
-    this.setState({ page_size: e.target.value });
+    this.setState({ page_size: e.target.value, page: 0 });
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, 0, e.target.value, this.state.city, this.state.interests);
     // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", this.props.page, e.target.value));
   }
   handlePageChange(e) {
     // this.props.dispatch(setSelectedPage(e-1));
     this.setState({ page: e-1 });
-    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, e-1, this.state.page_size);
+    this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, e-1, this.state.page_size, this.state.city, this.state.interests);
     // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
   render(){
@@ -205,6 +224,28 @@ class SearchBar extends React.Component{
             <Button type="submit">
               Search
             </Button>
+          </Form>
+          <br/>
+          <Form inline>
+            <FormGroup controlId="interests">
+              <ControlLabel>Interests</ControlLabel>
+              {'  '}
+              <FormControl componentClass="select" placeholder="select" value={this.state.interests}
+                onChange={this.handleInterestsChange}>
+                <option value="">None</option>
+                <option value="sports">Sports</option>
+                <option value="food">Food</option>
+                <option value="city">City</option>
+                <option value="entertainment">Entertainment</option>
+              </FormControl>
+            </FormGroup>
+            &nbsp;&nbsp;&nbsp;
+            <FormGroup controlId="city">
+              <ControlLabel>city</ControlLabel>
+              {'  '}
+              <FormControl value={this.state.city}
+                onChange={this.handleCityChange}/>
+            </FormGroup>
           </Form>
           <br/>
           <Form inline>
