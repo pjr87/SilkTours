@@ -27,11 +27,14 @@ import{
 import {ContactUsRedux} from '../pages';
 import App from './App';
 import { loadState } from '../localStorage';
+import cognitoFunctions from '../utils/cognitoFunctions';
 
 /* Function used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
   let tmpState = loadState();
-  let loggedIn = tmpState.AuthReducer.loggedIn;
+  let loggedIn = cognitoFunctions.loggedIn();
+
+  console.log("loggedIn", loggedIn);
 
   //If user is not logged in then redirect them to sign in page
   if (!loggedIn) {
