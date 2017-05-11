@@ -152,8 +152,8 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
-            {/*guideButton*/}
           </p>
+          {contactGuideBtn}
         </Thumbnail>
       </Col>);
     }
