@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './style.css';
+import Style from './style.css';
 
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Form from 'react-bootstrap/lib/Form';
@@ -32,6 +32,10 @@ class SearchBar extends React.Component{
       tours: [],
       interests: '',
       city: '',
+      advancedFilterShow: false,
+      language: 'english',
+      start_date_time: '',
+      end_date_time: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
@@ -42,6 +46,8 @@ class SearchBar extends React.Component{
     this.handleCityChange = this.handleCityChange.bind(this);
     this.handleInterestsChange = this.handleInterestsChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.expandAdvancedFilter = this.expandAdvancedFilter.bind(this);
+    this.compressAdvancedFilter = this.compressAdvancedFilter.bind(this);
     // this.nc = this.numColumns();
     // window.addEventListener("resize", this.handlePageSizeChange);
   }
@@ -161,8 +167,133 @@ class SearchBar extends React.Component{
     this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, e-1, this.state.page_size, this.state.city, this.state.interests);
     // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
+  expandAdvancedFilter() {
+    this.setState({ advancedFilterShow: true });
+  }
+
+  compressAdvancedFilter() {
+    this.setState({ advancedFilterShow: false });
+  }
   render(){
     // var colTours = this.getTourList(this.state.tours);
+    let showExpandedAdvancedFilter = null;
+    if(this.state.advancedFilterShow) {
+      showExpandedAdvancedFilter =
+      <div>
+        <Form inline>
+          <FormGroup controlId="interests">
+            <ControlLabel>Interests</ControlLabel>
+            {'  '}
+            <FormControl componentClass="select" placeholder="select" value={this.state.interests}
+              onChange={this.handleInterestsChange}>
+              <option value="">None</option>
+              <option value="sports">Sports</option>
+              <option value="food">Food</option>
+              <option value="city">City</option>
+              <option value="entertainment">Entertainment</option>
+            </FormControl>
+          </FormGroup>
+          &nbsp;&nbsp;&nbsp;
+          <FormGroup controlId="language">
+            <ControlLabel>Language</ControlLabel>
+            {'  '}
+            <FormControl componentClass="select" placeholder="select" value={this.state.language}>
+              <option value="">None</option>
+              <option value="english">English</option>
+              <option value="spanish">Spanish</option>
+              <option value="french">French</option>
+              <option value="german">German</option>
+              <option value="hindi">Hindi</option>
+              <option value="chiniese">Chniese</option>
+              <option value="korean">Korean</option>
+            </FormControl>
+          </FormGroup>
+          &nbsp;&nbsp;&nbsp;
+          <FormGroup controlId="city">
+            <ControlLabel>city</ControlLabel>
+            {'  '}
+            <FormControl value={this.state.city}
+              onChange={this.handleCityChange}/>
+          </FormGroup>
+        </Form>
+        <br/>
+        <Form inline>
+          <FormGroup controlId="start_date_time">
+            <ControlLabel>Start Time</ControlLabel>
+            {'  '}
+            <FormControl componentClass="select" placeholder="select" value={this.state.start_date_time}>
+              <option value=""></option>
+              <option value="12:00 AM">12:00 AM</option>
+              <option value="1:00 AM">1:00 AM</option>
+              <option value="2:00 AM">2:00 AM</option>
+              <option value="3:00 AM">3:00 AM</option>
+              <option value="4:00 AM">4:00 AM</option>
+              <option value="5:00 AM">5:00 AM</option>
+              <option value="6:00 AM">6:00 AM</option>
+              <option value="7:00 AM">7:00 AM</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+              <option value="6:00 PM">6:00 PM</option>
+              <option value="7:00 PM">7:00 PM</option>
+              <option value="8:00 PM">8:00 PM</option>
+              <option value="9:00 PM">9:00 PM</option>
+              <option value="10:00 PM">10:00 PM</option>
+              <option value="11:00 PM">11:00 PM</option>
+            </FormControl>
+          </FormGroup>
+          &nbsp;&nbsp;&nbsp;
+          <FormGroup controlId="end_date_time">
+            <ControlLabel>End Time</ControlLabel>
+            {'  '}
+            <FormControl componentClass="select" placeholder="select" value={this.state.end_date_time}>
+              <option value=""></option>
+              <option value="12:00 AM">12:00 AM</option>
+              <option value="1:00 AM">1:00 AM</option>
+              <option value="2:00 AM">2:00 AM</option>
+              <option value="3:00 AM">3:00 AM</option>
+              <option value="4:00 AM">4:00 AM</option>
+              <option value="5:00 AM">5:00 AM</option>
+              <option value="6:00 AM">6:00 AM</option>
+              <option value="7:00 AM">7:00 AM</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+              <option value="6:00 PM">6:00 PM</option>
+              <option value="7:00 PM">7:00 PM</option>
+              <option value="8:00 PM">8:00 PM</option>
+              <option value="9:00 PM">9:00 PM</option>
+              <option value="10:00 PM">10:00 PM</option>
+              <option value="11:00 PM">11:00 PM</option>
+            </FormControl>
+          </FormGroup>
+        </Form>
+        <br/>
+        <div onClick={this.compressAdvancedFilter}>
+          <p className={Style.advancedSearch}>Advanced Filter &#9651;</p>
+        </div>
+      </div>
+    }
+    else {
+      showExpandedAdvancedFilter =
+        <div onClick={this.expandAdvancedFilter}>
+          <p className={Style.advancedSearch}>Advanced Filter &#9661;</p>
+        </div>
+    }
     return(
       <div>
         <Pager>
@@ -226,27 +357,7 @@ class SearchBar extends React.Component{
             </Button>
           </Form>
           <br/>
-          <Form inline>
-            <FormGroup controlId="interests">
-              <ControlLabel>Interests</ControlLabel>
-              {'  '}
-              <FormControl componentClass="select" placeholder="select" value={this.state.interests}
-                onChange={this.handleInterestsChange}>
-                <option value="">None</option>
-                <option value="sports">Sports</option>
-                <option value="food">Food</option>
-                <option value="city">City</option>
-                <option value="entertainment">Entertainment</option>
-              </FormControl>
-            </FormGroup>
-            &nbsp;&nbsp;&nbsp;
-            <FormGroup controlId="city">
-              <ControlLabel>city</ControlLabel>
-              {'  '}
-              <FormControl value={this.state.city}
-                onChange={this.handleCityChange}/>
-            </FormGroup>
-          </Form>
+            {showExpandedAdvancedFilter}
           <br/>
           <Form inline>
           <FormGroup controlId="page_size">
@@ -282,7 +393,7 @@ class SearchBar extends React.Component{
         */}
         <Grid>
           <Row>
-            <ToursList tours={this.state.tours} tourDisplayProps={{display:"large"}} />
+            <ToursList tours={this.state.tours} tourDisplayProps={{display:"large", contactTouristBtn:true}} />
           </Row>
         </Grid>
 
