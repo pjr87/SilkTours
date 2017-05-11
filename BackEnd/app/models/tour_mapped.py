@@ -95,6 +95,10 @@ class Tour(Base):
             for event in self.events:
                 result["events"].append(event.serialize())
 
+        result["address"] = {}
+        if self.address is not None:
+            result["address"] = self.address.serialize()
+
         if not deep:
             return result
 
@@ -110,9 +114,6 @@ class Tour(Base):
         for rating in self.ratings:
             result["ratings"].append(rating.serialize())
 
-        result["address"] = {}
-        if self.address is not None:
-            result["address"] = self.address.serialize()
         return result
 
 

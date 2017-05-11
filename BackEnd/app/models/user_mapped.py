@@ -3,6 +3,7 @@ import datetime
 from app.models.address_mapped import Address
 from app.models.interests_mapped import Interests
 from app.models.tour_event_mapped import TourEvent
+from app.models.favorites_mapped import FavoritesClass
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -35,6 +36,7 @@ class User(Base):
     #tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
     tours_taking = relationship("TourEvent", foreign_keys="TourEvent.id_user")
     tours_teaching = relationship("Tour", secondary="TourGuides")
+    favorites = relationship("FavoritesClass", foreign_keys="FavoritesClass.user_id")
 
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
@@ -98,6 +100,10 @@ class User(Base):
 
         if not print_nested:
             return result
+
+        result["favorites"] = []
+        for fav in self.favorites:
+            result["favorites"].append(fav.tour_id)
 
         result["interests"] = []
         for interest in self.interests:
