@@ -208,7 +208,6 @@ class TourDetailContents extends React.Component{
     //   )
     // }
     // else{
-    }
     
     let reserveEditButton = null;
 
@@ -235,6 +234,7 @@ class TourDetailContents extends React.Component{
                   pathname: '/edittour',
                   query: { tourId: this.props.selectedTourId }
                 }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
+    }
     else{
     }
       return(

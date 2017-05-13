@@ -176,7 +176,7 @@ class Tours extends React.Component{
       
 
 
-      let guideButton = null;
+    let guideButton = null;
     if (this.props.tour.guides != null && this.props.tour.guides.length > 0) {
       if(this.props.loggedIn) {
         guideButton = <Link
@@ -197,6 +197,16 @@ class Tours extends React.Component{
       }
     } else {
       guideButton = null;
+    }
+
+    let editTourBtn = null;
+
+    if( this.props.tourDisplayProps.editBtn == true ){
+      editTourBtn = <Link
+                to={{
+                  pathname: '/edittour',
+                  query: { tourId: this.props.tour.id_tour }
+                }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
     }
 
 
@@ -235,7 +245,7 @@ class Tours extends React.Component{
                 <Button bsStyle="primary" className={style.buttonWidth}>More Info</Button>&nbsp;
               </Link>
 
-            {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn}</div>
+            {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn} {editTourBtn} </div>
             </div>
           </Thumbnail>
           </Col>);
@@ -277,7 +287,7 @@ class Tours extends React.Component{
             </Link>
             <Button bsStyle="success" onClick={this.handleAddFavorite}>Add to Favorite</Button>&nbsp;
           </p>
-          {guideBtn}
+          {guideButton}
         </Thumbnail>
       </Col>);
     }

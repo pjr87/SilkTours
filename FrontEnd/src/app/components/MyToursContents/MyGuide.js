@@ -42,7 +42,7 @@ class MyGuide extends React.Component{
       return tour.state=="C";
     });
 
-    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideCompleteT} cancelTourEvent={this.props.cancelTourEvent} />);
+    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideCompleteT} cancelTourEvent={this.props.cancelTourEvent} />);
 
     /*
       const guideCancelT = this.props.toursGuided.filter(function(tour){
@@ -53,7 +53,7 @@ class MyGuide extends React.Component{
     */
 
     const guideToursG = this.props.allToursGuided;
-    const guideToursGiving = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideToursG}  />);//
+    const guideToursGiving = (<ToursList tourDisplayProps={{display:"small", isGuide: true, editBtn: true}} tours={guideToursG}  />);//
     /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
