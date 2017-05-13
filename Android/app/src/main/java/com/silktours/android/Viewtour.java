@@ -225,8 +225,10 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
 
             @Override
             protected void onPostExecute(Bitmap response) {
-                if (response != null)
+                if (response != null) {
+                    imgProfile.setImageBitmap(null);
                     imgProfile.setImageBitmap(response);
+                }
             }
         }.execute();
         getMedia(tourId);
@@ -262,7 +264,9 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                 try {
                     for (int i = 0; i < response.size(); i++) {
                         ImageView imageView = new ImageView(MainActivity.getInstance());
+                        //imgProfile.setImageBitmap(null);
                         imageView.setImageBitmap(getResizedBitmap(response.get(i), 200, 200));
+                        //imageView.setImageBitmap(null);
                         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                         imageView.setLayoutParams(layoutParams);
