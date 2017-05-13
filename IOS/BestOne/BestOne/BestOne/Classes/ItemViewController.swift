@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import MapKit
+import GoogleMaps
+import GooglePlaces
 
 private let AddItemIntoCartStr = "Add Item"
 private let DeleteItemFromCartStr = "Delete from cart"
@@ -31,6 +34,9 @@ class ItemViewController: BaseViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl?
     @IBOutlet weak var cartBtnWidthConstraint: NSLayoutConstraint?
     var shopItem: ShopItem?
+    
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var googleMapsHeightConstraint: NSLayoutConstraint!
     fileprivate var itemsInCart: [ShopItem] = []
     
     override func viewDidLoad() {
@@ -41,9 +47,24 @@ class ItemViewController: BaseViewController {
         
         //set title for controller
         title = shopItem?.title
+
         
         //fill the field with information
         initShopInformation()
+        
+        navigationItem.title = "Hello Map"
+        
+        let camera = GMSCameraPosition.camera(withLatitude: -33.868,
+                                              longitude: 151.2086,
+                                              zoom: 14)
+        let mapView = GMSMapView.map(withFrame: .zero, camera: camera)
+        
+        let marker = GMSMarker()
+        marker.position = camera.target
+        marker.snippet = "Hello World"
+        marker.map = mapView
+        
+        self.view.addSubview(mapView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,6 +88,11 @@ class ItemViewController: BaseViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+//    override func loadView() {
+//        
+//    }
+    
     
     // MARK: - Private Methods
     fileprivate func attributedStrForAdding(_ isAdding: Bool) -> NSAttributedString {
