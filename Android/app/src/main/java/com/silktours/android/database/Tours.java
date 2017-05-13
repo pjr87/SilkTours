@@ -56,7 +56,7 @@ public class Tours extends Base implements Serializable  {
         additionalStay = JSON.getString("additional_accomadation");
         additionalFood = JSON.getString("additional_food");
         additionalTravel = JSON.getString("additional_transport");
-        groupSizeMax = JSON.getInt("max_group_size");
+        //groupSizeMax = JSON.getInt("max_group_size");
         if (!JSON.has("stops")) {
             JSON.put("stops", new JSONArray());
         }

@@ -93,7 +93,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
         txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
-        txtGroupSizeMax = (TextView) rootView.findViewById(R.id.txtGroupSizeMax);
+        //txtGroupSizeMax = (TextView) rootView.findViewById(R.id.txtGroupSizeMax);
         txtadditionalFood = (TextView) rootView.findViewById(R.id.txtAdditionalFood);
         txtadditionalStay = (TextView) rootView.findViewById(R.id.txtAdditionalStay);
         txtadditionalTravel = (TextView) rootView.findViewById(R.id.txtAdditionalTravel);
@@ -213,7 +213,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtEndDate.setText(tour.getEndDate());
         txtDescription.setText(tour.getDescription());
         txtLanguage.setText((tour.getLanguage()));
-        txtGroupSizeMax.setText(tour.getGroupSizeMax().toString());
+        //txtGroupSizeMax.setText(tour.getGroupSizeMax().toString());
         txtadditionalFood.setText(tour.getAdditionalFood());
         txtadditionalStay.setText(tour.getAdditionalStay());
         txtadditionalTravel.setText(tour.getAdditionalTravel());
@@ -306,7 +306,13 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         matrix.postScale(scaleWidth, scaleHeight);
 
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
+        //bm.recycle();
+
+        if (bm != null && !bm.isRecycled()) {
+            bm.recycle();
+            bm = null;
+        }
+
         return resizedBitmap;
     }
 }
