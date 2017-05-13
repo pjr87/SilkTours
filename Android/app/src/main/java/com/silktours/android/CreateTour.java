@@ -236,7 +236,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                             placeSelected = place;
                             LatLng loca = placeSelected.getLatLng();
                             mGoogleMap.addMarker(new MarkerOptions().position(loca));
-                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
 
                             JSONObject stop = new JSONObject();
 
