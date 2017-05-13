@@ -18,6 +18,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -109,7 +110,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private Place placeSelected;
     private String encodedProfileImage;
     Bitmap bm;
-    private String postResult;
+    private String postResult = "";
     private JSONObject jObject;
     private String tID;
 
@@ -286,16 +287,16 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
                 tour.set("stops", stopJSON);
 
-               // Log.d("json", "onClick: " + tour.get());
                 commitTour();
 
-                /*
-                for (int i = 0; i < postResult.length(); i++){
-                    char c = postResult.charAt(i);
-                    //Process char
-                }
-                */
-
+                int time=30000000; // in milliseconds
+                Handler h=new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //here you can do the job
+                    }
+                },time);
 
                 try {
                     jObject = new JSONObject(postResult);
