@@ -9,6 +9,8 @@ import StarRatingComponent from 'react-star-rating-component';
 
 import {connect} from 'react-redux';
 
+import * as service from '../../utils/databaseFunctions';
+
 class Tours extends React.Component{
   constructor (props) {
     super(props);
@@ -17,6 +19,7 @@ class Tours extends React.Component{
     };
     this.mouseOver = this.mouseOver.bind(this);
     this.mouseOut = this.mouseOut.bind(this);
+    this.handleAddFavorite = this.handleAddFavorite.bind(this);
   }
 
   mouseOver = () => {
@@ -25,8 +28,27 @@ class Tours extends React.Component{
   mouseOut() {
     this.setState({showTourInfo: false});
   }
-
-
+  handleAddFavorite() {
+    var userTourJson = {
+      user_id: this.props.id_user,
+      tour_id: this.props.tour.id_tour,
+    }
+    console.log("Favorite");
+    console.log(userTourJson);
+    try {
+      service.favorite_tour(userTourJson, this.props.auth).then(function(response){
+        if(response.data) {
+          console.log(response.data);
+        }
+        else{
+          // If there was a problem, show an error
+          console.log('response.error: ' + response.error);
+        }
+      });
+    } catch(e) {
+      console.log("error occured submitting data" + e);
+    }
+  }
   render(){
     //const guidesLength = this.state.guides.length;
     let tourDisplay = null;
@@ -224,20 +246,27 @@ class Tours extends React.Component{
     else{
 
       tourDisplay = (
-      <div xs={12} md={4} lg={3}>
+      <Col xs={12} md={4} lg={3}>
         <Thumbnail>
           <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourInfo ? (<p className={style.image_text}>{this.props.tour.description}</p>): null}
           </div>
           <p>{this.props.tour.name}</p>
           <p>${this.props.tour.price}</p>
           <StarRatingComponent
             name="rate1"
+            editing={false}
+            starColor="#ffb400"
+            emptyStarColor="#ffb400"
             starCount={5}
             value={this.props.tour.average_rating}
+            renderStarIcon={(index, value) => {
+              return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+            }}
             renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
           />
-        {this.props.tour.rating_count} reviews
+          {this.props.tour.rating_count} reviews
           <p>
             <Link
               to={{
@@ -246,10 +275,11 @@ class Tours extends React.Component{
               }}>
               <Button bsStyle="primary">More Info</Button>&nbsp;
             </Link>
-            {guideButton}
+            <Button bsStyle="success" onClick={this.handleAddFavorite}>Add to Favorite</Button>&nbsp;
           </p>
+          {guideBtn}
         </Thumbnail>
-      </div>);
+      </Col>);
     }
 
 
@@ -284,7 +314,9 @@ class Tours extends React.Component{
 function select (state) {
   return {
     loggedIn: state.AuthReducer.loggedIn,
-    selectedTour: state.TourDetailReducer.selectedTour
+    auth: state.AuthReducer.auth,
+    selectedTour: state.TourDetailReducer.selectedTour,
+    id_user: state.AuthReducer.id_user,
   };
 }
 

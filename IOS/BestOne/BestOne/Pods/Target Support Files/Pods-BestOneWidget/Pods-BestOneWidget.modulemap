@@ -1,0 +1,6 @@
+framework module Pods_BestOneWidget {
+  umbrella header "Pods-BestOneWidget-umbrella.h"
+
+  export *
+  module * { export * }
+}

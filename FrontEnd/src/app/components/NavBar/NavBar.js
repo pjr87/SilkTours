@@ -41,7 +41,7 @@ class NavBar extends Component {
 
     return (
       <div className={Style.wrapper}>
-        <Navbar fixedTop collapseOnSelect style={{opacity:1}}>
+        <Navbar fixedTop collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
               <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
@@ -66,7 +66,6 @@ class NavBar extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <br/>
       </div>
     )
   }

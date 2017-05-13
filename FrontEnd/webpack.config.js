@@ -50,14 +50,23 @@ module.exports = {
         }
       },
       {
-          test: /\.css$/,
-          loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        },
-        {
-          test: /\.(jpe?g|png|gif|svg)$/i,
-          loaders: ['file?hash=sha512&digest=hex&name=[hash].[ext]','image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-          ]
-        },
+        test: /\.css$/,
+        loader: 'style-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'css-loader',
+        query: {
+          modules: true,
+          importLoaders: true,
+          localIdentName: '[name]__[local]___[hash:base64:5]'
+        }
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders: ['file?hash=sha512&digest=hex&name=[hash].[ext]','image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+        ]
+      },
       {
         test: /\.html$/,
         loader: 'html'

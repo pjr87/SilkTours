@@ -14,6 +14,7 @@ from app.models.tour_mapped import Tour
 from app.models.stop_mapped import Stop
 from app.models.tour_hours import TourHours
 from app.models.tour_hours_special import TourHoursSpecial
+from app.models.favorites_mapped import FavoritesClass
 
 from flask_cors import CORS
 from app.models.tour_event_mapped import TourEvent
@@ -23,7 +24,7 @@ import urllib
 from io import StringIO
 #from PIL import Image
 from io import BytesIO
-from db_session import get_session, commitSession, safe_call, limiting_query
+from db_session import get_session, close_session, commitSession, safe_call, limiting_query
 from app.models.media_mapped import Media
 from srptools import SRPContext
 from warrant.aws_srp import AWSSRP
@@ -43,6 +44,8 @@ userPoolId = "us-east-1_917Igx5Ld"
 clientId = "2bs9l9t5ol4m09fgfmadk3jmh7"
 awsAccountId = "803858137669"
 region = "us-east-1"
+access_key = "AKIAJHASGAXJ6VSJONKA"
+secret_key = "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"
 
 client = boto3.client('cognito-identity', region_name='us-east-1')
 id_provider = boto3.client('cognito-idp', region_name='us-east-1')
@@ -110,29 +113,15 @@ def notAuthorizedResponse():
     href='http://localhost:5000/login'>here</a> to login.</h1>""", 403
 
 
-
-# engine = create_engine('mysql+mysqldb://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours', pool_recycle=3600)
-#engine = create_engine(
-#    'mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
-
-#engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
-
-#Session = scoped_session(sessionmaker(bind=engine))
-#session = None
-
-'''
 @app.before_request
 def before_request():
-    createSession()
-
+    print("Before")
 
 @app.after_request
-def after_request(response):
-    for funct in getattr(g, 'call_after_request', ()):
-        response = funct(response)
-    get_session().close()
-    return response
-'''
+def after_request(data):
+    print("After")
+    close_session()
+    return data
 
 @app.errorhandler(500)
 def internal_server_error(e):
@@ -153,6 +142,55 @@ def invalidate():
     get_session().expire_all()
     return 'done'
 
+@app.route("/toggle_favorite", methods=['POST'])
+def favorite_tour():
+    '''
+    Togggles whether a tour is favorited for a user. Returns "removed" or "created". Returns 422 if incorrect JSON arguments are provided.
+    <u>JSON Args:</u> user_id, tour_id
+    '''
+    if not checkLogin():
+        return notAuthorizedResponse()
+    data = request.get_json()
+    user_id = data.get("user_id")
+    tour_id = data.get("tour_id")
+    if user_id is None or tour_id is None:
+        return "must supply tour_id and user_id", 422
+
+    query = get_session().query(FavoritesClass).filter(
+            and_(
+                FavoritesClass.user_id == user_id,
+                FavoritesClass.tour_id == tour_id
+            )
+        )
+    fav = safe_call(query, "first", None)
+    deleted = False
+    print(fav)
+    if fav is None:
+        fav = FavoritesClass()
+        fav.user_id = user_id
+        fav.tour_id = tour_id
+        get_session().add(fav)
+    else:
+        get_session().delete(fav)
+        deleted = True
+    print(deleted)
+    commitSession()
+    return ("removed" if deleted else "created")
+
+@app.route("/favorite_details/<user_id>", methods=['POST'])
+def favorite_details(user_id):
+    '''
+    Returns an array of tour objects that the user has favorited.
+    <u>URL Args:</u> user_id
+    '''
+    if not checkLogin():
+        return notAuthorizedResponse()
+    query = get_session().query(FavoritesClass).filter(FavoritesClass.user_id == user_id)
+    favs = safe_call(query, "all", None)
+    result = []
+    for fav in favs:
+        result.append(fav.tour.serialize(deep=False))
+    return jsonify(result)
 
 @app.route("/search", methods=['GET'])
 def search():
@@ -244,7 +282,6 @@ def get_user_by_email(email):
 
 @app.route('/login', methods=['POST', 'PUT'])
 def login():
-    customLoginKey = "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld"
     data = request.get_json()
     loginType = data.get("type", None)
 
@@ -254,23 +291,8 @@ def login():
     if loginType == "custom":
         username = data.get("username")
         password = data.get("password")
-        aws = AWSSRP(username=username, password=password, pool_id=userPoolId,
-             client_id=clientId, client=id_provider)
-        tokens = aws.authenticate_user(id_provider)["AuthenticationResult"]
-        idObj = client.get_id(
-            AccountId=awsAccountId,
-            IdentityPoolId=identityPoolId,
-            Logins={
-                customLoginKey: tokens["IdToken"]
-            }
-        )
-        result = {
-            "IdentityId": idObj["IdentityId"],
-            "Logins": {
-                customLoginKey: tokens["IdToken"]
-            }
-        }
-        return jsonify(result)
+        return login_email(username, password)
+
     elif loginType == "facebook":
         return "not implemented", 501
     elif loginType == "google":
@@ -278,11 +300,57 @@ def login():
     else:
         return "not implemented", 501
 
+def login_email(username, password):
+    customLoginKey = "cognito-idp.us-east-1.amazonaws.com/us-east-1_917Igx5Ld"
+    aws = AWSSRP(username=username, password=password, pool_id=userPoolId,
+         client_id=clientId, client=id_provider)
+    tokens = aws.authenticate_user(id_provider)["AuthenticationResult"]
+    idObj = client.get_id(
+        AccountId=awsAccountId,
+        IdentityPoolId=identityPoolId,
+        Logins={
+            customLoginKey: tokens["IdToken"]
+        }
+    )
+    result = {
+        "IdentityId": idObj["IdentityId"],
+        "Logins": {
+            customLoginKey: tokens["IdToken"]
+        }
+    }
+    return jsonify(result)
 
-@app.route('/create_account', methods=['POST', 'PUT'])
+
+@app.route('/register', methods=['POST', 'PUT'])
 def create_account():
     data = request.get_json()
+    email = data.get("username", None)
+    password = data.get("password", None)
+
+    if email is None or password is None:
+        return "Must specify username and password", 422
+
+    u = Cognito(userPoolId, clientId, user_pool_region=region, access_key=access_key, secret_key=secret_key)
+    data = u.register(email, password, email=email)
+    print(data)
     return jsonify({})
+
+@app.route('/confirm_sign_up', methods=['POST', 'PUT'])
+def confirm_sign_up():
+    data = request.get_json()
+    email = data.get("username", None)
+    password = data.get("password", None)
+    code = data.get("code", None)
+
+    if email is None or password is None or code is None:
+        return "Must specify username, password, and confirmation code", 422
+
+    u = Cognito(userPoolId, clientId, user_pool_region=region, access_key=access_key, secret_key=secret_key)
+    try:
+        u.confirm_sign_up(code, username=email)
+    except Exception:
+        return jsonify({"error": "invalid code"}), 401
+    return login_email(email, password)
 
 # Creates a new user
 @app.route('/check_auth', methods=['POST'])
@@ -650,6 +718,9 @@ def get_hours():
         return 422, "No tour specified"
     tour = safe_call(get_session().query(Tour), "get", tour_id)
     length = tour.length
+    if length is None or length is 0:
+        length = 1
+
     query = get_session().query(TourHours).filter(TourHours.tour_id == tour_id)
     baseHours = safe_call(query, "all", None)
     query = get_session().query(TourHoursSpecial).filter(
@@ -806,17 +877,17 @@ def site_map():
             """.format(rule.endpoint, url, desc, methods)
         )
         html += line
-    user = safe_call(get_session().query(User), "get", 1).serialize(True)
+    user = safe_call(get_session().query(User), "first", None).serialize(True)
     clean_object(user)
 
-    tour = safe_call(get_session().query(Tour), "get", 1).serialize(True)
+    tour = safe_call(get_session().query(Tour), "first", None).serialize(True)
     clean_object(tour)
 
-    tour_event = safe_call(get_session().query(TourEvent), "get", 1).serialize(include_tour=False)
+    tour_event = safe_call(get_session().query(TourEvent), "first", None).serialize(include_tour=False)
     clean_object(tour_event)
 
-    hours = safe_call(get_session().query(TourHours), "get", 0).serialize()
-    hours_special = safe_call(get_session().query(TourHoursSpecial), "get", 0).serialize()
+    hours = safe_call(get_session().query(TourHours), "first", None).serialize()
+    hours_special = safe_call(get_session().query(TourHoursSpecial), "first", None).serialize()
     hours_input = {"base_hours": [hours], "hours_special": [hours_special]}
     clean_object(hours_special)
     clean_object(hours)

@@ -11,12 +11,19 @@ import UIKit
 class ShopManager: NSObject {
     
     static let sharedManager = ShopManager()
+    //let backend = BackendAPI()
     
     fileprivate override init() {}
 
     // MARK: - Public Methods
     
     func loadData() -> [ShopItem] {
+        
+        BackendAPI.getAllTours() { (data) in
+            //let subject = data["subject"] as? [AnyObject]
+            print(data)
+        }
+        
         let path = Bundle.main.path(forResource: "ShopItems", ofType: "plist")
         if let dataArray = NSArray(contentsOfFile: path!) as? [[String:Any]] {
             return constructShopItemsFromArray(dataArray)

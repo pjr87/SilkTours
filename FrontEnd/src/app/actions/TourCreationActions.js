@@ -57,31 +57,26 @@ export function login(username, password) {
     return hours+':'+minutes+':'+seconds;
 }
 
-export function buildTourEvent(startTime, endTime, startDay, endDay, tourId, guideId){
-  var start = startDay + " " + toHHMMSS(startTime);
-  var end = endDay + " " + toHHMMSS(endTime);
-
-  var tourEvent = {
-    end_date_time: start,
-    id_tour: tourId,
-    id_guide: guideId,
-    start_date_time: end,
-    state: "A"
-  };
-
-  return tourEvent;
+export function convertTimes(hours_special){
+  var arrayLength = hours_special.length;
+  for (var i = 0; i < arrayLength; i++) {
+      hours_special[i].open_time = toHHMMSS(hours_special[i].open_time);
+      hours_special[i].close_time = toHHMMSS(hours_special[i].close_time);
+  }
+  return hours_special;
 }
 
 /**
  * Create a Tour in the database
  * @param  {object} tour The tour to create
  */
-export function createTour(tour, auth, photos, startTime, endTime) {
+export function createTour(tour, auth, photos, hours_special, base_hours) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ tour, auth, photos, startTime, endTime })) {
+    if (anyElementsEmpty({ tour, auth, photos, hours_special, base_hours }) ||
+        hours_special == [] || base_hours == [] || tour.name == "") {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
@@ -90,24 +85,20 @@ export function createTour(tour, auth, photos, startTime, endTime) {
     service.newTour(tour, auth).then(function(response){
       if(response.data){
         var tour_id = response.data.id_tour;
-        console.log("response.data", tour_id);
-        console.log("Addidng photo");
         service.newTourProfilePhoto(photos, tour_id, auth).then(function(response){
           if(response.data){
-            var tourEvent = buildTourEvent(
-              startTime,
-              endTime,
-              tour.firstStart_date,
-              tour.lastEnd_date,
-              tour_id,
-              tour.guides[0].id_user);
-            console.log('tourEvent', tourEvent);
-            service.putTourEvent(tourEvent, auth).then(function(response){
+            var times = {
+              special_hours: convertTimes(hours_special)
+            }
+            service.addTourHours(tour_id, times, auth).then(function(response){
               if(response.data){
                 dispatch(sendingRequest(false));
                 forwardTo('/explore');
                 dispatch(clearTour())
                 dispatch(updatePhotoState([]))
+                dispatch(updateSpecialTimeHoursState([]))
+                dispatch(updateSpecialTimeState([]))
+                dispatch(updateSpecialTimeDateState([]))
                 dispatch(setTabKey("info"))
               }
               else{
@@ -167,6 +158,22 @@ export function addGuide(user) {
  */
 export function updateTourState(newTourState) {
   return { type: tourCreationConstants.UPDATE_TOUR, newTourState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newSpecialTimeState //The user json
+ */
+export function updateSpecialTimeState(newSpecialTimeState) {
+  return { type: tourCreationConstants.UPDATE_SPECIAL_TIME, newSpecialTimeState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newSpecialTimeState //The user json
+ */
+export function updateSpecialTimeDateState(newSpecialTimeDateState) {
+  return { type: tourCreationConstants.UPDATE_SPECIAL_TIME_DATE, newSpecialTimeDateState };
 }
 
 /**
@@ -245,8 +252,24 @@ export function updateTimeState(newTimeState) {
  * Updates a tour's information
  * @param  {object} newTourState //The user json
  */
+export function updateSpecialTimeHoursState(newTimeState) {
+  return { type: tourCreationConstants.UPDATE_SPECIAL_TIME_HOURS, newTimeState };
+}
+
+/**
+ * Updates a tour's information
+ * @param  {object} newTourState //The user json
+ */
 export function updateDescriptionState(newDescriptionState) {
   return { type: tourCreationConstants.UPDATE_TOUR_DESCRIPTION, newDescriptionState };
+}
+
+/**
+ * Updates a tour's length
+ * @param  {object} newLengthState //The user json
+ */
+export function updateLengthState(newLengthState) {
+  return { type: tourCreationConstants.UPDATE_TOUR_LENGTH, newLengthState };
 }
 
 /**

@@ -57,3 +57,15 @@
 .buttonWidth{
   min-width: 86px;
 }
+.image_container {
+  position: relative;
+  width: 100%;
+}
+
+.image_text {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  text-align: center;
+  width: 100%;
+}

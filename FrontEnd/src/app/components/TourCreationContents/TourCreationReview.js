@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.css';
 import {StaticField} from '../Forms/Forms.js';
-import { Pager } from 'react-bootstrap';
+import { Pager, HelpBlock } from 'react-bootstrap';
 import { updatePhotoState, setTabKey, createTour } from '../../actions/TourCreationActions';
 
 class TourCreationReview extends React.Component{
@@ -13,11 +13,13 @@ class TourCreationReview extends React.Component{
   }
 
   next(){
-    console.log("this.props.tour", this.props.tour);
-    console.log("this.props.startTime", this.props.startTime);
-    console.log("this.props.endTime", this.props.endTime);
-    console.log("this.props.photos", this.props.photos);
-    this.props.dispatch(createTour(this.props.tour, this.props.auth, this.props.photos, this.props.startTime, this.props.endTime))
+    this.props.dispatch(createTour(
+      this.props.tour,
+      this.props.auth,
+      this.props.photos,
+      this.props.hours_special,
+      this.props.hours_special_dates,
+      this.props.base_hours))
   }
 
   previous(){
@@ -25,6 +27,17 @@ class TourCreationReview extends React.Component{
   }
 
   render(){
+    let isLoading = this.props.currentlySending;
+    console.log("this.props.currentlySending", this.props.currentlySending);
+    function ErrorFunc(props){
+
+      if( props.errorText ){
+        return (<HelpBlock>{props.errorText}</HelpBlock>);
+      }
+
+      return <div></div>
+    }
+
     return (
       <div>
         <br/>
@@ -66,8 +79,9 @@ class TourCreationReview extends React.Component{
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Finish! &rarr;</Pager.Item>
+          <Pager.Item next disabled={isLoading} onSelect={this.next}>{isLoading ? 'Creating Tour...' : 'Submit Tour!'} &rarr;</Pager.Item>
         </Pager>
+        <ErrorFunc errorText = {this.props.errorMessage} />
       </div>
     )
   }
