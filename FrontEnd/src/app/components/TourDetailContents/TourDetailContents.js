@@ -54,8 +54,8 @@ class TourDetailContents extends React.Component{
     let guideButton = null;
     let isGuide = false;
     
-    if (guidesLength != '0') {
-      isGuide = (this.props.selectedTour.guides[0].id_tour_guide == this.props.user.id_users) ? true : false;
+    if (guidesLength > 0) {
+      isGuide = (this.props.selectedTour.guides[0].id_user == this.props.user.id_users) ? true : false;
       if(this.props.loggedIn) {
 
         if(isGuide){
@@ -87,6 +87,9 @@ class TourDetailContents extends React.Component{
 
     let reserveEditButton = null;
 
+    console.log("isGuide: ", isGuide);
+    console.log("stuff", this.props.selectedTour.guides[0], this.props.user);
+
     if( isGuide ){
       reserveEditButton = <Link
                 to={{
@@ -95,7 +98,7 @@ class TourDetailContents extends React.Component{
                 }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
     }
     else{
-      reserveEditButton = <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
+      reserveEditButton = <Button bsStyle="primary" onClick={this.openModal}>Reserve&nbsp;</Button>
     }
 
     const getToken = () => {

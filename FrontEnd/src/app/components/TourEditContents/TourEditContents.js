@@ -201,7 +201,7 @@ class TourEditContents extends React.Component{
                         <ControlLabel>Min Group Size</ControlLabel>
                       </Col>
                       <Col xs={8} md={2}>
-                        <FormControl id="minNumTourists" componentClass="select" onChange={this.handleChange.bind(this, 'min_group_size')} defaultValue={this.props.selectedTour.min_group_size} selected={this.props.selectedTour.length}>
+                        <FormControl id="minNumTourists" componentClass="select" onChange={this.handleChange.bind(this, 'min_group_size')} value={this.props.selectedTour.min_group_size}>
                           {touristOptions}
                         </FormControl>
                       </Col>
@@ -210,7 +210,7 @@ class TourEditContents extends React.Component{
                         <ControlLabel>Max Group Size</ControlLabel>
                       </Col>
                       <Col xs={8} md={2}>
-                        <FormControl id="maxNumTourists" componentClass="select" onChange={this.handleChange.bind(this, 'max_group_size')} defaultValue={this.props.selectedTour.max_group_size} selected={this.props.selectedTour.length}>
+                        <FormControl id="maxNumTourists" componentClass="select" onChange={this.handleChange.bind(this, 'max_group_size')} value={this.props.selectedTour.max_group_size}>
                           {touristOptions}
                         </FormControl>
                       </Col>
