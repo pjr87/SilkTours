@@ -21,6 +21,7 @@ public class Tours extends Base implements Serializable  {
     private String name;
     private String profile_image;
     private String description;
+    private String language;
     private String price;
     private Double[][] stops;
 
@@ -46,6 +47,7 @@ public class Tours extends Base implements Serializable  {
         firstStart_date = JSON.getString("firstStart_date");
         lastEnd_date = JSON.getString("lastEnd_date");
         description = JSON.getString("description");
+        language = JSON.getString("language");
         price = JSON.getString("price");
         if (!JSON.has("stops")) {
             JSON.put("stops", new JSONArray());
@@ -83,6 +85,8 @@ public class Tours extends Base implements Serializable  {
     public String getDescription() {
         return  description;
     }
+
+    public String getLanguage() { return language;}
 
     public String getPrice() {
         return price;

@@ -51,6 +51,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private TextView txtStartDate;
     private TextView txtEndDate;
     private TextView txtDescription;
+    private TextView txtLanguage;
     private ImageView imgProfile;
     private GoogleMap googleMap;
     private MapView mapView;
@@ -82,13 +83,14 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         }
         tourId = tour.getId_tour().toString();
         txtName = (TextView) rootView.findViewById(R.id.txtName);
-        txtCity = (TextView) rootView.findViewById(R.id.txtCity);
+        //txtCity = (TextView) rootView.findViewById(R.id.txtCity);
         txtPrice = (TextView) rootView.findViewById(R.id.txtPrice);
+        txtLanguage = (TextView) rootView.findViewById(R.id.txtLanguage);
         txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
         txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
         imgProfile = (ImageView) rootView.findViewById(R.id.imgProfile);
-        lnlMedia = (LinearLayout) rootView.findViewById(R.id.lnlMedia);
+        //lnlMedia = (LinearLayout) rootView.findViewById(R.id.lnlMedia);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -197,11 +199,12 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
 
     private void getInfo() {
         txtName.setText(tour.getName());
-        txtCity.setText(tour.getCity());
+        //txtCity.setText(tour.getCity());
         txtPrice.setText(tour.getPrice());
         txtStartDate.setText(tour.getStartDate());
         txtEndDate.setText(tour.getEndDate());
         txtDescription.setText(tour.getDescription());
+        txtLanguage.setText((tour.getLanguage()));
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
