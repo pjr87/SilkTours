@@ -55,6 +55,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private TextView txtadditionalStay;
     private TextView txtadditionalFood;
     private TextView txtadditionalTravel;
+    private TextView txtGroupSizeMax;
     private ImageView imgProfile;
     private GoogleMap googleMap;
     private MapView mapView;
@@ -92,6 +93,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
         txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
+        txtGroupSizeMax = (TextView) rootView.findViewById(R.id.txtGroupSizeMax);
         txtadditionalFood = (TextView) rootView.findViewById(R.id.txtAdditionalFood);
         txtadditionalStay = (TextView) rootView.findViewById(R.id.txtAdditionalStay);
         txtadditionalTravel = (TextView) rootView.findViewById(R.id.txtAdditionalTravel);
@@ -211,6 +213,7 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtEndDate.setText(tour.getEndDate());
         txtDescription.setText(tour.getDescription());
         txtLanguage.setText((tour.getLanguage()));
+        txtGroupSizeMax.setText(tour.getGroupSizeMax().toString());
         txtadditionalFood.setText(tour.getAdditionalFood());
         txtadditionalStay.setText(tour.getAdditionalStay());
         txtadditionalTravel.setText(tour.getAdditionalTravel());
