@@ -76,6 +76,7 @@ class Overview extends React.Component{
               </Panel>
             </Col>
           </Row>
+        {/*
           <Row>
             <Col md={6} mdPull={0}>
               <Panel header="New Messages">
@@ -83,6 +84,7 @@ class Overview extends React.Component{
               </Panel>
             </Col>
           </Row>
+          */}
         </Grid>
       </div>
     );
