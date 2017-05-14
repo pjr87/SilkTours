@@ -149,6 +149,8 @@ export function registerNewUser(json) {
 
 export function updateExistingUser(id, json, auth) {
   let url = SERVER_URL + '/users/' + id;
+  console.log("user");
+  console.log(json);
   return axios.put(url, json,
     {
       headers:{
@@ -237,6 +239,20 @@ export function putClearPendingReviewsByEventId(eventId, auth){
         'Silk-Identity-Id': auth.IdentityId
       },
     });
+}
+
+
+export function editTour(tourId, json, auth){
+  let url = SERVER_URL + '/tours/' + tourId;
+
+  return axios.put(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+
 }
 
 export function getAvailableHours(tourId, startEndDate) {

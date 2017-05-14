@@ -117,15 +117,25 @@ class TourDetailContents extends React.Component{
 
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
-    if (guidesLength != '0') {
+    let isGuide = false;
+    
+    if (guidesLength > 0) {
+      isGuide = (this.props.selectedTour.guides[0].id_user == this.props.user.id_users) ? true : false;
       if(this.props.loggedIn) {
-        guideButton = <Link
+
+        if(isGuide){
+          guideButton = null;
+        }
+        else
+        {
+          guideButton = <Link
                       to={{
                         pathname: '/messages',
                         query: { guideUserId: this.props.selectedTour.guides[0].id_user }
                         }}>
                         <Button bsStyle="default">Message</Button>
                       </Link>;
+        }
       }
       else {
         guideButton = <Link
@@ -198,6 +208,35 @@ class TourDetailContents extends React.Component{
     //   )
     // }
     // else{
+    
+    let reserveEditButton = null;
+
+    console.log("isGuide: ", isGuide);
+    console.log("stuff", this.props.selectedTour.guides[0], this.props.user);
+
+    if( isGuide ){
+      reserveEditButton = <Link
+                to={{
+                  pathname: '/edittour',
+                  query: { tourId: this.props.selectedTourId }
+                }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
+    }
+    else{
+      reserveEditButton = <Button bsStyle="primary" onClick={this.openModal}>Reserve&nbsp;</Button>
+    }
+    console.log("isGuide: ", isGuide);
+
+    console.log("stuff", this.props.selectedTour.guides[0], this.props.user);
+
+    if( isGuide ){
+      reserveEditButton = <Link
+                to={{
+                  pathname: '/edittour',
+                  query: { tourId: this.props.selectedTourId }
+                }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
+    }
+    else{
+    }
       return(
         <div>
           <div className={style.boxed}>
@@ -337,7 +376,7 @@ class TourDetailContents extends React.Component{
             <Grid>
               <Row>
                 <Col sm={12} md={12} lg={12}>
-                  <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
+                  {reserveEditButton}
                   {guideButton}
                 </Col>
               </Row>
@@ -419,6 +458,7 @@ function select (state) {
   return {
     auth: state.AuthReducer.auth,
     id_user: state.AuthReducer.id_user,
+    user: state.AuthReducer.user,
     loggedIn: state.AuthReducer.loggedIn,
     tourDates: state.TourDetailReducer.tourDates,
     selectedTourId: state.TourDetailReducer.selectedTourId,
