@@ -24,13 +24,17 @@ class MyGuide extends React.Component{
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });
-    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideBookedT} cancelTourEvent={this.props.cancelTourEvent} />);
+    const guideBookedTours = guideBookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>) : "No Tours";
 
+    console.log("guidebookedT", guideBookedT);
 
     const guideUnbookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="A";
     });
-    const guideUnbookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideUnbookedT} cancelTourEvent={this.props.cancelTourEvent} />);
+    const guideUnbookedTours =guideUnbookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={guideUnbookedT}/>) : "No Tours";
+
+    console.log("guideunbookedT", guideUnbookedT);
+
 
     /*const guideUnbookedTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
@@ -42,7 +46,7 @@ class MyGuide extends React.Component{
       return tour.state=="C";
     });
 
-    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideCompleteT} cancelTourEvent={this.props.cancelTourEvent} />);
+    const guideCompleteTours = guideCompleteT.length > 0 ?  (<ToursList tourDisplayProps={{display:"small"}} tours={guideCompleteT}/>) : "No Tours";
 
     /*
       const guideCancelT = this.props.toursGuided.filter(function(tour){

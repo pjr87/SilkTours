@@ -105,7 +105,7 @@ class MyToursContents extends React.Component{
           <Navbar.Collapse>
             <Nav>
               <NavItem eventKey={1} onClick={this.buttonHandler.bind(this,"overview")}>Overview</NavItem>
-              <NavItem eventKey={2} onClick={this.buttonHandler.bind(this,"myguide")}>MyGuide</NavItem>
+              {this.props.user.is_guide && <NavItem eventKey={2} onClick={this.buttonHandler.bind(this,"myguide")}>MyGuide</NavItem>}
               <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"mytour")}>MyTours</NavItem>
               <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"wishlist")}>WishList</NavItem>
             </Nav>

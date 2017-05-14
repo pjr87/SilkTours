@@ -161,7 +161,7 @@ class TourEditContents extends React.Component{
                         <ControlLabel>Tour Length</ControlLabel>
                       </Col>
                       <Col xs={8} md={6}>
-                        <FormControl componentClass="select" onChange={this.handleChange.bind(this, 'length')} defaultValue={this.props.selectedTour.length} selected={this.props.selectedTour.length}>
+                        <FormControl componentClass="select" onChange={this.handleChange.bind(this, 'length')} value={this.props.selectedTour.length} >
                           {dropdownOptions}
                         </FormControl>
                       </Col>

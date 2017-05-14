@@ -38,7 +38,15 @@ class Overview extends React.Component{
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });
-    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true, cancelBtn:true}} tours={guideBookedT} cancelTourEvent={this.props.cancelTourEvent}/>);
+    const guideBookedTours = guideBookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>) : "No Tours";
+
+
+    const pendingReviewContent = this.props.tripCompleted.length > 0 ?  <ListGroup fill>
+                  {this.props.tripCompleted.map((tours, i) => {
+                    return (
+                      <ListGroupItem key={i}>{i+1}. {tours.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleReviewChange.bind(this, i)}>Review</Button></ListGroupItem>);
+                  })}
+                </ListGroup> : "No Tours for Review" ;
 
 
   /*  const guideBookedTours = this.props.toursGuided.map(function(t,index){
@@ -64,12 +72,7 @@ class Overview extends React.Component{
             </Col>
             <Col md={6} mdPush={0}>
               <Panel header="Pending Reviews">
-                <ListGroup fill>
-                  {this.props.tripCompleted.map((tours, i) => {
-                    return (
-                      <ListGroupItem key={i}>{i+1}. {tours.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleReviewChange.bind(this, i)}>Review</Button></ListGroupItem>);
-                  })}
-                </ListGroup>
+                {pendingReviewContent}
               </Panel>
             </Col>
           </Row>

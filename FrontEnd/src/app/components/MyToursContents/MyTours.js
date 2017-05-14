@@ -21,7 +21,7 @@ class MyTours extends React.Component{
     const takeCompletedT = this.props.toursTaken.filter(function(tour){
       return tour.state=="C";
     });
-    const takeCompletedTours = (takeCompletedT.length > 0) ? (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeCompletedT} cancelTourEvent={this.props.cancelTourEvent}/>) : "No Tours";
+    const takeCompletedTours = takeCompletedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={takeCompletedT}/>) : "No Tours";
 
     /*const takeCompletedTours = this.props.toursTaken.map(function(t,index){
       console.log("key:",index)
@@ -33,7 +33,7 @@ class MyTours extends React.Component{
     const takeBookedT = this.props.toursTaken.filter(function(tour){
       return tour.state=="B";
     });
-    const takeBookedTours = (<ToursList tourDisplayProps={{display:"small", isGuide: false, cancelBtn:true}} tours={takeBookedT} cancelTourEvent={this.props.cancelTourEvent}/>);
+    const takeBookedTours = takeBookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={takeBookedT}/>) : "No Tours";
 
     const cancelT = this.props.toursTaken.filter(function(tour){
       return tour.state=="D";
