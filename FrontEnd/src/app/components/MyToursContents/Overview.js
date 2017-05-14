@@ -5,6 +5,8 @@ import { getPendingReviewsByUserId, setShowPendingReview } from '../../actions/P
 import {connect} from 'react-redux';
 import { browserHistory } from 'react-router';
 import PendingReview from '../PendingReview/PendingReview';
+import { getUser } from '../../actions/AuthActions';
+
 
 class Overview extends React.Component{
   constructor(props){
@@ -15,9 +17,12 @@ class Overview extends React.Component{
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
+        console.log(this.props.id_user, this.props.auth);
+
     this.props.dispatch(getPendingReviewsByUserId(this.props.id_user, this.props.auth));
     // this.props.dispatch(getPendingReviewsByUserId("1", this.props.auth));
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   handleReviewChange(id_tour) {
@@ -29,11 +34,19 @@ class Overview extends React.Component{
   }
 
   render(){
-
+    
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });
-    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>);
+    const guideBookedTours = guideBookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>) : "No Tours";
+
+
+    const pendingReviewContent = this.props.tripCompleted.length > 0 ?  <ListGroup fill>
+                  {this.props.tripCompleted.map((tours, i) => {
+                    return (
+                      <ListGroupItem key={i}>{i+1}. {tours.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleReviewChange.bind(this, i)}>Review</Button></ListGroupItem>);
+                  })}
+                </ListGroup> : "No Tours for Review" ;
 
 
   /*  const guideBookedTours = this.props.toursGuided.map(function(t,index){
@@ -59,12 +72,7 @@ class Overview extends React.Component{
             </Col>
             <Col md={6} mdPush={0}>
               <Panel header="Pending Reviews">
-                <ListGroup fill>
-                  {this.props.tripCompleted.map((tours, i) => {
-                    return (
-                      <ListGroupItem key={i}>{i+1}. {tours.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleReviewChange.bind(this, i)}>Review</Button></ListGroupItem>);
-                  })}
-                </ListGroup>
+                {pendingReviewContent}
               </Panel>
             </Col>
           </Row>

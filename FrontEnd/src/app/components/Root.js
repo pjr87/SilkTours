@@ -23,7 +23,8 @@ import{
   MessagesPage,
   PrivacyPage,
   TermsPage,
-  PolicyPage} from '../pages';
+  PolicyPage,
+  TourEditPage} from '../pages';
 import {ContactUsRedux} from '../pages';
 import App from './App';
 import { loadState } from '../localStorage';
@@ -61,6 +62,7 @@ const Root = ({ store }) => (
         <Route path='/privacy' component={PrivacyPage} />
         <Route path='/policy' component={PolicyPage} />
         <Route onEnter={checkAuth}>
+          <Route path='/edittour' component={TourEditPage}/>
           <Route path='/profile' component ={ProfilePage} />
           <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
