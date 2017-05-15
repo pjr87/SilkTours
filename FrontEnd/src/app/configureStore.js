@@ -43,7 +43,13 @@ const configureStore = () => {
   saveState(store.getState());
   store.subscribe(throttle(() => {
     saveState(store.getState());
-  }, 10));
+  }, 1000));
+  /*store.subscribe( () => {
+    console.log("SAVED STATE")
+    saveState({
+      AuthReducer: store.getState().AuthReducer
+    });
+  });*/
 
   return store;
 };
