@@ -41,7 +41,7 @@ class ConfirmationContents extends React.Component{
     event.preventDefault();
 
     this.props.dispatch(confirmSignUp(
-      this.props.cognitoUser,
+      //this.props.cognitoUser,
       this.props.signUpFormState.firstname,
       this.props.signUpFormState.lastname,
       this.props.signUpFormState.username,
@@ -110,7 +110,7 @@ function select(state) {
     signUpFormState: state.AuthReducer.signUpFormState,
     currentlySending: state.AuthReducer.currentlySending,
     errorMessage: state.AuthReducer.errorMessage,
-    cognitoUser: state.AuthReducer.cognitoUser,
+    //cognitoUser: state.AuthReducer.cognitoUser,
     readyToConfirm: state.AuthReducer.readyToConfirm
   };
 }
