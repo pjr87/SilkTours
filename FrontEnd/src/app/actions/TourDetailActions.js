@@ -61,6 +61,14 @@ export function selectTour(tourId) {
   };
 }
 
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 export function selectDates(tourId, startEndDate) {
   return (dispatch) => {
     try {
@@ -69,9 +77,18 @@ export function selectDates(tourId, startEndDate) {
           console.log("Get Available Hours");
           console.log(response.data);
           const av = response.data;
+          if(isEmpty(response.data)) {
+            console.log("Test")
+            dispatch(updateTourDateStart(""));
+            dispatch(updateTourDateEnd(""));
+            dispatch(updateTourDateString(startEndDate));
+            dispatch(updateTourDates([]));
+          }
           for (const key in av) {
+            console.log("Test2");
             dispatch(updateTourDateString(key));
             dispatch(updateTourDates(av[key]));
+
             dispatch(updateTourDateStart(av[key][0].start));
             dispatch(updateTourDateEnd(av[key][0].end));
             break;

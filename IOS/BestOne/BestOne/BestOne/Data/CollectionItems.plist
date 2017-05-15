@@ -4,11 +4,11 @@
 <array>
 	<dict>
 		<key>title</key>
-		<string>spring collection.</string>
+		<string>Philadelphia</string>
 		<key>imgTitle</key>
 		<string>collections_spring_collection</string>
 		<key>details</key>
-		<string>pullovers | bags | shirts | dresses | hats</string>
+		<string>Liberty Bell | City Hall | Drexel University</string>
 		<key>saleMode</key>
 		<integer>1</integer>
 	</dict>
@@ -16,41 +16,21 @@
 		<key>saleMode</key>
 		<integer>2</integer>
 		<key>title</key>
-		<string>elegant collection.</string>
+		<string>New York</string>
 		<key>imgTitle</key>
 		<string>collections_elegant_collection</string>
 		<key>details</key>
-		<string>bags | shirts | hats | glasses</string>
+		<string>Empire State Building | Radio City | Time Square</string>
 	</dict>
 	<dict>
 		<key>saleMode</key>
 		<integer>2</integer>
 		<key>title</key>
-		<string>summer collection.</string>
+		<string>San Francisco </string>
 		<key>imgTitle</key>
 		<string>collections_summer_collections</string>
 		<key>details</key>
-		<string>pullovers | bags | shirts | dresses | hats</string>
-	</dict>
-	<dict>
-		<key>saleMode</key>
-		<integer>0</integer>
-		<key>title</key>
-		<string>spring collection.</string>
-		<key>imgTitle</key>
-		<string>collections_spring_collection</string>
-		<key>details</key>
-		<string>pullovers | bags | shirts | dresses | hats</string>
-	</dict>
-	<dict>
-		<key>saleMode</key>
-		<integer>1</integer>
-		<key>title</key>
-		<string>elegant collection.</string>
-		<key>imgTitle</key>
-		<string>collections_elegant_collection</string>
-		<key>details</key>
-		<string>bags | shirts | hats | glasses</string>
+		<string>Zoo | Marina | Local Bars </string>
 	</dict>
 </array>
 </plist>
