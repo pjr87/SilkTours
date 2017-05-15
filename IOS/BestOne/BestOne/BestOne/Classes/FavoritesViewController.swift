@@ -82,7 +82,6 @@ extension FavoritesViewController: UITableViewDataSource {
         cell.backgroundImgView?.image = UIImage(named: shopItem.imgTitle)
         cell.favoriteBtn?.isSelected = favoritesItems.contains(shopItem)
         cell.delegate = self
-        cell.setSaleMode(shopItem.saleMode)
         return cell
     }
 }
