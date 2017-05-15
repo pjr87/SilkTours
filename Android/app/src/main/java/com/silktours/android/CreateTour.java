@@ -287,28 +287,21 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
                 tour.set("stops", stopJSON);
 
-                commitTour();
-
-                int time=30000000; // in milliseconds
-                Handler h=new Handler();
-                h.postDelayed(new Runnable() {
+                commitTour(new CommitTourCallback() {
                     @Override
-                    public void run() {
-                        //here you can do the job
+                    public void done(String postResult) {
+                        try {
+                            jObject = new JSONObject(postResult);
+                            tID = jObject.getString("id_tour");
+                            Log.d("Got it", tID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Got it again", tID);
+
+                        MediaHandler.uploadProfileImage("tours", tID, bm);
                     }
-                },time);
-
-                try {
-                    jObject = new JSONObject(postResult);
-                    tID = jObject.getString("id_tour");
-                    Log.d("Got it",tID);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Log.d("Got it again",tID);
-
-                MediaHandler.uploadProfileImage("tours", tID , bm);
-
+                });
                 /*
                 final User user = new User();
                 user.set(User.FIRST_NAME, "Andrew");
@@ -452,12 +445,16 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         });
     }
 
-    private void commitTour() {
+    private interface CommitTourCallback {
+        void done(String postResult);
+    }
+    private void commitTour(final CommitTourCallback callback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     postResult =  tour.commitCreate();
+                    callback.done(postResult);
                     postCommit(false);
                 } catch (IOException e) {
                     postCommit(true);

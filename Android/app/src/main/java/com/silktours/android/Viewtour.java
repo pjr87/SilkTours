@@ -3,6 +3,7 @@ package com.silktours.android;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
@@ -217,22 +220,24 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtadditionalFood.setText(tour.getAdditionalFood());
         txtadditionalStay.setText(tour.getAdditionalStay());
         txtadditionalTravel.setText(tour.getAdditionalTravel());
-        new AsyncTask<Void, Void, Bitmap>() {
+        new Thread(new Runnable() {
             @Override
-            protected Bitmap doInBackground(Void... params) {
-                return getResizedBitmap(getBitmapFromURL(tour.getProfileImage()), 200, 200);
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap response) {
-                if (response != null) {
-                    imgProfile.setImageBitmap(null);
-                    imgProfile.setImageBitmap(response);
+            public void run() {
+                try {
+                    URL thumb_u = new URL(tour.getProfileImage());
+                    final Drawable thumb_d = Drawable.createFromStream(thumb_u.openStream(), "src");
+                    MainActivity.getInstance().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            imgProfile.setImageDrawable(thumb_d);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        }.execute();
+        }).start();
         getMedia(tourId);
-
     }
 
     public void getMedia(final String tourId) {
@@ -280,8 +285,6 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
             }
         }.execute();
     }
-
-
 
     private Bitmap getBitmapFromURL(String src) {
         try {
