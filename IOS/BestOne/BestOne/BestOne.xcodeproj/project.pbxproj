@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05BBFB721EB81F7D00D7123C /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
 		05EB20B71EBE5C2D002FD2A0 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */; };
+		4971FAC31EC3B2F500567F74 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4971FAC21EC3B2F500567F74 /* RegisterViewController.swift */; };
 		B2E3019F4FBE6DA5BE523A18 /* Pods_BestOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */; };
 		BB048B2E1B6A147C00938583 /* LeftShopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB048B2C1B6A147C00938583 /* LeftShopTableViewCell.xib */; };
 		BB048B2F1B6A147C00938583 /* RightShopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB048B2D1B6A147C00938583 /* RightShopTableViewCell.xib */; };
@@ -288,6 +289,7 @@
 		3297BB0C3C5FFE2FC30134F2 /* Pods-BestOneWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		330D109A343D02C4D24685AC /* Pods-BestOneWatchKitApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitApp/Pods-BestOneWatchKitApp.release.xcconfig"; sourceTree = "<group>"; };
 		4677DAC891DAF83EE835FBA6 /* Pods-BestOneWatchKitExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitExtension/Pods-BestOneWatchKitExtension.release.xcconfig"; sourceTree = "<group>"; };
+		4971FAC21EC3B2F500567F74 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		65948FD28637CBA95556A4CE /* Pods_BestOneWatchKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOneWatchKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A91498FCA52F59763A610DD /* Pods-BestOneWatchKitApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWatchKitApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWatchKitApp/Pods-BestOneWatchKitApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOne.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -629,6 +631,7 @@
 				BB14B0BD1B6BAA5A0032E7CC /* SettingsViewController.swift */,
 				BB14B0BF1B6BB77F0032E7CC /* ShopViewController.swift */,
 				BB048B381B6A250A00938583 /* BaseViewController.swift */,
+				4971FAC21EC3B2F500567F74 /* RegisterViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1523,6 +1526,7 @@
 				BB39C7311B66A6A200681FB2 /* AppDelegate.swift in Sources */,
 				BB39C8AD1B67801000681FB2 /* ConfigurationManager.swift in Sources */,
 				BB39C8B81B67B2A700681FB2 /* Constants.swift in Sources */,
+				4971FAC31EC3B2F500567F74 /* RegisterViewController.swift in Sources */,
 				BB14B0BA1B6B72F50032E7CC /* FavoritesViewController.swift in Sources */,
 				BB39C8C61B68E85600681FB2 /* ThemeManager.swift in Sources */,
 			);

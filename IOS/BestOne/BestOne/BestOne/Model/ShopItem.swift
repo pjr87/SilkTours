@@ -62,7 +62,10 @@ class ShopItem: NSObject, NSCoding {
         subTitle = aDecoder.decodeObject(forKey: "subTitle") as! String
         information = aDecoder.decodeObject(forKey: "information") as! String
         previewImgs = aDecoder.decodeObject(forKey: "previewImgs") as! [String]
-        saleModePosition = SaleModePosition(rawValue: aDecoder.decodeObject(forKey: "saleModePosition") as! Int)!
+        saleMode = SaleMode(rawValue: 0)!
+        saleModePosition = SaleModePosition(rawValue: 0)!
+        //saleMode = SaleMode(rawValue: aDecoder.decodeObject(forKey: "saleMode") as! Int)!
+        //saleModePosition = SaleModePosition(rawValue: aDecoder.decodeObject(forKey: "saleModePosition") as! Int)!
     }
 }
 
