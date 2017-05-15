@@ -12,7 +12,6 @@ import Foundation
 
 import SwiftyJSON
 import Alamofire
-import AWSCognito
 
 class BackendAPI{
 

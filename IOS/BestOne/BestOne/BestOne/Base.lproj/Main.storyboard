@@ -235,8 +235,12 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="53"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="log_in_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="foe-GW-jpC">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eq1-gS-Zeb">
                                         <rect key="frame" x="64" y="53" width="286" height="286"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="foe-GW-jpC">
+                                        <rect key="frame" x="64.333333333333343" y="53" width="285.66666666666663" height="286"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="foe-GW-jpC" secondAttribute="height" multiplier="1:1" id="TEI-zB-4Zm"/>
                                         </constraints>
@@ -369,9 +373,11 @@
                                     <constraint firstItem="Ypy-Gt-n8k" firstAttribute="leading" secondItem="hEJ-hg-3Pu" secondAttribute="leading" id="0Ui-eU-h8r"/>
                                     <constraint firstItem="kgX-u0-qSc" firstAttribute="top" secondItem="Dvh-iZ-OZe" secondAttribute="bottom" id="1MY-CV-RKj"/>
                                     <constraint firstItem="foe-GW-jpC" firstAttribute="width" secondItem="hEJ-hg-3Pu" secondAttribute="width" multiplier="259/375" id="2Cm-Lk-nhS"/>
+                                    <constraint firstItem="Eq1-gS-Zeb" firstAttribute="bottom" secondItem="foe-GW-jpC" secondAttribute="bottom" id="3lq-3f-WuS"/>
                                     <constraint firstItem="yD4-Bg-8QR" firstAttribute="top" secondItem="foe-GW-jpC" secondAttribute="bottom" id="8IU-cV-OLt"/>
                                     <constraint firstItem="Ypy-Gt-n8k" firstAttribute="top" secondItem="KEb-vu-lgc" secondAttribute="bottom" id="8RP-Dc-LxW"/>
                                     <constraint firstItem="Dvh-iZ-OZe" firstAttribute="width" secondItem="hEJ-hg-3Pu" secondAttribute="width" id="8Sn-2r-wxv"/>
+                                    <constraint firstItem="Eq1-gS-Zeb" firstAttribute="top" secondItem="foe-GW-jpC" secondAttribute="top" id="9eE-07-r5i"/>
                                     <constraint firstItem="OSC-rE-peo" firstAttribute="top" secondItem="kgX-u0-qSc" secondAttribute="bottom" id="AwU-U8-2ef"/>
                                     <constraint firstAttribute="bottom" secondItem="ERN-lf-071" secondAttribute="bottom" id="BiK-Zj-4FD"/>
                                     <constraint firstItem="ETh-OQ-Zoy" firstAttribute="height" secondItem="7Lo-8S-hmn" secondAttribute="height" id="C7M-bb-an1"/>
@@ -384,6 +390,7 @@
                                     <constraint firstAttribute="centerX" secondItem="OSC-rE-peo" secondAttribute="centerX" id="Oiu-vv-DAD"/>
                                     <constraint firstAttribute="centerX" secondItem="KEb-vu-lgc" secondAttribute="centerX" id="P9S-ce-CmY"/>
                                     <constraint firstItem="OSC-rE-peo" firstAttribute="width" secondItem="hEJ-hg-3Pu" secondAttribute="width" id="Pfc-qO-gTi"/>
+                                    <constraint firstItem="Eq1-gS-Zeb" firstAttribute="trailing" secondItem="foe-GW-jpC" secondAttribute="trailing" id="S7i-VP-HpD"/>
                                     <constraint firstAttribute="width" secondItem="7pD-Wu-bbW" secondAttribute="width" id="SFF-W6-Yk2"/>
                                     <constraint firstAttribute="centerX" secondItem="Dvh-iZ-OZe" secondAttribute="centerX" id="Tk5-Gc-aTZ"/>
                                     <constraint firstAttribute="bottom" secondItem="Ypy-Gt-n8k" secondAttribute="bottom" id="U1t-ll-kot"/>
@@ -400,6 +407,7 @@
                                     <constraint firstItem="Ypy-Gt-n8k" firstAttribute="width" secondItem="hEJ-hg-3Pu" secondAttribute="width" multiplier="0.5" id="ndL-4Q-YKV"/>
                                     <constraint firstAttribute="centerX" secondItem="foe-GW-jpC" secondAttribute="centerX" id="p9V-Dt-f7G"/>
                                     <constraint firstAttribute="centerX" secondItem="yD4-Bg-8QR" secondAttribute="centerX" id="q0j-dI-Ffy"/>
+                                    <constraint firstItem="Eq1-gS-Zeb" firstAttribute="leading" secondItem="foe-GW-jpC" secondAttribute="leading" id="sXq-lY-UbF"/>
                                     <constraint firstItem="7Lo-8S-hmn" firstAttribute="leading" secondItem="hEJ-hg-3Pu" secondAttribute="leading" id="t5o-pK-pyK"/>
                                     <constraint firstItem="KEb-vu-lgc" firstAttribute="top" secondItem="7Lo-8S-hmn" secondAttribute="bottom" id="v0f-Aq-Mk9"/>
                                     <constraint firstItem="Dvh-iZ-OZe" firstAttribute="top" secondItem="yD4-Bg-8QR" secondAttribute="bottom" id="xjj-rF-UlL"/>
@@ -426,6 +434,8 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="emailTxtFld" destination="OJZ-IT-Ojh" id="D3u-5B-wQj"/>
+                        <outlet property="logo" destination="foe-GW-jpC" id="MM9-Dh-ZJ2"/>
+                        <outlet property="logoContainer" destination="Eq1-gS-Zeb" id="kCs-dz-qhJ"/>
                         <outlet property="mainScrollViewBottomConstraint" destination="tSD-JH-CMO" id="Aav-Dy-NSW"/>
                         <outlet property="passwordTxtFld" destination="EUe-5h-t3k" id="5cp-Dc-xnN"/>
                         <outlet property="scrollView" destination="hEJ-hg-3Pu" id="1eR-zM-dZo"/>
@@ -453,6 +463,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="User Details" id="nh1-aC-RMw">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="YI1-7c-Mgf">
+                                            <connections>
+                                                <segue destination="F1j-gz-eKi" kind="push" animates="NO" id="czK-es-GdK"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Next" id="pim-uP-0Hy">
                                             <connections>
                                                 <action selector="onUserDetailDone:" destination="Lze-cI-A6x" id="Hkp-jq-oMr"/>
@@ -504,13 +519,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fEw-Yu-gkM">
-                                        <rect key="frame" x="194.33333333333337" y="29" width="179.66666666666663" height="30"/>
+                                        <rect key="frame" x="194.66666666666663" y="29" width="179.33333333333337" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTG-qb-iBM">
-                                        <rect key="frame" x="194.33333333333331" y="8" width="81.999999999999943" height="21"/>
+                                        <rect key="frame" x="194.66666666666669" y="8" width="82.000000000000057" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -619,6 +634,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Interests" id="Nh7-eP-Ai0">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="Mes-2t-sW0">
+                                            <connections>
+                                                <segue destination="Lze-cI-A6x" kind="push" splitViewControllerTargetIndex="1" id="OAI-dQ-Kfl"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Done" id="EAP-zW-jBL">
                                             <connections>
                                                 <action selector="onRegisterDone:" destination="dEJ-Uq-ykJ" id="2Ja-Dz-zdc"/>
@@ -958,7 +978,7 @@
                                         </connections>
                                     </collectionView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Total: $88" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEp-3g-qpS">
-                                        <rect key="frame" x="122" y="112" width="170" height="30.333333333333314"/>
+                                        <rect key="frame" x="122.66666666666669" y="112" width="170" height="30.333333333333314"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="YEp-3g-qpS" secondAttribute="height" multiplier="145:26" id="YGg-OS-9wd"/>
                                         </constraints>
@@ -990,7 +1010,7 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU MIGHT ALSO LIKE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wag-oA-xqb">
-                                        <rect key="frame" x="117.66666666666669" y="233" width="179" height="20"/>
+                                        <rect key="frame" x="117.66666666666669" y="232.66666666666669" width="179" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="wag-oA-xqb" secondAttribute="height" multiplier="152:17" id="nim-Ey-z9l"/>
                                         </constraints>
@@ -1190,7 +1210,7 @@
                     <navigationItem key="navigationItem" title="FAVORITES" id="m6J-Yg-J3h">
                         <barButtonItem key="rightBarButtonItem" id="gYH-D6-uUV">
                             <view key="customView" contentMode="scaleToFill" id="5Ao-ze-2Ke">
-                                <rect key="frame" x="349" y="2" width="45" height="40"/>
+                                <rect key="frame" x="259" y="2" width="45" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_out_with_items.png" translatesAutoresizingMaskIntoConstraints="NO" id="LkL-rh-Acv">
@@ -1755,6 +1775,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="WR2-z5-3zl" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Bz4-R8-KxI"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="kL2-DL-DXO">
@@ -1912,7 +1933,7 @@
         <image name="item_marker_big.png" width="7" height="44"/>
         <image name="item_marker_check_out.png" width="2" height="14"/>
         <image name="log_in_arrow.png" width="7" height="12"/>
-        <image name="log_in_icon.png" width="249" height="249"/>
+        <image name="logo" width="341" height="341"/>
         <image name="menu_small_icon.png" width="77" height="29"/>
         <image name="myCart.png" width="25" height="21"/>
         <image name="only_best_one_collections.png" width="258" height="92"/>
@@ -1928,11 +1949,11 @@
         <simulatedScreenMetrics key="destination" type="retina5_5.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fwL-9u-4in"/>
-        <segue reference="XLT-FS-Lmx"/>
-        <segue reference="mVn-xn-V6G"/>
-        <segue reference="x5q-7L-L2H"/>
         <segue reference="LJH-r3-oww"/>
+        <segue reference="4ho-l4-HoI"/>
+        <segue reference="czK-es-GdK"/>
+        <segue reference="5nu-yI-3Hm"/>
+        <segue reference="mVn-xn-V6G"/>
         <segue reference="p3z-8s-3MO"/>
     </inferredMetricsTieBreakers>
 </document>

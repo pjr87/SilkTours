@@ -18,6 +18,3 @@
 //RevMob
 #import <RevMobAds/RevMobAds.h>
 
-#import <AWSCore/AWSCore.h>
-#import <AWSCognito/AWSCognito.h>
-
