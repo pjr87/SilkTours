@@ -33,6 +33,8 @@ import philadelphiaCityView from '../../style/images/philadelphiaCityView.jpg';
 import iphone from '../../style/images/iphone.png';
 import building from '../../style/images/building.jpg';
 import forrest from '../../style/images/forrest.jpg';
+import landingImageHeroimage from '../../style/images/landingImageHeroimage.jpg';
+import landingImageSilktours from '../../style/images/landingImageSilktours.png';
 //heading="News about silk"
 
 //heading="About Company"
@@ -103,9 +105,30 @@ class LandingPage extends React.Component{
 
     return (
       <div>
+        {/*
         <BannerImage/>
+        */}
 
         <LandingCanvas>
+
+          <GenericBrick
+            backgroundImage={landingImageHeroimage}>
+            <br/>
+            <br/>
+            <Image src={landingImageSilktours}/>
+            <br/>
+            <br/>
+            <p className={Style.landingContent}>Book incredible tours and get to know a new destination</p>
+            <p className={Style.landingContent}>with local tour guides.</p>
+            <br/>
+            <br/>
+            <br/>
+            <Button className={Style.bannerButton} bsStyle="info" onClick={this.handleClick}>Begin your Adventure ></Button>
+            <br/>
+            <br/>
+            <br/>
+          </GenericBrick>
+
           {/*
           <StrongMessageBrick
             theme={ HEADER_BAND_THEME }
@@ -114,8 +137,26 @@ class LandingPage extends React.Component{
           />
           */}
 
+          <div className = {Style.pane}>
+            <div className= {Style.sideLeft}>
+              <Image className="img-responsive" src={iphone}/>
+            </div>
+            <div className = {Style.sideRight}>
+              <p className={Style.landingHeader}>So you're going on a trip.</p>
+              <p className={Style.landingHeader}>Where do you begin&#63;</p>
+              <br/>
+              <p className={Style.landingSubHeader}>Meet Someone New</p>
+              <p className={Style.landingContent}>Aenean sollicitudin, erat a elementum rutrum, neque sem</p>
+              <p className={Style.landingContent}>pretium metus, quis mollis nisl nunc et massa.</p>
+              <br/>
+              <p className={Style.landingSubHeader}>Find places Easily</p>
+              <p className={Style.landingContent}>Vestibulum sed metus in lorem tristique ullamcorper id vitae</p>
+              <p className={Style.landingContent}>erat. Nulla mollis sapien sollicitudin lacinia lacinia.</p>
+            </div>
+          </div>
+          {/*
           <DoubleContentBrick theme={ FIRST_BAND_THEME } hasHeader={ false }>
-            <Image className="img-responsive center-block" src={iphone}/>
+            <Image className="img-responsive" src={iphone}/>
             <ThemePropagator>
             <p className={Style.landingHeader}>So you're going on a trip.</p>
             <p className={Style.landingHeader}>Where do you begin&#63;</p>
@@ -129,6 +170,7 @@ class LandingPage extends React.Component{
             <p className={Style.landingContent}>erat. Nulla mollis sapien sollicitudin lacinia lacinia.</p>
             </ThemePropagator>
           </DoubleContentBrick>
+          */}
 
           <GenericBrick
             backgroundImage={building}>

@@ -2,8 +2,8 @@ import React from 'react';
 import style from '../../style/style.css';
 import { BrowserRouter as Router, Link, Match, Miss } from 'react-router'
 import {connect} from 'react-redux';
-import {PageTitle, ProfileHeader} from 'components';
-import Nav from 'react-bootstrap/lib/Nav';
+import {PageTitle, ProfileHeader, Confirm} from 'components';
+import {Nav, Modal, Button} from 'react-bootstrap/lib/';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import {LinkContainer} from 'react-router-bootstrap';
@@ -11,40 +11,84 @@ import { clearError } from '../../actions/AuthActions';
 import Overview from './Overview';
 import MyGuide from './MyGuide';
 import MyTours from './MyTours';
-import Messages from './Messages';
 import WishList from './WishList';
 import { getUser } from '../../actions/AuthActions';
+import * as service from '../../utils/databaseFunctions.js';
 
 class MyToursContents extends React.Component{
   constructor() {
      super();
      this.state = {
-       tab: 'overview'
+       tab: 'overview',
+       showModal: false
      }
+  
+    this.cancelTourEvent = this.cancelTourEvent.bind(this);
   }
 
   buttonHandler(val){
     this.setState( {tab:val} );
   }
 
-  componentDidMount(){
+  cancelTourEvent(tourEventId, isGuide){
+    console.log(tourEventId, " ", isGuide);
+    console.log("CLICKED222");
+
+    var obj = {};
+
+    if(isGuide)
+    {
+      obj = {
+      "state": "D",
+      "id_user": null
+      };
+    }
+    else
+    {
+      obj = {
+      "state": "A",
+      "id_user": null
+      }
+    }
+   
+    service.putTourEventById(tourEventId, JSON.parse(JSON.stringify(obj)), this.props.auth).then(function(response){
+      console.log("response", response);
+      location.reload();
+    });
+
+
+  }
+
+  componentWillMount(){
+        console.log(this.props.id_user, this.props.auth);
+
     this.props.dispatch(getUser(this.props.id_user, this.props.auth));
   }
 
   render(){
+
+    var toursTeaching =[];
+    for( var i = 0, len = this.props.user.tours_teaching.length; i < len; i++) {
+      for(var j=0, len2 = this.props.user.tours_teaching[i].events.length; j < len2; j++)
+      {
+        toursTeaching.push(this.props.user.tours_teaching[i].events[j]);
+        console.log(this.props.user.tours_teaching[i].events[j].id_tourEvent);
+      }
+    }
+
+
+    console.log("teaching", toursTeaching );
+
     if(this.state.tab == 'overview'){
-      var tabPag = <Overview toursGuided={this.props.user.tours_teaching}/>;
+      var tabPag = <Overview toursGuided={toursTeaching} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
     if(this.state.tab == 'myguide'){
 
-      var tabPag = <MyGuide toursGuided={this.props.user.tours_teaching}/>;
+      var tabPag = <MyGuide toursGuided={toursTeaching} cancelTourEvent={this.cancelTourEvent.bind(this)} allToursGuided={this.props.user.tours_teaching} />;
     }
     if(this.state.tab == 'mytour'){
       console.log("user:",this.props.user);
-      var tabPag = <MyTours toursTaken={this.props.user.tours_taking}/>;
-    }
-    if(this.state.tab == 'messages'){
-      var tabPag = <Messages/>;
+      var tabPag = <MyTours toursTaken={this.props.user.tours_taking} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
     if(this.state.tab == 'wishlist'){
       var tabPag = <WishList/>;
@@ -61,9 +105,8 @@ class MyToursContents extends React.Component{
           <Navbar.Collapse>
             <Nav>
               <NavItem eventKey={1} onClick={this.buttonHandler.bind(this,"overview")}>Overview</NavItem>
-              <NavItem eventKey={2} onClick={this.buttonHandler.bind(this,"myguide")}>MyGuide</NavItem>
+              {this.props.user.is_guide && <NavItem eventKey={2} onClick={this.buttonHandler.bind(this,"myguide")}>MyGuide</NavItem>}
               <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"mytour")}>MyTours</NavItem>
-              <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"messages")}>Messages</NavItem>
               <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"wishlist")}>WishList</NavItem>
             </Nav>
           </Navbar.Collapse>

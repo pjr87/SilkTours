@@ -30,8 +30,8 @@ function getCookie(name) {
     return false;
 }
 
-export function getFilteredTours(rating, priceMin, priceMax, keywords, page, page_size) {
-    return axios.get(SERVER_URL + "/search?"+rating+priceMin+priceMax+keywords+page+page_size);
+export function getFilteredTours(rating, priceMin, priceMax, keywords, page, page_size, city, interests) {
+    return axios.get(SERVER_URL + "/search?"+rating+priceMin+priceMax+keywords+page+page_size+city+interests);
 }
 
 export function getTourById(tourId) {
@@ -94,6 +94,17 @@ export function newTour(data, auth){
     });
 }
 
+export function addTourHours(tourId, data, auth){
+    let url = SERVER_URL + '/tours/' + tourId + "/hours";
+    return axios.post(url, data,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+}
+
 export function newPhoto(data, id, auth){
     let url = SERVER_URL + '/media/' + id;
     return axios.post(url, data,
@@ -138,6 +149,8 @@ export function registerNewUser(json) {
 
 export function updateExistingUser(id, json, auth) {
   let url = SERVER_URL + '/users/' + id;
+  console.log("user");
+  console.log(json);
   return axios.put(url, json,
     {
       headers:{
@@ -228,6 +241,20 @@ export function putClearPendingReviewsByEventId(eventId, auth){
     });
 }
 
+
+export function editTour(tourId, json, auth){
+  let url = SERVER_URL + '/tours/' + tourId;
+
+  return axios.put(url, json,
+    {
+      headers:{
+        'Silk-Logins': auth.Logins,
+        'Silk-Identity-Id': auth.IdentityId
+      },
+    });
+
+}
+
 export function getAvailableHours(tourId, startEndDate) {
     var url = SERVER_URL + '/tours/available_hours?tour_id=' + tourId + '&start_date=' + startEndDate +  '&end_date=' + startEndDate;
     return axios.get(url);
@@ -237,6 +264,30 @@ export function setTourEvent(json, auth) {
   let url = SERVER_URL + '/tourevents'
 
   return axios.post(url, json,
+  {
+    headers:{
+      'Silk-Logins': auth.Logins,
+      'Silk-Identity-Id': auth.IdentityId
+    },
+  });
+}
+
+export function favorite_tour(json, auth) {
+  let url = SERVER_URL + '/toggle_favorite'
+
+  return axios.post(url, json,
+  {
+    headers:{
+      'Silk-Logins': auth.Logins,
+      'Silk-Identity-Id': auth.IdentityId
+    },
+  });
+}
+
+export function favorite_details(userId, auth) {
+  let url = SERVER_URL + '/favorite_details/' + userId
+
+  return axios.post(url,
   {
     headers:{
       'Silk-Logins': auth.Logins,

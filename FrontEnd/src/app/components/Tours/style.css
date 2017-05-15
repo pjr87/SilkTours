@@ -35,6 +35,28 @@
   padding-bottom: 10px;
 }
 
+.buttonContainer{
+  line-height: 275%;
+}
+
+.confirmBody{
+  padding-left:10%;
+  margin: 0;
+}
+
+.confirmBodySideHeader{
+  font-weight: bold;
+  width: 15%;
+}
+
+.confirmBody p{
+  margin: 0;
+  width: 100%;
+}
+
+.buttonWidth{
+  min-width: 86px;
+}
 .image_container {
   position: relative;
   width: 100%;

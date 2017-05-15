@@ -33,3 +33,8 @@ export TermsOfService from './Policies/TermsOfService';
 export Privacy from './Policies/Privacy';
 
 export PendingReview from './PendingReview/PendingReview';
+export WishListContent from './WishListContent/WishListContent';
+
+export Confirm from './Confirm/Confirm'
+
+export TourEditContents from './TourEditContents/TourEditContents';

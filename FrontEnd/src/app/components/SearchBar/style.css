@@ -24,3 +24,10 @@
         width: 100%;
     }
 }
+
+.advancedSearch {
+  font: bold 15px Helvetica, Sans-Serif;
+  margin: 0 0;
+  color: #A9A9A9;
+  text-align: center;
+}
