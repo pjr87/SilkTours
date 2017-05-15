@@ -94,7 +94,6 @@ extension ShopViewController: UITableViewDataSource {
         cell.backgroundImgView?.image = UIImage(named: shopItem.imgTitle)
         cell.favoriteBtn?.isSelected = favoriteItems.contains(shopItem)
         cell.delegate = self
-        cell.setSaleMode(shopItem.saleMode)
         return cell
     }
 }

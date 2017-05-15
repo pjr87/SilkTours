@@ -91,6 +91,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func onSignUpBtnClicked(_ sender: AnyObject) {
         print("Button \"Sign up\" was clicked")
+        performSegue(withIdentifier: "register", sender: self)
     }
 }
 

@@ -1,6 +1,0 @@
-framework module Pods_BestOneWatchKitApp {
-  umbrella header "Pods-BestOneWatchKitApp-umbrella.h"
-
-  export *
-  module * { export * }
-}
