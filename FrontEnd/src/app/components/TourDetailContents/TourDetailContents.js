@@ -145,7 +145,7 @@ class TourDetailContents extends React.Component{
     } else {
      guideButton = null;
     }
-    
+
     const getToken = () => {
       // Replace this with an actual promise to your Braintree-enabled server
       return new Promise((resolve) => {
@@ -165,10 +165,11 @@ class TourDetailContents extends React.Component{
         var tourEvent = {
           end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
           id_tour: this.props.selectedTourId,
+          id_user:	 this.props.id_user,
           participants:	 [
-     	 	 	 	 	 {
-     	 	 	 	 	 	 	 	 	 id_users:	 this.props.id_user,
-     	 	 	 	 	 }
+            {
+              id_users:	 this.props.id_user,
+            }
  	 	 	    ],
           start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
           state: 'B'
@@ -266,8 +267,6 @@ class TourDetailContents extends React.Component{
                     <p className={style.content}>Review: {this.props.selectedTour.average_rating} out of 5</p>
                     <p className={style.content}>Max Group Size: {this.props.selectedTour.max_group_size}</p>
                     <p className={style.content}>Min Group Size: {this.props.selectedTour.min_group_size}</p>
-                    <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStart_date}</p>
-                    <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEnd_date}</p>
 
                     <p className={style.contentSubTitle}>Stops: </p>
                     {this.props.selectedTour.stops.map((stops, i) => {
