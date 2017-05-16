@@ -642,7 +642,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="64" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Wg9-Ez-Epy">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="64" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Wg9-Ez-Epy">
+                                <frame key="frameInset" minY="20" width="320" height="409"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SegmentedSettingTableViewCell" id="dK7-Dw-ohe" customClass="SettingTableViewCell" customModule="BestOne" customModuleProvider="target">
@@ -785,20 +786,18 @@
                                     <outlet property="delegate" destination="8vB-3J-0PC" id="ViK-D4-v5W"/>
                                 </connections>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_small_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="095-Dg-LuE">
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="095-Dg-LuE" secondAttribute="height" multiplier="78:29" id="cgL-ac-gE9"/>
-                                </constraints>
-                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Silk Tours" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Syx-Xc-h50">
+                                <frame key="frameInset" minX="124" minY="446" width="72" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Wg9-Ez-Epy" firstAttribute="width" secondItem="nil-ob-Cgn" secondAttribute="width" id="8bh-De-Ouw"/>
-                            <constraint firstAttribute="centerX" secondItem="095-Dg-LuE" secondAttribute="centerX" id="IGo-DM-puK"/>
-                            <constraint firstItem="QcI-BP-upm" firstAttribute="top" secondItem="095-Dg-LuE" secondAttribute="bottom" constant="14" id="LgC-PU-HQT"/>
                             <constraint firstAttribute="centerX" secondItem="Wg9-Ez-Epy" secondAttribute="centerX" id="Qcz-Pz-Np6"/>
-                            <constraint firstItem="095-Dg-LuE" firstAttribute="width" secondItem="095-Dg-LuE" secondAttribute="height" multiplier="78:29" id="UB0-ob-r92"/>
-                            <constraint firstItem="095-Dg-LuE" firstAttribute="top" secondItem="Wg9-Ez-Epy" secondAttribute="bottom" constant="8" id="cT9-rM-inp"/>
                             <constraint firstItem="Wg9-Ez-Epy" firstAttribute="top" secondItem="W6F-Ib-P9a" secondAttribute="bottom" constant="-44" id="xw8-m8-tAf"/>
                         </constraints>
                     </view>
@@ -809,7 +808,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KdV-ad-LTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1203.5" y="1285.5"/>
+            <point key="canvasLocation" x="1203" y="1285"/>
         </scene>
         <!--CHECK OUT-->
         <scene sceneID="WAT-jD-Cck">
