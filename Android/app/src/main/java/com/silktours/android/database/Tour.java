@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -118,6 +119,33 @@ public class Tour extends Base implements Serializable {
             result.add(tour);
         }
         return result;
+    }
+
+    public static JSONObject getTourHours(Tours t) throws IOException, JSONException {
+        URIBuilder uri = new URIBuilder(Common.SERVER_URL + "/tours/available_hours");
+        uri.addParam("tour_id", t.getId_tour().toString());
+        uri.addParam("start_date", "2017-5-16");
+        uri.addParam("end_date", "2017-7-16");
+        JSONObject resultsJSON = Common.getJson(uri.build());
+
+        return resultsJSON;
+        /*for (int i=0; i<resultsJSON.length(); i++) {
+            JSONObject tourJSON = resultsJSON.getJSONObject(i);
+            Tour tour = new Tour();
+            tour.JSON = tourJSON;
+            Iterator<String> keysIt = tourJSON.keys();
+            while(keysIt.hasNext()) {
+                String key = keysIt.next();
+                try {
+                    Field field = Tour.class.getField(key);
+                    field.set(tour, tourJSON.get(key));
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
+            }
+            result.add(tour);
+        }
+        return result;*/
     }
 
     /**

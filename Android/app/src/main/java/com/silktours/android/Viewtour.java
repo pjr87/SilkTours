@@ -41,6 +41,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -93,8 +94,8 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         //txtCity = (TextView) rootView.findViewById(R.id.txtCity);
         txtPrice = (TextView) rootView.findViewById(R.id.txtPrice);
         txtLanguage = (TextView) rootView.findViewById(R.id.txtLanguage);
-        txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
-        txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
+        //txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
+        //txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
         //txtGroupSizeMax = (TextView) rootView.findViewById(R.id.txtGroupSizeMax);
         txtadditionalFood = (TextView) rootView.findViewById(R.id.txtAdditionalFood);
@@ -212,8 +213,17 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         txtName.setText(tour.getName());
         //txtCity.setText(tour.getCity());
         txtPrice.setText(tour.getPrice());
-        txtStartDate.setText(tour.getStartDate());
-        txtEndDate.setText(tour.getEndDate());
+        //txtStartDate.setText(Tour.getTourHours(tour));
+        /*
+        try {
+            Log.d("hourssss", String.valueOf(Tour.getTourHours(tour)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        */
+        //txtEndDate.setText(tour.getEndDate());
         txtDescription.setText(tour.getDescription());
         txtLanguage.setText((tour.getLanguage()));
         //txtGroupSizeMax.setText(tour.getGroupSizeMax().toString());
