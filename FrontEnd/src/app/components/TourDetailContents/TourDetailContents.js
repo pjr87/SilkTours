@@ -337,8 +337,8 @@ class TourDetailContents extends React.Component{
                     <Gmaps
                       width={'94%'}
                       height={'400px'}
-                      lat={this.props.selectedTour.stops[0].lat}
-                      lng={this.props.selectedTour.stops[0].lon}
+                      lat={typeof this.props.selectedTour.stops[0] == 'undefined' ? 39.9526 : this.props.selectedTour.stops[0].lat}
+                      lng={typeof this.props.selectedTour.stops[0] == 'undefined' ? -75.1652 : this.props.selectedTour.stops[0].lon}
                       zoom={12}
                       loadingMessage={'Be happy'}
                       params={{v: '3.exp', key: 'AIzaSyA7hW-zSFPnfDssD8pXPbfS6ePP3j0xq98'}}
