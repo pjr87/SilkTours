@@ -23,11 +23,10 @@ onClickHandler(){
     return;
   }
 
-  var obj = {is_guide:true};
+  var obj = {is_guide: true};
   var forSubmit = JSON.parse(JSON.stringify(obj));
   console.log(forSubmit);
-  this.props.dispatch(updateUser(this.props.user_id, forSubmit, this.props.auth));
-  browserHistory.push('/tour-creation');
+  this.props.dispatch(updateUser(this.props.user_id, forSubmit, this.props.auth)).then(function(){browserHistory.push('/tour-creation')});
 }
 
 checkboxClicked(){

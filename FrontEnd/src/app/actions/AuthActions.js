@@ -439,7 +439,7 @@ export function updateUser(id_user, user, auth) {
       return;
     }
 
-    service.updateExistingUser(id_user, user, auth).then(function(response){
+    return service.updateExistingUser(id_user, user, auth).then(function(response){
       if(response.data){
         console.log("response.data", response.data);
         dispatch(updateUserState(response.data));
