@@ -22,10 +22,13 @@ class BackendAPI{
      secretAccessKey and identityID - Used with all ajax calls
      */
     
-    static var credentials: NSDictionary?
+    static var credentials: NSDictionary? = [
+        "bypass": true
+    ];
     static var user: JSON?
     
     static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
+    
     
     static func getCurrentUser(email:String? = nil, completion: @escaping (JSON) -> Void) {
         if (user != nil) {
@@ -116,27 +119,32 @@ class BackendAPI{
                 }
         }
     }
-/*
-    static func getFavs(completion: @escaping () -> Void) {
-        let url = "\(SERVER_URL)/login"
-        let parameters = getCredentials()
-        
-        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-            .responseJSON { response in
-                if let result = response.result.value {
-                    credentials = result as? NSDictionary
-                    completion()
-                }
-                print(response)
-        }
+
+    static func getFavs(completion: @escaping ([JSON]) -> Void) {
+        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
+            let user_id = user["id_users"].int!
+            let url = "\(SERVER_URL)/favorite_details/\(user_id)"
+            let parameters = getCredentials()
+            
+            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseJSON { response in
+                    if let result = response.result.value {
+                        let favs = JSON(result).array
+                        completion(favs!)
+                    }
+                    print(response)
+            }
+        })
     }
-*/
-    static func getCredentials() -> [String: Any?]  {
-        let result:[String: Any?] = [
-            "Logins" : credentials!["Logins"],
-            "IdentityId" : credentials!["IdentityId"]
+
+    static func getCredentials() -> [String: Any]  {
+        return credentials as! [String : Any]
+        /*let result:[String: Any] = [
+            "Logins" : credentials!["Logins"]!,
+            "IdentityId" : credentials!["IdentityId"]!
         ]
         return result
+        */
     }
    
   static func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
