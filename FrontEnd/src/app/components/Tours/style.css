@@ -4,7 +4,7 @@
 
 .tour_image_large {
   border-color: $gray-lightest;
-  img { width: 100%; };
+  width: 100%;
 }
 
 .tour_image_large_info {

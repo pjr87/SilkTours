@@ -165,6 +165,7 @@ class SearchBar extends React.Component{
     // this.props.dispatch(setSelectedPage(e-1));
     this.setState({ page: e-1 });
     this.fetchPostInfo(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, e-1, this.state.page_size, this.state.city, this.state.interests);
+    window.scrollTo(0, 0)
     // this.props.dispatch(searchTour(this.state.rating, this.state.priceMin, this.state.priceMax, this.state.keywords, "", "", e-1, this.props.page_size));
   }
   expandAdvancedFilter() {

@@ -264,19 +264,21 @@ class Tours extends React.Component{
           </div>
           <p>{this.props.tour.name}</p>
           <p>${this.props.tour.price}</p>
-          <StarRatingComponent
-            name="rate1"
-            editing={false}
-            starColor="#ffb400"
-            emptyStarColor="#ffb400"
-            starCount={5}
-            value={this.props.tour.average_rating}
-            renderStarIcon={(index, value) => {
-              return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
-            }}
-            renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
-          />
-          {this.props.tour.rating_count} reviews
+          <div style={{"display":"flex"}}>
+            <StarRatingComponent
+              name="rate1"
+              editing={false}
+              starColor="#ffb400"
+              emptyStarColor="#ffb400"
+              starCount={5}
+              value={this.props.tour.average_rating}
+              renderStarIcon={(index, value) => {
+                return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+              }}
+              renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+            />
+            <span style={{"margin-left": 6}}>{this.props.tour.rating_count} reviews</span>
+          </div>
           <p>
             <Link
               to={{
