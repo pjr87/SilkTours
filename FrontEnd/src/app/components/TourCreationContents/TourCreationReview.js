@@ -28,7 +28,6 @@ class TourCreationReview extends React.Component{
 
   render(){
     let isLoading = this.props.currentlySending;
-    console.log("this.props.currentlySending", this.props.currentlySending);
     function ErrorFunc(props){
 
       if( props.errorText ){

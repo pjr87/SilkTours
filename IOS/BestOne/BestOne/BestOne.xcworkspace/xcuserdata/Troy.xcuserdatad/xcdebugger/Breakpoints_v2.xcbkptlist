@@ -1238,9 +1238,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
+            endingLineNumber = "156">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1254,9 +1252,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
+            endingLineNumber = "159">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1270,9 +1266,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
+            endingLineNumber = "158">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
