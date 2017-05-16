@@ -11,14 +11,7 @@ import MapKit
 import GoogleMaps
 import GooglePlaces
 
-private let AddItemIntoCartStr = "Add Item"
-private let DeleteItemFromCartStr = "Delete from cart"
 private let PreviewCellIdentifier = "PreviewCollectionViewCell"
-private let CartBtnAddCoef = 0.293333
-private let CartBtnDeleteCoef = 0.47
-private let CartBtnAddMinWidth = 110
-private let CartBtnDeleteMinWidth = 170
-private let CartBtnImgMargin = 20.0
 
 class ItemViewController: BaseViewController {
     
@@ -26,59 +19,29 @@ class ItemViewController: BaseViewController {
     @IBOutlet weak var titleLbl: UILabel?
     @IBOutlet weak var subTitleLbl: UILabel?
     @IBOutlet weak var informationLbl: UILabel?
+    @IBOutlet weak var photoLabel: UILabel!
     @IBOutlet weak var sizeSegmentedControl: UISegmentedControl?
     @IBOutlet weak var previewCollectionView: UICollectionView?
     @IBOutlet weak var pageControl: UIPageControl?
-    @IBOutlet weak var favoriteBtn: UIButton?
-    @IBOutlet weak var cartBtn: UIButton?
     @IBOutlet weak var segmentedControl: UISegmentedControl?
-    @IBOutlet weak var cartBtnWidthConstraint: NSLayoutConstraint?
     var shopItem: ShopItem?
     
-    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var photoScrollView: UIScrollView!
+    
+    var mapView: GMSMapView!
     @IBOutlet weak var googleMapsHeightConstraint: NSLayoutConstraint!
     fileprivate var itemsInCart: [ShopItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //set page control count
         pageControl?.numberOfPages = (shopItem?.previewImgs.count)!
-        
-        //set title for controller
         title = shopItem?.title
-
-        
-        //fill the field with information
-        initShopInformation()
-        
-        navigationItem.title = "Hello Map"
-        
-        let camera = GMSCameraPosition.camera(withLatitude: -33.868,
-                                              longitude: 151.2086,
-                                              zoom: 14)
-        let mapView = GMSMapView.map(withFrame: .zero, camera: camera)
-        
-        let marker = GMSMarker()
-        marker.position = camera.target
-        marker.snippet = "Hello World"
-        marker.map = mapView
-        
-        self.view.addSubview(mapView)
+        loadGoogleMap()
+        loadImageSession()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let isItemInCart = CartManager.sharedManager.cartItems.contains(shopItem!)
-        let widthCoef = isItemInCart ? CartBtnDeleteCoef : CartBtnAddCoef
-        let minWidth = isItemInCart ? CartBtnDeleteMinWidth : CartBtnAddMinWidth
-        let constraintValue = max(view.frame.width * CGFloat(widthCoef), CGFloat(minWidth))
-        
-        cartBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, constraintValue - CGFloat(CartBtnImgMargin), 0, 0)
-        cartBtnWidthConstraint?.constant = constraintValue
-        cartBtn?.setAttributedTitle(attributedStrForAdding(!isItemInCart), for: UIControlState())
-        
         updateViewConstraints()
         
         //normalize information label
@@ -89,76 +52,48 @@ class ItemViewController: BaseViewController {
         super.didReceiveMemoryWarning()
     }
     
-//    override func loadView() {
-//        
-//    }
-    
-    
-    // MARK: - Private Methods
-    fileprivate func attributedStrForAdding(_ isAdding: Bool) -> NSAttributedString {
-        let boldFont = ThemeManager.sharedManager.itemTextBoldFont()
-        let regularFont = ThemeManager.sharedManager.itemTextRegularFont()
-        let textColor = ThemeManager.sharedManager.itemTextColor()
-        let boldType = [NSFontAttributeName: boldFont, NSForegroundColorAttributeName: textColor]
-        let regularType = [NSFontAttributeName: regularFont, NSForegroundColorAttributeName: textColor]
+    fileprivate func loadGoogleMap() {
+        let camera = GMSCameraPosition.camera(withLatitude: -33.868,
+                                              longitude: 151.2086,
+                                              zoom: 14)
+        let mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 385, width: self.view.frame.width, height: 175), camera: camera)
         
-        let attributedString = NSMutableAttributedString()
-        if isAdding { //string for adding into cart
-            attributedString.append(NSAttributedString(string: "add", attributes: boldType))
-            attributedString.append(NSAttributedString(string: "item", attributes: regularType))
-        } else {
-            attributedString.append(NSAttributedString(string: "delete", attributes: boldType))
-            attributedString.append(NSAttributedString(string: "from", attributes: regularType))
-            attributedString.append(NSAttributedString(string: "cart", attributes: boldType))
-        }
-        return attributedString
+        let marker = GMSMarker()
+        marker.position = camera.target
+        marker.snippet = "Hello World"
+        marker.map = mapView
+        
+        self.view.addSubview(mapView)
     }
     
-    fileprivate func initShopInformation() {
-        if let shopItem = shopItem {
-            priceLbl?.text = "$" + shopItem.price
-            titleLbl?.text = shopItem.title
-            subTitleLbl?.text = shopItem.subTitle
-            informationLbl?.text = shopItem.information
-            segmentedControl?.selectedSegmentIndex = 0
+    fileprivate func loadInformation() {
+        
+    }
+
+    
+    fileprivate func loadImageSession() {
+        var xPosition:CGFloat = 0
+        let imageWidth:CGFloat = 80
+        let imageHeight:CGFloat = 80
+        photoScrollView.isScrollEnabled = true
+        photoScrollView.frame.size.height = imageHeight + 10
+        photoScrollView.frame.size.width = 450
+        photoScrollView.contentSize.height = imageHeight + 10
+        photoScrollView.contentSize.width = 500
+        for _ in 1...10 {
+            let tourImageView:UIImageView = UIImageView()
+            tourImageView.backgroundColor = UIColor.blue
             
-            //set favorite button
-            favoriteBtn?.isSelected = FavoriteItemsManager.sharedManager.items.contains(shopItem)
+            tourImageView.frame.size.width = imageWidth
+            tourImageView.frame.size.height = photoScrollView.frame.height - 5
+            tourImageView.frame.origin.x = xPosition
+            tourImageView.frame.origin.y = 10
+            
+            photoScrollView.addSubview(tourImageView)
+            
+            xPosition += imageWidth + 5
+            
         }
-    }
-    
-    // MARK: - Actions
-    @IBAction func onFavoriteBtnClicked(_ sender: AnyObject) {
-        //select/deselect favorite btn for selected shop item
-        if FavoriteItemsManager.sharedManager.items.contains(shopItem!) { //remove shop item from favorites
-            FavoriteItemsManager.sharedManager.removeItem(shopItem!)
-            favoriteBtn?.isSelected = false
-        } else { //add shop item into favorites
-            FavoriteItemsManager.sharedManager.addItem(shopItem!)
-            favoriteBtn?.isSelected = true
-        }
-    }
-
-    @IBAction func onAddItemBtnClicked(_ sender: AnyObject) {
-        let isItemInCart = CartManager.sharedManager.cartItems.contains(shopItem!)
-        let widthCoef = isItemInCart ? CartBtnAddCoef : CartBtnDeleteCoef
-        let minWidth = isItemInCart ? CartBtnAddMinWidth : CartBtnDeleteMinWidth
-        let constraintValue = max(view.frame.width * CGFloat(widthCoef), CGFloat(minWidth))
-        
-        cartBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, constraintValue - CGFloat(CartBtnImgMargin), 0, 0)
-        cartBtnWidthConstraint?.constant = constraintValue
-        cartBtn?.setAttributedTitle(attributedStrForAdding(isItemInCart), for: UIControlState())
-
-        if isItemInCart { //remove shop item from a cart
-            CartManager.sharedManager.removeShopItem(shopItem!)
-        } else { //add shop item into the cart
-            CartManager.sharedManager.addShopItem(shopItem!)
-        }
-        view.updateConstraints()
-    }
-    
-    @IBAction func didSizeControlValueChanged(_ sender: AnyObject) {
-        print("User changed shop item size")
     }
     
     @IBAction func didPageControlValueChanged(_ sender: AnyObject) {}
