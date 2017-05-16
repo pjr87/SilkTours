@@ -5,7 +5,8 @@ import { Pager } from 'react-bootstrap';
 import { updatePhotoState, setTabKey } from '../../actions/TourCreationActions';
 import Dropzone from 'react-dropzone';
 import {connect} from 'react-redux';
-import {Cropper} from 'react-image-cropper'
+import ReactCrop from 'react-image-crop';
+
 
 class TourCreationPhotos extends React.Component{
   constructor() {
@@ -15,11 +16,22 @@ class TourCreationPhotos extends React.Component{
     this.previous = this.previous.bind(this)
     this.onDrop = this.onDrop.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
+    this.onChange = this.onChange.bind(this)
 
     this.state = {
         image: '',
-        imageLoaded: false
+        imageLoaded: false,
+        crop:{
+          aspect: 9/9
+        },
+        pixelCrop: {}
     }
+  }
+
+  onChange(crop, pixelCrop) {
+    this.setState({crop: crop, pixelCrop: pixelCrop, imageLoaded: true});
+    console.log("crop: ", this.state.crop);
+    console.log("pixelCrop: ", this.state.pixelCrop);
   }
 
   next(){
@@ -54,14 +66,54 @@ class TourCreationPhotos extends React.Component{
 
   handleClick(state){
     var photos = {};
-    let node = this.refs[state];
-    this.setState({
-      [state]: node.crop()
-    });
-    console.log("HERE", this.props.photos);
+    console.log("hello");
+
+    console.log("crop: ", this.state.crop);
+    console.log("pixelCrop: ", this.state.pixelCrop);
+
+    var img = document.querySelector('#left-tabs-example-pane-photos > div > div:nth-child(7) > div > div > div > img');
+
+    console.log("img", img.height, " ", img.width);
+
+
+    var imageWidth = img.width;
+    var imageHeight = img.height;
+
+    var cropX = (this.state.crop.x / 100) * imageWidth;
+    var cropY = (this.state.crop.y / 100) * imageHeight;
+
+    var cropWidth = (this.state.crop.width / 100) * imageWidth;
+    var cropHeight = (this.state.crop.height / 100) * imageHeight;
+
+    var canvas = document.createElement('canvas');
+    canvas.width = cropWidth;
+    canvas.height = cropHeight;
+    var ctx = canvas.getContext('2d');
+
+    ctx.drawImage(img, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+
+    if (HTMLCanvasElement.prototype.toBlob) {
+      console.info('It looks like Chrome now supports HTMLCanvasElement.toBlob.. time to uncomment some code!');
+    }
+
+    // canvas.toBlob will be faster and non-blocking but is currently only supported in FF.
+    // canvas.toBlob(function(blob) {
+    //  var url = URL.createObjectURL(blob);
+
+    //  imgDest.onload = function() {
+    //    URL.revokeObjectURL(url);
+    //    this.ready();
+    //  };
+
+    //  imgDest.src = url;
+    // });
+
+    console.log("base64: ", canvas.toDataURL('image/jpeg'));
+
+
     var newFile = {
       name: this.props.photos.name,
-      file: node.crop()
+      file: canvas.toDataURL('image/jpeg')
     }
     photos = newFile;
     this.props.dispatch(updatePhotoState(photos));
@@ -82,12 +134,14 @@ class TourCreationPhotos extends React.Component{
 
         {this.props.photos ? <div>
         <div>
-          <Cropper  src={this.props.photos.file}
-                    ratio={9 / 9} ref="image"
-                    fixedRatio={true} allowNewSelection={false}
-                    onImgLoad={() => this.handleImageLoaded('image')}/>
+          <ReactCrop src={this.props.photos.file}
+                    {...this.state} keepSelection = {true}
+                     onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)}
+
+
+                     />
         <br/>
-        {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null}
+        {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null }
         </div>
         </div> : null}
 
