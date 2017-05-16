@@ -110,6 +110,15 @@ class TourCreationPhotos extends React.Component{
 
     console.log("base64: ", canvas.toDataURL('image/jpeg'));
 
+    var crop = this.state.crop;
+
+    crop.width = 100;
+    crop.height = 100;
+
+    this.setState({crop: crop});
+
+    console.log("newState: ", this.state.crop);
+
 
     var newFile = {
       name: this.props.photos.name,
