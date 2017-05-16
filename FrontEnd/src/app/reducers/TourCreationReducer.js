@@ -60,7 +60,8 @@ const initialState = {
   hours_special_dates: [],
   currentlySending: false,
   errorMessage: '',
-  tabKey: 'info'
+  tabKey: 'info',
+  navAllowed: true //TODO
 };
 
 // Takes care of changing the application state
@@ -108,6 +109,8 @@ function TourCreationReducer(state = initialState, action) {
         };
     case tourCreationConstants.SENDING_REQUEST:
       return {...state, currentlySending: action.sending};
+    case tourCreationConstants.NAV_ALLOWED:
+      return {...state, navAllowed: action.newNavState};
     case tourCreationConstants.UPDATE_SPECIAL_TIME:
       return {...state, hours_special: action.newSpecialTimeState};
     case tourCreationConstants.UPDATE_SPECIAL_TIME_DATE:

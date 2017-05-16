@@ -145,65 +145,66 @@ class TourDetailContents extends React.Component{
     } else {
      guideButton = null;
     }
-    //
-    // const getToken = () => {
-    //   // Replace this with an actual promise to your Braintree-enabled server
-    //   return new Promise((resolve) => {
-    //     // Example taken from https://developers.braintreepayments.com/start/hello-client/javascript/v2
-    //     const exampleClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3OTJmMDBkOGJiZmQxZTIyNDc2NGQ3YzlmOGRmOGNkODEyMjUzMGYwZDUyYWRjOGI4NzZiMTc1NGNkMzRlZGFlfGNyZWF0ZWRfYXQ9MjAxNy0wMi0wMVQwMDoxMTo1OC4wMDA4NDQ4MjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPTM0OHBrOWNnZjNiZ3l3MmJcdTAwMjZwdWJsaWNfa2V5PTJuMjQ3ZHY4OWJxOXZtcHIiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvMzQ4cGs5Y2dmM2JneXcyYi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzM0OHBrOWNnZjNiZ3l3MmIvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tLzM0OHBrOWNnZjNiZ3l3MmIifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6ImFjbWV3aWRnZXRzbHRkc2FuZGJveCIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiMzQ4cGs5Y2dmM2JneXcyYiIsInZlbm1vIjoib2ZmIn0=";
-    //     resolve(exampleClientToken);
-    //   });
-    // };
-    //
-    // // Charge the card using the returned nonce if you want :)
-    // const onTokenization = (nonce) => {
-    //   if(nonce!=null){
-    //     this.setState({
-    //       validationState: null
-    //     })
-    //     console.log(`Charge the card: ${nonce}`);
-    //     var tourEvent = {
-    //       end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
-    //       id_tour: this.props.selectedTourId,
-    //       participants:	 [
-    //  	 	 	 	 	 {
-    //  	 	 	 	 	 	 	 	 	 id_users:	 this.props.id_user,
-    //  	 	 	 	 	 }
- 	 // 	 	    ],
-    //       start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
-    //       state: 'B'
-    //     }
-    //     console.log(tourEvent);
-    //     console.log('tureventID ' + this.props.selectedTourDateString)
-    //     service.setTourEvent(tourEvent, this.props.auth).then(function(response){
-    //       console.log(response);
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-    //
-    //     // this.props.dispatch(setSelectedDateStart(this.props.selectedTourDateStart));
-    //     // this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDateEnd));
-    //     console.log("test date time");
-    //     console.log(this.props.selectedTourDateStart);
-    //     console.log(this.props.selectedTourDateEnd);
-    //     browserHistory.push('/tourconfirmation');
-    //   }
-    //   else {
-    //     this.setState({
-    //       validationState: "error"
-    //     })
-    //     console.log('Error; check your card information');
-    //   }
-    // };
-    // if(this.props.isLoaded == false){
-    //   return(
-    //     <div>
-    //       <p className={style.tourTitle}>"Tour is loading"</p>
-    //     </div>
-    //   )
-    // }
-    // else{
+
+    const getToken = () => {
+      // Replace this with an actual promise to your Braintree-enabled server
+      return new Promise((resolve) => {
+        // Example taken from https://developers.braintreepayments.com/start/hello-client/javascript/v2
+        const exampleClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3OTJmMDBkOGJiZmQxZTIyNDc2NGQ3YzlmOGRmOGNkODEyMjUzMGYwZDUyYWRjOGI4NzZiMTc1NGNkMzRlZGFlfGNyZWF0ZWRfYXQ9MjAxNy0wMi0wMVQwMDoxMTo1OC4wMDA4NDQ4MjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPTM0OHBrOWNnZjNiZ3l3MmJcdTAwMjZwdWJsaWNfa2V5PTJuMjQ3ZHY4OWJxOXZtcHIiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvMzQ4cGs5Y2dmM2JneXcyYi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzM0OHBrOWNnZjNiZ3l3MmIvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tLzM0OHBrOWNnZjNiZ3l3MmIifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6ImFjbWV3aWRnZXRzbHRkc2FuZGJveCIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiMzQ4cGs5Y2dmM2JneXcyYiIsInZlbm1vIjoib2ZmIn0=";
+        resolve(exampleClientToken);
+      });
+    };
+
+    // Charge the card using the returned nonce if you want :)
+    const onTokenization = (nonce) => {
+      if(nonce!=null){
+        this.setState({
+          validationState: null
+        })
+        console.log(`Charge the card: ${nonce}`);
+        var tourEvent = {
+          end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
+          id_tour: this.props.selectedTourId,
+          id_user:	 this.props.id_user,
+          participants:	 [
+            {
+              id_users:	 this.props.id_user,
+            }
+ 	 	 	    ],
+          start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
+          state: 'B'
+        }
+        console.log(tourEvent);
+        console.log('tureventID ' + this.props.selectedTourDateString)
+        service.setTourEvent(tourEvent, this.props.auth).then(function(response){
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+        // this.props.dispatch(setSelectedDateStart(this.props.selectedTourDateStart));
+        // this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDateEnd));
+        console.log("test date time");
+        console.log(this.props.selectedTourDateStart);
+        console.log(this.props.selectedTourDateEnd);
+        browserHistory.push('/tourconfirmation');
+      }
+      else {
+        this.setState({
+          validationState: "error"
+        })
+        console.log('Error; check your card information');
+      }
+    };
+    if(this.props.isLoaded == false){
+      return(
+        <div>
+          <p className={style.tourTitle}>"Tour is loading"</p>
+        </div>
+      )
+    }
+    else{
 
     let reserveEditButton = null;
 
@@ -266,8 +267,6 @@ class TourDetailContents extends React.Component{
                     <p className={style.content}>Review: {this.props.selectedTour.average_rating} out of 5</p>
                     <p className={style.content}>Max Group Size: {this.props.selectedTour.max_group_size}</p>
                     <p className={style.content}>Min Group Size: {this.props.selectedTour.min_group_size}</p>
-                    <p className={style.content}>Tour Start Date: {this.props.selectedTour.firstStart_date}</p>
-                    <p className={style.content}>Tour End Date: {this.props.selectedTour.lastEnd_date}</p>
 
                     <p className={style.contentSubTitle}>Stops: </p>
                     {this.props.selectedTour.stops.map((stops, i) => {
@@ -429,7 +428,7 @@ class TourDetailContents extends React.Component{
               <ControlLabel>Please check your card information</ControlLabel>
             </FormGroup>
             <div>
-              {/*}<HostedField fetchToken={getToken} onTokenization={onTokenization} />*/}
+              <HostedField fetchToken={getToken} onTokenization={onTokenization} />
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -438,7 +437,7 @@ class TourDetailContents extends React.Component{
         </Modal>
       </div>
       );
-    // }
+     }
   }
 }
 
