@@ -2,12 +2,12 @@ import React from 'react';
 import {PageTitle, WishListContent} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
-class WishList extends React.Component{
+class Favorites extends React.Component{
   render(){
     return (
       <div>
         <Grid>
-          <PageTitle title="WishList"/>
+          <PageTitle title="Favorites"/>
           <WishListContent/>
         </Grid>
       </div>
@@ -15,4 +15,4 @@ class WishList extends React.Component{
   }
 }
 
-export default WishList;
+export default Favorites;

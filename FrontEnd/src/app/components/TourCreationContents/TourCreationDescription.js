@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
-import { Pager } from 'react-bootstrap';
+import {Pager, Col, Row, Grid, FormControl} from 'react-bootstrap';
 import { updateDescriptionState, setTabKey } from '../../actions/TourCreationActions';
 
 class TourCreationDescription extends React.Component{
@@ -30,19 +30,54 @@ class TourCreationDescription extends React.Component{
   }
 
   render(){
-    return (
-      <div>
-        <br/>
-        <p className={style.HeaderStyle}>Please describe the tour.</p>
-        <br/>
-        <EditableFieldClass style={style.BodyStyle} label="Description" onChange={this._changeDescription} value={this.props.tour.description}/>
-        <br/>
-        <Pager>
-          <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-        </Pager>
-      </div>
-    )
+    if(this.props.tour.description == ""){
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Please describe the tour.</p>
+          <br/>
+            <Col xs={8} md={6} >
+                  <FormControl style={{resize: "vertical"}} componentClass="textarea" onChange={this._changeDescription} value={this.props.tour.description} />
+            </Col>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
+    else{
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Please describe the tour.</p>
+          <br/>
+            <Col xs={8} md={6} >
+                  <FormControl style={{resize: "vertical"}} componentClass="textarea" onChange={this._changeDescription} value={this.props.tour.description} />
+            </Col>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
   }
 }
 

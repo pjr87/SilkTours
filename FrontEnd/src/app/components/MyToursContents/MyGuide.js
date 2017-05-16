@@ -57,7 +57,7 @@ class MyGuide extends React.Component{
     */
 
     const guideToursG = this.props.allToursGuided;
-    const guideToursGiving = (<ToursList tourDisplayProps={{display:"small", isGuide: true, editBtn: true}} tours={guideToursG}  />);//
+    const guideToursGiving = guideToursG.length > 0 ? (<ToursList tourDisplayProps={{display:"small", isGuide: true, editBtn: true}} tours={guideToursG}  />) : "No Tours";//
     /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")

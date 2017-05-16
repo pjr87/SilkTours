@@ -34,7 +34,7 @@ class CollectionTableViewCell: UITableViewCell {
             break
         case .onSale:
             saleimgView?.isHidden = false
-            saleimgView?.image = UIImage(named: "on_sale.png")
+            saleimgView?.image = UIImage(named: "featured.png")
             break
         default:
             break

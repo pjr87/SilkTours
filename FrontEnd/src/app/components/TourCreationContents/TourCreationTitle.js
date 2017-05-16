@@ -30,7 +30,22 @@ class TourCreationTitle extends React.Component{
   }
 
   render(){
-    if(this.props.tour.name != null || this.props.tour.name != ''){
+    if(this.props.tour.name == ""){
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>What is the title of the tour?</p>
+          <br/>
+          <EditableFieldClass style={style.BodyStyle} label="Title" onChange={this._changeTour} value={this.props.tour.name}/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
+    else{
       return (
         <div>
           <br/>
@@ -42,21 +57,6 @@ class TourCreationTitle extends React.Component{
             <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
             <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
           </Pager>
-        </div>
-      )
-    }
-    else {
-      return (
-        <div>
-          <br/>
-          <p className={style.HeaderStyle}>What is the title of the tour?</p>
-          <br/>
-          <EditableFieldClass style={style.BodyStyle} label="Title" onChange={this._changeTour} value=""/>
-          <br/>
-            <Pager>
-              <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-              <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
-            </Pager>
         </div>
       )
     }

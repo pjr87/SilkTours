@@ -33,13 +33,14 @@ class BaseShopTableViewCell: UITableViewCell {
     }
     
     func setSaleMode(_ saleMode: SaleMode) {
-        switch (saleMode) {
+        var s = SaleMode.featured
+        switch (s) {
         case .default:
             saleModeImgView?.isHidden = true
             break
         case .onSale:
             saleModeImgView?.isHidden = false
-            saleModeImgView?.image = UIImage(named: "on_sale.png")
+            saleModeImgView?.image = UIImage(named: "featured.png")
             break
         case .featured:
             saleModeImgView?.isHidden = false
@@ -47,7 +48,7 @@ class BaseShopTableViewCell: UITableViewCell {
             break
         case .bestPrice:
             saleModeImgView?.isHidden = false
-            saleModeImgView?.image = UIImage(named: "best_price.png")
+            saleModeImgView?.image = UIImage(named: "featured.png")
             break
         }
     }

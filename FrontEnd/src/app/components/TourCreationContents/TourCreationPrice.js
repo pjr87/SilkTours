@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
-import { updatePriceState, setTabKey } from '../../actions/TourCreationActions';
+import { updatePriceState, setTabKey, navAllowed } from '../../actions/TourCreationActions';
 
 class TourCreationPrice extends React.Component{
   constructor() {
@@ -15,6 +15,7 @@ class TourCreationPrice extends React.Component{
 
   next(){
     this.props.dispatch(setTabKey("review"));
+    this.props.dispatch(navAllowed(true));
   }
 
   previous(){
@@ -22,7 +23,12 @@ class TourCreationPrice extends React.Component{
   }
 
   _changePrice(event) {
-    this._emitUserChange({...this.props.tour, price: event.target.value});
+    if(!isNaN(event.target.value))
+    {
+       this._emitUserChange({...this.props.tour, price: event.target.value});
+    }else{
+       console.log("Not a number");
+    }
   }
 
   _emitUserChange (newPriceState) {
@@ -30,19 +36,36 @@ class TourCreationPrice extends React.Component{
   }
 
   render(){
-    return (
-      <div>
-        <br/>
-        <p className={style.HeaderStyle}>What will this tour cost?</p>
-        <br/>
-        <EditableFieldClass style={style.BodyStyle} label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
-        <br/>
-        <Pager>
-          <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-        </Pager>
-      </div>
-    )
+    if(this.props.tour.price == "" || this.props.tour.price == 0){
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>What will this tour cost?</p>
+          <br/>
+          <EditableFieldClass style={style.BodyStyle} label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
+    else{
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>What will this tour cost?</p>
+          <br/>
+          <EditableFieldClass style={style.BodyStyle} label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
   }
 }
 

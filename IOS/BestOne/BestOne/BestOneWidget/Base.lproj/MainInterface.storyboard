@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="M4Y-Lb-cyx">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Raleway-Bold.ttf">
+        <array key="Raleway-Bold.ttf">
             <string>Raleway-Bold</string>
-        </mutableArray>
-        <mutableArray key="Raleway-Medium.ttf">
+        </array>
+        <array key="Raleway-Medium.ttf">
             <string>Raleway-Medium</string>
-            <string>Raleway-Medium</string>
-            <string>Raleway-Medium</string>
-        </mutableArray>
+        </array>
     </customFonts>
     <scenes>
         <!--Today View Controller-->
@@ -28,48 +27,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shop_item1.png" translatesAutoresizingMaskIntoConstraints="NO" id="0J8-qk-nK6">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="171"/>
-                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shop_item1.png" translatesAutoresizingMaskIntoConstraints="NO" id="0J8-qk-nK6"/>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jyx-U7-3FG">
-                                <rect key="frame" x="0.0" y="0.0" width="43" height="171"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="best_price.png" translatesAutoresizingMaskIntoConstraints="NO" id="Iu4-Is-mgP">
-                                <rect key="frame" x="43" y="54" width="64" height="64"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="featured.png" translatesAutoresizingMaskIntoConstraints="NO" id="Iu4-Is-mgP">
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Iu4-Is-mgP" secondAttribute="height" multiplier="1:1" id="uwz-td-xgd"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0w2-jW-7Lg">
-                                <rect key="frame" x="0.0" y="171" width="375" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$39" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKz-5G-S6L">
-                                        <rect key="frame" x="0.0" y="0.0" width="63" height="44"/>
                                         <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="20.840000152587891"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item-marker-white.png" translatesAutoresizingMaskIntoConstraints="NO" id="e94-tu-nhl">
-                                        <rect key="frame" x="63" y="0.0" width="5" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="e94-tu-nhl" secondAttribute="height" multiplier="5:31" id="ipc-DI-gHd"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cute Racoon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H4E-TL-RSM">
-                                        <rect key="frame" x="73" y="6" width="194" height="20"/>
                                         <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="16.680000305175781"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PULLOVER" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oIB-9D-S5n">
-                                        <rect key="frame" x="73" y="25" width="194" height="13"/>
                                         <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="10.420000076293945"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IH7-fc-yem">
-                                        <rect key="frame" x="295" y="0.0" width="80" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="wFS-ft-ZPX"/>
                                         </constraints>
@@ -77,23 +66,22 @@
                                         <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="64" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="show item" image="add_item.png">
-                                            <color key="titleColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <state key="highlighted" image="arrow-right-active-white.png"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="76P-Sp-E7l">
-                                        <rect key="frame" x="267" y="0.0" width="36" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="76P-Sp-E7l" secondAttribute="height" multiplier="30:37" id="r7H-c3-gh9"/>
                                         </constraints>
                                         <state key="normal" image="not-chosen-favorite-white.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <state key="selected" image="chosen-favorite-white.png"/>
                                         <state key="highlighted" image="chosen-favorite-white.png"/>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="IH7-fc-yem" firstAttribute="leading" secondItem="76P-Sp-E7l" secondAttribute="trailing" constant="-8" id="0bH-Gt-l8b"/>
                                     <constraint firstItem="oIB-9D-S5n" firstAttribute="top" secondItem="H4E-TL-RSM" secondAttribute="bottom" constant="-1" id="3TF-uw-VCj"/>
@@ -116,7 +104,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="0J8-qk-nK6" firstAttribute="centerY" secondItem="Iu4-Is-mgP" secondAttribute="centerY" id="5fz-JB-chN"/>
                             <constraint firstAttribute="width" secondItem="0J8-qk-nK6" secondAttribute="width" id="7ee-Av-19G"/>
@@ -149,12 +137,17 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add_item.png" width="8" height="14"/>
-        <image name="arrow-right-active-white.png" width="8" height="14"/>
-        <image name="best_price.png" width="63" height="63"/>
-        <image name="chosen-favorite-white.png" width="16" height="17"/>
-        <image name="item-marker-white.png" width="5" height="31"/>
-        <image name="not-chosen-favorite-white.png" width="16" height="17"/>
+        <image name="add_item.png" width="7" height="13"/>
+        <image name="arrow-right-active-white.png" width="7" height="13"/>
+        <image name="chosen-favorite-white.png" width="15" height="16"/>
+        <image name="featured.png" width="62" height="62"/>
+        <image name="item-marker-white.png" width="4" height="31"/>
+        <image name="not-chosen-favorite-white.png" width="15" height="16"/>
         <image name="shop_item1.png" width="360" height="164"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>
