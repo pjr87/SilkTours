@@ -22,11 +22,6 @@ onClickHandler(){
     alert("You must accept the terms and conditions!");
     return;
   }
-  var modifiedUser = this.props.user;
-  console.log('this.props.user', this.props.user);
-  modifiedUser.is_guide = true;
-  console.log('modifiedUser', modifiedUser);
-
 
   var obj = {is_guide:true};
   var forSubmit = JSON.parse(JSON.stringify(obj));
