@@ -36,6 +36,8 @@ class ItemViewController: BaseViewController {
         title = shopItem?.title
         loadGoogleMap()
         loadImageSession()
+        loadButtons()
+        print()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +50,23 @@ class ItemViewController: BaseViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    fileprivate func loadButtons() {
+        let messageButton:UIButton = UIButton()
+        let joinButton:UIButton = UIButton()
+        
+        messageButton.setTitle("Message", for: .normal)
+        messageButton.backgroundColor = UIColor.blue
+        messageButton.frame.size = CGSize(width: 125, height: 30)
+        messageButton.frame.origin = CGPoint(x: 35, y: 345)
+        joinButton.setTitle("Join", for: .normal)
+        joinButton.backgroundColor = UIColor.green
+        joinButton.frame.size = CGSize(width: 125, height: 30)
+        joinButton.frame.origin = CGPoint(x: 254, y: 345)
+        
+        self.view.addSubview(messageButton)
+        self.view.addSubview(joinButton)
     }
     
     fileprivate func loadGoogleMap() {
@@ -73,29 +92,32 @@ class ItemViewController: BaseViewController {
         var xPosition:CGFloat = 10
         let imageWidth:CGFloat = 80
         let imageHeight:CGFloat = 80
+        let count:Int = 10
         
         photoLabel.text = "Photo"
         photoLabel.frame.size = CGSize(width: 100, height: 30)
         photoLabel.frame.origin = CGPoint(x: 10, y: 570)
         photoScrollView.isScrollEnabled = true
-        photoScrollView.frame.size = CGSize(width: 450, height: imageHeight + 10)
-        photoScrollView.contentSize = CGSize(width: 500, height: imageHeight + 10)
+        photoScrollView.frame.size = CGSize(width: self.view.frame.width, height: imageHeight + 10)
+        photoScrollView.contentSize = CGSize(width: (imageWidth + 5) * CGFloat(count) + 10, height: imageHeight + 10)
         photoScrollView.frame.origin = CGPoint(x: 0, y: 600)
         
         self.view.addSubview(photoLabel)
         self.view.addSubview(photoScrollView)
-        for _ in 1...10 {
+        for _ in 1...count {
+            let media:Media = Media()
             let tourImageView:UIImageView = UIImageView()
-            tourImageView.backgroundColor = UIColor.blue
+            //tourImageView.backgroundColor = UIColor.blue
+            media.setImageByUrl(url: "https://s3.amazonaws.com/silktours-media/tour/1/0ff6044bfbf0457c9b521c986369b17f.jpg") { image in
+                tourImageView.image = image
+            }
             
             tourImageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
-
             tourImageView.frame.origin = CGPoint(x: xPosition, y: 10)
             
             photoScrollView.addSubview(tourImageView)
             
             xPosition += imageWidth + 5
-            
         }
     }
     
