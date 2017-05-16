@@ -26,8 +26,6 @@ class ItemViewController: BaseViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl?
     var shopItem: ShopItem?
     
-    @IBOutlet weak var photoScrollView: UIScrollView!
-    
     var mapView: GMSMapView!
     @IBOutlet weak var googleMapsHeightConstraint: NSLayoutConstraint!
     fileprivate var itemsInCart: [ShopItem] = []
@@ -53,9 +51,7 @@ class ItemViewController: BaseViewController {
     }
     
     fileprivate func loadGoogleMap() {
-        let camera = GMSCameraPosition.camera(withLatitude: -33.868,
-                                              longitude: 151.2086,
-                                              zoom: 14)
+        let camera = GMSCameraPosition.camera(withLatitude: -33.868, longitude: 151.2086, zoom: 14)
         let mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 385, width: self.view.frame.width, height: 175), camera: camera)
         
         let marker = GMSMarker()
@@ -72,22 +68,29 @@ class ItemViewController: BaseViewController {
 
     
     fileprivate func loadImageSession() {
-        var xPosition:CGFloat = 0
+        let photoScrollView:UIScrollView = UIScrollView()
+        let photoLabel:UILabel = UILabel()
+        var xPosition:CGFloat = 10
         let imageWidth:CGFloat = 80
         let imageHeight:CGFloat = 80
+        
+        photoLabel.text = "Photo"
+        photoLabel.frame.size = CGSize(width: 100, height: 30)
+        photoLabel.frame.origin = CGPoint(x: 10, y: 570)
         photoScrollView.isScrollEnabled = true
-        photoScrollView.frame.size.height = imageHeight + 10
-        photoScrollView.frame.size.width = 450
-        photoScrollView.contentSize.height = imageHeight + 10
-        photoScrollView.contentSize.width = 500
+        photoScrollView.frame.size = CGSize(width: 450, height: imageHeight + 10)
+        photoScrollView.contentSize = CGSize(width: 500, height: imageHeight + 10)
+        photoScrollView.frame.origin = CGPoint(x: 0, y: 600)
+        
+        self.view.addSubview(photoLabel)
+        self.view.addSubview(photoScrollView)
         for _ in 1...10 {
             let tourImageView:UIImageView = UIImageView()
             tourImageView.backgroundColor = UIColor.blue
             
-            tourImageView.frame.size.width = imageWidth
-            tourImageView.frame.size.height = photoScrollView.frame.height - 5
-            tourImageView.frame.origin.x = xPosition
-            tourImageView.frame.origin.y = 10
+            tourImageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
+
+            tourImageView.frame.origin = CGPoint(x: xPosition, y: 10)
             
             photoScrollView.addSubview(tourImageView)
             
