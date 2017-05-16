@@ -45,7 +45,7 @@ class MessagesPage extends React.Component{
         {
           $applozic.fn.applozic('loadTab', idPassed);
         }
-            
+
       } else if (response === 'object' && response.status === 'error') {
         alert(response.errorMessage);
         console.log(response.errorMessage);
@@ -62,15 +62,12 @@ class MessagesPage extends React.Component{
       //Function to initialize plugin
       $applozic.fn
           .applozic({
-            userId : this.props.user_id,//this.props.auth['IdentityId'].replace(":", " "),
+            appId: '99f097e1f3b4ebb13e008942be1ccf34',
+            userId : this.props.user_id,
             userName : this.props.firstName,
-            //appId: '39dbafa82d712b9c4b91428bf91631707',
-            //appId: 'psoxs4b4395b4a0ddb58368a338981675575c',
-           // appId: '2ad84408079d676df9953c6b9fe1c8e3d',
-           appId: '208f30b543b13fdfba85ce3c442e217ad',
             ojq : $original,
             obsm : oModal,
-            accessToken : this.props.auth['Logins'],//'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+            accessToken : 'test',//'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
             authenticationTypeId: 0,    //1 for password verification from Applozic server and 0 for access Token verification from your server
             autoTypeSearchEnabled : false,
             loadOwnContacts : false,
