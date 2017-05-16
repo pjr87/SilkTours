@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMobileAds
+import GoogleMaps
 
 let secondsInMinute = 60.0
 
@@ -31,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Flurry.startSession(flurrySessionId)
         
         initAppiRater()
+        GMSServices.provideAPIKey("AIzaSyCd8WDc5luI3qSBLNVgCfrH77flBzM5zEw")
         
         //init rate timer
         initRateAppTimer()
