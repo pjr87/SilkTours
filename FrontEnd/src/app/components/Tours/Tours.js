@@ -270,8 +270,14 @@ class Tours extends React.Component{
         <Thumbnail bsStyle="thumbnail">
 
           <div onMouseOver={this.mouseOverImage.bind(this)} onMouseOut={this.mouseOutImage.bind(this)}>
+            <Link
+              to={{
+                pathname: '/tourdetail',
+                query: { tourId: this.props.tour.id_tour }
+              }}>
             {this.state.showTourTitle ? (<Image className={Style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={Style.tour_image_large} src={this.props.tour.profile_image}/>)}
             {this.state.showTourTitle ? (<p className={Style.image_text}>{this.props.tour.name}</p>): null}
+            </Link>
           </div>
           <div onClick={this.handleAddFavorite}>
             <p className={Style.image_heart}>&#9825;</p>
