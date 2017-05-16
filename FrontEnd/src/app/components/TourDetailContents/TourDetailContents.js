@@ -39,10 +39,48 @@ class TourDetailContents extends React.Component{
     this.closeModal = this.closeModal.bind(this);
     this.openModalCal = this.openModalCal.bind(this);
     this.closeModalCal = this.closeModalCal.bind(this);
+    this.hhmmss = this.hhmmss.bind(this);
+    this.formatTime = this.formatTime.bind(this);
+    this.pad = this.pad.bind(this);
     this.expandCal = this.expandCal.bind(this);
     this.compressCal = this.compressCal.bind(this);
     this.handleSelectedDateChange = this.handleSelectedDateChange.bind(this);
     this.handleSelectedTimeChange = this.handleSelectedTimeChange.bind(this);
+  }
+
+  pad(str) {
+      return ("0"+str).slice(-2);
+  }
+
+  hhmmss(secs) {
+    var minutes = Math.floor(secs / 60);
+    secs = secs%60;
+    var hours = Math.floor(minutes/60)
+    minutes = minutes%60;
+    return this.pad(hours)+":"+this.pad(minutes)+":"+this.pad(secs);
+  }
+
+  formatTime(time){
+    var a = time.split(':');
+    var b = a[1].split(' '); // split it at the colons
+    console.log("b", b);
+    var hours = Number(a[0])
+    var minutes = Number(b[0])
+    console.log("hours", hours);
+    console.log("minutes", minutes);
+    if(b[1] == "PM"){
+      hours = hours+12;
+    }
+    console.log("hours", hours);
+    console.log("minutes", minutes);
+
+    // minutes are worth 60 seconds. Hours are worth 60 minutes.
+    var seconds = (+hours) * 60 * 60 + (+minutes) * 60;
+
+    console.log(seconds);
+    var newtime = this.hhmmss(seconds);
+    console.log("newtime", newtime);
+    return newtime;
   }
 
   closeModal() {
@@ -162,18 +200,18 @@ class TourDetailContents extends React.Component{
           validationState: null
         })
         console.log(`Charge the card: ${nonce}`);
+
+        var startTime = this.formatTime(this.props.selectedTourDateStart);
+        var endTime = this.formatTime(this.props.selectedTourDateEnd);
+
         var tourEvent = {
-          end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
           id_tour: this.props.selectedTourId,
           id_user:	 this.props.id_user,
-          participants:	 [
-            {
-              id_users:	 this.props.id_user,
-            }
- 	 	 	    ],
-          start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
+          start_date_time: this.props.selectedTourDateString + " " + startTime,
+          end_date_time: this.props.selectedTourDateString + " " + endTime,
           state: 'B'
         }
+        console.log("tourevent");
         console.log(tourEvent);
         console.log('tureventID ' + this.props.selectedTourDateString)
         service.setTourEvent(tourEvent, this.props.auth).then(function(response){
