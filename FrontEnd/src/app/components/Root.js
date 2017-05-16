@@ -32,10 +32,7 @@ import cognitoFunctions from '../utils/cognitoFunctions';
 
 /* Function used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
-  let tmpState = loadState();
   let loggedIn = cognitoFunctions.loggedIn();
-
-  console.log("loggedIn", loggedIn);
 
   //If user is not logged in then redirect them to sign in page
   if (!loggedIn) {

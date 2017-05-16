@@ -7,9 +7,6 @@
 //
 
 import UIKit
-import AWSCore
-import AWSCognito
-import AWSCognitoIdentityProvider
 
 class LoginViewController: UIViewController {
     
@@ -19,10 +16,19 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView?
     fileprivate var isKeyboardShown: Bool = false
 
+    @IBOutlet weak var logo: UIImageView!
+    @IBOutlet weak var logoContainer: UIView!
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //add observers for keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillChangeFrame(_:)), name: NSNotification.Name(rawValue: "UIKeyboardWillChangeFrameNotification"), object: nil)
+        logo.layer.cornerRadius = logo.frame.size.width/2
+        logo.clipsToBounds = true
+        //logoContainer.layer.borderColor = UIColor(red: 140/255.0, green: 89/255.0, blue: 135/255.0, alpha: 1.0).cgColor
+        //logoContainer.layer.borderWidth = 10
+        //logoContainer.transform = logoContainer.transform.rotated(by: CGFloat(Double.pi/4))
     }
     
     override func didReceiveMemoryWarning() {
