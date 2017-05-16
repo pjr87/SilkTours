@@ -141,6 +141,9 @@ export default class MultiDateSelect extends React.Component{
             showOverlay: true,
             shouldHeaderAnimate: true,
           }}
+          width={400}
+          height={200}
+          rowHeight={50}
           onSelect={this.onDateSelect}
         />
       {this.renderDates()}
