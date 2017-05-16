@@ -39,7 +39,7 @@ class BaseShopTableViewCell: UITableViewCell {
             break
         case .onSale:
             saleModeImgView?.isHidden = false
-            saleModeImgView?.image = UIImage(named: "on_sale.png")
+            saleModeImgView?.image = UIImage(named: "featured.png")
             break
         case .featured:
             saleModeImgView?.isHidden = false
@@ -47,7 +47,7 @@ class BaseShopTableViewCell: UITableViewCell {
             break
         case .bestPrice:
             saleModeImgView?.isHidden = false
-            saleModeImgView?.image = UIImage(named: "best_price.png")
+            saleModeImgView?.image = UIImage(named: "featured.png")
             break
         }
     }

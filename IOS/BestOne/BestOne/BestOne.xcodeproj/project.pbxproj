@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		050B255D1ECA988100E998A3 /* shop_header_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 050B255C1ECA988100E998A3 /* shop_header_new.png */; };
 		05BBFB721EB81F7D00D7123C /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BBFB711EB81F7D00D7123C /* BackendAPI.swift */; };
+		05E80C8D1ECA9D620072D09B /* only_best_one_collections_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 05E80C8C1ECA9D620072D09B /* only_best_one_collections_new.png */; };
 		05EB20B71EBE5C2D002FD2A0 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */; };
 		4971FAC31EC3B2F500567F74 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4971FAC21EC3B2F500567F74 /* RegisterViewController.swift */; };
 		B2E3019F4FBE6DA5BE523A18 /* Pods_BestOne.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15157B4E267BF49DF6F3B50 /* Pods_BestOne.framework */; };
@@ -173,7 +175,6 @@
 		BB39C8871B67734500681FB2 /* on_sale.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E01B67734500681FB2 /* on_sale.png */; };
 		BB39C8881B67734500681FB2 /* on_sale@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E11B67734500681FB2 /* on_sale@2x.png */; };
 		BB39C8891B67734500681FB2 /* on_sale@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E21B67734500681FB2 /* on_sale@3x.png */; };
-		BB39C88A1B67734500681FB2 /* only_best_one_collections.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E31B67734500681FB2 /* only_best_one_collections.png */; };
 		BB39C88B1B67734500681FB2 /* only_best_one_collections@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E41B67734500681FB2 /* only_best_one_collections@2x.png */; };
 		BB39C88C1B67734500681FB2 /* only_best_one_collections@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E51B67734500681FB2 /* only_best_one_collections@3x.png */; };
 		BB39C88D1B67734500681FB2 /* profile_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = BB39C7E61B67734500681FB2 /* profile_photo.png */; };
@@ -282,7 +283,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		050B255C1ECA988100E998A3 /* shop_header_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_header_new.png; sourceTree = "<group>"; };
 		05BBFB711EB81F7D00D7123C /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackendAPI.swift; path = ../Classes/BackendAPI.swift; sourceTree = "<group>"; };
+		05E80C8C1ECA9D620072D09B /* only_best_one_collections_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = only_best_one_collections_new.png; sourceTree = "<group>"; };
 		05EB20B61EBE5C2D002FD2A0 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/BestOne-bbzamvtjdcwfxwdweqgmmcvqdxnf/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		24A3FE672FD02BF7DE87D678 /* Pods-BestOneWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestOneWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestOneWidget/Pods-BestOneWidget.release.xcconfig"; sourceTree = "<group>"; };
 		3025B6B29A73D5E0F353D9C2 /* Pods_BestOneWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestOneWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -473,7 +476,6 @@
 		BB39C7E01B67734500681FB2 /* on_sale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = on_sale.png; sourceTree = "<group>"; };
 		BB39C7E11B67734500681FB2 /* on_sale@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "on_sale@2x.png"; sourceTree = "<group>"; };
 		BB39C7E21B67734500681FB2 /* on_sale@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "on_sale@3x.png"; sourceTree = "<group>"; };
-		BB39C7E31B67734500681FB2 /* only_best_one_collections.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = only_best_one_collections.png; sourceTree = "<group>"; };
 		BB39C7E41B67734500681FB2 /* only_best_one_collections@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "only_best_one_collections@2x.png"; sourceTree = "<group>"; };
 		BB39C7E51B67734500681FB2 /* only_best_one_collections@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "only_best_one_collections@3x.png"; sourceTree = "<group>"; };
 		BB39C7E61B67734500681FB2 /* profile_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_photo.png; sourceTree = "<group>"; };
@@ -1013,7 +1015,7 @@
 				BB39C7E01B67734500681FB2 /* on_sale.png */,
 				BB39C7E11B67734500681FB2 /* on_sale@2x.png */,
 				BB39C7E21B67734500681FB2 /* on_sale@3x.png */,
-				BB39C7E31B67734500681FB2 /* only_best_one_collections.png */,
+				05E80C8C1ECA9D620072D09B /* only_best_one_collections_new.png */,
 				BB39C7E41B67734500681FB2 /* only_best_one_collections@2x.png */,
 				BB39C7E51B67734500681FB2 /* only_best_one_collections@3x.png */,
 				BB39C7E61B67734500681FB2 /* profile_photo.png */,
@@ -1029,6 +1031,7 @@
 				BB39C7F01B67734500681FB2 /* settingsSelected@2x.png */,
 				BB39C7F11B67734500681FB2 /* settingsSelected@3x.png */,
 				BB39C7F21B67734500681FB2 /* shop_header.png */,
+				050B255C1ECA988100E998A3 /* shop_header_new.png */,
 				BB39C7F31B67734500681FB2 /* shop_header@2x.png */,
 				BB39C7F41B67734500681FB2 /* shop_header@3x.png */,
 				BB39C7F51B67734500681FB2 /* shop_item1.png */,
@@ -1343,7 +1346,6 @@
 				BB39C8411B67734500681FB2 /* enjoy_spring_collection@3x.png in Resources */,
 				BB39C82A1B67734500681FB2 /* check_out_with_items.png in Resources */,
 				BB39C8A51B67734500681FB2 /* twitter_icon.png in Resources */,
-				BB39C88A1B67734500681FB2 /* only_best_one_collections.png in Resources */,
 				BB39C8251B67734500681FB2 /* check_out_item1@2x.png in Resources */,
 				BB39C80E1B67734500681FB2 /* arrow_right@3x.png in Resources */,
 				BB39C8731B67734500681FB2 /* logOut@2x.png in Resources */,
@@ -1430,8 +1432,10 @@
 				BB39C8941B67734500681FB2 /* settings@2x.png in Resources */,
 				BB39C8741B67734500681FB2 /* logOut@3x.png in Resources */,
 				BB39C87C1B67734500681FB2 /* menu_my_cart_chosen@2x.png in Resources */,
+				050B255D1ECA988100E998A3 /* shop_header_new.png in Resources */,
 				BB39C8191B67734500681FB2 /* best_price@2x.png in Resources */,
 				BB39C8021B67734500681FB2 /* Raleway-Bold.ttf in Resources */,
+				05E80C8D1ECA9D620072D09B /* only_best_one_collections_new.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
