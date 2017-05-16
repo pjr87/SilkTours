@@ -16,9 +16,10 @@ export default class ProfileInfo extends React.Component{
   }
 
   render(){
+    console.log("desc:", this.props.user);
 
     const offeredT = this.props.user.tours_teaching;
-    const offeredTours = (<ToursList tourDisplayProps={{display:"small", messageButton:false}} tours={offeredT}/>);
+    const offeredTours = (offeredT.length > 0) ? (<ToursList tourDisplayProps={{display:"small", messageButton:false}} tours={offeredT}/>) : "No Tours Offered";
 
     return (
       <Row>
@@ -30,7 +31,7 @@ export default class ProfileInfo extends React.Component{
           </Panel>
 
             <Panel header={"About "+this.props.user.first_name}>
-              {this.props.user.description}
+              {this.props.user.description || "No Information Provided"}
             </Panel>
         </Col>
         <Col xs={12} md={8} lg={8}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import style from './style.css';
+import Style from './style.css';
 import {Confirm} from 'components';
 
 import {Col, Thumbnail, Button, Image} from 'react-bootstrap';
@@ -15,18 +15,28 @@ class Tours extends React.Component{
   constructor (props) {
     super(props);
     this.state = {
-      showTourInfo: false,
+      showTourTitle: false,
+      showRatingCount: false,
     };
-    this.mouseOver = this.mouseOver.bind(this);
-    this.mouseOut = this.mouseOut.bind(this);
+    this.mouseOverImage = this.mouseOverImage.bind(this);
+    this.mouseOutImage = this.mouseOutImage.bind(this);
+    this.mouseOverRating = this.mouseOverRating.bind(this);
+    this.mouseOutRating = this.mouseOutRating.bind(this);
     this.handleAddFavorite = this.handleAddFavorite.bind(this);
   }
 
-  mouseOver = () => {
-    this.setState({showTourInfo: true});
+  mouseOverImage = () => {
+    this.setState({showTourTitle: true});
   }
-  mouseOut() {
-    this.setState({showTourInfo: false});
+  mouseOutImage() {
+    this.setState({showTourTitle: false});
+  }
+  mouseOverRating = () => {
+    console.log("Test");
+    this.setState({showRatingCount: true});
+  }
+  mouseOutRating() {
+    this.setState({showRatingCount: false});
   }
   handleAddFavorite() {
     var userTourJson = {
@@ -101,24 +111,24 @@ class Tours extends React.Component{
         containsParticipants = true;
       }
     }
-    
+
       const cancelTourBody =  <div>
                                 Are you sure you want to delete the following scheduled tour?
-                                <div className={style.confirmBody}>
-                                  <p><span className={style.confirmBodySideHeader}>Name:</span> {this.props.tour.name}</p>
-                                  <p><span className={style.confirmBodySideHeader}>Start Time:</span> {this.props.tour.start_date_time}</p>
-                                  <p><span className={style.confirmBodySideHeader}>End Time:</span> {this.props.tour.end_date_time}</p>
-                                  
+                                <div className={Style.confirmBody}>
+                                  <p><span className={Style.confirmBodySideHeader}>Name:</span> {this.props.tour.name}</p>
+                                  <p><span className={Style.confirmBodySideHeader}>Start Time:</span> {this.props.tour.start_date_time}</p>
+                                  <p><span className={Style.confirmBodySideHeader}>End Time:</span> {this.props.tour.end_date_time}</p>
+
                                   { this.props.tourDisplayProps.isGuide && containsParticipants &&
                                   <p>
-                                    <span className={style.confirmBodySideHeader}>Tourist:</span> 
+                                    <span className={Style.confirmBodySideHeader}>Tourist:</span>
                                       {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
                                   </p>
                                   }
 
                                   { !this.props.tourDisplayProps.isGuide && this.props.tour.guides != null && this.props.tour.guides.length > 0 &&
                                   <p>
-                                    <span className={style.confirmBodySideHeader}>Guide:</span> 
+                                    <span className={Style.confirmBodySideHeader}>Guide:</span>
                                       {this.props.tour.guides[0].first_name + " " + this.props.tour.guides[0].last_name}
                                   </p>
                                   }
@@ -132,11 +142,11 @@ class Tours extends React.Component{
           body={cancelTourBody}
           confirmText="Cancel Tour"
           title="Tour Cancellation">
-          <Button className={style.buttonWidth} bsStyle="primary">Cancel</Button>
-          </Confirm>              
+          <Button className={Style.buttonWidth} bsStyle="primary">Cancel</Button>
+          </Confirm>
               ) : null;
 
-      
+
       console.log("Tour: ", this.props.tour);
 
       let contactButton = null;
@@ -148,7 +158,7 @@ class Tours extends React.Component{
                         to={{
                           pathname: '/sign'
                           }}>
-                          <Button className={style.buttonWidth} bsStyle="default">Message</Button>
+                          <Button className={Style.buttonWidth} bsStyle="default">Message</Button>
                         </Link>;
         }else if( this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 )
         {
@@ -157,7 +167,7 @@ class Tours extends React.Component{
                           pathname: '/messages',
                           query: { guideUserId: this.props.tour.participants[0].id_users }
                           }}>
-                          <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
+                          <Button className={Style.buttonWidth} bsStyle="primary">Message</Button>
                         </Link>;
         }else if( !this.props.tourDisplayProps.isGuide && this.props.tour.guides != null && this.props.tour.guides.length > 0)
         {
@@ -166,14 +176,14 @@ class Tours extends React.Component{
                           pathname: '/messages',
                           query: { guideUserId: this.props.tour.guides[0].id_user }
                           }}>
-                          <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
+                          <Button className={Style.buttonWidth} bsStyle="primary">Message</Button>
                         </Link>;
         }else
         {
           contactButton = null;
         }
       }
-      
+
 
 
     let guideButton = null;
@@ -184,7 +194,7 @@ class Tours extends React.Component{
                         pathname: '/messages',
                         query: { guideUserId: this.props.tour.guides[0].id_user }
                         }}>
-                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
+                        <Button className={Style.buttonWidth} bsStyle="primary">Message</Button>
                       </Link>;
       }
       else {
@@ -192,7 +202,7 @@ class Tours extends React.Component{
                       to={{
                         pathname: '/sign'
                         }}>
-                        <Button className={style.buttonWidth} bsStyle="primary">Message</Button>
+                        <Button className={Style.buttonWidth} bsStyle="primary">Message</Button>
                       </Link>;
       }
     } else {
@@ -220,29 +230,29 @@ class Tours extends React.Component{
 
       tourDisplay = (
         <Col xs={12} md={6} lg={6}>
-          <Thumbnail src={this.props.tour.profile_image} >
+          <Thumbnail src={this.props.tour.profile_image}>
             <div>
             <p>{this.props.tour.name}  {this.props.tour.id_tourEvent}</p>
-            { this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 && 
+            { this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 &&
               <p>
-                <span className={style.confirmBodySideHeader}>Tourist: </span>
+                <span className={Style.confirmBodySideHeader}>Tourist: </span>
                   {this.props.tour.participants[0].first_name + " " + this.props.tour.participants[0].last_name}
               </p>
             }
 
             { !this.props.tourDisplayProps.isGuide && this.props.tour.guides != null && this.props.tour.guides.length > 0 &&
               <p>
-                <span className={style.confirmBodySideHeader}>Guide:</span> 
+                <span className={Style.confirmBodySideHeader}>Guide:</span>
                   {this.props.tour.guides[0].first_name + " " + this.props.tour.guides[0].last_name}
               </p>
             }
-            <div className={style.buttonContainer}>
+            <div className={Style.buttonContainer}>
               <Link
                 to={{
                   pathname: '/tourdetail',
                   query: { tourId: this.props.tour.id_tour }
                 }}>
-                <Button bsStyle="primary" className={style.buttonWidth}>More Info</Button>&nbsp;
+                <Button bsStyle="primary" className={Style.buttonWidth}>More Info</Button>&nbsp;
               </Link>
 
             {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn} {editTourBtn} </div>
@@ -252,31 +262,38 @@ class Tours extends React.Component{
 
 
 
-    } 
-    else{
+    }
+    else {
 
       tourDisplay = (
-      <Col xs={12} md={4} lg={3}>
-        <Thumbnail>
-          <div onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)}>
-            {this.state.showTourInfo ? (<Image className={style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={style.tour_image_large} src={this.props.tour.profile_image}/>)}
-            {this.state.showTourInfo ? (<p className={style.image_text}>{this.props.tour.description}</p>): null}
+      <Col xs={6} md={4} lg={3}>
+        <Thumbnail bsStyle="thumbnail">
+
+          <div onMouseOver={this.mouseOverImage.bind(this)} onMouseOut={this.mouseOutImage.bind(this)}>
+            {this.state.showTourTitle ? (<Image className={Style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={Style.tour_image_large} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourTitle ? (<p className={Style.image_text}>{this.props.tour.name}</p>): null}
           </div>
+          <div onClick={this.handleAddFavorite}>
+            <p className={Style.image_heart}>&#9825;</p>
+          </div>
+          {/*
           <p>{this.props.tour.name}</p>
           <p>${this.props.tour.price}</p>
-          <StarRatingComponent
-            name="rate1"
-            editing={false}
-            starColor="#ffb400"
-            emptyStarColor="#ffb400"
-            starCount={5}
-            value={this.props.tour.average_rating}
-            renderStarIcon={(index, value) => {
-              return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
-            }}
-            renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
-          />
-          {this.props.tour.rating_count} reviews
+          <div style={{"display":"flex"}}>
+            <StarRatingComponent
+              name="rate1"
+              editing={false}
+              starColor="#ffb400"
+              emptyStarColor="#ffb400"
+              starCount={5}
+              value={this.props.tour.average_rating}
+              renderStarIcon={(index, value) => {
+                return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+              }}
+              renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+            />
+            <span style={{"margin-left": 6}}>{this.props.tour.rating_count} reviews</span>
+          </div>
           <p>
             <Link
               to={{
@@ -288,6 +305,30 @@ class Tours extends React.Component{
             <Button bsStyle="success" onClick={this.handleAddFavorite}>Add to Favorite</Button>&nbsp;
           </p>
           {guideButton}
+          */}
+
+          <p>{this.props.tour.description}</p>
+
+          <hr/>
+          <p className={Style.tour_description}>${this.props.tour.price}</p>
+          <div className={Style.tour_description_star_container} onMouseOver={this.mouseOverRating.bind(this)} onMouseOut={this.mouseOutRating.bind(this)}>
+            {this.state.showRatingCount ? null :
+              (<StarRatingComponent
+                className = {Style.tour_description_star}
+                name="rate1"
+                editing={false}
+                starColor="#ffb400"
+                emptyStarColor="#ffb400"
+                starCount={5}
+                value={this.props.tour.average_rating}
+                renderStarIcon={(index, value) => {
+                  return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+                }}
+                renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+              />)}
+            {this.state.showRatingCount ? (<p>{this.props.tour.rating_count} reviews</p>) : null}
+
+          </div>
         </Thumbnail>
       </Col>);
     }
