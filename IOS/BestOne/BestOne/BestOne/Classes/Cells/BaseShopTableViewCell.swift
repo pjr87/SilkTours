@@ -33,7 +33,8 @@ class BaseShopTableViewCell: UITableViewCell {
     }
     
     func setSaleMode(_ saleMode: SaleMode) {
-        switch (saleMode) {
+        var s = SaleMode.featured
+        switch (s) {
         case .default:
             saleModeImgView?.isHidden = true
             break

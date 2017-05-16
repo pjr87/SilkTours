@@ -22,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oWZ-nR-h92" id="UCD-Mc-fUR">
-                <frame key="frameInset" width="375" height="215.66666666666666"/>
+                <frame key="frameInset" width="375" height="215"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BXS-5e-GJ4">
@@ -31,7 +31,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qDE-dB-pYs">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="best_price.png" translatesAutoresizingMaskIntoConstraints="NO" id="AWf-W2-lec">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="featured.png" translatesAutoresizingMaskIntoConstraints="NO" id="AWf-W2-lec">
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="AWf-W2-lec" secondAttribute="height" multiplier="1:1" id="TKs-ox-aQt"/>
                                 </constraints>
@@ -152,15 +152,15 @@
     <resources>
         <image name="add_item.png" width="7" height="13"/>
         <image name="add_item_pressed.png" width="7" height="13"/>
-        <image name="best_price.png" width="62" height="62"/>
         <image name="favorite.png" width="15" height="16"/>
         <image name="favorite_chosen.png" width="15" height="16"/>
+        <image name="featured.png" width="62" height="62"/>
         <image name="item_marker.png" width="4" height="31"/>
         <image name="shop_item1.png" width="360" height="164"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation" orientation="landscapeRight"/>
-        <simulatedScreenMetrics key="destination" type="retina5_5.fullscreen"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
 </document>
