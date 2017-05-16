@@ -357,7 +357,7 @@ var cognitoFunctions = {
                   else{
                     var id = config.credentials._identityId;
                     var auth = {
-                      Logins: loginsIdpData,
+                      Logins: JSON.stringify(loginsIdpData),
                       IdentityId: id
                     };
                     var user1 = {
@@ -443,7 +443,7 @@ var cognitoFunctions = {
       else{
         var id = config.credentials._identityId;
         var auth = {
-          Logins: loginsIdpData,
+          Logins: JSON.stringify(loginsIdpData),
           IdentityId: id
         };
         var user1 = {
@@ -523,6 +523,11 @@ var cognitoFunctions = {
       else{
         var id = config.credentials._identityId;
         var auth = {
+          Logins: JSON.stringify(loginsIdpData),
+          IdentityId: id
+        };
+
+        var userAuth = {
           Logins: loginsIdpData,
           IdentityId: id
         };
@@ -531,7 +536,7 @@ var cognitoFunctions = {
 
         service.getUserByEmail(user.email, auth).then(function(response){
           if(response.data.email == user.email){
-            service.updateExistingUser(response.data.id_users, auth, auth).then(function(response){
+            service.updateExistingUser(response.data.id_users, user, auth).then(function(response){
               config.credentials.clearCachedId();
 
               if (callback) callback({
