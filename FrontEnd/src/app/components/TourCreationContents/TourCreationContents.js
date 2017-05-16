@@ -46,7 +46,7 @@ class TourCreationContents extends React.Component{
           <Tab.Container activeKey={this.props.tabKey} onSelect={this.handleSelect} id="left-tabs-example" defaultActiveKey="location">
             <Row className="clearfix">
               <Col sm={4}>
-                <Nav stacked>
+                <Nav stacked bsStyle="pills" >
                   <NavItem eventKey="info">
                     <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
                   </NavItem>
