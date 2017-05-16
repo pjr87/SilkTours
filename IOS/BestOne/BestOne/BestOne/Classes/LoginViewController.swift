@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class LoginViewController: UIViewController {
     
@@ -29,6 +30,9 @@ class LoginViewController: UIViewController {
         //logoContainer.layer.borderColor = UIColor(red: 140/255.0, green: 89/255.0, blue: 135/255.0, alpha: 1.0).cgColor
         //logoContainer.layer.borderWidth = 10
         //logoContainer.transform = logoContainer.transform.rotated(by: CGFloat(Double.pi/4))
+        //BackendAPI.getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
+        //    print(user.string ?? "user not found")
+        //})
     }
     
     override func didReceiveMemoryWarning() {
