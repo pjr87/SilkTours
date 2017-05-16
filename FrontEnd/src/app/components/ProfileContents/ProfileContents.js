@@ -47,7 +47,7 @@ class ProfileContents extends React.Component{
     (<div><ProfileHeader profilePicture={this.state.guide.profile_picture}
       name={this.state.guide.first_name+" "+this.state.guide.last_name}/>
     <Grid>
-      <ProfileInfo guide={this.state.guide}/>
+      <ProfileInfo user={this.state.guide}/>
 
     </Grid></div>) : (<div></div>);
     console.log("rend",rend);
@@ -64,7 +64,8 @@ ProfileContents.propTypes = {
 
 function select (state) {
   return {
-    auth: state.AuthReducer.auth
+    auth: state.AuthReducer.auth,
+    user: state.AuthReducer.user,
   };
 }
 

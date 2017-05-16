@@ -7,7 +7,8 @@ import {
   setEndTime,
   setTabKey,
   updateSpecialTimeState,
-  updateSpecialTimeDateState} from '../../actions/TourCreationActions';
+  updateSpecialTimeDateState,
+  updateLengthState} from '../../actions/TourCreationActions';
 import MultiDateSelect from '../Date/MultiDateSelect';
 import moment from 'moment';
 import {Grid, Col, Row, ControlLabel, Pager, FormGroup, Form, FormControl} from 'react-bootstrap';
@@ -20,6 +21,7 @@ class TourCreationTime extends React.Component{
     this.previous = this.previous.bind(this)
     this._emitSpecialHourChange = this._emitSpecialHourChange.bind(this)
     this._emitSpecialHourDateChange = this._emitSpecialHourDateChange.bind(this)
+    this._changeLength = this._changeLength.bind(this)
   }
 
   next(){
@@ -38,12 +40,21 @@ class TourCreationTime extends React.Component{
     this.props.dispatch(updateSpecialTimeDateState(newSpecialTimeDateState))
   }
 
+  _changeLength(event) {
+    this._emitUserChange({...this.props.tour, length: event.target.value});
+  }
+
+  _emitUserChange (newLengthState) {
+    this.props.dispatch(updateLengthState(newLengthState))
+  }
+
   render(){
     return (
       <div>
         <br/>
-        <p className={style.HeaderStyle}>What is the start and end date of the tour?</p>
+        <p className={style.HeaderStyle}>On this page you can set special events for a tour. Special events allow you to add or remove specific dates and times that a tour may be offered</p>
         <br/>
+        <EditableFieldClass style={style.BodyStyle} label="length" onChange={this._changeLength} value={this.props.tour.length}/>
         <br/>
         <MultiDateSelect
           emitChange={this._emitSpecialHourChange}

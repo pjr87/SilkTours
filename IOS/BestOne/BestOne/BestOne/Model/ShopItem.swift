@@ -18,9 +18,8 @@ class ShopItem: NSObject, NSCoding {
     var information: String
     var previewImgs: [String]
     var saleModePosition: SaleModePosition
-    var saleMode: SaleMode
     
-    init(title: String, imgTitle: String, subTitle: String, price: String, information: String, previewImgs: [String], saleModePosition: SaleModePosition, saleMode: SaleMode) {
+    init(title: String, imgTitle: String, subTitle: String, price: String, information: String, previewImgs: [String], saleModePosition: SaleModePosition) {
         self.title = title
         self.imgTitle = imgTitle
         self.subTitle = subTitle
@@ -28,7 +27,7 @@ class ShopItem: NSObject, NSCoding {
         self.information = information
         self.previewImgs = previewImgs
         self.saleModePosition = saleModePosition
-        self.saleMode = saleMode
+        
     }
     
     override func isEqual(_ object: Any?) -> Bool {
@@ -36,8 +35,7 @@ class ShopItem: NSObject, NSCoding {
             if title == object.title &&
                 subTitle == object.subTitle &&
                 price == object.price &&
-                information == object.information &&
-                saleMode == object.saleMode {
+                information == object.information {
                     return true
             } else {
                 return false
@@ -54,7 +52,6 @@ class ShopItem: NSObject, NSCoding {
         aCoder.encode(subTitle, forKey: "subTitle")
         aCoder.encode(information, forKey: "information")
         aCoder.encode(previewImgs, forKey: "previewImgs")
-        aCoder.encode(saleMode.rawValue, forKey: "saleMode")
         aCoder.encode(saleModePosition.rawValue, forKey: "saleModePosition")
     }
     
@@ -65,8 +62,10 @@ class ShopItem: NSObject, NSCoding {
         subTitle = aDecoder.decodeObject(forKey: "subTitle") as! String
         information = aDecoder.decodeObject(forKey: "information") as! String
         previewImgs = aDecoder.decodeObject(forKey: "previewImgs") as! [String]
-        saleMode = SaleMode(rawValue: aDecoder.decodeObject(forKey: "saleMode") as! Int)!
-        saleModePosition = SaleModePosition(rawValue: aDecoder.decodeObject(forKey: "saleModePosition") as! Int)!
+        // saleMode = SaleMode(rawValue: 0)!
+        saleModePosition = SaleModePosition(rawValue: 0)!
+        //saleMode = SaleMode(rawValue: aDecoder.decodeObject(forKey: "saleMode") as! Int)!
+        //saleModePosition = SaleModePosition(rawValue: aDecoder.decodeObject(forKey: "saleModePosition") as! Int)!
     }
 }
 

@@ -45,7 +45,8 @@ const initialState = {
     rating_count: 0,
     interests:[],
     stops: [],
-    guides: []
+    guides: [],
+    length: 1
   },
   startTime: 0,
   endTime: 0,
@@ -81,6 +82,8 @@ function TourCreationReducer(state = initialState, action) {
       return {...state, hours_special : action.newTimeState};
     case tourCreationConstants.UPDATE_TOUR_DESCRIPTION:
       return {...state, tour : action.newDescriptionState};
+    case tourCreationConstants.UPDATE_TOUR_LENGTH:
+      return {...state, tour : action.newLengthState};
     case tourCreationConstants.UPDATE_TOUR_INTEREST:
       return {...state, tour : action.newInterestState};
     case tourCreationConstants.UPDATE_TOUR_STOPS:

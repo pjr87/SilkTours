@@ -23,19 +23,16 @@ import{
   MessagesPage,
   PrivacyPage,
   TermsPage,
-  PolicyPage} from '../pages';
+  PolicyPage,
+  TourEditPage} from '../pages';
 import {ContactUsRedux} from '../pages';
-import TourSignup from './pages/TourSignup';
 import App from './App';
 import { loadState } from '../localStorage';
-import MessagesReact from './pages/MessageReact.js';
-
-import MessageBody from './MessageBody/MessageBody.js';
+import cognitoFunctions from '../utils/cognitoFunctions';
 
 /* Function used when determing access rights to certain pages in index.js*/
 function checkAuth(nextState, replaceState) {
-  let tmpState = loadState();
-  let loggedIn = tmpState.AuthReducer.loggedIn;
+  let loggedIn = cognitoFunctions.loggedIn();
 
   //If user is not logged in then redirect them to sign in page
   if (!loggedIn) {
@@ -62,14 +59,13 @@ const Root = ({ store }) => (
         <Route path='/privacy' component={PrivacyPage} />
         <Route path='/policy' component={PolicyPage} />
         <Route onEnter={checkAuth}>
-          <Route path='/messagereact' component={MessagesReact} />
+          <Route path='/edittour' component={TourEditPage}/>
           <Route path='/profile' component ={ProfilePage} />
           <Route path="/tourconfirmation" component={TourConfirmationPage}/>
           <Route path="/my-tours" component={MyToursPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route path='/tour-creation' component={TourCreationPage}/>
           <Route path='/become-guide' component={BecomeGuidePage}/>
-          <Route path='/tour-signup' component={TourSignup}/>
           <Route path='/messages' component={MessagesPage}/>
         </Route>
         <Route path="*" component={NotFound}/>

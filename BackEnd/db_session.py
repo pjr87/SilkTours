@@ -6,8 +6,8 @@ import threading
 engine = create_engine('mysql+mysqlconnector://silktours:32193330@silktoursapp.ctrqouiw79qc.us-east-1.rds.amazonaws.com:3306/silktours')
 
 Session = scoped_session(sessionmaker(bind=engine))
-#session = Session()
 sessions = {}
+
 
 def get_session():
     global sessions
@@ -15,6 +15,12 @@ def get_session():
     if tid not in sessions or sessions[tid] is None:
         sessions[tid] = Session()
     return sessions[tid]
+
+def close_session():
+    tid = threading.get_ident()
+    if tid in sessions and sessions[tid] is not None:
+        sessions[tid].close()
+    sessions[tid] = None
 
 def createSession():
     get_session()

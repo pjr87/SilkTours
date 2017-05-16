@@ -1,20 +1,40 @@
 import React from 'react';
 import {PageTitle,TourInfo,ToursList} from 'components';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import { getUser } from '../../actions/AuthActions';
+import {connect} from 'react-redux';
+
 
 class MyGuide extends React.Component{
+
+  constructor(props)
+  {
+    super(props);
+  }
+
+  componentWillMount(){
+        console.log(this.props.id_user, this.props.auth);
+
+    this.props.dispatch(getUser(this.props.id_user, this.props.auth));
+  }
+
+
   render(){
 
     const guideBookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="B";
     });
-    const guideBookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>);
+    const guideBookedTours = guideBookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={guideBookedT}/>) : "No Tours";
 
+    console.log("guidebookedT", guideBookedT);
 
     const guideUnbookedT = this.props.toursGuided.filter(function(tour){
       return tour.state=="A";
     });
-    const guideUnbookedTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideUnbookedT}/>);
+    const guideUnbookedTours =guideUnbookedT.length > 0 ? (<ToursList tourDisplayProps={{display:"small"}} tours={guideUnbookedT}/>) : "No Tours";
+
+    console.log("guideunbookedT", guideUnbookedT);
+
 
     /*const guideUnbookedTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
@@ -26,8 +46,18 @@ class MyGuide extends React.Component{
       return tour.state=="C";
     });
 
-    const guideCompleteTours = (<ToursList tourDisplayProps={{display:"small"}} tours={guideCompleteT}/>);
+    const guideCompleteTours = guideCompleteT.length > 0 ?  (<ToursList tourDisplayProps={{display:"small"}} tours={guideCompleteT}/>) : "No Tours";
 
+    /*
+      const guideCancelT = this.props.toursGuided.filter(function(tour){
+        return tour.state=="D";
+      });
+
+      const guideCancelledTours = (<ToursList tourDisplayProps={{display:"small", isGuide: true}} tours={guideCancelT} cancelTourEvent={this.props.cancelTourEvent} />);
+    */
+
+    const guideToursG = this.props.allToursGuided;
+    const guideToursGiving = (<ToursList tourDisplayProps={{display:"small", isGuide: true, editBtn: true}} tours={guideToursG}  />);//
     /*const guideCompleteTours = this.props.toursGuided.map(function(t,index){
       console.log("key:",index)
       if(t.state=="B")
@@ -70,8 +100,8 @@ class MyGuide extends React.Component{
               </Panel>
             </Col>
             <Col md={6} mdPush={0}>
-              <Panel header="Cancelled Tours">
-                No Tours
+              <Panel header="Currently Active Tours">
+                {guideToursGiving}
               </Panel>
             </Col>
           </Row>
@@ -81,4 +111,12 @@ class MyGuide extends React.Component{
   }
 }
 
-export default MyGuide;
+
+function select (state) {
+  return {
+    auth: state.AuthReducer.auth,
+    id_user: state.AuthReducer.id_user
+  };
+}
+
+export default connect(select)(MyGuide);

@@ -9,7 +9,6 @@ export const loadState = () => {
       return undefined;
     }
     else{
-      console.log("Loaded State");
       return JSON.parse(serializedState);
     }
   }
@@ -22,7 +21,6 @@ export const loadState = () => {
 //Errors will occur if the state is not serializable
 export const saveState = (state) => {
   try {
-    console.log("Saved State");
     const serializedState = JSON.stringify(state);
     localStorage.setItem('state', serializedState);
   }

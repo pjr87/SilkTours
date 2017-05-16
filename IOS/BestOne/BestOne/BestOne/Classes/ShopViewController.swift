@@ -91,10 +91,13 @@ extension ShopViewController: UITableViewDataSource {
         cell.titleLbl?.text = shopItem.title
         cell.subTitleLbl?.text = shopItem.subTitle
         cell.priceLbl?.text = "$" + shopItem.price
-        cell.backgroundImgView?.image = UIImage(named: shopItem.imgTitle)
+        
+        let url = NSURL(string:shopItem.imgTitle)
+        let data = NSData(contentsOf:url! as URL)
+        
+        cell.backgroundImgView?.image = UIImage(data: data! as Data)
         cell.favoriteBtn?.isSelected = favoriteItems.contains(shopItem)
         cell.delegate = self
-        cell.setSaleMode(shopItem.saleMode)
         return cell
     }
 }

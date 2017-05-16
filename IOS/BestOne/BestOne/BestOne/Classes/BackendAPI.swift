@@ -12,7 +12,6 @@ import Foundation
 
 import SwiftyJSON
 import Alamofire
-import AWSCognito
 
 class BackendAPI{
 
@@ -121,137 +120,77 @@ class BackendAPI{
 //    });
     }
     
-  static func getAllTours(completion:@escaping (_ String:Any) -> Void)
+    static func getAllTours(completion:@escaping (_ j:JSON) -> Void)
     {
-        
-        
-        
-         Alamofire.request(SERVER_URL+"/search").responseJSON { response in
-            switch response.result {
-            case .success(let data):
-                
-                let json = data as? NSDictionary
-                if ((json?.value(forKey: "data")) != nil){
-                    
-                    var d = json?.value(forKey: "data")
-                    
-                   // d = NSArray(d?)[0]
-                    
-                    completion(json?.value(forKey:"data"))
-                    
-                }
-                
-                
-               // let json = JSON(data: dataFromNetworking)
-                
-                //let data = d.data(using: String.Encoding.utf8, allowLossyConversion: false)!
-
-                
-                
-                
-               /* if let data = d as? [String:Any]{
-                do{
-                if let myJSON = try! JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
-                    //For getting customer_id try like this
-                    if let data = myJSON["data"] as? [[String: Any]] {
-                        for jsonDict in data {
-                            //var try = jsonDict["customer_id"] as? String
-                        } 
-                    }
-                }
-                }catch{
-                
-                
-                }
-                }*/
-               /*
-                
-                
-                
-                if let json = data as? [String:Any]{
-                    let j = json["data"] as? [String:Any]
-                    if let statusesArray = try? JSONSerialization.jsonObject(with: j, options: .allowFragments) as? [[String: Any]],
-                        let user = statusesArray[0]["user"] as? [String: Any],
-                        let username = user["name"] as? String {
-                        // Finally we got the username
-                    }
-                
-                }
-                
-                
-                
-                
-                
-                if let json = data as? [String:Any]{
-                    //if let val = json["data"]![0] as? [String:Any]{
-                    //}
-                    ///let v = val?[0] as? [String:Any]
-                    //completion(v)
-                    
-                
-                
-                
-                do {
-                    let allContacts = try JSONSerialization.jsonObject(with: json, options: JSONSerialization.ReadingOptions.allowFragments) as! [String : NSArray]                } catch {
-                    print(error)
-                }
-                    
-                    
-                guard let item = json?.first as? [String: Any],
-                    let person = item["person"] as? [String: Any],
-                    let age = person["age"] as? Int else {
-                        return
-                }
-                }
-                /*do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    
-                    
-                    if let countries = json["Countries"] as? [String: AnyObject] {
-                        for country in countries {
-                            if let couname = country["countryname"] as? [AnyObject] {
-                                country_names.append(couname)
-                            }
-                            
-                            if let coucode = country["code"] as? [AnyObject] {
-                                country_codes.append(coucode)
-                            }
-                            
-                        }
-                    }
-                } catch {
-                    print("Error Serializing JSON: \(error)")
-                }
-                
-                 */
- */
- 
-//                if let json = data as? [String: Any] {
-//                    let j = json["data"] as? [String:Any]
-//                    
-//                    completion(j)
-//                }
- 
-                //let json = JSONSerialization.jsonObject(with: JSON) as? [String: Any]
-                
-                //JSON[0]["first"]
-                //let info = String(describing: JSON)
-                
-            case .failure(let data):
-                let JSON = data as! String
-                    completion(JSON)
-                
+        let sem = DispatchSemaphore(value: 0)
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let url = SERVER_URL+"/search";
+        let urlRequest = URLRequest(url: URL(string: url)!)
+        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+            // check for any errors
+            guard error == nil else {
+                print("error calling GET on /todos/1")
+                print(error)
+                return
             }
- 
-        }
-    }
-    
-    
-   /*static func getAllTours() -> String {
-        Alamofire.request(SERVER_URL+"/search").responseJSON(completionHandler: <#T##(DataResponse<Any>) -> Void#>)
+            // make sure we got data
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            // parse the result as JSON, since that's what the API provides
+            do {
+                
+                // now we have the todo, let's just print it to prove we can access it
+                
+                
+                let ja = JSON(data)
+                
+                completion(ja["data"])
         
-        //return axios.get(SERVER_URL + "/search");
-    }*/
+                // the todo object is a dictionary
+                // so we just access the title using the "title" key
+                // so check for a title and print it if we have one
+                
+            } catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+             sem.signal()
+        }
+        task.resume()
+         sem.wait()
+        
+        
+        
+//THIS WORKS AND IS REALLY EASY FOR SYNCRONIS
+//        if let u = URL(string: url) {
+//            if let data = try? Data(contentsOf: u) {
+//                let json = JSON(data: data)
+//                
+//                print(json[0]["description"].string)
+//            }
+//        }
+        
+//
+//
+//       
+//        print(url)
+//        Alamofire.request(url).responseJSON { (responseData) -> Void in
+//            
+//            if((responseData.result.value) != nil) {
+//                let json = JSON(responseData.result.value!)
+//                completion(json["data"])
+//            }
+//            else{
+//                print(responseData.result.error)
+//            }
+//
+//            
+//        }
+        //sem.wait()
+    }
     
   static func getUser(id:UInt64){
         //var url = SERVER_URL + "/users/"+id;

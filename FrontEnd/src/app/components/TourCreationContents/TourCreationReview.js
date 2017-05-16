@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.css';
 import {StaticField} from '../Forms/Forms.js';
-import { Pager } from 'react-bootstrap';
+import { Pager, HelpBlock } from 'react-bootstrap';
 import { updatePhotoState, setTabKey, createTour } from '../../actions/TourCreationActions';
 
 class TourCreationReview extends React.Component{
@@ -13,8 +13,6 @@ class TourCreationReview extends React.Component{
   }
 
   next(){
-    console.log("this.props.tour", this.props.tour);
-    console.log("this.props.photos", this.props.photos);
     this.props.dispatch(createTour(
       this.props.tour,
       this.props.auth,
@@ -30,6 +28,7 @@ class TourCreationReview extends React.Component{
 
   render(){
     let isLoading = this.props.currentlySending;
+    console.log("this.props.currentlySending", this.props.currentlySending);
     function ErrorFunc(props){
 
       if( props.errorText ){
@@ -80,7 +79,7 @@ class TourCreationReview extends React.Component{
         <br/>
         <Pager>
           <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next disabled={isLoading} onSelect={this.next}>{isLoading ? 'Creating Tour...' : 'Finish!'} &rarr;</Pager.Item>
+          <Pager.Item next disabled={isLoading} onSelect={this.next}>{isLoading ? 'Creating Tour...' : 'Submit Tour!'} &rarr;</Pager.Item>
         </Pager>
         <ErrorFunc errorText = {this.props.errorMessage} />
       </div>

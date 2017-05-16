@@ -3,6 +3,7 @@ import datetime
 from app.models.address_mapped import Address
 from app.models.interests_mapped import Interests
 from app.models.tour_event_mapped import TourEvent
+from app.models.favorites_mapped import FavoritesClass
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from base import Base
@@ -32,8 +33,10 @@ class User(Base):
 
     interests = relationship("Interests")
     interests = relationship("Interests", foreign_keys="Interests.id_user")
-    tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
+    #tours_teaching = relationship("TourEvent", foreign_keys="TourEvent.id_guide")
     tours_taking = relationship("TourEvent", foreign_keys="TourEvent.id_user")
+    tours_teaching = relationship("Tour", secondary="TourGuides")
+    favorites = relationship("FavoritesClass", foreign_keys="FavoritesClass.user_id")
 
     # A set of all properties
     PROPS = {"name", "profilePicture", "intrests", "location", "tours_taking",
@@ -74,7 +77,8 @@ class User(Base):
                 # self.tours_taking = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
             elif key == "tours_teaching":
                 for item in data[key]:
-                    TourEvent.create(item, id_user=self.id_users)
+                    Tour.createOrEdit(item)
+                    #TourEvent.create(item, id_user=self.id_users)
                 # self.tours_teaching = [TourEvent.create(item, id_user=self.id_users) for item in data[key]]
 
     def create_or_edit(self, data):
@@ -97,13 +101,17 @@ class User(Base):
         if not print_nested:
             return result
 
+        result["favorites"] = []
+        for fav in self.favorites:
+            result["favorites"].append(fav.tour_id)
+
         result["interests"] = []
         for interest in self.interests:
             result["interests"].append(interest.serialize())
 
         result["tours_teaching"] = []
-        for tourEvent in self.tours_teaching:
-            result["tours_teaching"].append(tourEvent.serialize(deep))
+        for tour in self.tours_teaching:
+            result["tours_teaching"].append(tour.serialize(deep, print_events=True))
 
         result["tours_taking"] = []
         for tourEvent in self.tours_taking:

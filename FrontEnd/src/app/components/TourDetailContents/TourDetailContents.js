@@ -21,7 +21,7 @@ import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDa
 
 import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
 
-import dateFormat from 'dateFormat';
+import dateFormat from 'dateformat';
 
 
 class TourDetailContents extends React.Component{
@@ -113,15 +113,25 @@ class TourDetailContents extends React.Component{
 
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
-    if (guidesLength != '0') {
+    let isGuide = false;
+
+    if (guidesLength > 0) {
+      isGuide = (this.props.selectedTour.guides[0].id_user == this.props.user.id_users) ? true : false;
       if(this.props.loggedIn) {
-        guideButton = <Link
+
+        if(isGuide){
+          guideButton = null;
+        }
+        else
+        {
+          guideButton = <Link
                       to={{
                         pathname: '/messages',
                         query: { guideUserId: this.props.selectedTour.guides[0].id_user }
                         }}>
                         <Button bsStyle="default">Message</Button>
                       </Link>;
+        }
       }
       else {
         guideButton = <Link
@@ -135,65 +145,94 @@ class TourDetailContents extends React.Component{
     } else {
      guideButton = null;
     }
+    //
+    // const getToken = () => {
+    //   // Replace this with an actual promise to your Braintree-enabled server
+    //   return new Promise((resolve) => {
+    //     // Example taken from https://developers.braintreepayments.com/start/hello-client/javascript/v2
+    //     const exampleClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3OTJmMDBkOGJiZmQxZTIyNDc2NGQ3YzlmOGRmOGNkODEyMjUzMGYwZDUyYWRjOGI4NzZiMTc1NGNkMzRlZGFlfGNyZWF0ZWRfYXQ9MjAxNy0wMi0wMVQwMDoxMTo1OC4wMDA4NDQ4MjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPTM0OHBrOWNnZjNiZ3l3MmJcdTAwMjZwdWJsaWNfa2V5PTJuMjQ3ZHY4OWJxOXZtcHIiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvMzQ4cGs5Y2dmM2JneXcyYi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzM0OHBrOWNnZjNiZ3l3MmIvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tLzM0OHBrOWNnZjNiZ3l3MmIifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6ImFjbWV3aWRnZXRzbHRkc2FuZGJveCIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiMzQ4cGs5Y2dmM2JneXcyYiIsInZlbm1vIjoib2ZmIn0=";
+    //     resolve(exampleClientToken);
+    //   });
+    // };
+    //
+    // // Charge the card using the returned nonce if you want :)
+    // const onTokenization = (nonce) => {
+    //   if(nonce!=null){
+    //     this.setState({
+    //       validationState: null
+    //     })
+    //     console.log(`Charge the card: ${nonce}`);
+    //     var tourEvent = {
+    //       end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
+    //       id_tour: this.props.selectedTourId,
+    //       participants:	 [
+    //  	 	 	 	 	 {
+    //  	 	 	 	 	 	 	 	 	 id_users:	 this.props.id_user,
+    //  	 	 	 	 	 }
+ 	 // 	 	    ],
+    //       start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
+    //       state: 'B'
+    //     }
+    //     console.log(tourEvent);
+    //     console.log('tureventID ' + this.props.selectedTourDateString)
+    //     service.setTourEvent(tourEvent, this.props.auth).then(function(response){
+    //       console.log(response);
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    //
+    //     // this.props.dispatch(setSelectedDateStart(this.props.selectedTourDateStart));
+    //     // this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDateEnd));
+    //     console.log("test date time");
+    //     console.log(this.props.selectedTourDateStart);
+    //     console.log(this.props.selectedTourDateEnd);
+    //     browserHistory.push('/tourconfirmation');
+    //   }
+    //   else {
+    //     this.setState({
+    //       validationState: "error"
+    //     })
+    //     console.log('Error; check your card information');
+    //   }
+    // };
+    // if(this.props.isLoaded == false){
+    //   return(
+    //     <div>
+    //       <p className={style.tourTitle}>"Tour is loading"</p>
+    //     </div>
+    //   )
+    // }
+    // else{
 
-    const getToken = () => {
-      // Replace this with an actual promise to your Braintree-enabled server
-      return new Promise((resolve) => {
-        // Example taken from https://developers.braintreepayments.com/start/hello-client/javascript/v2
-        const exampleClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3OTJmMDBkOGJiZmQxZTIyNDc2NGQ3YzlmOGRmOGNkODEyMjUzMGYwZDUyYWRjOGI4NzZiMTc1NGNkMzRlZGFlfGNyZWF0ZWRfYXQ9MjAxNy0wMi0wMVQwMDoxMTo1OC4wMDA4NDQ4MjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPTM0OHBrOWNnZjNiZ3l3MmJcdTAwMjZwdWJsaWNfa2V5PTJuMjQ3ZHY4OWJxOXZtcHIiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvMzQ4cGs5Y2dmM2JneXcyYi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzM0OHBrOWNnZjNiZ3l3MmIvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tLzM0OHBrOWNnZjNiZ3l3MmIifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6ImFjbWV3aWRnZXRzbHRkc2FuZGJveCIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiMzQ4cGs5Y2dmM2JneXcyYiIsInZlbm1vIjoib2ZmIn0=";
-        resolve(exampleClientToken);
-      });
-    };
+    let reserveEditButton = null;
 
-    // Charge the card using the returned nonce if you want :)
-    const onTokenization = (nonce) => {
-      if(nonce!=null){
-        this.setState({
-          validationState: null
-        })
-        console.log(`Charge the card: ${nonce}`);
-        var tourEvent = {
-          end_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateStart, "HH:MM:ss"),
-          id_tour: this.props.selectedTourId,
-          participants:	 [
- 	 	 	 	 	 	 	 {
- 	 	 	 	 	 	 	 	 	 	 	 id_users:	 this.props.id_user,
- 	 	 	 	 	 	 	 }
- 	 	 	    ],
-          start_date_time: this.props.selectedTourDateString + " " + dateFormat(this.state.selectedDate + " " + this.props.selectedTourDateEnd, "HH:MM:ss"),
-          state: 'B'
-        }
-        console.log(tourEvent);
-        console.log('tureventID ' + this.props.selectedTourDateString)
-        service.setTourEvent(tourEvent, this.props.auth).then(function(response){
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    console.log("isGuide: ", isGuide);
+    console.log("stuff", this.props.selectedTour.guides[0], this.props.user);
 
-        // this.props.dispatch(setSelectedDateStart(this.props.selectedTourDateStart));
-        // this.props.dispatch(setSelectedDateEnd(this.props.selectedTourDateEnd));
-        console.log("test date time");
-        console.log(this.props.selectedTourDateStart);
-        console.log(this.props.selectedTourDateEnd);
-        browserHistory.push('/tourconfirmation');
-      }
-      else {
-        this.setState({
-          validationState: "error"
-        })
-        console.log('Error; check your card information');
-      }
-    };
-    if(this.props.isLoaded == false){
-      return(
-        <div>
-          <p className={style.tourTitle}>"Tour is loading"</p>
-        </div>
-      )
+    if( isGuide ){
+      reserveEditButton = <Link
+                to={{
+                  pathname: '/edittour',
+                  query: { tourId: this.props.selectedTourId }
+                }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
     }
     else{
+      reserveEditButton = <Button bsStyle="primary" onClick={this.openModal}>Reserve&nbsp;</Button>
+    }
+    console.log("isGuide: ", isGuide);
+
+    console.log("stuff", this.props.selectedTour.guides[0], this.props.user);
+
+    if( isGuide ){
+      reserveEditButton = <Link
+                to={{
+                  pathname: '/edittour',
+                  query: { tourId: this.props.selectedTourId }
+                }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
+    }
+    else{
+    }
       return(
         <div>
           <div className={style.boxed}>
@@ -201,6 +240,7 @@ class TourDetailContents extends React.Component{
             <div className={style.tourSubTitle}>
               <StarRatingComponent
                 name="rate1"
+                editing={false}
                 starColor="#ffb400"
                 emptyStarColor="#ffb400"
                 starCount={5}
@@ -332,7 +372,7 @@ class TourDetailContents extends React.Component{
             <Grid>
               <Row>
                 <Col sm={12} md={12} lg={12}>
-                  <Button bsStyle="primary" onClick={this.openModal}>Reserve</Button>&nbsp;
+                  {reserveEditButton}
                   {guideButton}
                 </Col>
               </Row>
@@ -389,7 +429,7 @@ class TourDetailContents extends React.Component{
               <ControlLabel>Please check your card information</ControlLabel>
             </FormGroup>
             <div>
-              <HostedField fetchToken={getToken} onTokenization={onTokenization} />
+              {/*}<HostedField fetchToken={getToken} onTokenization={onTokenization} />*/}
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -398,7 +438,7 @@ class TourDetailContents extends React.Component{
         </Modal>
       </div>
       );
-    }
+    // }
   }
 }
 
@@ -414,6 +454,7 @@ function select (state) {
   return {
     auth: state.AuthReducer.auth,
     id_user: state.AuthReducer.id_user,
+    user: state.AuthReducer.user,
     loggedIn: state.AuthReducer.loggedIn,
     tourDates: state.TourDetailReducer.tourDates,
     selectedTourId: state.TourDetailReducer.selectedTourId,
