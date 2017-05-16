@@ -24,7 +24,8 @@ class TourCreationPhotos extends React.Component{
         crop:{
           aspect: 9/9
         },
-        pixelCrop: {}
+        pixelCrop: {},
+        cropped: false
     }
   }
 
@@ -115,7 +116,10 @@ class TourCreationPhotos extends React.Component{
     crop.width = 100;
     crop.height = 100;
 
-    this.setState({crop: crop});
+    this.setState({
+      crop: crop,
+      cropped: true
+    });
 
     console.log("newState: ", this.state.crop);
 
@@ -129,39 +133,76 @@ class TourCreationPhotos extends React.Component{
   }
 
   render(){
-    return (
-      <div>
-        <br/>
-        <p className={style.HeaderStyle}>Select some photos to upload with the tour!</p>
-        <br/>
-        <br/>
-        <Dropzone ref={(node) => { this.dropzone = node; }} onDrop={this.onDrop}>
-        </Dropzone>
-        <button type="button" onClick={this.onOpenClick}>
-            Open Dropzone
-        </button>
-
-        {this.props.photos ? <div>
+    if(this.state.cropped == false){
+      return (
         <div>
-          <ReactCrop src={this.props.photos.file}
-                    {...this.state} keepSelection = {true}
-                     onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)}
+          <br/>
+          <p className={style.HeaderStyle}>Select some photos to upload with the tour!</p>
+          <br/>
+          <br/>
+          <Dropzone ref={(node) => { this.dropzone = node; }} onDrop={this.onDrop}>
+          </Dropzone>
+          <button type="button" onClick={this.onOpenClick}>
+              Open Dropzone
+          </button>
+
+          {this.props.photos ? <div>
+          <div>
+            <ReactCrop src={this.props.photos.file}
+                      {...this.state} keepSelection = {true}
+                       onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)}
 
 
-                     />
-        <br/>
-        {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null }
+                       />
+          <br/>
+          {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null }
+          </div>
+          </div> : null}
+
+          <br/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
         </div>
-        </div> : null}
+      )
+    }
+    else{
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Select some photos to upload with the tour!</p>
+          <br/>
+          <br/>
+          <Dropzone ref={(node) => { this.dropzone = node; }} onDrop={this.onDrop}>
+          </Dropzone>
+          <button type="button" onClick={this.onOpenClick}>
+              Open Dropzone
+          </button>
 
-        <br/>
-        <br/>
-        <Pager>
-          <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-        </Pager>
-      </div>
-    )
+          {this.props.photos ? <div>
+          <div>
+            <ReactCrop src={this.props.photos.file}
+                      {...this.state} keepSelection = {true}
+                       onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)}
+
+
+                       />
+          <br/>
+          {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null }
+          </div>
+          </div> : null}
+
+          <br/>
+          <br/>
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
   }
 }
 

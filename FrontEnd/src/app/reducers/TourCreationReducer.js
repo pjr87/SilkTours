@@ -19,7 +19,7 @@ const initialState = {
     additional_food: "",
     additional_transport: "",
     address:{
-      city:"",
+      city:"null",
       country:"",
       state_code:"",
       street:"",
@@ -41,7 +41,7 @@ const initialState = {
     profile_image_width: 0,
     date: 0,
     time: 0,
-    language: '',
+    language: 'null',
     rating_count: 0,
     interests:[],
     stops: [],

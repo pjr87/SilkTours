@@ -41,7 +41,8 @@ class TourCreationTime extends React.Component{
   }
 
   _changeLength(event) {
-    this._emitUserChange({...this.props.tour, length: event.target.value});
+    var len = Number(event.target.value)
+    this._emitUserChange({...this.props.tour, length: len});
   }
 
   _emitUserChange (newLengthState) {

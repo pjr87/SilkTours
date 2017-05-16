@@ -41,7 +41,6 @@ class TourCreationLocation extends React.Component{
     )}, this);
 
     if(this.props.tour.address.city == "null"){
-      console.log("null");
       return (
         <div>
           <br/>
@@ -61,7 +60,6 @@ class TourCreationLocation extends React.Component{
       )
     }
     else{
-      console.log("not null");
       return (
         <div>
           <br/>
