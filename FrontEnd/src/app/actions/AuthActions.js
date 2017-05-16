@@ -364,18 +364,18 @@ export function facebookSignUp(user, accessToken, expiresIn) {
  * @param  {object} cognitoUser The user to do confirmation of
  * @param  {string} confirmationNumber The confirmation number
  */
-export function confirmSignUp(/*cognitoUser,*/ firstname, lastname, username, password, phoneNumber, confirmationNumber) {
+export function confirmSignUp(firstname, lastname, username, password, phoneNumber, confirmationNumber) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ /*cognitoUser,*/ firstname, lastname, username, phoneNumber, confirmationNumber })) {
+    if (anyElementsEmpty({ firstname, lastname, username, phoneNumber, confirmationNumber })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
 
-    cognitoFunctions.confirmSignUp(/*cognitoUser,*/ firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
+    cognitoFunctions.confirmSignUp(firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
       // If the user was signed up successfully
       if (response.authenticated) {
         //Update the store with relevant information
