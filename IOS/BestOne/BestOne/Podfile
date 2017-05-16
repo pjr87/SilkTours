@@ -6,10 +6,10 @@ target 'BestOne' do
   use_frameworks!
 
   # Pods for BestOne
-  pod 'AWSCognito'
-  pod ‘AWSCore’
+  #pod 'AWSCognito'
+  #pod ‘AWSCore’
   pod 'SwiftyJSON'
-  pod 'AWSCognitoIdentityProvider'
+  #pod 'AWSCognitoIdentityProvider'
   pod 'Alamofire', '~> 4.4'
   pod 'UICKeyChainStore'
   pod 'GoogleMaps'
