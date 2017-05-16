@@ -99,6 +99,7 @@ export function createTour(tour, auth, photos, hours_special, base_hours) {
                 dispatch(updateSpecialTimeHoursState([]))
                 dispatch(updateSpecialTimeState([]))
                 dispatch(updateSpecialTimeDateState([]))
+                dispatch(navAllowed(false))
                 dispatch(setTabKey("info"))
               }
               else{
@@ -303,6 +304,16 @@ export function updateAddressState(newAddressState) {
  */
 export function sendingRequest(sending) {
   return { type: tourCreationConstants.SENDING_REQUEST, sending };
+}
+
+
+/**
+ * Sets the newNavState state, which allows user to go back an edit tour information before sending
+ * @param  {boolean} newNavState The new state the app should have
+ * @return {object}          Formatted action for the reducer to handle
+ */
+export function navAllowed(newNavState) {
+  return { type: tourCreationConstants.NAV_ALLOWED, newNavState };
 }
 
 /**

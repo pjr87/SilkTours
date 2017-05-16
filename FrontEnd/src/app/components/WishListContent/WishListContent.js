@@ -24,8 +24,8 @@ class WishListContent extends React.Component{
 
        // Object destructuring Syntax,
        // takes out required values and create references to them
-       const tours = info[0].data.data;
-       console.log(info[0].data.data);
+       const tours = info[0].data;
+       console.log("favorties", info[0].data);
        this.setState({
          tours,
        });

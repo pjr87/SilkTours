@@ -23,11 +23,43 @@ class BackendAPI{
      */
     
     static var credentials: NSDictionary?
+    static var user: JSON?
     
     static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
-//  static func getUser(String id) {
-//        Alamofire.request();
-//    }
+    
+    static func getCurrentUser(email:String? = nil, completion: @escaping (JSON) -> Void) {
+        if (user != nil) {
+            completion(user!)
+            return
+        }
+        let defaults = UserDefaults.standard
+        let _user = defaults.object(forKey: "user")
+        if (_user != nil) {
+            user = _user as? JSON
+            completion(user!)
+            return
+        }
+        var lEmail:String? = email
+        
+        if (lEmail == nil) {
+            lEmail = defaults.string(forKey: "email")
+            if (lEmail == nil) {
+                completion(JSON.null)
+                return
+            }
+        }else{
+            defaults.set(lEmail, forKey: "email")
+        }
+        let url = "\(SERVER_URL)/users/email/\(lEmail!)"
+        Alamofire.request(url, method: .get, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    user = JSON(result)
+                    completion(user!)
+                }
+                print(response)
+        }
+    }
     
     static func login(email:String, password:String, completion: @escaping () -> Void) {
         let url = "\(SERVER_URL)/login"
@@ -84,7 +116,28 @@ class BackendAPI{
                 }
         }
     }
-    
+/*
+    static func getFavs(completion: @escaping () -> Void) {
+        let url = "\(SERVER_URL)/login"
+        let parameters = getCredentials()
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    credentials = result as? NSDictionary
+                    completion()
+                }
+                print(response)
+        }
+    }
+*/
+    static func getCredentials() -> [String: Any?]  {
+        let result:[String: Any?] = [
+            "Logins" : credentials!["Logins"],
+            "IdentityId" : credentials!["IdentityId"]
+        ]
+        return result
+    }
    
   static func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
        // return Alamofire.request();

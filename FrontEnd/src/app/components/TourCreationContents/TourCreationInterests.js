@@ -23,18 +23,34 @@ class TourCreationInterests extends React.Component{
   }
 
   render(){
-    return (
-      <div>
-        <br/>
-        <p className={style.HeaderStyle}>Please tag the tour with an interest!</p>
-        <br/>
-        <TourInterests tour={this.props.tour} dispatch={this.props.dispatch} />
-        <Pager>
-          <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-          <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-        </Pager>
-      </div>
-    )
+    if(this.props.tour.interests.length == 0){
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Please tag the tour with an interest!</p>
+          <br/>
+          <TourInterests tour={this.props.tour} dispatch={this.props.dispatch} />
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
+    else{
+      return (
+        <div>
+          <br/>
+          <p className={style.HeaderStyle}>Please tag the tour with an interest!</p>
+          <br/>
+          <TourInterests tour={this.props.tour} dispatch={this.props.dispatch} />
+          <Pager>
+            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+          </Pager>
+        </div>
+      )
+    }
   }
 }
 

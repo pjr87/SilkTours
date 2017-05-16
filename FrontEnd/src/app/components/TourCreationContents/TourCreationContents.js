@@ -28,7 +28,12 @@ class TourCreationContents extends React.Component{
   }
 
   handleSelect(key){
-    this.props.dispatch(setTabKey(key));
+    if(this.props.navAllowed){
+      this.props.dispatch(setTabKey(key));
+    }
+    else{
+      console.log("Navigation is not allowed until on review page")
+    }
   }
 
   handleMap(){
@@ -46,7 +51,7 @@ class TourCreationContents extends React.Component{
           <Tab.Container activeKey={this.props.tabKey} onSelect={this.handleSelect} id="left-tabs-example" defaultActiveKey="location">
             <Row className="clearfix">
               <Col sm={4}>
-                <Nav stacked>
+                <Nav stacked bsStyle="pills" >
                   <NavItem eventKey="info">
                     <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
                   </NavItem>
@@ -156,7 +161,8 @@ class TourCreationContents extends React.Component{
                       photos={this.props.photos}
                       hours_special={this.props.hours_special}
                       hours_special_dates={this.props.hours_special_dates}
-                      base_hours={this.props.base_hours}/>
+                      base_hours={this.props.base_hours}
+                      navAllowed={this.props.navAllowed}/>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
@@ -181,7 +187,8 @@ TourCreationContents.propTypes = {
   photos: React.PropTypes.object,
   hours_special: React.PropTypes.array,
   hours_special_dates: React.PropTypes.array,
-  base_hours: React.PropTypes.array
+  base_hours: React.PropTypes.array,
+  navAllowed: React.PropTypes.bool,
 }
 
 function select (state) {
@@ -198,6 +205,7 @@ function select (state) {
     hours_special: state.TourCreationReducer.hours_special,
     hours_special_dates: state.TourCreationReducer.hours_special_dates,
     base_hours: state.TourCreationReducer.base_hours,
+    navAllowed: state.TourCreationReducer.navAllowed
   };
 }
 
