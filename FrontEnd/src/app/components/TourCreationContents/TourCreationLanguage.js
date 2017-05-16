@@ -40,7 +40,6 @@ class TourCreationLanguage extends React.Component{
     )}, this);
 
     if(this.props.tour.language == "null"){
-      console.log("null");
       return (
         <div>
           <br/>
@@ -60,7 +59,6 @@ class TourCreationLanguage extends React.Component{
       )
     }
     else{
-      console.log("not null");
       return (
         <div>
           <br/>

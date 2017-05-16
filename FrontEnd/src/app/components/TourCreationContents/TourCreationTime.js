@@ -49,13 +49,36 @@ class TourCreationTime extends React.Component{
   }
 
   render(){
+    const options = [ {value:0, optionName:"Select a time"},
+                      {value:0.5, optionName:"30 Minutes"},
+                      {value:1, optionName:"1 Hour"},
+                      {value:1.5, optionName:"1 Hour 30 Minutes"},
+                      {value:2, optionName:"2 Hours"},
+                      {value:2.5, optionName:"2 Hours 30 Minutes"},
+                      {value:3, optionName:"3 Hours"},
+                      {value:3.5, optionName:"3 Hours 30 Minutes"},
+                      {value:4, optionName:"4 Hours"}];
+
+    const dropdownOptions = options.map(function(option) {
+      return (
+        <option key={option.value} value={option.value}>{option.optionName}</option>
+    )}, this);
+
     return (
       <div>
         <br/>
-        <p className={style.HeaderStyle}>On this page you can set special events for a tour. Special events allow you to add or remove specific dates and times that a tour may be offered</p>
+        <p className={style.HeaderStyle}>Choose a length for the tour</p>
         <br/>
-        <EditableFieldClass style={style.BodyStyle} label="length" onChange={this._changeLength} value={this.props.tour.length}/>
+          <Col xs={8} md={6}>
+            <FormControl componentClass="select" onChange={this._changeLength} value={this.props.tour.length} >
+              {dropdownOptions}
+            </FormControl>
+          </Col>
         <br/>
+        <br/>
+        <br/>
+        <p className={style.HeaderStyle}>Select a dates you want to offer the tour. Then choose times for each day you select</p>
+        <br />
         <MultiDateSelect
           emitChange={this._emitSpecialHourChange}
           emitDateChange={this._emitSpecialHourDateChange}
