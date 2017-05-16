@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
-import { updatePriceState, setTabKey } from '../../actions/TourCreationActions';
+import { updatePriceState, setTabKey, navAllowed } from '../../actions/TourCreationActions';
 
 class TourCreationPrice extends React.Component{
   constructor() {
@@ -15,6 +15,7 @@ class TourCreationPrice extends React.Component{
 
   next(){
     this.props.dispatch(setTabKey("review"));
+    this.props.dispatch(navAllowed(true));
   }
 
   previous(){

@@ -657,8 +657,8 @@ def add_hour_entries(l, start, end, length):
     eh = end.hour + end.minute/60.0
     while sh <= eh:
         l.append({
-            "start": hour_to_ts(sh),
-            "end": hour_to_ts(sh+length)
+            "start": sh,
+            "end": sh+length
         })
         sh += length
 
@@ -728,16 +728,20 @@ def get_hours():
         # TODO filter by date
     )
     specialHours = safe_call(query, "all", None)
-
+    print(start_date)
+    print(end_date)
+    #print("start: {}, end: {}" % (str(start_date), str(end_date)))
     query = get_session().query(TourEvent).filter(
         TourEvent.id_tour == tour_id
     )
+    '''
     query = query.filter(
-        TourEvent.start_date_time > start_date
+        TourEvent.start_date_time >= start_date
     )
     query = query.filter(
-        TourEvent.end_date_time < end_date
+        TourEvent.end_date_time <= end_date
     )
+    '''
     query = query.filter(
         TourEvent.state == 'B'
     )
@@ -769,23 +773,25 @@ def get_hours():
             if ds in overridden:
                 continue
             add_hour_entries(hours[ds], start, end, length)
-
     for event in events:
         start = event.start_date_time
         ds = str(start.date())
         print("ds event: " + ds)
         sh = start.hour
         eh = event.end_date_time.hour
-        if dow not in hours:
+        if ds not in hours:
             continue
         i = 0
         while i < len(hours[ds]):
             # Check for overlapping hours
-            if (sh <= hours[dow][i]["end"]) and (eh >= hours[dow][i]["start"]):
-                del hours[dow][i]
+            if (sh <= hours[ds][i]["end"]) and (eh >= hours[ds][i]["start"]):
+                del hours[ds][i]
             else:
                 i += 1
-
+    for ds in hours:
+        for i in range(len(hours[ds])):
+            hours[ds][i]["start"] = hour_to_ts(hours[ds][i]["start"])
+            hours[ds][i]["end"] = hour_to_ts(hours[ds][i]["end"])
     return jsonify(hours)
 
 

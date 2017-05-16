@@ -11,7 +11,7 @@ import { clearError } from '../../actions/AuthActions';
 import Overview from './Overview';
 import MyGuide from './MyGuide';
 import MyTours from './MyTours';
-import WishList from './WishList';
+import Favorites from './Favorites';
 import { getUser } from '../../actions/AuthActions';
 import * as service from '../../utils/databaseFunctions.js';
 
@@ -22,7 +22,7 @@ class MyToursContents extends React.Component{
        tab: 'overview',
        showModal: false
      }
-  
+
     this.cancelTourEvent = this.cancelTourEvent.bind(this);
   }
 
@@ -50,7 +50,7 @@ class MyToursContents extends React.Component{
       "id_user": null
       }
     }
-   
+
     service.putTourEventById(tourEventId, JSON.parse(JSON.stringify(obj)), this.props.auth).then(function(response){
       console.log("response", response);
       location.reload();
@@ -90,8 +90,8 @@ class MyToursContents extends React.Component{
       console.log("user:",this.props.user);
       var tabPag = <MyTours toursTaken={this.props.user.tours_taking} cancelTourEvent={this.cancelTourEvent.bind(this)}/>;
     }
-    if(this.state.tab == 'wishlist'){
-      var tabPag = <WishList/>;
+    if(this.state.tab == 'favorites'){
+      var tabPag = <Favorites/>;
     }
     return (
       <div>
@@ -107,7 +107,7 @@ class MyToursContents extends React.Component{
               <NavItem eventKey={1} onClick={this.buttonHandler.bind(this,"overview")}>Overview</NavItem>
               {this.props.user.is_guide && <NavItem eventKey={2} onClick={this.buttonHandler.bind(this,"myguide")}>MyGuide</NavItem>}
               <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"mytour")}>MyTours</NavItem>
-              <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"wishlist")}>WishList</NavItem>
+              <NavItem eventKey={3} onClick={this.buttonHandler.bind(this,"favorites")}>Favorites</NavItem>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

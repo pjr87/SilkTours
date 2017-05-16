@@ -28,6 +28,10 @@ class AboutUsPage extends React.Component{
         <br/>
         <PageTitle title= "Mission Statement"/>
         <br/>
+        <p className = {Style.paneText} > Connect people who can speak the same language wherever they are</p>
+        <br/>
+        <p className = {Style.paneText} > for more efficient cultural and social exchange. </p>
+        <br/>
         <br/>
         <PageTitle title= "Introducing our team members"/>
         <AboutContents/>
