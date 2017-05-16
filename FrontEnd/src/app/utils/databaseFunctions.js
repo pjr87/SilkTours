@@ -285,13 +285,14 @@ export function favorite_tour(json, auth) {
 }
 
 export function favorite_details(userId, auth) {
-  let url = SERVER_URL + '/favorite_details/' + userId
-
-  return axios.post(url,
+  console.log("auth", auth);
+  const tmp = {};
+  let url = SERVER_URL + '/favorite_details/' + userId;
+  return axios.post(url, tmp,
   {
     headers:{
       'Silk-Logins': auth.Logins,
       'Silk-Identity-Id': auth.IdentityId
-    },
+    }
   });
 }
