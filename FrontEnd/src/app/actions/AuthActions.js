@@ -273,7 +273,7 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
       if (response.authenticated) {
         //Update the store with relevant information
         dispatch(updateProviderState("Developer"));
-        dispatch(setCognitoUser(response.cognitoUser));
+        //dispatch(setCognitoUser(response.cognitoUser));
 
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
@@ -364,21 +364,22 @@ export function facebookSignUp(user, accessToken, expiresIn) {
  * @param  {object} cognitoUser The user to do confirmation of
  * @param  {string} confirmationNumber The confirmation number
  */
-export function confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber) {
+export function confirmSignUp(/*cognitoUser,*/ firstname, lastname, username, password, phoneNumber, confirmationNumber) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ cognitoUser, firstname, lastname, username, phoneNumber, confirmationNumber })) {
+    if (anyElementsEmpty({ /*cognitoUser,*/ firstname, lastname, username, phoneNumber, confirmationNumber })) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
 
-    cognitoFunctions.confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
+    cognitoFunctions.confirmSignUp(/*cognitoUser,*/ firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
       // If the user was signed up successfully
       if (response.authenticated) {
         //Update the store with relevant information
+        //dispatch(setCognitoUser());
         dispatch(updateProviderState("Developer"));
         dispatch(updateAuthState(response.auth));
         dispatch(updateIDState(response.id_user));

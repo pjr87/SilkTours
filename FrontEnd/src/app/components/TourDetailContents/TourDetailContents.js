@@ -45,10 +45,6 @@ class TourDetailContents extends React.Component{
     this.handleSelectedTimeChange = this.handleSelectedTimeChange.bind(this);
   }
 
-  componentDidMount(){
-    console.log("I AM HERE");
-  }
-
   closeModal() {
     this.setState({ showModal: false, validationState: null });
   }
@@ -118,7 +114,7 @@ class TourDetailContents extends React.Component{
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
     let isGuide = false;
-    
+
     if (guidesLength > 0) {
       isGuide = (this.props.selectedTour.guides[0].id_user == this.props.user.id_users) ? true : false;
       if(this.props.loggedIn) {
@@ -208,7 +204,7 @@ class TourDetailContents extends React.Component{
     //   )
     // }
     // else{
-    
+
     let reserveEditButton = null;
 
     console.log("isGuide: ", isGuide);

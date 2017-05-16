@@ -47,7 +47,7 @@ class ProfileContents extends React.Component{
     (<div><ProfileHeader profilePicture={this.state.guide.profile_picture}
       name={this.state.guide.first_name+" "+this.state.guide.last_name}/>
     <Grid>
-      <ProfileInfo user={this.props.user}/>
+      <ProfileInfo user={this.state.guide}/>
 
     </Grid></div>) : (<div></div>);
     console.log("rend",rend);
