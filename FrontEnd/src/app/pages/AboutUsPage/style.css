@@ -1,0 +1,22 @@
+.sideLeft {
+    display: inline-block;
+    width: 50%;
+}
+
+.sideRight {
+    display: inline-block;
+    align-content: left;
+    width: 50%;
+}
+
+.pane {
+  width: 100%;
+}
+
+.paneText {
+  font: 2vw Helvetica, Sans-Serif;
+  text-align: left;
+	color: #000000;
+  padding-left: 20%;
+  margin-top: -2%
+}
