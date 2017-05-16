@@ -94,7 +94,7 @@ extension ShopViewController: UITableViewDataSource {
         
         let url = NSURL(string:shopItem.imgTitle)
         let data = NSData(contentsOf:url! as URL)
-        
+        cell.backgroundImgView?.contentMode = UIViewContentMode.scaleAspectFill
         cell.backgroundImgView?.image = UIImage(data: data! as Data)
         cell.favoriteBtn?.isSelected = favoriteItems.contains(shopItem)
         cell.delegate = self
