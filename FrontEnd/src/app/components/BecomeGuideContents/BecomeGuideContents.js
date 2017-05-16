@@ -6,8 +6,6 @@ import {connect} from 'react-redux';
 import { updateUser } from '../../actions/AuthActions';
 import { browserHistory } from 'react-router';
 
-
-
 class BecomeGuideContents extends React.Component{
 
   constructor(props) {
@@ -15,6 +13,12 @@ class BecomeGuideContents extends React.Component{
     this.state = {
       termsAgreement: false,
     };
+    this._emitUserChange = this._emitUserChange.bind(this)
+  }
+
+  _emitUserChange (newUserState) {
+    this.props.dispatch(updateUser(this.props.user_id, {is_guide:true}, this.props.auth))
+    browserHistory.push('/tour-creation');
   }
 
 onClickHandler(){
@@ -22,11 +26,9 @@ onClickHandler(){
     alert("You must accept the terms and conditions!");
     return;
   }
-
-  var obj = {is_guide: true};
-  var forSubmit = JSON.parse(JSON.stringify(obj));
-  console.log(forSubmit);
-  this.props.dispatch(updateUser(this.props.user_id, forSubmit, this.props.auth)).then(function(){browserHistory.push('/tour-creation')});
+  else{
+    this._emitUserChange({...this.props.user, is_guide: true});
+  }
 }
 
 checkboxClicked(){
@@ -102,12 +104,6 @@ checkboxClicked(){
                 <li><strong>Governing Law &amp; Jurisdiction</strong></li>
             </ol>
             <p>These Terms will be governed by and interpreted in accordance with the laws of the State of Pennsylvania, and you submit to the non-exclusive jurisdiction of the state and federal courts located in Pennsylvania for the resolution of any disputes.</p>
-
-
-
-
-
-
 
               <br/>
               <input type="checkbox" onChange={this.checkboxClicked.bind(this)} /> I agree to the terms and conditions listed above.
