@@ -61,7 +61,7 @@ const initialState = {
   currentlySending: false,
   errorMessage: '',
   tabKey: 'info',
-  navAllowed: true //TODO
+  navAllowed: false
 };
 
 // Takes care of changing the application state
