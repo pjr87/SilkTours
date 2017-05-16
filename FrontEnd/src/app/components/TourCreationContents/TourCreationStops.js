@@ -35,19 +35,36 @@ class TourCreationStops extends React.Component{
 
   render(){
     if(this.props.tabKey == 'stops'){
-      return (
-        <div>
-          <br/>
-          <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
-          <br/>
-          <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
-          <br/>
-          <Pager>
-            <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
-            <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
-          </Pager>
-        </div>
-      )
+      if(this.props.tour.stops.length == 0){
+        return (
+          <div>
+            <br/>
+            <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
+            <br/>
+            <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
+            <br/>
+            <Pager>
+              <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+              <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+            </Pager>
+          </div>
+        )
+      }
+      else{
+        return (
+          <div>
+            <br/>
+            <p className={style.HeaderStyle}>Choose the locations this tour will stop.</p>
+            <br/>
+            <StopDisplay stops={this.props.tour.stops} updateStops={this.updateStops} />
+            <br/>
+            <Pager>
+              <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+              <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+            </Pager>
+          </div>
+        )
+      }
     }
     else{
       return(
