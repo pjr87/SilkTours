@@ -204,9 +204,13 @@ class TourDetailContents extends React.Component{
         var startTime = this.formatTime(this.props.selectedTourDateStart);
         var endTime = this.formatTime(this.props.selectedTourDateEnd);
 
+        console.log("selectedTour", this.props.selectedTour)
+        console.log("guide id", this.props.selectedTour.guides[0].id_user)
+
         var tourEvent = {
           id_tour: this.props.selectedTourId,
           id_user:	 this.props.id_user,
+          id_guide: this.props.selectedTour.guides[0].id_user,
           start_date_time: this.props.selectedTourDateString + " " + startTime,
           end_date_time: this.props.selectedTourDateString + " " + endTime,
           state: 'B'
