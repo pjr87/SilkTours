@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Style from './style.css';
 import {Confirm} from 'components';
 
-import {Col, Thumbnail, Button, Image} from 'react-bootstrap';
+import {Col, Thumbnail, Button, Image, Clearfix} from 'react-bootstrap';
 
 import StarRatingComponent from 'react-star-rating-component';
 
@@ -219,13 +219,23 @@ class Tours extends React.Component{
                 }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
     }
 
-
+    let showClearFix = null;
+    var nums = (this.props.num+1);
+    if( nums % 4 === 0){
+      showClearFix = <Clearfix visibleLgBlock/>
+    }
+    else if( nums % 3 === 0){
+      showClearFix = <Clearfix visibleMdBlock/>
+    }
+    else if( nums % 2 === 0){
+      showClearFix = <Clearfix visibleSmBlock/>
+    }
+    else{
+      showClearFix = null;
+    }
 
 
     if(this.props.tourDisplayProps.display == "small"){
-
-
-
 
 
       tourDisplay = (
@@ -257,6 +267,7 @@ class Tours extends React.Component{
 
             {modifyBtn} {contactButton} {summaryBtn} {contactTouristBtn} {cancelBtn} {editTourBtn} </div>
             </div>
+
           </Thumbnail>
           </Col>);
 
@@ -266,9 +277,9 @@ class Tours extends React.Component{
     else {
 
       tourDisplay = (
-      <Col xs={6} md={4} lg={3}>
+      <div>
+      <Col xs={12} sm={6} md={4} lg={3}>
         <Thumbnail bsStyle="thumbnail">
-
           <div onMouseOver={this.mouseOverImage.bind(this)} onMouseOut={this.mouseOutImage.bind(this)}>
             <Link
               to={{
@@ -282,39 +293,7 @@ class Tours extends React.Component{
           <div onClick={this.handleAddFavorite}>
             <p className={Style.image_heart}>&#9825;</p>
           </div>
-          {/*
-          <p>{this.props.tour.name}</p>
-          <p>${this.props.tour.price}</p>
-          <div style={{"display":"flex"}}>
-            <StarRatingComponent
-              name="rate1"
-              editing={false}
-              starColor="#ffb400"
-              emptyStarColor="#ffb400"
-              starCount={5}
-              value={this.props.tour.average_rating}
-              renderStarIcon={(index, value) => {
-                return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
-              }}
-              renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
-            />
-            <span style={{"margin-left": 6}}>{this.props.tour.rating_count} reviews</span>
-          </div>
-          <p>
-            <Link
-              to={{
-                pathname: '/tourdetail',
-                query: { tourId: this.props.tour.id_tour }
-              }}>
-              <Button bsStyle="primary">More Info</Button>&nbsp;
-            </Link>
-            <Button bsStyle="success" onClick={this.handleAddFavorite}>Add to Favorite</Button>&nbsp;
-          </p>
-          {guideButton}
-          */}
-
           <p>{this.props.tour.description}</p>
-
           <hr/>
           <p className={Style.tour_description}>${this.props.tour.price}</p>
           <div className={Style.tour_description_star_container} onMouseOver={this.mouseOverRating.bind(this)} onMouseOut={this.mouseOutRating.bind(this)}>
@@ -333,10 +312,14 @@ class Tours extends React.Component{
                 renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
               />)}
             {this.state.showRatingCount ? (<p>{this.props.tour.rating_count} reviews</p>) : null}
-
           </div>
+
         </Thumbnail>
-      </Col>);
+
+      </Col>
+      {showClearFix}
+      </div>
+    );
     }
 
 
