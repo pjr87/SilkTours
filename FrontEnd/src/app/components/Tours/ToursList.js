@@ -9,7 +9,7 @@ class ToursList extends React.Component{
   render(){
     const tours = this.props.tours.map(function(tour,index) {
         return (
-          <Tours tour={tour} key={index} tourDisplayProps={this.props.tourDisplayProps} cancelTourEvent={this.props.cancelTourEvent}/>
+          <Tours tour={tour} key={index} num={index} tourDisplayProps={this.props.tourDisplayProps} cancelTourEvent={this.props.cancelTourEvent}/>
       )}, this);
 
 
