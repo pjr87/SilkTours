@@ -1,5 +1,6 @@
 export ExplorePage from './ExplorePage/ExplorePage';
 export TourDetailPage from './TourDetailPage/TourDetailPage';
+export TourPayPage from './TourPayPage/TourPayPage';
 export TourConfirmationPage from './TourConfirmationPage/TourConfirmationPage';
 export BecomeGuidePage from './BecomeGuidePage/BecomeGuidePage';
 export AboutUsPage from './AboutUsPage/AboutUsPage';

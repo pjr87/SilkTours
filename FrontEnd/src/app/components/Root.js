@@ -24,7 +24,8 @@ import{
   PrivacyPage,
   TermsPage,
   PolicyPage,
-  TourEditPage} from '../pages';
+  TourEditPage,
+  TourPayPage} from '../pages';
 import {ContactUsRedux} from '../pages';
 import App from './App';
 import { loadState } from '../localStorage';
@@ -68,6 +69,7 @@ const Root = ({ store }) => (
           <Route path='/become-guide' component={BecomeGuidePage}/>
           <Route path='/messages' component={MessagesPage}/>
         </Route>
+        <Route path='/tourpaypage' component={TourPayPage}/>
         <Route path="*" component={NotFound}/>
       </Route>
     </Router>

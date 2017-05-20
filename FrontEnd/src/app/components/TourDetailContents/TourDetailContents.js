@@ -17,15 +17,13 @@ class TourDetailContents extends React.Component{
   constructor(props) {
     super();
     this.state = {
-      showModal: false,
       showModalCal: false,
       showCal: false,
       selectedDate: dateFormat(new Date(), "yyyy-mm-dd"),
       validationState: null,
       today: new Date(),
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.linkTourPage= this.linkTourPage.bind(this);
     this.openModalCal = this.openModalCal.bind(this);
     this.closeModalCal = this.closeModalCal.bind(this);
     this.hhmmss = this.hhmmss.bind(this);
@@ -72,13 +70,9 @@ class TourDetailContents extends React.Component{
     return newtime;
   }
 
-  closeModal() {
-    this.setState({ showModal: false, validationState: null });
-  }
-
-  openModal() {
+  linkTourPage() {
     if(this.props.loggedIn) {
-      this.setState({ showModal: true });
+      browserHistory.push('/tourpaypage');
     }
     else {
       browserHistory.push('/signredirect');
@@ -165,7 +159,7 @@ class TourDetailContents extends React.Component{
                 }}> <Button bsStyle="primary">Edit Tour</Button>&nbsp; </Link>
     }
     else{
-      reserveEditButton = <Button bsStyle="primary" onClick={this.openModal}>Reserve&nbsp;</Button>
+      reserveEditButton = <Button bsStyle="primary" onClick={this.linkTourPage}>Reserve&nbsp;</Button>
     }
     console.log("isGuide: ", isGuide);
 

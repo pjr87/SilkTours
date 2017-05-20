@@ -1,0 +1,10 @@
+.tourTitle{
+  margin-top: 5%;
+  font: bold 40px Helvetica, Sans-Serif;
+	color: grey;
+  text-align: center;
+}
+
+.modalCal{
+  width: 400px;
+}
