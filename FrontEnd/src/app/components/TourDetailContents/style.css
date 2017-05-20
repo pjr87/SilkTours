@@ -1,51 +1,50 @@
+.tourDetailContainer {
+  margin-top: 5%;
+}
+.tourDetailContainerInfo {
+  margin-top: 5%;
+}
 .tourTitle{
-  font: bold 50px Helvetica, Sans-Serif;
-	color: #ffffff;
-  text-align: center;
+  margin-top: 20%;
+  font: bold 40px Helvetica, Sans-Serif;
+	color: grey;
+  text-align: left;
 }
 .tourSubTitle{
-  margin-top: 5px;
-  font: bold 20px Helvetica, Sans-Serif;
-	color: #ffffff;
-  text-align: center;
-}
-.boxed{
-  margin: 80px 10px;
-  padding: 30px;
-  background-color: #AB619E;
+  margin-top: 5%;
+  font: 20px Helvetica, Sans-Serif;
+	color: grey;
+  text-align: left;
 }
 .imageContainer{
   margin: auto;
   width: 30%;
 }
 .mapContainer{
-  max-width: 100%;
-  margin-right: 6%;
-}
-.thumbnailContainer{
-  margin-left: 6%;
-  margin-right: 6%;
-  /*margin: auto;*/
+  margin-top: 10%;
   max-width: 100%;
 }
 .contentTitle{
-  font: bold 35px Helvetica, Sans-Serif;
-  color: black;
-}
-.contentSubTitle{
-  font: bold 25px Helvetica, Sans-Serif;
-  color: black;
-}
-.content{
-  font: 20px Helvetica, Sans-Serif;
+  margin-top: 7%;
+  font: bold 23px Helvetica, Sans-Serif;
   color: grey;
 }
+.content{
+  font: 17px Helvetica, Sans-Serif;
+  color: grey;
+}
+.buttonContainer{
+  margin-top: 5%;
+}
+.reviewContainer{
+  margin-top: 5%;
+}
 .reviewContentTitle{
-  font: 20px Helvetica, Sans-Serif;
+  font: 18px Helvetica, Sans-Serif;
   color: grey;
 }
 .reviewContent{
-  font: 20px Helvetica, Sans-Serif;
+  font: 15px Helvetica, Sans-Serif;
   color: grey;
   padding-left:4em
 }
