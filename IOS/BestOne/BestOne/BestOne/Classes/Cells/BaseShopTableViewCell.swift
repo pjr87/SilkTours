@@ -15,7 +15,7 @@ import UIKit
 }
 
 class BaseShopTableViewCell: UITableViewCell {
-    
+    var tour_id : Int?
     @IBOutlet weak var priceLbl : UILabel?
     @IBOutlet weak var backgroundImgView : UIImageView?
     @IBOutlet weak var titleLbl : UILabel?
@@ -55,6 +55,7 @@ class BaseShopTableViewCell: UITableViewCell {
     
     //Private Methods
     @IBAction fileprivate func onFavoriteBtnClicked(_ sender: AnyObject) {
+        BackendAPI.toggleFav(tour_id:self.tour_id!, completion: nil)
         delegate?.didFavoriteBtnClicked!(self)
     }
     

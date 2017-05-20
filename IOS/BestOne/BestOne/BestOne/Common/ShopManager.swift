@@ -60,7 +60,7 @@ class ShopManager: NSObject {
             
                        
             print(array[i]["language"].string!)
-             let loadedShopItem = ShopItem(title: array[i]["name"].string!, imgTitle: array[i]["profile_image"].string! , subTitle: array[i]["language"].string! , price: String(format:"%.0f", array[i]["price"].floatValue), information: array[i]["name"].string! , previewImgs: [array[i]["profile_image"].string!] , saleModePosition: SaleModePosition(rawValue:0)!)
+            let loadedShopItem = ShopItem(id: array[i]["id_tour"].int!, title: array[i]["name"].string!, imgTitle: array[i]["profile_image"].string! , subTitle: array[i]["language"].string! , price: String(format:"%.0f", array[i]["price"].floatValue), information: array[i]["name"].string! , previewImgs: [array[i]["profile_image"].string!] , saleModePosition: SaleModePosition(rawValue:0)!)
             resultItems.append(loadedShopItem)
         }
         

@@ -34,7 +34,7 @@ class FavoritesViewController: BaseViewController {
         BackendAPI.getFavs(completion: {(tours:[JSON]) -> Void in
             var i = 0
             for tour in tours {
-                self.favoritesItems.append(ShopItem(title: tour["name"].string!, imgTitle: "image", subTitle: "sub", price: "\(tour["price"].int!)", information: tour["description"].string!, previewImgs: [tour["profile_image"].string!], saleModePosition: SaleModePosition(rawValue: i%2)!))
+                self.favoritesItems.append(ShopItem(id: tour["id_tour"].int!, title: tour["name"].string!, imgTitle: "image", subTitle: "sub", price: "\(tour["price"].int!)", information: tour["description"].string!, previewImgs: [tour["profile_image"].string!], saleModePosition: SaleModePosition(rawValue: i%2)!))
                 i+=1
             }
             self.favoritesTableView?.reloadData()
@@ -83,7 +83,7 @@ extension FavoritesViewController: UITableViewDataSource {
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: RightShopCellIdentifier) as! RightShopTableViewCell
         }
-        
+        cell.tour_id = shopItem.id
         cell.titleLbl?.text = shopItem.title
         cell.subTitleLbl?.text = shopItem.information
         cell.priceLbl?.text = "$" + shopItem.price

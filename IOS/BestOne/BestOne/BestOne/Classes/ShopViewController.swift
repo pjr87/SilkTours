@@ -87,7 +87,7 @@ extension ShopViewController: UITableViewDataSource {
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: RightShopCellIdentifier) as! RightShopTableViewCell
         }
-        
+        cell.tour_id = shopItem.id
         cell.titleLbl?.text = shopItem.title
         cell.subTitleLbl?.text = shopItem.subTitle
         cell.priceLbl?.text = "$" + shopItem.price

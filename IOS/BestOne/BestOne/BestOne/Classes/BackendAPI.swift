@@ -136,6 +136,24 @@ class BackendAPI{
             }
         })
     }
+    
+    static func toggleFav(tour_id : Int, completion: (() -> Void)?) {
+        let url = "\(SERVER_URL)/toggle_favorite"
+
+        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
+            let user_id = user["id_users"].int!
+            var parameters = getCredentials()
+            parameters["bypass"] = true
+            parameters["user_id"] = user_id
+            parameters["tour_id"] = tour_id
+            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseString { response in
+                    if completion != nil {
+                        completion!()
+                    }
+            }
+        })
+    }
 
     static func getCredentials() -> [String: Any]  {
         return credentials as! [String : Any]

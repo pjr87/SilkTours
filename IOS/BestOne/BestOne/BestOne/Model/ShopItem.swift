@@ -10,7 +10,7 @@ import UIKit
 
 @objc (ShopItem)
 class ShopItem: NSObject, NSCoding {
-    
+    var id: Int
     var title: String
     var imgTitle: String
     var subTitle: String
@@ -19,7 +19,8 @@ class ShopItem: NSObject, NSCoding {
     var previewImgs: [String]
     var saleModePosition: SaleModePosition
     
-    init(title: String, imgTitle: String, subTitle: String, price: String, information: String, previewImgs: [String], saleModePosition: SaleModePosition) {
+    init(id: Int, title: String, imgTitle: String, subTitle: String, price: String, information: String, previewImgs: [String], saleModePosition: SaleModePosition) {
+        self.id = id
         self.title = title
         self.imgTitle = imgTitle
         self.subTitle = subTitle
@@ -56,6 +57,7 @@ class ShopItem: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
+        id = 0
         title = aDecoder.decodeObject(forKey: "title") as! String
         price = aDecoder.decodeObject(forKey: "price") as! String
         imgTitle = aDecoder.decodeObject(forKey: "imgTitle") as! String
