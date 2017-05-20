@@ -202,15 +202,15 @@ class BackendAPI{
     static func getAllTours(completion:@escaping (_ j:JSON) -> Void)
     {
         let sem = DispatchSemaphore(value: 0)
+        let user_id = 1
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let url = SERVER_URL+"/search";
+        let url = "\(SERVER_URL)/search?user_id=\(user_id)";
         let urlRequest = URLRequest(url: URL(string: url)!)
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
             // check for any errors
             guard error == nil else {
                 print("error calling GET on /todos/1")
-                print(error)
                 return
             }
             // make sure we got data
@@ -239,7 +239,7 @@ class BackendAPI{
              sem.signal()
         }
         task.resume()
-         sem.wait()
+        //sem.wait()
         
         
         

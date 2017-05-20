@@ -39,12 +39,14 @@ class ShopViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         favoriteItems = FavoriteItemsManager.sharedManager.items
-        shopItems = ShopManager.sharedManager.loadData()
-        searchedItems = [ShopItem](shopItems)
-        shopTableView!.reloadData()
-        
-        //set cart items count
-        countShopItemsBarBtn()
+        ShopManager.sharedManager.loadData(completion: {(shopItems: [ShopItem]) -> Void in
+            self.shopItems = shopItems
+            self.searchedItems = [ShopItem](shopItems)
+            DispatchQueue.main.async() {
+                self.shopTableView!.reloadData()
+                self.countShopItemsBarBtn()
+            }
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -96,7 +98,7 @@ extension ShopViewController: UITableViewDataSource {
         let data = NSData(contentsOf:url! as URL)
         cell.backgroundImgView?.contentMode = UIViewContentMode.scaleAspectFill
         cell.backgroundImgView?.image = UIImage(data: data! as Data)
-        cell.favoriteBtn?.isSelected = favoriteItems.contains(shopItem)
+        cell.favoriteBtn?.isSelected = shopItem.is_fav
         cell.delegate = self
         return cell
     }
@@ -153,6 +155,7 @@ extension ShopViewController: BaseShopTableViewCellDelegate {
     
     func didFavoriteBtnClicked(_ cell: BaseShopTableViewCell) {
         let indexPath = shopTableView!.indexPath(for: cell)!
+        searchedItems[indexPath.row].is_fav = !searchedItems[indexPath.row].is_fav
         
         //select/deselect favorite btn for selected shop item
         if favoriteItems.contains(shopItems[indexPath.row]) { //remove shop item from favorites

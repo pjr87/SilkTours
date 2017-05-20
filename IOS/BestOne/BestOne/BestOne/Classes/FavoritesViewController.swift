@@ -34,7 +34,7 @@ class FavoritesViewController: BaseViewController {
         BackendAPI.getFavs(completion: {(tours:[JSON]) -> Void in
             var i = 0
             for tour in tours {
-                self.favoritesItems.append(ShopItem(id: tour["id_tour"].int!, title: tour["name"].string!, imgTitle: "image", subTitle: "sub", price: "\(tour["price"].int!)", information: tour["description"].string!, previewImgs: [tour["profile_image"].string!], saleModePosition: SaleModePosition(rawValue: i%2)!))
+                self.favoritesItems.append(ShopItem(id: tour["id_tour"].int!, is_fav: true, title: tour["name"].string!, imgTitle: "image", subTitle: "sub", price: "\(tour["price"].int!)", information: tour["description"].string!, previewImgs: [tour["profile_image"].string!], saleModePosition: SaleModePosition(rawValue: i%2)!))
                 i+=1
             }
             self.favoritesTableView?.reloadData()
@@ -94,7 +94,7 @@ extension FavoritesViewController: UITableViewDataSource {
             cell.backgroundImgView?.contentMode = UIViewContentMode.scaleAspectFill
             cell.backgroundImgView?.image = UIImage(data: data! as Data)
         }
-        cell.favoriteBtn?.isSelected = favoritesItems.contains(shopItem)
+        cell.favoriteBtn?.isSelected = true //favoritesItems.contains(shopItem)
         cell.delegate = self
         return cell
     }
@@ -113,8 +113,9 @@ extension FavoritesViewController: BaseShopTableViewCellDelegate {
         let indexPath = favoritesTableView!.indexPath(for: cell)!
         
         //remove favorite item from the list and table view
-        FavoriteItemsManager.sharedManager.removeItem(favoritesItems[indexPath.row])
-        favoritesItems = FavoriteItemsManager.sharedManager.items
+        //FavoriteItemsManager.sharedManager.removeItem(favoritesItems[indexPath.row])
+        //favoritesItems = FavoriteItemsManager.sharedManager.items
+        favoritesItems.remove(at: indexPath.row)
         favoritesTableView?.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
 

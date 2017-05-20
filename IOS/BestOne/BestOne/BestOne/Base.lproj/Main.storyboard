@@ -1731,7 +1731,7 @@
                     <navigationItem key="navigationItem" id="Bz4-R8-KxI"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="kL2-DL-DXO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kL2-DL-DXO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1749,7 +1749,7 @@
             <objects>
                 <navigationController storyboardIdentifier="SettingsController" automaticallyAdjustsScrollViewInsets="NO" id="KXo-Z4-dmp" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="kjX-Ks-QuX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kjX-Ks-QuX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1767,7 +1767,7 @@
             <objects>
                 <navigationController storyboardIdentifier="FavoritesController" automaticallyAdjustsScrollViewInsets="NO" id="SiZ-jK-oTz" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="IlL-7p-GBL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IlL-7p-GBL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1785,7 +1785,7 @@
             <objects>
                 <navigationController storyboardIdentifier="MyCartController" automaticallyAdjustsScrollViewInsets="NO" id="vbg-jU-Qvg" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="14N-hP-Gns">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="14N-hP-Gns">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1805,7 +1805,7 @@
                     <toolbarItems/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="DpA-27-t4I">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DpA-27-t4I">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
