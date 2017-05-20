@@ -12,6 +12,7 @@
   border-color: $gray-lightest;
   width: 100%;
   img { width: 100%; };
+  filter: brightness(50%);
   opacity: 0.5;
   margin: 0px 0px 0px 0px;
 }
