@@ -105,29 +105,23 @@ class SearchBar extends React.Component{
 
        const info = await Promise.all([
          service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop, city_prop, interests_prop),
-         service.favorite_details(this.props.id_user, this.props.auth)
        ]);
-
-       // Object destructuring Syntax,
-       // takes out required values and create references to them
        const tours = info[0].data.data;
-       const fav_tours = info[1].data;
-      //  console.log(info[0].data.data);
-       console.log(info[1].data);
-      //  const page_size = info[0].data.page_size;
-      //  console.log(info[0].data.page_count);
-
-      for(var i=0; i<tours.length;i++){
-        console.log("test")
-        tours[i].favorite = false;
-        for(var j=0; j<fav_tours.length;j++){
-            if(tours[i].id_tour == fav_tours[j].id_tour) {
-              tours[i].favorite = true;
-              break;
-            }
-        }
-      }
-
+       if(this.props.loggedIn) {
+         const infoFavorite = await Promise.all([
+           service.favorite_details(this.props.id_user, this.props.auth)
+         ]);
+         const fav_tours = infoFavorite[0].data;
+         for(var i=0; i<tours.length;i++){
+           tours[i].favorite = false;
+           for(var j=0; j<fav_tours.length;j++){
+               if(tours[i].id_tour == fav_tours[j].id_tour) {
+                 tours[i].favorite = true;
+                 break;
+               }
+           }
+         }
+       }
        this.setState({
          tours,
          page_count: info[0].data.page_count,

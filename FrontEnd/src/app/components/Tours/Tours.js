@@ -349,9 +349,11 @@ class Tours extends React.Component{
             {this.state.showTourTitle ? (<p className={Style.image_text}>{this.props.tour.name}</p>): null}
             </Link>
           </div>
+          {this.props.loggedIn ? (
           <div onClick={this.handleAddFavorite}>
             {this.state.favorite ? (<p className={Style.image_heart}>&#9829;</p>) :(<p className={Style.image_heart}>&#9825;</p>)}
           </div>
+          ) : null }
           <p>{this.props.tour.description}</p>
           <hr/>
           <p className={Style.tour_description}>${this.props.tour.price}</p>
