@@ -195,8 +195,8 @@ def favorite_details(user_id):
 @app.route("/search", methods=['GET'])
 def search():
     """
-    Searches tours.
-    <u>URL Args:</u> interests, keywords, rating, priceMin/Max, city, page, page_size
+    Searches tours. If user_id is specified, it will also check if each result is a favorited tour for that user. Will be returned as "is_fav: Bool"
+    <u>URL Args:</u> interests, keywords, rating, priceMin/Max, city, page, page_size, user_id (optional)
     """
     interests = request.args.get("interests", None)
     keyWordsStr = request.args.get("keywords", None)
@@ -206,6 +206,7 @@ def search():
     city = request.args.get("city", None)
     page = int(request.args.get("page", 0))
     page_size = int(request.args.get("page_size", 10))
+    user_id = request.args.get("user_id", None)
     if page_size == 0:
         page_size = 1
 
@@ -242,7 +243,17 @@ def search():
     if tours is None:
         tours = []
     for tour in tours:
-        result.append(tour.serialize(True))
+        stour = tour.serialize(True)
+        is_fav = False
+        if user_id is not None:
+            is_fav = get_session().query(FavoritesClass).filter(
+                and_(
+                    FavoritesClass.user_id == user_id,
+                    FavoritesClass.tour_id == stour["id_tour"]
+                )
+            ).scalar() is not None
+        stour["is_fav"] = is_fav
+        result.append(stour)
 
     return jsonify({
         "page_count": math.ceil(count/page_size),
