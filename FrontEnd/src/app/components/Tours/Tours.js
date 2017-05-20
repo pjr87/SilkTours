@@ -18,6 +18,7 @@ class Tours extends React.Component{
       showTourTitle: false,
       showRatingCount: false,
       favorite: this.props.tour.favorite,
+      visible: true,
     };
     this.mouseOverImage = this.mouseOverImage.bind(this);
     this.mouseOutImage = this.mouseOutImage.bind(this);
@@ -47,7 +48,7 @@ class Tours extends React.Component{
     console.log("Favorite");
     console.log(userTourJson);
     if(this.state.favorite == true){
-      this.setState({favorite: false});
+      this.setState({favorite: false, visible: false });
     }
     else{
       this.setState({favorite: true});
@@ -280,6 +281,57 @@ class Tours extends React.Component{
 
 
 
+    }
+    else if(this.props.tourDisplayProps.display == "favorite"){
+      if(this.state.visible){
+      tourDisplay = (
+      <div>
+      <Col xs={12} sm={6} md={4} lg={3}>
+        <Thumbnail bsStyle="thumbnail">
+          <div onMouseOver={this.mouseOverImage.bind(this)} onMouseOut={this.mouseOutImage.bind(this)}>
+            <Link
+              to={{
+                pathname: '/tourdetail',
+                query: { tourId: this.props.tour.id_tour }
+              }}>
+            {this.state.showTourTitle ? (<Image className={Style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={Style.tour_image_large} src={this.props.tour.profile_image}/>)}
+            {this.state.showTourTitle ? (<p className={Style.image_text}>{this.props.tour.name}</p>): null}
+            </Link>
+          </div>
+          <div onClick={this.handleAddFavorite}>
+            {this.state.favorite ? (<p className={Style.image_heart}>&#9829;</p>) :(<p className={Style.image_heart}>&#9825;</p>)}
+          </div>
+          <p>{this.props.tour.description}</p>
+          <hr/>
+          <p className={Style.tour_description}>${this.props.tour.price}</p>
+          <div className={Style.tour_description_star_container} onMouseOver={this.mouseOverRating.bind(this)} onMouseOut={this.mouseOutRating.bind(this)}>
+            {this.state.showRatingCount ? null :
+              (<StarRatingComponent
+                className = {Style.tour_description_star}
+                name="rate1"
+                editing={false}
+                starColor="#ffb400"
+                emptyStarColor="#ffb400"
+                starCount={5}
+                value={this.props.tour.average_rating}
+                renderStarIcon={(index, value) => {
+                  return <span className={index <= value ? 'fa fa-star' : 'fa fa-star-o'} />;
+                }}
+                renderStarIconHalf={() => <span className="fa fa-star-half-full" />}
+              />)}
+            {this.state.showRatingCount ? (<p>{this.props.tour.rating_count} reviews</p>) : null}
+          </div>
+
+        </Thumbnail>
+
+      </Col>
+      {showClearFix}
+      </div>
+    );
+    }
+    else {
+      <div></div>
+    }
     }
     else {
 
