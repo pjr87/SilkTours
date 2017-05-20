@@ -17,6 +17,7 @@ class Tours extends React.Component{
     this.state = {
       showTourTitle: false,
       showRatingCount: false,
+      favorite: this.props.tour.favorite,
     };
     this.mouseOverImage = this.mouseOverImage.bind(this);
     this.mouseOutImage = this.mouseOutImage.bind(this);
@@ -45,6 +46,12 @@ class Tours extends React.Component{
     }
     console.log("Favorite");
     console.log(userTourJson);
+    if(this.state.favorite == true){
+      this.setState({favorite: false});
+    }
+    else{
+      this.setState({favorite: true});
+    }
     try {
       service.favorite_tour(userTourJson, this.props.auth).then(function(response){
         if(response.data) {
@@ -231,7 +238,7 @@ class Tours extends React.Component{
       showClearFix = <Clearfix visibleSmBlock/>
     }
     else{
-      showClearFix = null;
+      showClearFix = <Clearfix visibleXsBlock/>;
     }
 
 
@@ -291,7 +298,7 @@ class Tours extends React.Component{
             </Link>
           </div>
           <div onClick={this.handleAddFavorite}>
-            <p className={Style.image_heart}>&#9825;</p>
+            {this.state.favorite ? (<p className={Style.image_heart}>&#9829;</p>) :(<p className={Style.image_heart}>&#9825;</p>)}
           </div>
           <p>{this.props.tour.description}</p>
           <hr/>
