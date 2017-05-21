@@ -26,7 +26,7 @@ export default class MultiDateSelect extends React.Component{
     this.handleEndChange = this.handleEndChange.bind(this)
   }
 
-  formatDate(date) {
+  formatSpecialDate(date) {
     var day = date.getDate();
     var monthIndex = date.getMonth()+1;
     var year = date.getFullYear();
@@ -41,6 +41,14 @@ export default class MultiDateSelect extends React.Component{
     return monthIndex + '/' + day + '/' + year;
   }
 
+  formatDate(date) {
+    var day = date.getDate();
+    var monthIndex = date.getMonth()+1;
+    var year = date.getFullYear();
+
+    return year + '-' + monthIndex + '-' + day;
+  }
+
   findDate(date){
     var arrayLength = this.props.hours_special.length;
     for (var i = 0; i < arrayLength; i++) {
@@ -50,8 +58,9 @@ export default class MultiDateSelect extends React.Component{
   }
 
   onDateSelect(date){
+    let newSpecialDate = this.formatSpecialDate(date);
     let newdate = this.formatDate(date);
-    var index = this.props.hours_special_dates.indexOf(newdate);
+    var index = this.props.hours_special_dates.indexOf(newSpecialDate);
 
     var newHoursSpecial = {
       close_time:	 "",
@@ -71,7 +80,7 @@ export default class MultiDateSelect extends React.Component{
     }
     else{
       this.props.emitChange([...this.props.hours_special, newHoursSpecial]);
-      this.props.emitDateChange([...this.props.hours_special_dates, newdate]);
+      this.props.emitDateChange([...this.props.hours_special_dates, newSpecialDate]);
     }
   }
 
