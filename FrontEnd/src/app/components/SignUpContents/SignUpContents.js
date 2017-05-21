@@ -15,6 +15,8 @@ import Col from 'react-bootstrap/lib/Col';
 import config from '../../utils/config';
 import { signUp, facebookSignUp, changeSignUpForm } from '../../actions/AuthActions';
 
+import style from "./style.css";
+
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign');
@@ -23,7 +25,10 @@ class SignUpContents extends React.Component{
   constructor(){
     super();
 
-    this.state = {errors:[]};
+    this.state = {
+      errors:[],
+      passFocus: false,
+    };
 
     this.signUpSubmit = this.signUpSubmit.bind(this)
     this.signUpFBSubmit = this.signUpFBSubmit.bind(this)
@@ -32,7 +37,7 @@ class SignUpContents extends React.Component{
     this._changeUsername = this._changeUsername.bind(this)
     this._changePassword = this._changePassword.bind(this)
     this._changePhoneNumber = this._changePhoneNumber.bind(this)
-
+    this.isEmpty = this.isEmpty.bind(this);
     this.setValidation = this.setValidation.bind(this)
   }
 
@@ -49,7 +54,7 @@ class SignUpContents extends React.Component{
 
       if( !currentState.trim() ){
         var errors = this.state.errors;
-        errors[field] = "required"
+        errors[field] = "Field is required"
         this.setState({errors: errors});
       }
       else{
@@ -64,7 +69,7 @@ class SignUpContents extends React.Component{
 
       if( !currentState.trim() ){
         var errors = this.state.errors;
-        errors[field] = "required"
+        errors[field] = "Field is required"
         this.setState({errors: errors});
       }
       else{
@@ -80,12 +85,12 @@ class SignUpContents extends React.Component{
       
       if( !currentState.trim() ){
         var errors = this.state.errors;
-        errors[field] = "required"
+        errors[field] = "Field is required"
         this.setState({errors: errors});
       }
       else if(!regex.test( currentState.trim().toLowerCase() )){
         var errors = this.state.errors;
-        errors[field] = "invalid"
+        errors[field] = "Invalid Email Format"
         this.setState({errors: errors});
       }
       else{
@@ -95,13 +100,15 @@ class SignUpContents extends React.Component{
       }
     }
     else if( field == "password" ){
+      this.setState({passFocus: false})
       currentState = this.props.signUpFormState['password'];
 
-      var regexPass = /^(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,28}$/;
+      var regexPass = /^(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,64}$/;
 
       //var regexSpecial = /^(?=.*[!@#$%^&*])/;
-      var regexCaps = /^(?=.*[A-Z])/;
-      var regexNum = /^(?=.*[0-9])/;
+      var regexCaps   = /^(?=.*[A-Z])/;
+      var regexLower  = /^(?=.*[a-z])/;
+      var regexNum    = /^(?=.*[0-9])/;
 
       console.log("regexCaps: ", regexCaps.test( currentState.trim()) )
       console.log("regexNum: ", regexNum.test( currentState.trim()) )
@@ -111,12 +118,32 @@ class SignUpContents extends React.Component{
 
       if( !currentState.trim() ){
         var errors = this.state.errors;
-        errors[field] = "required"
+        errors[field] = "Field is required"
+        this.setState({errors: errors});
+      }
+      else if( currentState.length < 8 || currentState.length > 64 ){
+        var errors = this.state.errors;
+        errors[field] = "Password must be between 8 and 64 characters"
+        this.setState({errors: errors});
+      }
+      else if( !regexCaps.test( currentState.trim() )){
+        var errors = this.state.errors;
+        errors[field] = "Password must contain at least one uppercase letter"
+        this.setState({errors: errors});
+      }
+      else if( !regexLower.test( currentState.trim() )){
+        var errors = this.state.errors;
+        errors[field] = "Password must contain at least one lowercase letter"
+        this.setState({errors: errors});
+      }
+      else if( !regexNum.test( currentState.trim() )){
+        var errors = this.state.errors;
+        errors[field] = "Password must contain at least one number"
         this.setState({errors: errors});
       }
       else if( !regexPass.test( currentState.trim() ) ){
         var errors = this.state.errors;
-        errors[field] = "invalid"
+        errors[field] = "Password does not meet minimum password requirements"
         this.setState({errors: errors});
       }
       else{
@@ -128,11 +155,11 @@ class SignUpContents extends React.Component{
     else if( field == "phoneNumber" ){
       currentState = this.props.signUpFormState['phoneNumber'];
 
-      var regexPhone = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
+      var regexPhone = /^[(]{0,1}[+]{0,1}[1]{0,1}[)]{0,1}[- ]{0,2}[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
 
       if( !currentState.trim() ){
         var errors = this.state.errors;
-        errors[field] = "required"
+        errors[field] = "Field is required"
         this.setState({errors: errors});
       }
       else if( !regexPhone.test( currentState.trim() ) ){
@@ -219,7 +246,7 @@ class SignUpContents extends React.Component{
     }.bind(this));
 
 
-    //this.setState({errors: errors});
+    this.setState({errors: errors});
 
 
     window.fbAsyncInit = function() {
@@ -242,6 +269,14 @@ class SignUpContents extends React.Component{
     }(document, 'script', 'facebook-jssdk'));
   }
 
+  isEmpty( obj ) { 
+    for ( var prop in obj ) { 
+      return false; 
+    } 
+    return true; 
+  }
+
+
   render() {
     let isLoading = this.props.currentlySending;
     function ErrorFunc(props){
@@ -253,12 +288,15 @@ class SignUpContents extends React.Component{
       return <div></div>
     }
 
+
+    console.log("focus: ", this.state.passFocus);
+
     return(
       <div>
         <Grid>
           <br/>
           <Form horizontal>
-            <FormGroup validationState={'firstName' in this.state.errors && 'error' || !('firstName' in this.state.errors) && null }> 
+            <FormGroup validationState={this.state.errors['firstName'] != '' && 'firstName' in this.state.errors && 'error' || !('firstName' in this.state.errors) && null }> 
               <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 First Name
               </Col>
@@ -268,10 +306,12 @@ class SignUpContents extends React.Component{
                   ref="firstName"
                   onChange={this._changeFirstName}
                   placeholder="First Name"
-                  onBlur={()=>this.setValidation("firstName")} />
+                  onBlur={()=>this.setValidation("firstName")}
+                  value={this.props.signUpFormState.firstname} />
+                <ErrorFunc errorText = {this.state.errors['firstName']} />
               </Col>
             </FormGroup>
-            <FormGroup validationState={'lastName' in this.state.errors && 'error' || !('lastName' in this.state.errors) && null } >
+            <FormGroup validationState={this.state.errors['lastName'] != '' && 'lastName' in this.state.errors && 'error' || !('lastName' in this.state.errors) && null } >
               <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 Last Name
               </Col>
@@ -281,10 +321,12 @@ class SignUpContents extends React.Component{
                   ref="lastName"
                   onChange={this._changeLastName}
                   placeholder="Last Name"
-                  onBlur={()=>this.setValidation("lastName")} />
+                  onBlur={()=>this.setValidation("lastName")}
+                  value={this.props.signUpFormState.lastname} />
+                <ErrorFunc errorText = {this.state.errors['lastName']} />
               </Col>
             </FormGroup>
-            <FormGroup validationState={'username' in this.state.errors && 'error' || !('username' in this.state.errors) && null }>
+            <FormGroup validationState={this.state.errors['username'] != '' && 'username' in this.state.errors && 'error' || !('username' in this.state.errors) && null }>
               <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 Email
               </Col>
@@ -294,10 +336,12 @@ class SignUpContents extends React.Component{
                   ref="username"
                   onChange={this._changeUsername}
                   placeholder="Email"
-                  onBlur={()=>this.setValidation("username")} />
+                  onBlur={()=>this.setValidation("username")} 
+                  value={this.props.signUpFormState.username}/>
+                <ErrorFunc errorText = {this.state.errors['username']} />
               </Col>
             </FormGroup>
-            <FormGroup validationState={'password' in this.state.errors && 'error' || !('password' in this.state.errors) && null }>
+            <FormGroup validationState={this.state.errors['password'] != '' && 'password' in this.state.errors && 'error' || !('password' in this.state.errors) && null }>
               <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 Password
               </Col>
@@ -307,10 +351,21 @@ class SignUpContents extends React.Component{
                   ref="password"
                   onChange={this._changePassword}
                   placeholder="Password" 
-                  onBlur={()=>this.setValidation("password")} />
+                  onFocus={()=> this.setState({passFocus: true})}
+                  onBlur={()=>this.setValidation("password")}
+                  value={this.props.signUpFormState.password} />
+                <ErrorFunc errorText = {this.state.errors['password']} />
+                {this.state.passFocus && 
+                  <div className={style.passRules}>
+                    <ul>
+                    <li>Use 8 to 64 characters.</li>
+                    <li>Must contain at least one number, one lowercase letter, and one uppercase letter.</li>
+                    <li>Password is case sensitive.</li>
+                    <li>Avoid using the same password for multiple sites.</li></ul>
+                  </div>}
               </Col>
             </FormGroup>
-            <FormGroup validationState={'phoneNumber' in this.state.errors && 'error' || !('phoneNumber' in this.state.errors) && null }>
+            <FormGroup validationState={this.state.errors['phoneNumber'] != '' && 'phoneNumber' in this.state.errors && 'error' || !('phoneNumber' in this.state.errors) && null }>
               <Col componentClass={ControlLabel} sm={2} smOffset={2}>
                 Phone Number
               </Col>
@@ -320,7 +375,9 @@ class SignUpContents extends React.Component{
                   ref="phoneNumber"
                   onChange={this._changePhoneNumber}
                   placeholder="Phone Number"
-                  onBlur={()=>this.setValidation("phoneNumber")} />
+                  onBlur={()=>this.setValidation("phoneNumber")}
+                  value={this.props.signUpFormState.phoneNumber} />
+                <ErrorFunc errorText = {this.state.errors['phoneNumber']} />
               </Col>
             </FormGroup>
             <FormGroup
@@ -333,7 +390,7 @@ class SignUpContents extends React.Component{
               <Row>
                 <Col sm={8} smOffset={4}>
                   <Button
-                    disabled={isLoading}
+                    disabled={isLoading || !this.isEmpty(this.state.errors)}
                     onClick={!isLoading ? this.signUpSubmit : null}>
                     {isLoading ? 'Signing up...' : 'Sign up!'}
                   </Button>
