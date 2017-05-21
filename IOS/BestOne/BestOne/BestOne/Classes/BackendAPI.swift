@@ -136,6 +136,24 @@ class BackendAPI{
             }
         })
     }
+    
+    static func toggleFav(tour_id : Int, completion: (() -> Void)?) {
+        let url = "\(SERVER_URL)/toggle_favorite"
+
+        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
+            let user_id = user["id_users"].int!
+            var parameters = getCredentials()
+            parameters["bypass"] = true
+            parameters["user_id"] = user_id
+            parameters["tour_id"] = tour_id
+            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseString { response in
+                    if completion != nil {
+                        completion!()
+                    }
+            }
+        })
+    }
 
     static func getCredentials() -> [String: Any]  {
         return credentials as! [String : Any]
@@ -184,15 +202,15 @@ class BackendAPI{
     static func getAllTours(completion:@escaping (_ j:JSON) -> Void)
     {
         let sem = DispatchSemaphore(value: 0)
+        let user_id = 1
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let url = SERVER_URL+"/search";
+        let url = "\(SERVER_URL)/search?user_id=\(user_id)";
         let urlRequest = URLRequest(url: URL(string: url)!)
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
             // check for any errors
             guard error == nil else {
                 print("error calling GET on /todos/1")
-                print(error)
                 return
             }
             // make sure we got data
@@ -221,7 +239,7 @@ class BackendAPI{
              sem.signal()
         }
         task.resume()
-         sem.wait()
+        //sem.wait()
         
         
         
