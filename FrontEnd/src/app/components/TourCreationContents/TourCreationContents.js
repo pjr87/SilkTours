@@ -160,7 +160,6 @@ class TourCreationContents extends React.Component{
                       auth={this.props.auth}
                       photos={this.props.photos}
                       hours_special={this.props.hours_special}
-                      hours_special_dates={this.props.hours_special_dates}
                       base_hours={this.props.base_hours}
                       navAllowed={this.props.navAllowed}/>
                   </Tab.Pane>
