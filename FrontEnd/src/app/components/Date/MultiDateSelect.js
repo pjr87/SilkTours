@@ -31,7 +31,14 @@ export default class MultiDateSelect extends React.Component{
     var monthIndex = date.getMonth()+1;
     var year = date.getFullYear();
 
-    return year + '-' + monthIndex + '-' + day;
+    if (day < 10){
+        day='0'+day
+    }
+    if(monthIndex < 10) {
+        monthIndex='0'+monthIndex
+    }
+
+    return monthIndex + '/' + day + '/' + year;
   }
 
   findDate(date){
