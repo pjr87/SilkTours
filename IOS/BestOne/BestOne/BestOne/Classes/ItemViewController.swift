@@ -7,15 +7,11 @@
 //
 
 import UIKit
+import MapKit
+import GoogleMaps
+import GooglePlaces
 
-private let AddItemIntoCartStr = "Add Item"
-private let DeleteItemFromCartStr = "Delete from cart"
 private let PreviewCellIdentifier = "PreviewCollectionViewCell"
-private let CartBtnAddCoef = 0.293333
-private let CartBtnDeleteCoef = 0.47
-private let CartBtnAddMinWidth = 110
-private let CartBtnDeleteMinWidth = 170
-private let CartBtnImgMargin = 20.0
 
 class ItemViewController: BaseViewController {
     
@@ -23,41 +19,29 @@ class ItemViewController: BaseViewController {
     @IBOutlet weak var titleLbl: UILabel?
     @IBOutlet weak var subTitleLbl: UILabel?
     @IBOutlet weak var informationLbl: UILabel?
+    @IBOutlet weak var photoLabel: UILabel!
     @IBOutlet weak var sizeSegmentedControl: UISegmentedControl?
     @IBOutlet weak var previewCollectionView: UICollectionView?
     @IBOutlet weak var pageControl: UIPageControl?
-    @IBOutlet weak var favoriteBtn: UIButton?
-    @IBOutlet weak var cartBtn: UIButton?
     @IBOutlet weak var segmentedControl: UISegmentedControl?
-    @IBOutlet weak var cartBtnWidthConstraint: NSLayoutConstraint?
     var shopItem: ShopItem?
+    
+    var mapView: GMSMapView!
+    @IBOutlet weak var googleMapsHeightConstraint: NSLayoutConstraint!
     fileprivate var itemsInCart: [ShopItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //set page control count
         pageControl?.numberOfPages = (shopItem?.previewImgs.count)!
-        
-        //set title for controller
         title = shopItem?.title
-        
-        //fill the field with information
-        initShopInformation()
+        loadGoogleMap()
+        loadImageSession()
+        loadButtons()
+        print()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let isItemInCart = CartManager.sharedManager.cartItems.contains(shopItem!)
-        let widthCoef = isItemInCart ? CartBtnDeleteCoef : CartBtnAddCoef
-        let minWidth = isItemInCart ? CartBtnDeleteMinWidth : CartBtnAddMinWidth
-        let constraintValue = max(view.frame.width * CGFloat(widthCoef), CGFloat(minWidth))
-        
-        cartBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, constraintValue - CGFloat(CartBtnImgMargin), 0, 0)
-        cartBtnWidthConstraint?.constant = constraintValue
-        cartBtn?.setAttributedTitle(attributedStrForAdding(!isItemInCart), for: UIControlState())
-        
         updateViewConstraints()
         
         //normalize information label
@@ -68,71 +52,73 @@ class ItemViewController: BaseViewController {
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - Private Methods
-    fileprivate func attributedStrForAdding(_ isAdding: Bool) -> NSAttributedString {
-        let boldFont = ThemeManager.sharedManager.itemTextBoldFont()
-        let regularFont = ThemeManager.sharedManager.itemTextRegularFont()
-        let textColor = ThemeManager.sharedManager.itemTextColor()
-        let boldType = [NSFontAttributeName: boldFont, NSForegroundColorAttributeName: textColor]
-        let regularType = [NSFontAttributeName: regularFont, NSForegroundColorAttributeName: textColor]
+    fileprivate func loadButtons() {
+        let messageButton:UIButton = UIButton()
+        let joinButton:UIButton = UIButton()
         
-        let attributedString = NSMutableAttributedString()
-        if isAdding { //string for adding into cart
-            attributedString.append(NSAttributedString(string: "add", attributes: boldType))
-            attributedString.append(NSAttributedString(string: "item", attributes: regularType))
-        } else {
-            attributedString.append(NSAttributedString(string: "delete", attributes: boldType))
-            attributedString.append(NSAttributedString(string: "from", attributes: regularType))
-            attributedString.append(NSAttributedString(string: "cart", attributes: boldType))
-        }
-        return attributedString
+        messageButton.setTitle("Message", for: .normal)
+        messageButton.backgroundColor = UIColor.blue
+        messageButton.frame.size = CGSize(width: 125, height: 30)
+        messageButton.frame.origin = CGPoint(x: 35, y: 345)
+        joinButton.setTitle("Join", for: .normal)
+        joinButton.backgroundColor = UIColor.green
+        joinButton.frame.size = CGSize(width: 125, height: 30)
+        joinButton.frame.origin = CGPoint(x: 254, y: 345)
+        
+        self.view.addSubview(messageButton)
+        self.view.addSubview(joinButton)
     }
     
-    fileprivate func initShopInformation() {
-        if let shopItem = shopItem {
-            priceLbl?.text = "$" + shopItem.price
-            titleLbl?.text = shopItem.title
-            subTitleLbl?.text = shopItem.subTitle
-            informationLbl?.text = shopItem.information
-            segmentedControl?.selectedSegmentIndex = 0
+    fileprivate func loadGoogleMap() {
+        let camera = GMSCameraPosition.camera(withLatitude: -33.868, longitude: 151.2086, zoom: 14)
+        let mapView = GMSMapView.map(withFrame: CGRect(x: 0, y: 385, width: self.view.frame.width, height: 175), camera: camera)
+        
+        let marker = GMSMarker()
+        marker.position = camera.target
+        marker.snippet = "Hello World"
+        marker.map = mapView
+        
+        self.view.addSubview(mapView)
+    }
+    
+    fileprivate func loadInformation() {
+        
+    }
+
+    
+    fileprivate func loadImageSession() {
+        let photoScrollView:UIScrollView = UIScrollView()
+        let photoLabel:UILabel = UILabel()
+        var xPosition:CGFloat = 10
+        let imageWidth:CGFloat = 80
+        let imageHeight:CGFloat = 80
+        let count:Int = 10
+        
+        photoLabel.text = "Photo"
+        photoLabel.frame.size = CGSize(width: 100, height: 30)
+        photoLabel.frame.origin = CGPoint(x: 10, y: 570)
+        photoScrollView.isScrollEnabled = true
+        photoScrollView.frame.size = CGSize(width: self.view.frame.width, height: imageHeight + 10)
+        photoScrollView.contentSize = CGSize(width: (imageWidth + 5) * CGFloat(count) + 10, height: imageHeight + 10)
+        photoScrollView.frame.origin = CGPoint(x: 0, y: 600)
+        
+        self.view.addSubview(photoLabel)
+        self.view.addSubview(photoScrollView)
+        for _ in 1...count {
+            let media:Media = Media()
+            let tourImageView:UIImageView = UIImageView()
+            //tourImageView.backgroundColor = UIColor.blue
+            media.setImageByUrl(url: "https://s3.amazonaws.com/silktours-media/tour/1/0ff6044bfbf0457c9b521c986369b17f.jpg") { image in
+                tourImageView.image = image
+            }
             
-            //set favorite button
-            favoriteBtn?.isSelected = FavoriteItemsManager.sharedManager.items.contains(shopItem)
+            tourImageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
+            tourImageView.frame.origin = CGPoint(x: xPosition, y: 10)
+            
+            photoScrollView.addSubview(tourImageView)
+            
+            xPosition += imageWidth + 5
         }
-    }
-    
-    // MARK: - Actions
-    @IBAction func onFavoriteBtnClicked(_ sender: AnyObject) {
-        //select/deselect favorite btn for selected shop item
-        if FavoriteItemsManager.sharedManager.items.contains(shopItem!) { //remove shop item from favorites
-            FavoriteItemsManager.sharedManager.removeItem(shopItem!)
-            favoriteBtn?.isSelected = false
-        } else { //add shop item into favorites
-            FavoriteItemsManager.sharedManager.addItem(shopItem!)
-            favoriteBtn?.isSelected = true
-        }
-    }
-
-    @IBAction func onAddItemBtnClicked(_ sender: AnyObject) {
-        let isItemInCart = CartManager.sharedManager.cartItems.contains(shopItem!)
-        let widthCoef = isItemInCart ? CartBtnAddCoef : CartBtnDeleteCoef
-        let minWidth = isItemInCart ? CartBtnAddMinWidth : CartBtnDeleteMinWidth
-        let constraintValue = max(view.frame.width * CGFloat(widthCoef), CGFloat(minWidth))
-        
-        cartBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, constraintValue - CGFloat(CartBtnImgMargin), 0, 0)
-        cartBtnWidthConstraint?.constant = constraintValue
-        cartBtn?.setAttributedTitle(attributedStrForAdding(isItemInCart), for: UIControlState())
-
-        if isItemInCart { //remove shop item from a cart
-            CartManager.sharedManager.removeShopItem(shopItem!)
-        } else { //add shop item into the cart
-            CartManager.sharedManager.addShopItem(shopItem!)
-        }
-        view.updateConstraints()
-    }
-    
-    @IBAction func didSizeControlValueChanged(_ sender: AnyObject) {
-        print("User changed shop item size")
     }
     
     @IBAction func didPageControlValueChanged(_ sender: AnyObject) {}

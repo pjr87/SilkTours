@@ -15,7 +15,7 @@ import UIKit
 }
 
 class BaseShopTableViewCell: UITableViewCell {
-    
+    var tour_id : Int?
     @IBOutlet weak var priceLbl : UILabel?
     @IBOutlet weak var backgroundImgView : UIImageView?
     @IBOutlet weak var titleLbl : UILabel?
@@ -33,13 +33,14 @@ class BaseShopTableViewCell: UITableViewCell {
     }
     
     func setSaleMode(_ saleMode: SaleMode) {
-        switch (saleMode) {
+        var s = SaleMode.featured
+        switch (s) {
         case .default:
             saleModeImgView?.isHidden = true
             break
         case .onSale:
             saleModeImgView?.isHidden = false
-            saleModeImgView?.image = UIImage(named: "on_sale.png")
+            saleModeImgView?.image = UIImage(named: "featured.png")
             break
         case .featured:
             saleModeImgView?.isHidden = false
@@ -47,13 +48,14 @@ class BaseShopTableViewCell: UITableViewCell {
             break
         case .bestPrice:
             saleModeImgView?.isHidden = false
-            saleModeImgView?.image = UIImage(named: "best_price.png")
+            saleModeImgView?.image = UIImage(named: "featured.png")
             break
         }
     }
     
     //Private Methods
     @IBAction fileprivate func onFavoriteBtnClicked(_ sender: AnyObject) {
+        BackendAPI.toggleFav(tour_id:self.tour_id!, completion: nil)
         delegate?.didFavoriteBtnClicked!(self)
     }
     

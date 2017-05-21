@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 private let RowHeightCoef = 0.3238
 private let LeftShopCellIdentifier = "LeftShopTableViewCell"
@@ -30,7 +31,14 @@ class FavoritesViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        favoritesItems = FavoriteItemsManager.sharedManager.items
+        BackendAPI.getFavs(completion: {(tours:[JSON]) -> Void in
+            var i = 0
+            for tour in tours {
+                self.favoritesItems.append(ShopItem(id: tour["id_tour"].int!, is_fav: true, title: tour["name"].string!, imgTitle: "image", subTitle: "sub", price: "\(tour["price"].int!)", information: tour["description"].string!, previewImgs: [tour["profile_image"].string!], saleModePosition: SaleModePosition(rawValue: i%2)!))
+                i+=1
+            }
+            self.favoritesTableView?.reloadData()
+        })
         
         //set cart items count
         countShopItemsBarBtn()
@@ -75,12 +83,18 @@ extension FavoritesViewController: UITableViewDataSource {
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: RightShopCellIdentifier) as! RightShopTableViewCell
         }
-        
+        cell.tour_id = shopItem.id
         cell.titleLbl?.text = shopItem.title
-        cell.subTitleLbl?.text = shopItem.subTitle
+        cell.subTitleLbl?.text = shopItem.information
         cell.priceLbl?.text = "$" + shopItem.price
-        cell.backgroundImgView?.image = UIImage(named: shopItem.imgTitle)
-        cell.favoriteBtn?.isSelected = favoritesItems.contains(shopItem)
+        if shopItem.previewImgs.count > 0 {
+            //cell.backgroundImgView?.downloadedFrom(link: shopItem.previewImgs[0])
+            let url = NSURL(string:shopItem.previewImgs[0])
+            let data = NSData(contentsOf:url! as URL)
+            cell.backgroundImgView?.contentMode = UIViewContentMode.scaleAspectFill
+            cell.backgroundImgView?.image = UIImage(data: data! as Data)
+        }
+        cell.favoriteBtn?.isSelected = true //favoritesItems.contains(shopItem)
         cell.delegate = self
         return cell
     }
@@ -99,8 +113,9 @@ extension FavoritesViewController: BaseShopTableViewCellDelegate {
         let indexPath = favoritesTableView!.indexPath(for: cell)!
         
         //remove favorite item from the list and table view
-        FavoriteItemsManager.sharedManager.removeItem(favoritesItems[indexPath.row])
-        favoritesItems = FavoriteItemsManager.sharedManager.items
+        //FavoriteItemsManager.sharedManager.removeItem(favoritesItems[indexPath.row])
+        //favoritesItems = FavoriteItemsManager.sharedManager.items
+        favoritesItems.remove(at: indexPath.row)
         favoritesTableView?.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
 
@@ -110,6 +125,27 @@ extension FavoritesViewController: BaseShopTableViewCellDelegate {
         //go to shop item
         selectedShopItemIndex = indexPath.row
         performSegue(withIdentifier: "showItem", sender: self)
+    }
+}
+
+extension UIImageView {
+    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFill) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                //let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() { () -> Void in
+                self.image = image
+            }
+            }.resume()
+    }
+    func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFill) {
+        guard let url = URL(string: link) else { return }
+        downloadedFrom(url: url, contentMode: mode)
     }
 }
 

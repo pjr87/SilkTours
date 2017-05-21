@@ -24,8 +24,11 @@ class WishListContent extends React.Component{
 
        // Object destructuring Syntax,
        // takes out required values and create references to them
-       const tours = info[0].data.data;
-       console.log(info[0].data.data);
+       const tours = info[0].data;
+       for(var i=0; i< tours.length; i++) {
+         tours[i].favorite = true;
+       }
+       console.log("favorties", info[0].data);
        this.setState({
          tours,
        });
@@ -41,7 +44,7 @@ class WishListContent extends React.Component{
       <div>
         <Grid>
           <Row>
-            <ToursList tours={this.state.tours} tourDisplayProps={{display:"large", contactTouristBtn:true}} />
+            <ToursList tours={this.state.tours} tourDisplayProps={{display:"favorite", contactTouristBtn:true}} />
           </Row>
         </Grid>
       </div>

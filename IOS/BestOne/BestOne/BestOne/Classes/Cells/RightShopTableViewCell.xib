@@ -1,20 +1,22 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8101.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Raleway-Bold.ttf">
+        <array key="Raleway-Bold.ttf">
             <string>Raleway-Bold</string>
-        </mutableArray>
-        <mutableArray key="Raleway-Medium.ttf">
+        </array>
+        <array key="Raleway-Medium.ttf">
             <string>Raleway-Medium</string>
-            <string>Raleway-Medium</string>
-            <string>Raleway-Medium</string>
-        </mutableArray>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -23,32 +25,32 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oWZ-nR-h92" id="UCD-Mc-fUR">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="215.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BXS-5e-GJ4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="215.5"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shop_item1.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qpt-ES-P62">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="171"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shop_item1.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qpt-ES-P62">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="171.5"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qDE-dB-pYs">
-                                <rect key="frame" x="332" y="0.0" width="43" height="171"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="332.5" y="0.0" width="42.5" height="171.5"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="best_price.png" translatesAutoresizingMaskIntoConstraints="NO" id="AWf-W2-lec">
-                                <rect key="frame" x="268" y="54" width="64" height="64"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="featured.png" translatesAutoresizingMaskIntoConstraints="NO" id="AWf-W2-lec">
+                                <rect key="frame" x="268.5" y="53.5" width="64" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="AWf-W2-lec" secondAttribute="height" multiplier="1:1" id="TKs-ox-aQt"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4i-HK-h8e">
-                                <rect key="frame" x="0.0" y="171" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="171.5" width="375" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$39" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MpZ-0u-jge">
                                         <rect key="frame" x="0.0" y="0.0" width="63" height="44"/>
                                         <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="20.840000152587891"/>
-                                        <color key="textColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item_marker.png" translatesAutoresizingMaskIntoConstraints="NO" id="7gs-EW-Gme">
@@ -60,13 +62,13 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cute Racoon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vb-Ug-I1q">
                                         <rect key="frame" x="73" y="6" width="186" height="20"/>
                                         <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="16.680000305175781"/>
-                                        <color key="textColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PULLOVER" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVU-Ho-WAy">
-                                        <rect key="frame" x="73" y="25" width="186" height="13"/>
+                                        <rect key="frame" x="73" y="25" width="186" height="12.5"/>
                                         <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="10.420000076293945"/>
-                                        <color key="textColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.23921568630000001" green="0.3803921569" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEX-hn-Jmx">
@@ -78,7 +80,7 @@
                                         <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="64" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="show item" image="add_item.png">
-                                            <color key="titleColor" red="0.78823529411764703" green="0.82352941176470584" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.78823529411764703" green="0.82352941176470584" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <state key="highlighted" image="add_item_pressed.png"/>
                                         <connections>
@@ -91,7 +93,7 @@
                                             <constraint firstAttribute="width" secondItem="5Zo-Ne-6qO" secondAttribute="height" multiplier="30:37" id="Aw3-9L-aeL"/>
                                         </constraints>
                                         <state key="normal" image="favorite.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <state key="selected" image="favorite_chosen.png"/>
                                         <state key="highlighted" image="favorite_chosen.png"/>
@@ -100,7 +102,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" secondItem="zEX-hn-Jmx" secondAttribute="height" id="0UL-wc-34f"/>
                                     <constraint firstItem="9vb-Ug-I1q" firstAttribute="leading" secondItem="7gs-EW-Gme" secondAttribute="trailing" constant="5" id="2U0-KV-XMA"/>
@@ -123,7 +125,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="Qpt-ES-P62" secondAttribute="centerX" id="2p6-Bi-CYQ"/>
                             <constraint firstAttribute="trailing" secondItem="qDE-dB-pYs" secondAttribute="trailing" id="4N2-fP-req"/>
@@ -163,12 +165,17 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="add_item.png" width="8" height="14"/>
-        <image name="add_item_pressed.png" width="8" height="14"/>
-        <image name="best_price.png" width="63" height="63"/>
-        <image name="favorite.png" width="16" height="17"/>
-        <image name="favorite_chosen.png" width="16" height="17"/>
-        <image name="item_marker.png" width="5" height="31"/>
+        <image name="add_item.png" width="7" height="13"/>
+        <image name="add_item_pressed.png" width="7" height="13"/>
+        <image name="favorite.png" width="15" height="16"/>
+        <image name="favorite_chosen.png" width="15" height="16"/>
+        <image name="featured.png" width="62" height="62"/>
+        <image name="item_marker.png" width="4" height="31"/>
         <image name="shop_item1.png" width="360" height="164"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>

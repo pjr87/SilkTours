@@ -22,12 +22,47 @@ class BackendAPI{
      secretAccessKey and identityID - Used with all ajax calls
      */
     
-    static var credentials: NSDictionary?
+    static var credentials: NSDictionary? = [
+        "bypass": true
+    ];
+    static var user: JSON?
     
     static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
-//  static func getUser(String id) {
-//        Alamofire.request();
-//    }
+    
+    
+    static func getCurrentUser(email:String? = nil, completion: @escaping (JSON) -> Void) {
+        if (user != nil) {
+            completion(user!)
+            return
+        }
+        let defaults = UserDefaults.standard
+        let _user = defaults.object(forKey: "user")
+        if (_user != nil) {
+            user = _user as? JSON
+            completion(user!)
+            return
+        }
+        var lEmail:String? = email
+        
+        if (lEmail == nil) {
+            lEmail = defaults.string(forKey: "email")
+            if (lEmail == nil) {
+                completion(JSON.null)
+                return
+            }
+        }else{
+            defaults.set(lEmail, forKey: "email")
+        }
+        let url = "\(SERVER_URL)/users/email/\(lEmail!)"
+        Alamofire.request(url, method: .get, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    user = JSON(result)
+                    completion(user!)
+                }
+                print(response)
+        }
+    }
     
     static func login(email:String, password:String, completion: @escaping () -> Void) {
         let url = "\(SERVER_URL)/login"
@@ -84,7 +119,51 @@ class BackendAPI{
                 }
         }
     }
+
+    static func getFavs(completion: @escaping ([JSON]) -> Void) {
+        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
+            let user_id = user["id_users"].int!
+            let url = "\(SERVER_URL)/favorite_details/\(user_id)"
+            let parameters = getCredentials()
+            
+            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseJSON { response in
+                    if let result = response.result.value {
+                        let favs = JSON(result).array
+                        completion(favs!)
+                    }
+                    print(response)
+            }
+        })
+    }
     
+    static func toggleFav(tour_id : Int, completion: (() -> Void)?) {
+        let url = "\(SERVER_URL)/toggle_favorite"
+
+        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
+            let user_id = user["id_users"].int!
+            var parameters = getCredentials()
+            parameters["bypass"] = true
+            parameters["user_id"] = user_id
+            parameters["tour_id"] = tour_id
+            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+                .responseString { response in
+                    if completion != nil {
+                        completion!()
+                    }
+            }
+        })
+    }
+
+    static func getCredentials() -> [String: Any]  {
+        return credentials as! [String : Any]
+        /*let result:[String: Any] = [
+            "Logins" : credentials!["Logins"]!,
+            "IdentityId" : credentials!["IdentityId"]!
+        ]
+        return result
+        */
+    }
    
   static func getFilteredTours(rating:String, priceMin:Float, priceMax:Float, keywords:String, page:String, page_size:Int) {
        // return Alamofire.request();
@@ -123,15 +202,15 @@ class BackendAPI{
     static func getAllTours(completion:@escaping (_ j:JSON) -> Void)
     {
         let sem = DispatchSemaphore(value: 0)
+        let user_id = 1
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let url = SERVER_URL+"/search";
+        let url = "\(SERVER_URL)/search?user_id=\(user_id)";
         let urlRequest = URLRequest(url: URL(string: url)!)
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
             // check for any errors
             guard error == nil else {
                 print("error calling GET on /todos/1")
-                print(error)
                 return
             }
             // make sure we got data
@@ -160,7 +239,7 @@ class BackendAPI{
              sem.signal()
         }
         task.resume()
-         sem.wait()
+        //sem.wait()
         
         
         

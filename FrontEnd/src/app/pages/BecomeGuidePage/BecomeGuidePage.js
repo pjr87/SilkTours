@@ -11,11 +11,7 @@ class BecomeGuidePage extends React.Component{
 		super(props);
 	}
 
-	componentWillMount(){
-		if( this.props.isGuide ){
-			browserHistory.push('/tour-creation');
-		}
-	}
+
 
   render(){
 

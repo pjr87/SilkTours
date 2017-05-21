@@ -35,7 +35,7 @@ class SearchBar extends React.Component{
       advancedFilterShow: false,
       language: 'english',
       start_date_time: '',
-      end_date_time: ''
+      end_date_time: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
@@ -104,22 +104,31 @@ class SearchBar extends React.Component{
       //  console.log('city: ' + this.state.city);
 
        const info = await Promise.all([
-         service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop, city_prop, interests_prop)
+         service.getFilteredTours(rating_prop, priceMin_prop, priceMax_prop, keywords_prop, page_prop, page_size_prop, city_prop, interests_prop),
        ]);
-
-       // Object destructuring Syntax,
-       // takes out required values and create references to them
        const tours = info[0].data.data;
-       console.log(info[0].data.data);
-      //  const page_size = info[0].data.page_size;
-       console.log(info[0].data.page_count);
+       if(this.props.loggedIn) {
+         const infoFavorite = await Promise.all([
+           service.favorite_details(this.props.id_user, this.props.auth)
+         ]);
+         const fav_tours = infoFavorite[0].data;
+         for(var i=0; i<tours.length;i++){
+           tours[i].favorite = false;
+           for(var j=0; j<fav_tours.length;j++){
+               if(tours[i].id_tour == fav_tours[j].id_tour) {
+                 tours[i].favorite = true;
+                 break;
+               }
+           }
+         }
+       }
        this.setState({
          tours,
          page_count: info[0].data.page_count,
        });
 
      } catch(e) {
-       console.log("error occured pulling tour data");
+       console.log(e);
      }
    }
 
@@ -394,7 +403,7 @@ class SearchBar extends React.Component{
         */}
         <Grid>
           <Row>
-            <ToursList tours={this.state.tours} tourDisplayProps={{display:"large", contactTouristBtn:true}} />
+            <ToursList tours={this.state.tours} fav_tours={this.state.fav_tours} tourDisplayProps={{display:"large", contactTouristBtn:true}} />
           </Row>
         </Grid>
 
@@ -414,34 +423,15 @@ class SearchBar extends React.Component{
       </div>
     );
   }
-  numColumns() {
-      var w = window.innerWidth
-      if (w < 600)
-        return 1;
-      if (w < 950)
-        return 2;
-      if (w < 1250)
-        return 3;
-      return 4;
-  }
-  getTourList(tours) {
-      var nc = this.nc;
-      var colTourSizes = [0,nc<2?Infinity:0,nc<3?Infinity:0,nc<4?Infinity:0];
-      var colTours = [[], [], [], []];
-      for (var tourId in tours) {
-          var minCol = -1;
-          var minVal = Infinity;
-          for (var t in colTourSizes) {
-              if (colTourSizes[t] < minVal) {
-                  minVal = colTourSizes[t];
-                  minCol = t;
-              }
-          }
-          colTours[minCol].push(tours[tourId]);
-          colTourSizes[minCol] += tours[tourId].profile_image_height/tours[tourId].profile_image_width;
-      }
-      return colTours;
-  }
 }
 
-export default SearchBar;
+// select chooses which props to pull from store
+function select(state) {
+  return {
+    auth: state.AuthReducer.auth,
+    loggedIn: state.AuthReducer.loggedIn,
+    id_user: state.AuthReducer.id_user,
+  };
+}
+
+export default connect(select)(SearchBar);

@@ -195,8 +195,8 @@ def favorite_details(user_id):
 @app.route("/search", methods=['GET'])
 def search():
     """
-    Searches tours.
-    <u>URL Args:</u> interests, keywords, rating, priceMin/Max, city, page, page_size
+    Searches tours. If user_id is specified, it will also check if each result is a favorited tour for that user. Will be returned as "is_fav: Bool"
+    <u>URL Args:</u> interests, keywords, rating, priceMin/Max, city, page, page_size, user_id (optional)
     """
     interests = request.args.get("interests", None)
     keyWordsStr = request.args.get("keywords", None)
@@ -206,6 +206,7 @@ def search():
     city = request.args.get("city", None)
     page = int(request.args.get("page", 0))
     page_size = int(request.args.get("page_size", 10))
+    user_id = request.args.get("user_id", None)
     if page_size == 0:
         page_size = 1
 
@@ -242,7 +243,17 @@ def search():
     if tours is None:
         tours = []
     for tour in tours:
-        result.append(tour.serialize(True))
+        stour = tour.serialize(True)
+        is_fav = False
+        if user_id is not None:
+            is_fav = get_session().query(FavoritesClass).filter(
+                and_(
+                    FavoritesClass.user_id == user_id,
+                    FavoritesClass.tour_id == stour["id_tour"]
+                )
+            ).scalar() is not None
+        stour["is_fav"] = is_fav
+        result.append(stour)
 
     return jsonify({
         "page_count": math.ceil(count/page_size),
@@ -657,8 +668,8 @@ def add_hour_entries(l, start, end, length):
     eh = end.hour + end.minute/60.0
     while sh <= eh:
         l.append({
-            "start": hour_to_ts(sh),
-            "end": hour_to_ts(sh+length)
+            "start": sh,
+            "end": sh+length
         })
         sh += length
 
@@ -728,16 +739,20 @@ def get_hours():
         # TODO filter by date
     )
     specialHours = safe_call(query, "all", None)
-
+    print(start_date)
+    print(end_date)
+    #print("start: {}, end: {}" % (str(start_date), str(end_date)))
     query = get_session().query(TourEvent).filter(
         TourEvent.id_tour == tour_id
     )
+    '''
     query = query.filter(
-        TourEvent.start_date_time > start_date
+        TourEvent.start_date_time >= start_date
     )
     query = query.filter(
-        TourEvent.end_date_time < end_date
+        TourEvent.end_date_time <= end_date
     )
+    '''
     query = query.filter(
         TourEvent.state == 'B'
     )
@@ -769,23 +784,25 @@ def get_hours():
             if ds in overridden:
                 continue
             add_hour_entries(hours[ds], start, end, length)
-
     for event in events:
         start = event.start_date_time
         ds = str(start.date())
         print("ds event: " + ds)
         sh = start.hour
         eh = event.end_date_time.hour
-        if dow not in hours:
+        if ds not in hours:
             continue
         i = 0
         while i < len(hours[ds]):
             # Check for overlapping hours
-            if (sh <= hours[dow][i]["end"]) and (eh >= hours[dow][i]["start"]):
-                del hours[dow][i]
+            if (sh <= hours[ds][i]["end"]) and (eh >= hours[ds][i]["start"]):
+                del hours[ds][i]
             else:
                 i += 1
-
+    for ds in hours:
+        for i in range(len(hours[ds])):
+            hours[ds][i]["start"] = hour_to_ts(hours[ds][i]["start"])
+            hours[ds][i]["end"] = hour_to_ts(hours[ds][i]["end"])
     return jsonify(hours)
 
 
