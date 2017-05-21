@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
@@ -23,6 +24,10 @@ class TourCreationStops extends React.Component{
 
   previous(){
     this.props.dispatch(setTabKey("interests"));
+  }
+
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
 
   updateStops(s) {

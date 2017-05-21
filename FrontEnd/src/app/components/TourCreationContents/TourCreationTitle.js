@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
@@ -23,6 +24,10 @@ class TourCreationTitle extends React.Component{
 
   _changeTour(event) {
     this._emitUserChange({...this.props.tour, name: event.target.value});
+  }
+
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
 
   _emitUserChange (newTitleState) {
