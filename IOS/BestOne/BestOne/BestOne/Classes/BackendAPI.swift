@@ -30,41 +30,35 @@ class BackendAPI{
     static let SERVER_URL = "http://silk-tours-dev.us-east-1.elasticbeanstalk.com";
     
     
-    static func getCurrentUser(email:String? = nil, completion: @escaping (JSON) -> Void) {
+    static func getCurrentUserSync() -> JSON {
         if (user != nil) {
-            completion(user!)
-            return
+            return user!
         }
         let defaults = UserDefaults.standard
         let _user = defaults.object(forKey: "user")
         if (_user != nil) {
-            user = _user as? JSON
-            completion(user!)
-            return
+            let userString = _user as! String
+            self.user = JSON(data:userString.data(using: String.Encoding.utf8)!)
+            //self.user = JSON(userString)
+            return user!
         }
-        var lEmail:String? = email
-        
-        if (lEmail == nil) {
-            lEmail = defaults.string(forKey: "email")
-            if (lEmail == nil) {
-                completion(JSON.null)
-                return
-            }
-        }else{
-            defaults.set(lEmail, forKey: "email")
-        }
-        let url = "\(SERVER_URL)/users/email/\(lEmail!)"
+        return JSON.null
+    }
+    
+    static func getCurrentUserFromServer(email:String, completion: @escaping (JSON) -> Void) {
+        let url = "\(SERVER_URL)/users/email/\(email)"
         Alamofire.request(url, method: .get, encoding: JSONEncoding.default)
             .responseJSON { response in
                 if let result = response.result.value {
-                    user = JSON(result)
-                    completion(user!)
+                    self.user = JSON(result)
+                    let defaults = UserDefaults.standard
+                    defaults.set(self.user?.rawString(String.Encoding.utf8), forKey: "user")
+                    completion(self.user!)
                 }
-                print(response)
         }
     }
     
-    static func login(email:String, password:String, completion: @escaping () -> Void) {
+    static func login(email:String, password:String, completion: @escaping (_ user: JSON) -> Void) {
         let url = "\(SERVER_URL)/login"
         let parameters: [String: Any] = [
             "type" : "custom",
@@ -77,9 +71,10 @@ class BackendAPI{
             .responseJSON { response in
                 if let result = response.result.value {
                     credentials = result as? NSDictionary
-                    completion()
+                    self.getCurrentUserFromServer(email: email, completion: {(user: JSON) -> Void in
+                        completion(user)
+                    })
                 }
-                print(response)
             }
     }
     
@@ -121,38 +116,44 @@ class BackendAPI{
     }
 
     static func getFavs(completion: @escaping ([JSON]) -> Void) {
-        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
-            let user_id = user["id_users"].int!
-            let url = "\(SERVER_URL)/favorite_details/\(user_id)"
-            let parameters = getCredentials()
-            
-            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-                .responseJSON { response in
-                    if let result = response.result.value {
-                        let favs = JSON(result).array
-                        completion(favs!)
-                    }
-                    print(response)
-            }
-        })
+        user = getCurrentUserSync()
+        if user == JSON.null {
+            gotoLogin()
+            return
+        }
+        let user_id = user!["id_users"].int!
+        let url = "\(SERVER_URL)/favorite_details/\(user_id)"
+        let parameters = getCredentials()
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseJSON { response in
+                if let result = response.result.value {
+                    let favs = JSON(result).array
+                    completion(favs!)
+                }
+                print(response)
+        }
     }
     
     static func toggleFav(tour_id : Int, completion: (() -> Void)?) {
+        
         let url = "\(SERVER_URL)/toggle_favorite"
-
-        getCurrentUser(email: "andrew@shidel.com", completion: {(user:JSON) -> Void in
-            let user_id = user["id_users"].int!
-            var parameters = getCredentials()
-            parameters["bypass"] = true
-            parameters["user_id"] = user_id
-            parameters["tour_id"] = tour_id
-            Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-                .responseString { response in
-                    if completion != nil {
-                        completion!()
-                    }
-            }
-        })
+        user = getCurrentUserSync()
+        if user == JSON.null {
+            gotoLogin(back: false)
+            return
+        }
+        let user_id = user?["id_users"].int!
+        var parameters = getCredentials()
+        parameters["bypass"] = true
+        parameters["user_id"] = user_id
+        parameters["tour_id"] = tour_id
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .responseString { response in
+                if completion != nil {
+                    completion!()
+                }
+        }
     }
 
     static func getCredentials() -> [String: Any]  {
@@ -167,10 +168,18 @@ class BackendAPI{
     
     static func getAllTours(completion:@escaping (_ j:JSON) -> Void)
     {
-        let user_id = 1
+        user = getCurrentUserSync()
+        var user_id = -1
+        if user != JSON.null {
+            user_id = (user?["id_users"].int)!
+        }
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let url = "\(SERVER_URL)/search?user_id=\(user_id)";
+        let url = (
+            (user_id == -1)
+                ? "\(SERVER_URL)/search"
+                : "\(SERVER_URL)/search?user_id=\(user_id)"
+        );
         let urlRequest = URLRequest(url: URL(string: url)!)
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
             // check for any errors
@@ -187,5 +196,34 @@ class BackendAPI{
             completion(json["data"])
         }
         task.resume()
+    }
+    
+    static func gotoLogin(back:Bool?=true) {
+        let vc = getViewController()
+        if vc == nil {
+            return
+        }
+        let alert = UIAlertController(title: "Login to Continue", message: "You must be logged in to see this content", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Go Back", style: UIAlertActionStyle.default, handler: {(action: UIAlertAction) -> Void in
+            if !(back!) {
+                return
+            }
+            let next = vc?.storyboard?.instantiateViewController(withIdentifier: "CollectionsController") as! UINavigationController
+            vc?.present(next, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.default, handler: {(action: UIAlertAction) -> Void in
+            let next = vc?.storyboard?.instantiateViewController(withIdentifier: "LoginNC") as! UINavigationController
+            vc?.present(next, animated: true, completion: nil)
+        }))
+        vc?.present(alert, animated: true, completion: nil)
+    }
+    internal static func getViewController() -> UIViewController? {
+        if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+            return topController
+        }
+        return nil
     }
 }
