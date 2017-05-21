@@ -6,6 +6,8 @@ import dateFormat from 'dateformat';
 import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
 import { selectDates, setSelectedDateStart, setSelectedDateEnd } from '../../actions/TourDetailActions';
 import HostedField from 'hosted-fields-react';
+import * as service from '../../utils/databaseFunctions';
+import { browserHistory } from 'react-router';
 
 class TourPayContents extends React.Component {
   constructor(props) {
@@ -15,11 +17,15 @@ class TourPayContents extends React.Component {
       selectedDate: dateFormat(new Date(), "yyyy-mm-dd"),
       validationState: null,
       today: new Date(),
+      paymentValidationError: false,
     };
     this.openModalCal = this.openModalCal.bind(this);
     this.closeModalCal = this.closeModalCal.bind(this);
     this.handleSelectedDateChange = this.handleSelectedDateChange.bind(this);
     this.handleSelectedTimeChange = this.handleSelectedTimeChange.bind(this);
+    this.formatTime = this.formatTime.bind(this);
+    this.hhmmss = this.hhmmss.bind(this);
+    this.pad = this.pad.bind(this);
   }
 
   openModalCal() {
@@ -46,6 +52,41 @@ class TourPayContents extends React.Component {
     this.props.dispatch(setSelectedDateEnd(ar[1]));
   }
 
+  formatTime(time){
+    var a = time.split(':');
+    var b = a[1].split(' '); // split it at the colons
+    console.log("b", b);
+    var hours = Number(a[0])
+    var minutes = Number(b[0])
+    console.log("hours", hours);
+    console.log("minutes", minutes);
+    if(b[1] == "PM"){
+      hours = hours+12;
+    }
+    console.log("hours", hours);
+    console.log("minutes", minutes);
+
+    // minutes are worth 60 seconds. Hours are worth 60 minutes.
+    var seconds = (+hours) * 60 * 60 + (+minutes) * 60;
+
+    console.log(seconds);
+    var newtime = this.hhmmss(seconds);
+    console.log("newtime", newtime);
+    return newtime;
+  }
+
+  hhmmss(secs) {
+    var minutes = Math.floor(secs / 60);
+    secs = secs%60;
+    var hours = Math.floor(minutes/60)
+    minutes = minutes%60;
+    return this.pad(hours)+":"+this.pad(minutes)+":"+this.pad(secs);
+  }
+
+  pad(str) {
+      return ("0"+str).slice(-2);
+  }
+
   render() {
     const getToken = () => {
       // Replace this with an actual promise to your Braintree-enabled server
@@ -58,7 +99,43 @@ class TourPayContents extends React.Component {
 
     // Charge the card using the returned nonce if you want :)
     const onTokenization = (nonce) => {
-      console.log(`We turned some card details into jibberish: ${nonce}`);
+      if(nonce != null) {
+        console.log(`We turned some card details into jibberish: ${nonce}`);
+        this.setState({paymentValidationError: false});
+
+        var startTime = this.formatTime(this.props.selectedTourDateStart);
+        var endTime = this.formatTime(this.props.selectedTourDateEnd);
+
+        console.log("selectedTour", this.props.selectedTour);
+        console.log("guide id", this.props.selectedTour.guides[0].id_user);
+
+        var tourEvent = {
+          id_tour: this.props.selectedTourId,
+          id_user:	 this.props.id_user,
+          id_guide: this.props.selectedTour.guides[0].id_user,
+          start_date_time: this.props.selectedTourDateString + " " + startTime,
+          end_date_time: this.props.selectedTourDateString + " " + endTime,
+          state: 'B'
+        }
+        console.log("tourevent");
+        console.log(tourEvent);
+        console.log('tureventID ' + this.props.selectedTourDateString)
+        service.setTourEvent(tourEvent, this.props.auth).then(function(response){
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+        console.log("test date time");
+        console.log(this.props.selectedTourDateStart);
+        console.log(this.props.selectedTourDateEnd);
+        browserHistory.push('/tourconfirmation');
+      }
+      else {
+        console.log('Invalid Card Number');
+        this.setState({paymentValidationError: true});
+      }
     };
     return(
       <div>
@@ -104,8 +181,9 @@ class TourPayContents extends React.Component {
                   </FormControl>
                 </FormGroup>
               </form>
+              {this.state.paymentValidationError ? (<p className={Style.validationError}>Invalid card information. Please check your card information and try again.</p>) : null}
 
-                <HostedField fetchToken={getToken} onTokenization={onTokenization} />
+              <HostedField fetchToken={getToken} onTokenization={onTokenization} />
             </Col>
             <Col xs={12} sm={12} md={6} lg={6}>
               <Image src={this.props.selectedTour.profile_image}/>
