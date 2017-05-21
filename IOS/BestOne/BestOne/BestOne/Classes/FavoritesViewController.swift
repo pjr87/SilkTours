@@ -30,7 +30,7 @@ class FavoritesViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.favoritesItems.removeAll()
         BackendAPI.getFavs(completion: {(tours:[JSON]) -> Void in
             var i = 0
             for tour in tours {
