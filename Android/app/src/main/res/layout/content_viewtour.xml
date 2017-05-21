@@ -30,11 +30,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtName"
                 android:textSize="@dimen/title_text"
-                android:layout_margin="@dimen/text_margin"
-                android:gravity="start"
+                android:textStyle="bold"
+                android:layout_margin="20px"
+                android:gravity="center"
                 android:text="didn't load!!"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/userInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,18 +45,22 @@
 
                 <ImageView
                     android:id="@+id/imgProfile"
-                    android:layout_width="110dp"
-                    android:layout_height="150dp"
-                    android:gravity="start"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:src="@mipmap/ic_launcher"
-                    android:layout_marginRight="50px"/>
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="2"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:padding="20px"
+                    android:layout_below="@id/imgProfile"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -92,8 +97,7 @@
                             android:id="@+id/txtPriceTag"
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
-                            android:textColor="#000000"
-                            android:gravity="end"
+                            android:textStyle="bold"
                             android:text="Price"
                             android:layout_weight="1"/>
 
@@ -103,13 +107,11 @@
                             android:id="@+id/txtLanguageTag"
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
-                            android:textColor="#000000"
-                            android:gravity="end"
+                            android:textStyle="bold"
                             android:text="Language"
                             android:layout_weight="1"/>
 
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -145,7 +147,6 @@
                             android:id="@+id/txtPrice"
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
-                            android:gravity="end"
                             android:text="didn't load!!"
                             android:layout_weight="1"/>
 
@@ -155,59 +156,16 @@
                             android:id="@+id/txtLanguage"
                             android:textSize="@dimen/normal_text"
                             android:layout_margin="@dimen/text_margin"
-                            android:gravity="end"
                             android:text="didn't load!!"
                             android:layout_weight="1"/>
 
                     </LinearLayout>
 
-
                 </LinearLayout>
 
 
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnMessage"
-                    android:layout_weight="1"
-                    android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:text="Message"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnJoin"
-                    android:layout_weight="1"
-                    android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:text="Join"
-                    android:visibility="visible"/>
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnViewProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:background="#2b90f5"
-                android:text="View Guide's Profile"
-                android:visibility="visible" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/modifyTour"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:text="Modify Tour"
-                android:visibility="visible"/>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -220,22 +178,22 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtDescriptionTag"
                     android:textSize="@dimen/normal_text"
-                    android:layout_margin="@dimen/text_margin"
+                    android:layout_marginTop="15px"
                     android:gravity="start"
                     android:text="Description"
-                    android:textColor="#000000"
+                    android:textStyle="bold"
                     android:layout_weight="1"/>
 
 
                 <TextView
+                    android:id="@+id/txtDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtDescription"
-                    android:textSize="@dimen/normal_text"
                     android:layout_margin="@dimen/text_margin"
+                    android:layout_weight="4"
                     android:gravity="start"
                     android:text="didn't load!!"
-                    android:layout_weight="4"/>
+                    android:textSize="@dimen/normal_text" />
 
             </LinearLayout>
 
@@ -250,10 +208,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/stopsTextView"
                     android:textSize="@dimen/normal_text"
-                    android:layout_margin="@dimen/text_margin"
+                    android:layout_marginTop="15px"
                     android:gravity="start"
                     android:text="Stops"
-                    android:textColor="#000000"
+                    android:textStyle="bold"
                     android:layout_weight="1"/>
 
                 <com.google.android.gms.maps.MapView
@@ -360,10 +318,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAdditionalStayTag"
                     android:textSize="@dimen/normal_text"
-                    android:layout_margin="@dimen/text_margin"
                     android:gravity="start"
+                    android:layout_marginTop="20px"
+                    android:textStyle="bold"
                     android:text="Additional Services: Accomadation"
-                    android:textColor="#000000"
                     android:layout_weight="1"/>
 
 
@@ -390,10 +348,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAdditionalTravelTag"
                     android:textSize="@dimen/normal_text"
-                    android:layout_margin="@dimen/text_margin"
+                    android:layout_marginTop="20px"
                     android:gravity="start"
+                    android:textStyle="bold"
                     android:text="Additional Services: Travel"
-                    android:textColor="#000000"
                     android:layout_weight="1"/>
 
 
@@ -420,10 +378,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAdditionalFoodTag"
                     android:textSize="@dimen/normal_text"
-                    android:layout_margin="@dimen/text_margin"
+                    android:layout_marginTop="20px"
                     android:gravity="start"
+                    android:textStyle="bold"
                     android:text="Additional Services: Food"
-                    android:textColor="#000000"
                     android:layout_weight="1"/>
 
 
@@ -439,6 +397,54 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="30px">
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnJoin"
+                    android:layout_weight="1"
+                    android:text="Join Tour"
+                    android:visibility="visible"/>
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnMessage"
+                    android:layout_weight="1"
+                    android:text="Message Guide"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="40px">
+
+                <Button
+                    android:id="@+id/btnViewProfile"
+                    android:layout_width="150dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="View Guide's Profile"
+                    android:visibility="visible" />
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/modifyTour"
+                    android:layout_weight="1"
+                    android:text="Modify Tour"
+                    android:visibility="visible"/>
+            </LinearLayout>
 
         </LinearLayout>
 

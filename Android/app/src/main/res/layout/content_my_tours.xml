@@ -43,7 +43,8 @@
             android:layout_height="wrap_content"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            android:layout_marginTop="20px"/>
     </LinearLayout>
 
 </RelativeLayout>
