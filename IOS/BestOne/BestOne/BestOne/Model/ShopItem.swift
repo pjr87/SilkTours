@@ -30,7 +30,6 @@ class ShopItem: NSObject, NSCoding {
         self.information = information
         self.previewImgs = previewImgs
         self.saleModePosition = saleModePosition
-        
     }
     
     override func isEqual(_ object: Any?) -> Bool {

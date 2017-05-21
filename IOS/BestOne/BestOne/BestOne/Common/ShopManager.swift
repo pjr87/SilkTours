@@ -30,8 +30,8 @@ class ShopManager: NSObject {
         for i in 0..<array.count{
             
                        
-            print(array[i]["language"].string!)
-            let loadedShopItem = ShopItem(id: array[i]["id_tour"].int!, is_fav: array[i]["is_fav"].bool!, title: array[i]["name"].string!, imgTitle: array[i]["profile_image"].string! , subTitle: array[i]["language"].string! , price: String(format:"%.0f", array[i]["price"].floatValue), information: array[i]["name"].string! , previewImgs: [array[i]["profile_image"].string!] , saleModePosition: SaleModePosition(rawValue:0)!)
+            //print(array[i]["language"].string!)
+            let loadedShopItem = ShopItem(id: array[i]["id_tour"].int!, is_fav: array[i]["is_fav"].bool!, title: array[i]["name"].string!, imgTitle: array[i]["profile_image"].string! , subTitle: array[i]["language"].string! , price: String(format:"%.0f", array[i]["price"].floatValue), information: array[i]["name"].string! , previewImgs: [array[i]["profile_image"].string!], saleModePosition: SaleModePosition(rawValue:0)!)
             resultItems.append(loadedShopItem)
         }
         
