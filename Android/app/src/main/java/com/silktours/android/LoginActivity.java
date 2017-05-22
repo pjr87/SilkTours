@@ -701,8 +701,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String UserId) {
+        public void getAuthenticationDetails(final AuthenticationContinuation authenticationContinuation, String UserId) {
+            AuthenticationDetails authDetails = new AuthenticationDetails(mEmail, mPassword, null);
 
+            // Now allow the authentication to continue
+            authenticationContinuation.setAuthenticationDetails(authDetails);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    authenticationContinuation.continueTask();
+                }
+            }).start();
         }
 
         @Override
