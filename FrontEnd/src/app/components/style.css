@@ -1,8 +1,81 @@
 .Footer{
-  font: bold 34px Helvetica, Sans-Serif;
+	font: bold 34px Helvetica, Sans-Serif;
 	color: #A9A9A9;
 }
 
 .centerStuff{
 	text-align: center;
+}
+
+.footerSocial{
+	font-size: 1.5rem;
+
+}
+
+.footerBG{
+	padding: 2rem 0;
+	background-color: #BB66AA;
+	left:0;
+	bottom:0;
+	right:0;
+}
+
+.icons{
+	padding: 5px 0px;
+	display: -webkit-box;
+}
+
+
+
+/* Extra small devices (phones, up to 480px) */
+@media screen and (max-width: 767px) {
+
+	.contactUsText a, .contactUsText {
+		color: white;
+		font-weight: bold;
+	}
+
+	.contactSpan{
+		font-size: 12pt;
+		vertical-align: middle;
+	}
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+
+	.contactUsText a, .contactUsText {
+		color: white;
+		font-weight: bold;
+	}
+
+	.contactSpan{
+		font-size: 22pt;
+		vertical-align: middle;
+	}
+}
+
+.footerContent ul{
+	list-style: none;
+	margin:16px 0px 0px 0px;
+	padding: 0;
+}
+.footerContent ul li{
+	margin-bottom: 4px ;
+}
+
+.social{
+	line-height: 45px;
+	padding-left: 5px;
+}
+
+.footerHeader{
+	font-weight: bold;
+	font-size:16pt;
+	color: #360036;
+}
+
+.footerContent ul li a,
+.footerContent a,
+.footerContent{
+	color: white;
 }

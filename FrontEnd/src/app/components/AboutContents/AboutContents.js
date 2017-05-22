@@ -1,20 +1,16 @@
 import React from 'react'
 
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
-import Image from 'react-bootstrap/lib/Image';
+import {Grid, Row, Col, Thumbnail, Image} from 'react-bootstrap';
 
-import Junho from '../../style/images/Junho.png';
+import Junho from '../../style/images/Junho.jpeg';
 import Matt from '../../style/images/Matt.png';
 import Phil from '../../style/images/Phil.png';
-import Troy from '../../style/images/Troy.png';
-import Andrew from '../../style/images/Andrew.png';
-import Harsh from '../../style/images/Harsh.png';
-import Kendall from '../../style/images/Kendall.png';
-import Yongqiang from '../../style/images/Yongqiang.png';
-import Joe from '../../style/images/Joe.png';
+import Troy from '../../style/images/Troy.jpeg';
+import Andrew from '../../style/images/Andrew.jpeg';
+import Harsh from '../../style/images/Harsh.jpeg';
+import Kendall from '../../style/images/Kendall.jpeg';
+import Yongqiang from '../../style/images/Yongqiang.jpeg';
+import Joe from '../../style/images/Joe.jpeg';
 
 class AboutContents extends React.Component{
   render(){
@@ -43,7 +39,8 @@ class AboutContentsDiv extends React.Component{
   render(){
     return(
       <Col xs={12} md={4} lg={4}>
-        <Thumbnail src={this.props.picture} alt="350x500">
+        <Thumbnail>
+          <Image src={this.props.picture} alt="190x190" circle/>
           <p>{this.props.name}</p>
           <p>Email: {this.props.email}</p>
           <p>Position: {this.props.position}</p>

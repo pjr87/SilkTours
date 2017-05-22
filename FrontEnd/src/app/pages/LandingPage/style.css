@@ -1,0 +1,75 @@
+.wrapper {
+  position: relative;
+  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
+}
+
+.player {
+  position: center;
+  width: 100%;
+}
+
+.landingHeader {
+  font: bold 3vw Helvetica, Sans-Serif;
+	color: #000000;
+}
+
+.landingSubHeader {
+  font: bold 2.5vw Helvetica, Sans-Serif;
+	color: #000000;
+}
+
+.landingContent {
+  font: 2vw Helvetica, Sans-Serif;
+	color: #000000;
+}
+
+.landingHeader2 {
+  font: bold 3vw Helvetica, Sans-Serif;
+	color: #FFFFFF;
+}
+
+.landingContent2 {
+  font: 2vw Helvetica, Sans-Serif;
+	color: #FFFFFF;
+}
+
+.landingHeader3 {
+  font: bold 3vw Helvetica, Sans-Serif;
+  text-align: right;
+	color: #FFFFFF;
+}
+
+.landingContent3 {
+  font: 2vw Helvetica, Sans-Serif;
+  text-align: right;
+	color: #FFFFFF;
+}
+
+.bannerButton{
+  padding: 0.5vw 5vw;
+  max-width: 100%;
+  font: bold 2vw Helvetica, Sans-Serif;
+}
+
+.bannerButton2{
+  padding: 0.5vw 5vw;
+  float: right;
+  max-width: 100%;
+  font: bold 2vw Helvetica, Sans-Serif;
+}
+
+.sideLeft {
+    display: inline-block;
+    width: 40%;
+}
+
+.sideRight {
+    display: inline-block;
+    margin-top: 100px;
+    width: 60%;
+}
+
+.pane {
+  width: 100%;
+  margin-top: -100px;
+}

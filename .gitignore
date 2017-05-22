@@ -2,6 +2,8 @@
 logs
 *.log
 
+IOS/BestOne/BestOne/Pods/
+
 # Runtime data
 pids
 *.pid
@@ -86,3 +88,7 @@ captures/
 google-services.json
 
 FrontEnd/src/public/
+
+# IOS stuff
+IOS/BestOne/BestOne/BestOne.xcodeproj/project.xcworkspace/xcuserdata/
+IOS/BestOne/BestOne/BestOne.xcodeproj/xcuserdata/

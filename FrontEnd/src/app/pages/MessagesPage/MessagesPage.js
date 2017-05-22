@@ -11,7 +11,11 @@ class MessagesPage extends React.Component{
 
 
   constructor(props) {
-  super(props);
+    super(props);
+    this.state = {
+      userIdPassed: this.props.location.query.guideUserId
+    }
+
   }
 
 
@@ -19,11 +23,15 @@ class MessagesPage extends React.Component{
   render(){
 
         return (
+          <div>
               <MessageBody />
+          </div>
         );
       }
 
   componentDidMount(props){
+    var idPassed = this.state.userIdPassed;
+    var name = this.props.firstName;
 
     function readMessage() {
     }
@@ -32,8 +40,12 @@ class MessagesPage extends React.Component{
       if (response === 'success') {
         var nameUser ="Test123";
         var temp = $("#mck-box-title")[0].innerHTML;
-        //$("#mck-box-title")[0].innerHTML = this.props.fullName + "'s " + temp;
-            
+        $("#mck-box-title")[0].innerHTML =  name + "'s " + temp;
+        if( idPassed != null )
+        {
+          $applozic.fn.applozic('loadTab', idPassed);
+        }
+
       } else if (response === 'object' && response.status === 'error') {
         alert(response.errorMessage);
         console.log(response.errorMessage);
@@ -50,14 +62,12 @@ class MessagesPage extends React.Component{
       //Function to initialize plugin
       $applozic.fn
           .applozic({
-            userId : this.props.auth['IdentityId'].replace(":", " "),
+            appId: '99f097e1f3b4ebb13e008942be1ccf34',
+            userId : this.props.user_id,
             userName : this.props.firstName,
-            appId: '39dbafa82d712b9c4b91428bf91631707',
-            //appId: 'psoxs4b4395b4a0ddb58368a338981675575c',
-            //appId: 'live3e5c58454b51865daefc1d16ba47909d4',
             ojq : $original,
             obsm : oModal,
-            accessToken : this.props.auth['Logins'],//'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+            accessToken : 'test',//'000-Hello123-552',          //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
             authenticationTypeId: 0,    //1 for password verification from Applozic server and 0 for access Token verification from your server
             autoTypeSearchEnabled : false,
             loadOwnContacts : false,
@@ -79,7 +89,8 @@ class MessagesPage extends React.Component{
 function select(state) {
   return {
     auth: state.AuthReducer.auth,
-    firstName: state.AuthReducer.user.first_name
+    firstName: state.AuthReducer.user.first_name,
+    user_id: state.AuthReducer.user.id_users
   };
 }
 

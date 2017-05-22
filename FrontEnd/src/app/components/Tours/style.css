@@ -1,0 +1,113 @@
+.tour_image {
+    width: 100%;
+}
+
+.tour_image_large {
+  border-color: $gray-lightest;
+  margin: 0px 0px 0px 0px;
+  width: 100%;
+}
+
+.tour_image_large_info {
+  border-color: $gray-lightest;
+  width: 100%;
+  img { width: 100%; };
+  filter: brightness(50%);
+  opacity: 0.5;
+  margin: 0px 0px 0px 0px;
+}
+
+.tour_image_small {
+  border-color: $gray-lightest;
+  height: 110px;
+  left:0px;
+  bottom:0px;
+  float:left;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.tour_image_small_info {
+  border-color: $gray-lightest;
+  opacity: 0.5;
+  height: 110px;
+  left:0px;
+  bottom:0px;
+  float:left;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.buttonContainer{
+  line-height: 275%;
+}
+
+.confirmBody{
+  padding-left:10%;
+  margin: 0;
+}
+
+.confirmBodySideHeader{
+  font-weight: bold;
+  width: 15%;
+}
+
+.confirmBody p{
+  margin: 0;
+  width: 100%;
+}
+
+.buttonWidth{
+  min-width: 86px;
+}
+.image_container {
+  position: relative;
+  width: 100%;
+}
+
+.image_heart {
+  position: absolute;
+  top: 4%;
+  left: 34%;
+  text-align: center;
+  width: 100%;
+  font-weight: bolder;
+  font-size: 20px;
+  color: white;
+}
+.image_text {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  font-weight: bolder;
+  font-size: 20px;
+  color: white;
+}
+hr {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+}
+
+.tour_description {
+  display: inline-block;
+  margin-bottom: 0px;
+}
+
+.tour_description_star {
+  display: inline-block;
+  float: right;
+  margin-bottom: 0px;
+}
+
+.tour_description_star_container {
+  display: inline-block;
+  float: right;
+  margin-bottom: 0px;
+}

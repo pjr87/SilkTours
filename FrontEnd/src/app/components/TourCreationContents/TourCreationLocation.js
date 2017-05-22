@@ -1,15 +1,24 @@
 import React from 'react';
 import style from './style.css';
-import {EditableField} from '../Forms/Forms.js';
-import { updateAddressState } from '../../actions/TourCreationActions';
-import { Pager } from 'react-bootstrap';
+import {Pager, Col, Row, Grid, FormControl} from 'react-bootstrap';
+import { updateAddressState, setTabKey } from '../../actions/TourCreationActions';
 
 
 class TourCreationLocation extends React.Component{
   constructor() {
     super();
 
+    this.next = this.next.bind(this)
+    this.previous = this.previous.bind(this)
     this._changeLocation = this._changeLocation.bind(this)
+  }
+
+  next(){
+    this.props.dispatch(setTabKey("language"));
+  }
+
+  previous(){
+    this.props.dispatch(setTabKey("info"));
   }
 
   _changeLocation(event) {
@@ -21,33 +30,51 @@ class TourCreationLocation extends React.Component{
   }
 
   render(){
-    if(this.props.tour.address.city != ''){
+    const options = [ {value:"null", optionName:"Choose a city"},
+                      {value:"Philadelphia", optionName:"Philadelphia"},
+                      {value:"New York", optionName:"New York"},
+                      {value:"Washington DC", optionName:"Washington DC"} ];
+
+    const dropdownOptions = options.map(function(option) {
+      return (
+        <option key={option.value} value={option.value}>{option.optionName}</option>
+    )}, this);
+
+    if(this.props.tour.address.city == "null"){
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>Ready to create a tour?</p>
-          <p className={style.BodyStyle}>We will be begin by selecting a city</p>
+          <p className={style.HeaderStyle}>Choose a city to host your tour!</p>
           <br/>
-          <EditableField label="City" onChange={this._changeLocation} value={this.props.tour.address.city}/>
-          <Pager>
-            <Pager.Item previous href="#">&larr; Previous Page</Pager.Item>
-            <Pager.Item next href="#">Next Page &rarr;</Pager.Item>
-          </Pager>
+            <Col xs={8} md={6}>
+              <FormControl componentClass="select" onChange={this._changeLocation} value={this.props.tour.address.city} >
+                {dropdownOptions}
+              </FormControl>
+            </Col>
+          <br/>
+            <Pager>
+              <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+              <Pager.Item disabled next onSelect={this.next}>Next &rarr;</Pager.Item>
+            </Pager>
         </div>
       )
     }
-    else {
+    else{
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>Ready to create a tour?</p>
-          <p className={style.BodyStyle}>We will be begin by selecting a city</p>
+          <p className={style.HeaderStyle}>Choose a city to host your tour!</p>
           <br/>
-          <EditableField label="City" onChange={this._changeLocation} value=""/>
-          <Pager>
-            <Pager.Item previous href="#">&larr; Previous</Pager.Item>
-            <Pager.Item disabled next href="#">Next &rarr;</Pager.Item>
-          </Pager>
+            <Col xs={8} md={6}>
+              <FormControl componentClass="select" onChange={this._changeLocation} value={this.props.tour.address.city} >
+                {dropdownOptions}
+              </FormControl>
+            </Col>
+          <br/>
+            <Pager>
+              <Pager.Item previous onSelect={this.previous}>&larr; Go Back</Pager.Item>
+              <Pager.Item next onSelect={this.next}>Next &rarr;</Pager.Item>
+            </Pager>
         </div>
       )
     }

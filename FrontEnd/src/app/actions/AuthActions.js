@@ -6,7 +6,7 @@
  * messes it up weirdly somewhere.
  *
  * To add a new Action:
- * 1) Import your constant
+ * 1) Import your constantupdateUserState
  * 2) Add a function like this:
  *    export function yourAction(var) {
  *        return { type: YOUR_ACTION_CONSTANT, var: var }
@@ -46,7 +46,17 @@ export function login(username, password) {
     }
 
     if (cognitoFunctions.loggedIn()) {
-      console.log("Logged In");
+      // When the request is finished, hide the loading indicator
+      dispatch(sendingRequest(false));
+      dispatch(setAuthState(true));
+
+      // If the login worked, forward the user to home and clear the form
+      dispatch(changeLoginForm({
+        username: "",
+        password: ""
+      }));
+      dispatch(clearError());
+      forwardTo('/explore');
       return;
     }
 
@@ -69,13 +79,75 @@ export function login(username, password) {
           username: "",
           password: ""
         }));
+
         dispatch(clearError());
-        forwardTo('/');
+        forwardTo('/explore');
       } else {
         // If there was a problem authenticating the user, show an error on the
         // form
         //TODO error handling
         //TODO implement error types
+        dispatch(sendingRequest(false));
+        switch (response.error) {
+          case 'user-doesnt-exist':
+            dispatch(setErrorMessage(errorMessages.USER_NOT_FOUND));
+            return;
+          case 'password-wrong':
+            dispatch(setErrorMessage(errorMessages.WRONG_PASSWORD));
+            return;
+          case 'database-error':
+            dispatch(setErrorMessage(errorMessages.DATABASE_ERROR));
+            return;
+          default:
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR));
+            return;
+        }
+      }
+    });
+  }
+}
+
+/**
+ * Registers a user with facebook
+ * @param  {object}   user The cognitoUser of the user
+ * @param  {string}   accessToken The cognitoUser of the user
+ * @param  {int}      expiresIn The cognitoUser of the user
+ */
+export function facebookLogin(user, accessToken, expiresIn) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    // If no response was specified, throw a field-missing error
+    if (anyElementsEmpty({user, accessToken, expiresIn})) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+
+    cognitoFunctions.facebookLogin(user, accessToken, expiresIn, (response) => {
+      // If the user was signed up successfully
+      if (response.authenticated) {
+        //Update the store with relevant information
+        dispatch(updateProviderState("Facebook"));
+        dispatch(updateIDState(response.id_user));
+        dispatch(updateAuthState(response.auth));
+        dispatch(updateUserState(response.data));
+
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
+        dispatch(setAuthState(true));
+
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeLoginForm({
+          username: "",
+          password: ""
+        }));
+
+        dispatch(clearError());
+        forwardTo('/explore');
+      }
+      else{
+        // If there was a problem signin up the user, show an error
         dispatch(sendingRequest(false));
         switch (response.error) {
           case 'user-doesnt-exist':
@@ -201,8 +273,7 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
       if (response.authenticated) {
         //Update the store with relevant information
         dispatch(updateProviderState("Developer"));
-        //dispatch(updateUserState(response.data));
-        dispatch(setCognitoUser(response.cognitoUser));
+        //dispatch(setCognitoUser(response.cognitoUser));
 
         // When the request is finished, hide the loading indicator
         dispatch(sendingRequest(false));
@@ -229,25 +300,86 @@ export function signUp(firstname, lastname, username, password, phoneNumber) {
 }
 
 /**
- * Registers a user
- * @param  {object} cognitoUser The user to do confirmation of
- * @param  {string} confirmationNumber The confirmation number
+ * Registers a user with facebook
+ * @param  {object}   user The cognitoUser of the user
+ * @param  {string}   accessToken The cognitoUser of the user
+ * @param  {int}   expiresIn The cognitoUser of the user
  */
-export function confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber) {
+export function facebookSignUp(user, accessToken, expiresIn) {
   return (dispatch) => {
     // Show the loading indicator, hide the last error
     dispatch(sendingRequest(true));
-    // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({ cognitoUser, firstname, lastname, username, phoneNumber, confirmationNumber })) {
+    // If no response was specified, throw a field-missing error
+    if (anyElementsEmpty({user, accessToken, expiresIn})) {
       dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
       dispatch(sendingRequest(false));
       return;
     }
 
-    cognitoFunctions.confirmSignUp(cognitoUser, firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
+    cognitoFunctions.facebookSignUp(user, accessToken, expiresIn, (response) => {
       // If the user was signed up successfully
       if (response.authenticated) {
         //Update the store with relevant information
+        dispatch(updateProviderState("Facebook"));
+        dispatch(updateAuthState(response.auth));
+        dispatch(updateIDState(response.id_user));
+        dispatch(updateUserState(response.data));
+
+        // When the request is finished, hide the loading indicator
+        dispatch(sendingRequest(false));
+        dispatch(setConfirmed(false));
+        dispatch(setAuthState(true));
+
+        // If the login worked, forward the user to home and clear the form
+        dispatch(changeSignUpForm({
+          firstname: '',
+          lastname: '',
+          username: '',
+          password: '',
+          phoneNumber: '',
+          confirmationCode: ''
+        }));
+
+        dispatch(clearError());
+        forwardTo('/explore');
+      }
+      else{
+        // If there was a problem signin up the user, show an error
+        dispatch(sendingRequest(false));
+        if(response.error == "User account logged in with another provider"){
+          dispatch(setErrorMessage(errorMessages.USERNAME_TAKEN));
+          return;
+        }
+        else{
+          dispatch(setErrorMessage(errorMessages.SIGNUP_FAILED));
+          return;
+        }
+      }
+    });
+  }
+}
+
+/**
+ * Registers a user
+ * @param  {object} cognitoUser The user to do confirmation of
+ * @param  {string} confirmationNumber The confirmation number
+ */
+export function confirmSignUp(firstname, lastname, username, password, phoneNumber, confirmationNumber) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    dispatch(sendingRequest(true));
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ firstname, lastname, username, phoneNumber, confirmationNumber })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      dispatch(sendingRequest(false));
+      return;
+    }
+
+    cognitoFunctions.confirmSignUp(firstname, lastname, username, password, phoneNumber, confirmationNumber, (response) => {
+      // If the user was signed up successfully
+      if (response.authenticated) {
+        //Update the store with relevant information
+        //dispatch(setCognitoUser());
         dispatch(updateProviderState("Developer"));
         dispatch(updateAuthState(response.auth));
         dispatch(updateIDState(response.id_user));
@@ -269,7 +401,7 @@ export function confirmSignUp(cognitoUser, firstname, lastname, username, passwo
         }));
 
         dispatch(clearError());
-        forwardTo('/');
+        forwardTo('/explore');
       }
       else{
         // If there was a problem signin up the user, show an error
@@ -307,7 +439,7 @@ export function updateUser(id_user, user, auth) {
       return;
     }
 
-    service.updateExistingUser(id_user, user, auth).then(function(response){
+    return service.updateExistingUser(id_user, user, auth).then(function(response){
       if(response.data){
         console.log("response.data", response.data);
         dispatch(updateUserState(response.data));
@@ -317,6 +449,32 @@ export function updateUser(id_user, user, auth) {
         // If there was a problem, show an error
         console.log('response.error: ' + response.error);
         dispatch(sendingRequest(false));
+        dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
+      }
+    });
+  }
+}
+
+/**
+ * Gets user from database
+ * @param  {object} user The user to get
+ */
+export function getUser(id_user, auth) {
+  return (dispatch) => {
+    // Show the loading indicator, hide the last error
+    // If no username or password was specified, throw a field-missing error
+    if (anyElementsEmpty({ id_user, auth })) {
+      dispatch(setErrorMessage(errorMessages.FIELD_MISSING));
+      return;
+    }
+
+    service.getUserById(id_user, auth).then(function(response){
+      if(response.data){
+        console.log("user", response);
+        dispatch(updateUserState(response.data));
+      }
+      else{
+        // If there was a problem, show an error
         dispatch(setErrorMessage(errorMessages.USER_UPDATE_FAILED));
       }
     });

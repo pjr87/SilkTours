@@ -1,13 +1,13 @@
 import React from 'react';
 
-import {BannerImage, PageTitle, SignInContents} from 'components';
+import {PageTitle} from 'components';
 
 class NotFound extends React.Component{
   render(){
     return(
       <div>
-        <BannerImage/>
-        <PageTitle title = "Page Not Found!"/>
+        <PageTitle title = "Page not found, please go back"/>
+        <PageTitle title = "Never More!"/>
       </div>
     );
   }

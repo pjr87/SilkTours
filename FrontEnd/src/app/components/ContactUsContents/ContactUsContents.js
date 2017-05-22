@@ -33,9 +33,6 @@ class ContactUsContents extends React.Component{
   }
 }
 
-
-
-
 class ContactUsContentsDiv extends React.Component{
 
   constructor(props){
@@ -43,15 +40,12 @@ class ContactUsContentsDiv extends React.Component{
 
     this.state = {
       errors: {},
-      form: {}
+      form: {},
+      submitted: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
-
-
-
 
   }
 
@@ -95,7 +89,8 @@ class ContactUsContentsDiv extends React.Component{
 
   clearForm(){
 
-    this.setState({form: {
+    this.setState({submitted:true,
+      form: {
       'department': '',
       'email': '',
       'fname': '',
@@ -150,7 +145,13 @@ class ContactUsContentsDiv extends React.Component{
       return <div></div>
     }
 
-    return(
+      if( this.state.submitted )
+      {
+        return(<div><br/><br/>Thanks for contacting Silk! Please check the email address you provided for information about your ticket. Have a great day!<br/><br/><br/><br/></div>);
+      }
+      else
+      {
+        return (
         <Form horizontal>
           <FormGroup validationState = {'department' in this.state.errors && 'error' || !('department' in this.state.errors) && null} >
             <Col componentClass={ControlLabel} sm={2}>
@@ -199,7 +200,7 @@ class ContactUsContentsDiv extends React.Component{
           </FormGroup>
 
           <FormGroup  validationState = {'questionComment' in this.state.errors && 'error' || !('questionComment' in this.state.errors) && null} >
-            <Col componentClass={ControlLabel} sm={2}>            
+            <Col componentClass={ControlLabel} sm={2}>
               <ControlLabel>Question / Comment</ControlLabel>
             </Col>
             <Col sm={8} >
@@ -215,9 +216,9 @@ class ContactUsContentsDiv extends React.Component{
           </Button>
           </Col>
           </FormGroup>
-         
-        </Form>
-    );
+
+        </Form>);
+      }
   }
 }
 

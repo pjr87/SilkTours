@@ -6,7 +6,6 @@ class ConfirmationPage extends React.Component{
   render(){
     return(
       <div>
-        <BannerImage/>
         <PageTitle title = "Confirm your new account!"/>
         <ConfirmationContents/>
       </div>

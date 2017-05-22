@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Link, Match, Miss } from 'react-router';
 var htmlContent = require('./Messages/sample/fullview.html');
 
 import InnerHTML from 'dangerously-set-inner-html';
-
+import style from './style.css';
 
 
 class MessageBody extends React.Component{
@@ -19,9 +19,9 @@ class MessageBody extends React.Component{
   render(){
 
         return (
-          <div>
-            <InnerHTML key="messagesUniqueKey" html={htmlContent} />
-          </div>
+           <InnerHTML key="some_unique_key" html={htmlContent} />
+
+
         );
       }
 

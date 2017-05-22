@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Raleway-Bold.ttf">
+            <string>Raleway-Bold</string>
+        </array>
+        <array key="Raleway-Medium.ttf">
+            <string>Raleway-Medium</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Today View Controller-->
+        <scene sceneID="cwh-vc-ff4">
+            <objects>
+                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="BestOneWidget" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
+                        <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="u5x-fm-FdJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shop_item1.png" translatesAutoresizingMaskIntoConstraints="NO" id="0J8-qk-nK6"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jyx-U7-3FG">
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="featured.png" translatesAutoresizingMaskIntoConstraints="NO" id="Iu4-Is-mgP">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Iu4-Is-mgP" secondAttribute="height" multiplier="1:1" id="uwz-td-xgd"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0w2-jW-7Lg">
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$39" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKz-5G-S6L">
+                                        <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="20.840000152587891"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item-marker-white.png" translatesAutoresizingMaskIntoConstraints="NO" id="e94-tu-nhl">
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="e94-tu-nhl" secondAttribute="height" multiplier="5:31" id="ipc-DI-gHd"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cute Racoon" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H4E-TL-RSM">
+                                        <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="16.680000305175781"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PULLOVER" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oIB-9D-S5n">
+                                        <fontDescription key="fontDescription" name="Raleway-Medium" family="Raleway" pointSize="10.420000076293945"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IH7-fc-yem">
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="wFS-ft-ZPX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="10.590000152587891"/>
+                                        <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="64" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="show item" image="add_item.png">
+                                            <color key="titleColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted" image="arrow-right-active-white.png"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="76P-Sp-E7l">
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="76P-Sp-E7l" secondAttribute="height" multiplier="30:37" id="r7H-c3-gh9"/>
+                                        </constraints>
+                                        <state key="normal" image="not-chosen-favorite-white.png">
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="selected" image="chosen-favorite-white.png"/>
+                                        <state key="highlighted" image="chosen-favorite-white.png"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="IH7-fc-yem" firstAttribute="leading" secondItem="76P-Sp-E7l" secondAttribute="trailing" constant="-8" id="0bH-Gt-l8b"/>
+                                    <constraint firstItem="oIB-9D-S5n" firstAttribute="top" secondItem="H4E-TL-RSM" secondAttribute="bottom" constant="-1" id="3TF-uw-VCj"/>
+                                    <constraint firstItem="76P-Sp-E7l" firstAttribute="height" secondItem="0w2-jW-7Lg" secondAttribute="height" id="5RF-vL-bQO"/>
+                                    <constraint firstItem="OKz-5G-S6L" firstAttribute="leading" secondItem="0w2-jW-7Lg" secondAttribute="leading" id="7pM-jO-dvK"/>
+                                    <constraint firstItem="76P-Sp-E7l" firstAttribute="leading" secondItem="H4E-TL-RSM" secondAttribute="trailing" id="7we-Ol-hi4"/>
+                                    <constraint firstAttribute="centerY" secondItem="IH7-fc-yem" secondAttribute="centerY" id="9EA-Qt-EZ1"/>
+                                    <constraint firstItem="H4E-TL-RSM" firstAttribute="width" secondItem="oIB-9D-S5n" secondAttribute="width" id="9IC-Zf-AOe"/>
+                                    <constraint firstAttribute="height" secondItem="IH7-fc-yem" secondAttribute="height" id="Caq-we-tv2"/>
+                                    <constraint firstItem="H4E-TL-RSM" firstAttribute="leading" secondItem="oIB-9D-S5n" secondAttribute="leading" id="CuJ-MV-Ify"/>
+                                    <constraint firstAttribute="centerY" secondItem="H4E-TL-RSM" secondAttribute="centerY" constant="6" id="Mpi-Qm-xGI"/>
+                                    <constraint firstItem="e94-tu-nhl" firstAttribute="leading" secondItem="OKz-5G-S6L" secondAttribute="trailing" id="Tig-H9-tzt"/>
+                                    <constraint firstAttribute="trailing" secondItem="IH7-fc-yem" secondAttribute="trailing" id="WMa-Ha-XcI"/>
+                                    <constraint firstAttribute="width" secondItem="OKz-5G-S6L" secondAttribute="width" multiplier="375:63" id="YSV-8b-8Dd"/>
+                                    <constraint firstItem="H4E-TL-RSM" firstAttribute="leading" secondItem="e94-tu-nhl" secondAttribute="trailing" constant="5" id="adX-Zk-tNu"/>
+                                    <constraint firstItem="e94-tu-nhl" firstAttribute="top" secondItem="0w2-jW-7Lg" secondAttribute="top" id="qMJ-Zr-dqm"/>
+                                    <constraint firstAttribute="centerY" secondItem="76P-Sp-E7l" secondAttribute="centerY" id="vM7-7f-4yG"/>
+                                    <constraint firstAttribute="bottom" secondItem="OKz-5G-S6L" secondAttribute="bottom" id="vfo-7u-nG7"/>
+                                    <constraint firstItem="OKz-5G-S6L" firstAttribute="top" secondItem="0w2-jW-7Lg" secondAttribute="top" id="x71-NJ-LDa"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="0J8-qk-nK6" firstAttribute="centerY" secondItem="Iu4-Is-mgP" secondAttribute="centerY" id="5fz-JB-chN"/>
+                            <constraint firstAttribute="width" secondItem="0J8-qk-nK6" secondAttribute="width" id="7ee-Av-19G"/>
+                            <constraint firstAttribute="bottom" secondItem="0w2-jW-7Lg" secondAttribute="bottom" id="8xI-mx-xNE"/>
+                            <constraint firstAttribute="width" secondItem="IH7-fc-yem" secondAttribute="width" multiplier="375:80" priority="750" id="94S-pk-41c"/>
+                            <constraint firstItem="0J8-qk-nK6" firstAttribute="top" secondItem="u5x-fm-FdJ" secondAttribute="top" id="HAM-vG-to3"/>
+                            <constraint firstItem="0w2-jW-7Lg" firstAttribute="top" secondItem="0J8-qk-nK6" secondAttribute="bottom" id="OVz-Xd-OJd"/>
+                            <constraint firstAttribute="centerX" secondItem="0w2-jW-7Lg" secondAttribute="centerX" id="Wn4-46-7GR"/>
+                            <constraint firstAttribute="centerX" secondItem="0J8-qk-nK6" secondAttribute="centerX" id="XYb-Hi-ZW2"/>
+                            <constraint firstAttribute="height" secondItem="0J8-qk-nK6" secondAttribute="height" multiplier="215:171" id="cii-GU-4w7"/>
+                            <constraint firstItem="Jyx-U7-3FG" firstAttribute="height" secondItem="0J8-qk-nK6" secondAttribute="height" id="ftT-ti-1dc"/>
+                            <constraint firstItem="Jyx-U7-3FG" firstAttribute="leading" secondItem="u5x-fm-FdJ" secondAttribute="leading" id="fua-k6-rPC"/>
+                            <constraint firstAttribute="width" secondItem="0w2-jW-7Lg" secondAttribute="width" id="iDH-Zr-1Wm"/>
+                            <constraint firstItem="Jyx-U7-3FG" firstAttribute="centerY" secondItem="0J8-qk-nK6" secondAttribute="centerY" id="mFX-5Y-RGQ"/>
+                            <constraint firstItem="Iu4-Is-mgP" firstAttribute="leading" secondItem="Jyx-U7-3FG" secondAttribute="trailing" id="mYl-hn-cQa"/>
+                            <constraint firstAttribute="width" secondItem="Iu4-Is-mgP" secondAttribute="width" multiplier="375:64" id="thH-Bz-Xmk"/>
+                            <constraint firstItem="Jyx-U7-3FG" firstAttribute="width" secondItem="u5x-fm-FdJ" secondAttribute="width" multiplier="42.5:375" id="vUO-Id-q1y"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="215"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="476.5" y="291.5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="add_item.png" width="7" height="13"/>
+        <image name="arrow-right-active-white.png" width="7" height="13"/>
+        <image name="chosen-favorite-white.png" width="15" height="16"/>
+        <image name="featured.png" width="62" height="62"/>
+        <image name="item-marker-white.png" width="4" height="31"/>
+        <image name="not-chosen-favorite-white.png" width="15" height="16"/>
+        <image name="shop_item1.png" width="360" height="164"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
+</document>

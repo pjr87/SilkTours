@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>Philadelphia</string>
+		<key>imgTitle</key>
+		<string>shop_header_new</string>
+		<key>details</key>
+		<string>Liberty Bell | City Hall | Drexel University</string>
+		<key>saleMode</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>saleMode</key>
+		<integer>2</integer>
+		<key>title</key>
+		<string>New York</string>
+		<key>imgTitle</key>
+		<string>collections_elegant_collection</string>
+		<key>details</key>
+		<string>Empire State Building | Radio City | Time Square</string>
+	</dict>
+	<dict>
+		<key>saleMode</key>
+		<integer>2</integer>
+		<key>title</key>
+		<string>San Francisco </string>
+		<key>imgTitle</key>
+		<string>collections_summer_collections</string>
+		<key>details</key>
+		<string>Zoo | Marina | Local Bars </string>
+	</dict>
+</array>
+</plist>

@@ -15,31 +15,11 @@ import * as tourDetailConstants from '../constants/TourDetailConstants';
 // The initial application state
 const initialState = {
   selectedTourId: '',
-  selectedTour: {
-    toutId: '',
-    name: '',
-    description: '',
-    price: '',
-    rating: '',
-    maxGroupSize: '',
-    minGroupSize: '',
-    tourStartDate: '',
-    tourEndDate: '',
-    stops: [],
-    guides: [],
-    availableDates: [],
-    addtionalAccomadation: '',
-    addtionalFood: '',
-    addtionalTransport: '',
-    interests: [],
-    profileImage: '',
-    profileImageHeight: '',
-    profileImageWidth: '',
-    reviews: [],
-    ratingCount: ''
-  },
+  selectedTour: {},
   tourDates: '',
-  selectedTourDate: '',
+  selectedTourDateString: '',
+  selectedTourDateStart: '',
+  selectedTourDateEnd: '',
   isLoaded: false
 };
 
@@ -52,8 +32,12 @@ function TourDetailReducer(state = initialState, action) {
       return {...state, isLoaded: action.newLoadedState};
     case tourDetailConstants.UPDATE_SELECTED_TOUR:
       return {...state, selectedTour: action.newTourFormState};
-    case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE:
-      return {...state, selectedTourDate: action.newTourDateFormState};
+    case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_STRING:
+      return {...state, selectedTourDateString: action.newTourDateStringFormState};
+    case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_START:
+        return {...state, selectedTourDateStart: action.newTourDateStartFormState};
+    case tourDetailConstants.UPDATE_SELECTED_TOUR_DATE_END:
+        return {...state, selectedTourDateEnd: action.newTourDateEndFormState};
     case tourDetailConstants.UPDATE_TOUR_DATES:
       return {...state, tourDates: action.newTourDatesState};
     default:

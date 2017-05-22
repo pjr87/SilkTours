@@ -14,6 +14,7 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Image from 'react-bootstrap/lib/Image';
 import {LinkContainer} from 'react-router-bootstrap';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import Style from './style.css'
 
 import React, { Component } from 'react';
 import { Link } from 'react-router';
@@ -30,7 +31,8 @@ class NavBar extends Component {
     const dropDown = this.props.loggedIn ? (
       <Dropdown usersName={this.props.usersName}
                 currentlySending={this.props.currentlySending}
-                dispatch={this.props.dispatch}/>
+                dispatch={this.props.dispatch}
+                isGuide={this.props.isGuide}/>
     ) : (
       <LinkContainer to="/sign" onClick={this._clearError}>
         <NavItem eventKey={4}>sign in</NavItem>
@@ -38,8 +40,8 @@ class NavBar extends Component {
     );
 
     return (
-      <div>
-        <Navbar fixedTop collapseOnSelect style={{opacity:1}}>
+      <div className={Style.wrapper}>
+        <Navbar fixedTop collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
               <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
@@ -54,8 +56,8 @@ class NavBar extends Component {
               <LinkContainer to="/" onClick={this._clearError}>
                 <NavItem eventKey={1}>home</NavItem>
               </LinkContainer>
-              <LinkContainer to="/activities" onClick={this._clearError}>
-                <NavItem eventKey={2}>activities</NavItem>
+              <LinkContainer to="/explore" onClick={this._clearError}>
+                <NavItem eventKey={1}>explore</NavItem>
               </LinkContainer>
               <LinkContainer to="/about" onClick={this._clearError}>
                 <NavItem eventKey={3}>about us</NavItem>
@@ -64,7 +66,6 @@ class NavBar extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <br/>
       </div>
     )
   }
@@ -78,7 +79,8 @@ NavBar.propTypes = {
   loggedIn: React.PropTypes.bool.isRequired,
   usersName: React.PropTypes.string,
   currentlySending: React.PropTypes.bool,
-  dispatch: React.PropTypes.func
+  dispatch: React.PropTypes.func,
+  isGuide: React.PropTypes.bool
 }
 
 export default NavBar;
