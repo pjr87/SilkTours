@@ -20,8 +20,6 @@ import {
 } from 'landricks-components';
 
 import { Button } from 'react-bootstrap';
-
-
 import ReactPlayer from 'react-player';
 import baiada from '../../style/images/baiada.jpg';
 import drexel from '../../style/images/drexel.png';
@@ -35,15 +33,7 @@ import building from '../../style/images/building.jpg';
 import forrest from '../../style/images/forrest.jpg';
 import landingImageHeroimage from '../../style/images/landingImageHeroimage.jpg';
 import landingImageSilktours from '../../style/images/landingImageSilktours.png';
-//heading="News about silk"
-
-//heading="About Company"
-
-//heading="Founders"
-
-//heading="Mission Statement"
-
-//heading="Why we are doing this"
+import cognitoFunctions from '../../utils/cognitoFunctions';
 
 class LandingPage extends React.Component{
 
@@ -54,7 +44,14 @@ class LandingPage extends React.Component{
   }
 
   handleClick (){
-    browserHistory.push('/signup');
+    let loggedIn = cognitoFunctions.loggedIn();
+
+    if(loggedIn){
+      browserHistory.push('/explore');
+    }
+    else{
+      browserHistory.push('/signup');
+    }
   }
 
   handleClickExplore (){
