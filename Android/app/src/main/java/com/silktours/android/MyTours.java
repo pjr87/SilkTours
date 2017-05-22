@@ -57,40 +57,26 @@ public class MyTours extends Fragment {
     }
 
     public void getTours() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                try {
-                    User user = CredentialHandler.getUser(MainActivity.getInstance());
-                    if (user != null)
-                        return Controller.sendGet("/users/" + user.getInt(User.ID_USERS) + "?deep=true");
-                    else
-                        MainActivity.getInstance().logoutWithMessage(MyTours.this);
-                } catch (Exception e) {
-                    Log.e(TAG, "doInBackground: ", e);
-                }
-                return "failed";
+        try {
+            //JSONObject jsObj = new JSONObject(response);
+            User user = CredentialHandler.getUser(MainActivity.getInstance());
+            if (user == null) {
+                MainActivity.getInstance().logoutWithMessage(MyTours.this);
+                return;
             }
-
-            @Override
-            protected void onPostExecute(String response) {
-                try {
-                    JSONObject jsObj = new JSONObject(response);
-                    JSONArray jsArray = jsObj.getJSONArray(guide?"tours_teaching":"tours_taking");
-                    Log.d(TAG, "onPostExecute: finished JSON1");
-                    tours = new Tour[jsArray.length()];
-                    for(int i = 0; i < jsArray.length(); i++) {
-                        tours[i] = new Tour();
-                        tours[i].JSON = jsArray.getJSONObject(i);
-                    }
-                    ListAdapter tourAdapter = new MyToursAdapter(MainActivity.getInstance(), tours);
-                    listView.setAdapter(tourAdapter);
-                    listView.setOnItemClickListener(new listOnClickListener());
-                } catch (Exception e) {
-                    Log.e(TAG, "onPostExecute: ", e);
-                }
+            JSONObject jsObj = user.JSON;
+            JSONArray jsArray = jsObj.getJSONArray(guide?"tours_teaching":"tours_taking");
+            tours = new Tour[jsArray.length()];
+            for(int i = 0; i < jsArray.length(); i++) {
+                tours[i] = new Tour();
+                tours[i].JSON = jsArray.getJSONObject(i);
             }
-        }.execute();
+            ListAdapter tourAdapter = new MyToursAdapter(MainActivity.getInstance(), tours);
+            listView.setAdapter(tourAdapter);
+            listView.setOnItemClickListener(new listOnClickListener());
+        } catch (Exception e) {
+            Log.e(TAG, "onPostExecute: ", e);
+        }
     }
 
     public void getGuidedTours() {
@@ -99,6 +85,8 @@ public class MyTours extends Fragment {
 
     private void startFragment(Fragment fragment) {
         fragment.setArguments(bundle);
+        MainActivity.getInstance().getMenu().startFragment(fragment);
+        /*fragment.setArguments(bundle);
 
         visited.push(fragment);
         FragmentManager fragmentManager = MainActivity.getInstance().getSupportFragmentManager();
@@ -106,7 +94,7 @@ public class MyTours extends Fragment {
         fragmentManager.beginTransaction()
                 .replace(currentID, fragment, CURRENT_TAG)
                 .commit();
-        currentID = fragment.getId();
+        currentID = fragment.getId();*/
     }
 
     public class listOnClickListener implements AdapterView.OnItemClickListener {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,10 +69,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
         View convertView = holder.itemView;
         TextView title = (TextView) convertView.findViewById(R.id.searchResultTitle);
         title.setText(tour.getStr("name"));
-        if (tour.profile_image_width != null && tour.profile_image_width != 0) {
+        Log.d("ProfileImage", tour.getStr("profile_image"));
+        //if (tour.profile_image_width != null && tour.profile_image_width != 0) {
             final ImageView image = (ImageView) convertView.findViewById(R.id.searchResultImage);
             image.getLayoutParams().width = parentWidth / 2;
-            image.getLayoutParams().height = tour.profile_image_height * (parentWidth / 2) / tour.profile_image_width;
+            //image.getLayoutParams().height = tour.profile_image_height * (parentWidth / 2) / tour.profile_image_width;
+            image.getLayoutParams().height = image.getLayoutParams().width;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -91,7 +94,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter {
                     }
                 }
             }).start();
-        }
+        //}
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
