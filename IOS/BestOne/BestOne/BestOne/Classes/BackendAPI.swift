@@ -239,6 +239,7 @@ class BackendAPI{
              sem.signal()
         }
         task.resume()
+        
         //sem.wait()
         
         
@@ -271,7 +272,65 @@ class BackendAPI{
         //sem.wait()
     }
     
-  static func getUser(id:UInt64){
+    static func getImageByUrl(url:String, completion:@escaping (UIImage) -> ()) {
+        let url = URL(string: url)!
+        
+        let session = URLSession(configuration: .default)
+        let downloadImageTask = session.dataTask(with: url) { (data, response, error) in
+            if let e = error {
+                print("Error downloading picture: \(e)")
+            } else {
+                if let res = response as? HTTPURLResponse {
+                    print("Downloaded picture with response code \(res.statusCode)")
+                    if let imageData = data {
+                        //print(imageData)
+                        //self.image = UIImage(data: imageData)!
+                        completion((UIImage(data: imageData))!)
+                    } else {
+                        print("Couldn't get image: Image is nil")
+                    }
+                } else {
+                    print("Couldn't get response code for some reason")
+                }
+            }
+        }
+        downloadImageTask.resume()
+    }
+
+    
+    static func getImage(id:String, completion:@escaping ([Media]) -> ()) {
+        let url = URL(string: SERVER_URL + "/media/" + id + "?bypass=true")
+        let session = URLSession(configuration: .default)
+        let downloadJsonTask = session.dataTask(with: url!) { (data, response, error) in
+            if let e = error {
+                print("Error downloading picture: \(e)")
+            } else {
+                if let res = response as? HTTPURLResponse {
+                    print("Downloaded picture with response code \(res.statusCode)")
+                    if let jsonData = data {
+                        var medias: [Media] = []
+                        var json = JSON(jsonData)
+                        for i in 0...json.count {
+                            if let url = json[i]["url"].string {
+                                let file_name = json[i]["file_name"].string
+                                let display_rank = json[i]["display_rank"].int
+                                let media = Media(display_rank: display_rank!, file_name: file_name!, url: url)
+                                medias.append(media)
+                                completion(medias)
+                            }
+                        }
+                    } else {
+                        print("Couldn't get image: Image is nil")
+                    }
+                } else {
+                    print("Couldn't get response code for some reason")
+                }
+            }
+        }
+        downloadJsonTask.resume()
+    }
+    
+    static func getUser(id:UInt64){
         //var url = SERVER_URL + "/users/"+id;
         //return axios.get(url);
     }

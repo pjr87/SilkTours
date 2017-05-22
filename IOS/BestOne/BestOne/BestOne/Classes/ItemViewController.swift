@@ -36,10 +36,6 @@ class ItemViewController: BaseViewController {
         navigationItem.titleView?.backgroundColor = UIColor.black
         
         ViewWidth = self.view.frame.width
-        mainScrollView.frame.size = CGSize(width: ViewWidth, height: self.view.frame.height)
-        mainScrollView.frame.origin = CGPoint(x: 0, y: 0)
-        mainScrollView.isScrollEnabled = true
-        mainScrollView.backgroundColor = UIColor.white
         loadInformation()
         loadButtons()
         loadGoogleMap()
@@ -60,30 +56,32 @@ class ItemViewController: BaseViewController {
     
     
     fileprivate func loadInformation() {
-        informationView.frame.size = CGSize(width: ViewWidth, height: ViewWidth * CGFloat(1))
-        informationView.frame.origin = CGPoint(x: 0, y: 0)
-        
         let profileImageView:UIImageView = UIImageView()
-        profileImageView.frame.size = CGSize(width: ViewWidth, height: ViewWidth * CGFloat(0.625))
+        profileImageView.frame.size = CGSize(width: ViewWidth, height: ViewWidth * CGFloat(0.5625))
         profileImageView.frame.origin = CGPoint(x: 0, y: 0)
-        let media:Media = Media()
-        media.setImageByUrl(url: (shopItem?.previewImgs[0])!) { image in
+        BackendAPI.getImageByUrl(url: (shopItem?.previewImgs[0])!) { image in
             profileImageView.image = image
             print("profile image")
             print(image)
         }
         
+        mainScrollView.frame.size = CGSize(width: ViewWidth, height: self.view.frame.height)
+        mainScrollView.frame.origin = CGPoint(x: 0, y: profileImageView.frame.maxY)
+        mainScrollView.isScrollEnabled = true
+        mainScrollView.backgroundColor = UIColor.white
+        
+        informationView.frame.size = CGSize(width: ViewWidth, height: ViewWidth * CGFloat(0.2))
+        informationView.frame.origin = CGPoint(x: 0, y: 0)
         let priceLabel:UILabel = UILabel()
-        priceLabel.frame.size = CGSize(width: ViewWidth * CGFloat(0.33), height: ViewWidth * CGFloat(0.125))
-        priceLabel.frame.origin = CGPoint(x: 10, y: profileImageView.frame.maxY)
+        priceLabel.frame.size = CGSize(width: ViewWidth * CGFloat(0.33), height: ViewWidth * CGFloat(0.1))
+        priceLabel.frame.origin = CGPoint(x: 10, y: 0)
         priceLabel.text = "$" + (shopItem?.price)!
         let descriptionLabel:UILabel = UILabel()
-        descriptionLabel.frame.size = CGSize(width: ViewWidth, height: ViewWidth * CGFloat(0.25))
+        descriptionLabel.frame.size = CGSize(width: ViewWidth, height: ViewWidth * CGFloat(0.1))
         descriptionLabel.frame.origin = CGPoint(x: 10, y: priceLabel.frame.maxY)
         descriptionLabel.text = (shopItem?.information)!
-        descriptionLabel.numberOfLines = 0
         
-        informationView.addSubview(profileImageView)
+        self.view.addSubview(profileImageView)
         informationView.addSubview(priceLabel)
         informationView.addSubview(descriptionLabel)
         mainScrollView.addSubview(informationView)
@@ -128,13 +126,22 @@ class ItemViewController: BaseViewController {
     
     
     fileprivate func loadImageSession() {
+        var images: [Media] = []
+        var tourId = ""
+        if let v = shopItem?.id {
+            tourId = "\(v)"
+            BackendAPI.getImage(id: tourId) { medias in
+                images = medias
+            }
+        }
+
         let photoScrollView:UIScrollView = UIScrollView()
         let photoLabel:UILabel = UILabel()
         var xPosition:CGFloat = 10
         let imageWidth:CGFloat = 80
         let imageHeight:CGFloat = 80
         let labelHeight:CGFloat = 30
-        let count:Int = 10
+        let count:Int = images.count
         
         imageSessionView.frame.size = CGSize(width: ViewWidth, height: labelHeight + imageHeight + 20)
         imageSessionView.frame.origin = CGPoint(x: 0, y: gMapView.frame.maxY)
@@ -148,13 +155,10 @@ class ItemViewController: BaseViewController {
         
         imageSessionView.addSubview(photoLabel)
         imageSessionView.addSubview(photoScrollView)
-        for _ in 1...count {
-            let media:Media = Media()
+        for i in 0...count {
             let tourImageView:UIImageView = UIImageView()
             //tourImageView.backgroundColor = UIColor.blue
-            media.setImageByUrl(url: "https://s3.amazonaws.com/silktours-media/tour/1/0ff6044bfbf0457c9b521c986369b17f.jpg") { image in
-                tourImageView.image = image
-            }
+            tourImageView.image = images[i].getImage()
             
             tourImageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
             tourImageView.frame.origin = CGPoint(x: xPosition, y: 10)
