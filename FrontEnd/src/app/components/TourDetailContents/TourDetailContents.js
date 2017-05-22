@@ -112,6 +112,24 @@ class TourDetailContents extends React.Component{
   }
 
   render(){
+    console.log("Tour:", this.props.selectedTour);
+    console.log(this.props.tourDates);
+
+    console.log("test: ", JSON.stringify(this.props.selectedTour) == '{}' )
+
+    if( !this.props.selectedTour || !this.props.tourDates || JSON.stringify(this.props.selectedTour) == '{}'  ){
+      console.log("render1");
+      console.log(this.props.selectedTour);
+      console.log(this.props.tourDates);
+      return <div></div>
+    }
+
+    console.log("render2");
+    console.log(this.props.selectedTour);
+    console.log(this.props.tourDates);
+
+
+    console.log("stops: ", this.props.tourDates);
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
     let isGuide = false;
