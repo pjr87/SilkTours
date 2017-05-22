@@ -1726,7 +1726,7 @@
         <!--Navigation Controller-->
         <scene sceneID="imp-l7-09d">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="WR2-z5-3zl" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginNC" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="WR2-z5-3zl" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Bz4-R8-KxI"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

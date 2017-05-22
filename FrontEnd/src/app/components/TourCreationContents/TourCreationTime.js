@@ -58,7 +58,14 @@ class TourCreationTime extends React.Component{
                       {value:2.5, optionName:"2 Hours 30 Minutes"},
                       {value:3, optionName:"3 Hours"},
                       {value:3.5, optionName:"3 Hours 30 Minutes"},
-                      {value:4, optionName:"4 Hours"}];
+                      {value:4, optionName:"4 Hours"},
+                      {value:5, optionName:"5 Hours"},
+                      {value:5.5, optionName:"5 Hour 30 Minutes"},
+                      {value:6, optionName:"6 Hour"},
+                      {value:6.5, optionName:"6 Hour 30 Minutes"},
+                      {value:7, optionName:"7 Hours"},
+                      {value:7.5, optionName:"7 Hours 30 Minutes"},
+                      {value:8, optionName:"8 Hours"}];
 
     const dropdownOptions = options.map(function(option) {
       return (
@@ -78,7 +85,7 @@ class TourCreationTime extends React.Component{
         <br/>
         <br/>
         <br/>
-        <p className={style.HeaderStyle}>Select a dates you want to offer the tour. Then choose times for each day you select</p>
+        <p className={style.HeaderStyle}>Select the dates you want to offer the tour. Then choose times for each day you select</p>
         <br />
         <MultiDateSelect
           emitChange={this._emitSpecialHourChange}

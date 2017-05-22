@@ -52,7 +52,7 @@ class LoginViewController: UIViewController {
     @IBAction func onSignInBtnClicked(_ sender: AnyObject) {
         print("Button \"Sign in\" was clicked")
         //email = emailTxtFld?.text
-        BackendAPI.login(email: emailTxtFld.text!, password: passwordTxtFld.text!, completion: {() -> Void in
+        BackendAPI.login(email: emailTxtFld.text!, password: passwordTxtFld.text!, completion: {(user: JSON) -> Void in
             self.performSegue(withIdentifier: "showMenu", sender: self)
         })
     }

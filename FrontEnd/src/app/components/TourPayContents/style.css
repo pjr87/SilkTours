@@ -8,3 +8,8 @@
 .modalCal{
   width: 400px;
 }
+
+.validationError {
+  color: red;
+  font: bold 15px Helvetica, Sans-Serif;
+}
