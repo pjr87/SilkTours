@@ -9,7 +9,7 @@ class Map extends React.Component{
           <Marker key={ marker.key }
            lat={ marker.lat }
            lng={ marker.lon }
-           draggable={ true }
+           draggable={ false }
            onDragEnd={ this.props.onMarkerDragged.bind(this, marker.key) }
            label={(marker.key+1)+""}
            />
