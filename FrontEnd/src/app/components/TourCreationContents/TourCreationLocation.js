@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import style from './style.css';
 import {Pager, Col, Row, Grid, FormControl} from 'react-bootstrap';
 import { updateAddressState, setTabKey } from '../../actions/TourCreationActions';
@@ -15,6 +16,10 @@ class TourCreationLocation extends React.Component{
 
   next(){
     this.props.dispatch(setTabKey("language"));
+  }
+
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
 
   previous(){

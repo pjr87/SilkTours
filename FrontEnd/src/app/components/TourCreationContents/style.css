@@ -16,6 +16,14 @@
   color: #FFFFFF;
 }
 
+.ContainerStyle{
+  width:50%;
+}
+
+.ContentStyle{
+  width:100%;
+}
+
 .TabStyle{
   font: 18px Helvetica, Sans-Serif;
   margin: 0 0;
