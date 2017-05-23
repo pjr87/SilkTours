@@ -241,13 +241,13 @@ class TourDetailContents extends React.Component{
                 <p className={Style.contentTitle}><b>Meeting Location</b></p>
                   {this.props.selectedTour.guides.map((guides, i) => {
                     return (
-                      <li key={i} className={Style.content}><Link
+                      <p key={i} className={Style.content}><Link
                                     to={{
                                       pathname: '/profile',
                                       query: { guideUserId: this.props.selectedTour.guides[0].id_user}
                                       }}>
                                       {guides.first_name} {guides.last_name}
-                                    </Link></li>);
+                                    </Link></p>);
 
                     })}
                 <p className={Style.content}>{this.props.selectedTour.address.city}</p>
@@ -265,19 +265,27 @@ class TourDetailContents extends React.Component{
                 <div className={Style.buttonContainer}>
                   <Button onClick={this.openModalCal}>Check Available Date</Button>
                     <Modal show={this.state.showModalCal} onHide={this.closeModalCal} dialogClassName={Style.modalCal}>
-                    <InfiniteCalendar
-                      width={400}
-                      height={400}
-                      selected={this.state.today}
-                      minDate={this.state.today}
-                      onSelect={this.handleSelectedDateChange}
-                      />
-                    <p className={Style.contentSubTitle}>Available Time: </p>
-                    {this.props.tourDates.map((avTime, i) => {
-                      return (
-                        <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
-                    })}
-                    <Button onClick={this.closeModalCal}>Close</Button>
+                    <Grid>
+                      <Row>
+                        <Col xs={6} sm={6} md={6} lg={6}>
+                          <InfiniteCalendar
+                            width={400}
+                            height={400}
+                            selected={this.state.today}
+                            minDate={this.state.today}
+                            onSelect={this.handleSelectedDateChange}
+                            />
+                        </Col>
+                        <Col xs={6} sm={6} md={6} lg={6}>
+                          <p className={Style.contentTitle}>Available Time: </p>
+                          {this.props.tourDates.map((avTime, i) => {
+                            return (
+                              <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
+                          })}
+                          <Button onClick={this.closeModalCal}>Close</Button>
+                        </Col>
+                      </Row>
+                    </Grid>
                     </Modal>
                   {reserveEditButton}
                   {guideButton}

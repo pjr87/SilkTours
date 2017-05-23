@@ -49,9 +49,11 @@ class Tours extends React.Component{
     console.log(userTourJson);
     if(this.state.favorite == true){
       this.setState({favorite: false, visible: false });
+      alert("The tour is removed frome your favorite list.")
     }
     else{
       this.setState({favorite: true});
+      alert("The tour is added to your favorite list.")
     }
     try {
       service.favorite_tour(userTourJson, this.props.auth).then(function(response){
@@ -347,12 +349,13 @@ class Tours extends React.Component{
               }}>
             {this.state.showTourTitle ? (<div className={Style.imageContainer}><Image className={Style.tour_image_large_info} src={this.props.tour.profile_image}/><p className={Style.image_text}>{this.props.tour.name}</p></div>) : (<Image className={Style.tour_image_large} src={this.props.tour.profile_image}/>)}
             </Link>
-          </div>
+
           {this.props.loggedIn ? (
           <div onClick={this.handleAddFavorite}>
             {this.state.favorite ? (<p className={Style.image_heart}>&#9829;</p>) :(<p className={Style.image_heart}>&#9825;</p>)}
           </div>
           ) : null }
+          </div>
           <p>{this.props.tour.description}</p>
           <hr/>
           <p className={Style.tour_description}>${this.props.tour.price}</p>
