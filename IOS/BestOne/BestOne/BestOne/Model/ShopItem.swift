@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 @objc (ShopItem)
 class ShopItem: NSObject, NSCoding {
@@ -19,9 +20,11 @@ class ShopItem: NSObject, NSCoding {
     var information: String
     var previewImgs: [String]
     var saleModePosition: SaleModePosition
+    var json: JSON
     
-    init(id: Int, is_fav: Bool, title: String, imgTitle: String, subTitle: String, price: String, information: String, previewImgs: [String], saleModePosition: SaleModePosition) {
+    init(json: JSON, id: Int, is_fav: Bool, title: String, imgTitle: String, subTitle: String, price: String, information: String, previewImgs: [String], saleModePosition: SaleModePosition) {
         self.id = id
+        self.json = json
         self.is_fav = is_fav
         self.title = title
         self.imgTitle = imgTitle
@@ -60,6 +63,7 @@ class ShopItem: NSObject, NSCoding {
     required init?(coder aDecoder: NSCoder) {
         id = 0
         is_fav = false
+        json = JSON.null
         title = aDecoder.decodeObject(forKey: "title") as! String
         price = aDecoder.decodeObject(forKey: "price") as! String
         imgTitle = aDecoder.decodeObject(forKey: "imgTitle") as! String

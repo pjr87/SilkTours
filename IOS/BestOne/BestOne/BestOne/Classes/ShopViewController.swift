@@ -59,6 +59,7 @@ class ShopViewController: BaseViewController {
         if segue.identifier == "showItem" {
             let itemController = segue.destination as! ItemViewController
             itemController.shopItem = shopItems[selectedShopItemIndex]
+            
         }
     }
     
