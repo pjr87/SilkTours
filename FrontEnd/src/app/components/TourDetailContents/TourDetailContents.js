@@ -289,13 +289,13 @@ class TourDetailContents extends React.Component{
                 <div className={Style.reviewContainer}>
                 <Panel header="Reviews">
                 <ListGroup fill>
-                {this.props.selectedTour.ratings.map((reviews, i) => {
+                {this.props.selectedTour.ratings.length > 0 ? this.props.selectedTour.ratings.map((reviews, i) => {
                   return (
                     <ListGroupItem key={i}>
                       <p className={Style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
                       <p className={Style.reviewContent}>{reviews.comments}</p>
                     </ListGroupItem>);
-                })}
+                }) : <div style={{padding: 15}} >No Reviews Available</div>}
                 </ListGroup>
                 </Panel>
                 </div>
