@@ -42,14 +42,35 @@
           android:layout_centerHorizontal="true"
           android:text="Create Tour" />
 
+      <ImageView
+          android:id="@+id/profilePicView"
+          android:layout_width="900px"
+          android:layout_height="900px"
+          android:layout_below="@+id/headingCreateTour"
+          android:layout_centerHorizontal="true" />
+
+      <TextView
+          android:id="@+id/profilePicViewHint"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/profilePicView"
+          android:layout_alignTop="@+id/profilePicView"
+          android:layout_alignRight="@+id/profilePicView"
+          android:layout_alignBottom="@+id/profilePicView"
+          android:layout_margin="1dp"
+          android:gravity="center"
+          android:text="Choose Profile Picture\nClick Here"/>
+
       <TextView
           android:id="@+id/nameTextView"
           android:layout_marginTop="10dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:textStyle="bold"
-          android:layout_below="@+id/headingCreateTour"
+          android:layout_below="@+id/profilePicView"
           android:text="Tour Name"/>
+
       <LinearLayout
           android:id="@+id/nameFields"
           android:layout_below="@+id/nameTextView"

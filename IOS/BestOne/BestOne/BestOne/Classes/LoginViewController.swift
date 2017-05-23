@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftyJSON
+import Applozic
+
 
 class LoginViewController: UIViewController {
     
@@ -23,6 +25,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //add observers for keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillChangeFrame(_:)), name: NSNotification.Name(rawValue: "UIKeyboardWillChangeFrameNotification"), object: nil)
         logo.layer.cornerRadius = logo.frame.size.width/2

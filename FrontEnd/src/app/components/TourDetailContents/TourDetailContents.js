@@ -239,6 +239,17 @@ class TourDetailContents extends React.Component{
                 <p className={Style.contentTitle}><b>About</b></p>
                 <p className={Style.content}>{this.props.selectedTour.description}</p>
                 <p className={Style.contentTitle}><b>Meeting Location</b></p>
+                  {this.props.selectedTour.guides.map((guides, i) => {
+                    return (
+                      <li key={i} className={Style.content}><Link
+                                    to={{
+                                      pathname: '/profile',
+                                      query: { guideUserId: this.props.selectedTour.guides[0].id_user}
+                                      }}>
+                                      {guides.first_name} {guides.last_name}
+                                    </Link></li>);
+
+                    })}
                 <p className={Style.content}>{this.props.selectedTour.address.city}</p>
                 <p className={Style.contentTitle}>Transportation</p>
                 <p className={Style.content}></p>

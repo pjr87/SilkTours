@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
@@ -11,6 +12,10 @@ class TourCreationInterests extends React.Component{
 
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
+  }
+
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
 
   next(){

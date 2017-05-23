@@ -250,7 +250,7 @@ class Tours extends React.Component{
         <Col xs={12} md={6} lg={6}>
           <Thumbnail src={this.props.tour.profile_image}>
             <div>
-            <p>{this.props.tour.name}  {this.props.tour.id_tourEvent}</p>
+            <p>{this.props.tour.name}</p>
             { this.props.tourDisplayProps.isGuide && this.props.tour.participants != null && this.props.tour.participants.length > 0 &&
               <p>
                 <span className={Style.confirmBodySideHeader}>Tourist: </span>
@@ -345,8 +345,7 @@ class Tours extends React.Component{
                 pathname: '/tourdetail',
                 query: { tourId: this.props.tour.id_tour }
               }}>
-            {this.state.showTourTitle ? (<Image className={Style.tour_image_large_info} src={this.props.tour.profile_image}/>) : (<Image className={Style.tour_image_large} src={this.props.tour.profile_image}/>)}
-            {this.state.showTourTitle ? (<p className={Style.image_text}>{this.props.tour.name}</p>): null}
+            {this.state.showTourTitle ? (<div className={Style.imageContainer}><Image className={Style.tour_image_large_info} src={this.props.tour.profile_image}/><p className={Style.image_text}>{this.props.tour.name}</p></div>) : (<Image className={Style.tour_image_large} src={this.props.tour.profile_image}/>)}
             </Link>
           </div>
           {this.props.loggedIn ? (
@@ -383,29 +382,6 @@ class Tours extends React.Component{
     );
     }
 
-
-    /*let guideButton = null;
-    if (guidesLength != '0') {
-      if(this.props.loggedIn) {
-        guideButton = <Link
-                      to={{
-                        pathname: '/messages',
-                        query: { guideUserId: this.state.guides[0].id_user }
-                        }}>
-                        <Button bsStyle="default">Message</Button>
-                      </Link>;
-      }
-      else {
-        guideButton = <Link
-                      to={{
-                        pathname: '/sign'
-                        }}>
-                        <Button bsStyle="default">Message</Button>
-                      </Link>;
-      }
-    } else {
-      guideButton = null;
-    }*/
     return (<div>
       {tourDisplay}
     </div>);

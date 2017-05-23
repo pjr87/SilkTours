@@ -18,6 +18,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,8 +27,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +66,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.silktours.android.database.Media;
+import com.silktours.android.database.MediaHandler;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.User;
 import com.silktours.android.utils.CredentialHandler;
@@ -73,6 +78,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -92,7 +98,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private View rootView;
     private Tour tour = new Tour();
     private EditText tourName, tourDesc, price, language, additionalAccommodation, additionalTransport, additionalFood;
-    private TextView startDateText, endDateText, addedLocationText;
+    private ImageView profilePicView;
+    private TextView startDateText, endDateText, addedLocationText, profilePicViewHint;
     private ListView stopsList;
     private Button startDateBtn, endDateBtn, profilePicButton;
     private Calendar start = Calendar.getInstance();
@@ -101,14 +108,19 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
     private MapView mMapView;
     private DateFormat formatDate = DateFormat.getDateInstance();
     private Place placeSelected;
-
-    public static final int GET_FROM_GALLERY = 3;
+    private String encodedProfileImage;
+    Bitmap bm;
+    private String postResult = "";
+    private JSONObject jObject;
+    private String tID;
 
     ArrayList<String> stops = new ArrayList<String>();
     ArrayAdapter<String> stopsAdapter;
 
     ImageView ivCamera, ivGallery, ivUpload, ivImage;
     JSONArray stopJSON = new JSONArray();
+    private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
+
 
     private CredentialHandler credentialHandler;
     private User user;
@@ -137,6 +149,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         additionalTransport = (EditText) rootView.findViewById((R.id.additionalTransport));
         additionalFood = (EditText) rootView.findViewById((R.id.additionalFood));
         profilePicButton = (Button) rootView.findViewById(R.id.profilePicButton);
+        profilePicView = (ImageView)rootView.findViewById(R.id.profilePicView);
+        profilePicViewHint = (TextView) rootView.findViewById(R.id.profilePicViewHint);
 
         stopsList = (ListView) rootView.findViewById(R.id.stopsList);
         stopsAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.tours_stops_list, stops);
@@ -222,7 +236,7 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                             placeSelected = place;
                             LatLng loca = placeSelected.getLatLng();
                             mGoogleMap.addMarker(new MarkerOptions().position(loca));
-                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loca, 14));
 
                             JSONObject stop = new JSONObject();
 
@@ -257,7 +271,8 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 tour.set("additional_food", additionalFood.getText().toString());
                 tour.set("additional_accomadation", additionalAccommodation.getText().toString());
                 tour.set("additional_transport", additionalTransport.getText().toString());
-
+                //default value. change later
+                tour.set("length", 2);
                 JSONArray guides = new JSONArray();
                 JSONObject guide = new JSONObject();
                 try {
@@ -272,9 +287,21 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
 
                 tour.set("stops", stopJSON);
 
-               // Log.d("json", "onClick: " + tour.get());
-                commitTour();
+                commitTour(new CommitTourCallback() {
+                    @Override
+                    public void done(String postResult) {
+                        try {
+                            jObject = new JSONObject(postResult);
+                            tID = jObject.getString("id_tour");
+                            Log.d("Got it", tID);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Got it again", tID);
 
+                        MediaHandler.uploadProfileImage("tours", tID, bm);
+                    }
+                });
                 /*
                 final User user = new User();
                 user.set(User.FIRST_NAME, "Andrew");
@@ -336,13 +363,14 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
         profilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
-                //startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GET_FROM_GALLERY);
-                Log.d("fool", "lol");
+                setTourProfilePicture();
+            }
+        });
+
+        profilePicView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTourProfilePicture();
             }
         });
 
@@ -376,35 +404,57 @@ public class CreateTour extends Fragment implements DatePickerDialog.OnDateSetLi
                 endDateText.setText(formatDate.format(end.getTime()));
     }};
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void setTourProfilePicture() {
 
+        if (ContextCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        //Detects request codes
-        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            Log.d("image", selectedImage.toString());
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selectedImage);
-                ImageView testProfilePicView = (ImageView) rootView.findViewById (R.id.testProfilePicView);
-                testProfilePicView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
             }
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+
+            //return;
         }
+
+        MainActivity.getImage(true, new MainActivity.GetImageResult() {
+            @Override
+            public void onResult(String path) {
+                Log.d("SilkPath", path);
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(MainActivity.getInstance().getContentResolver(), Uri.parse("file://" + path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
+                encodedProfileImage = Base64.encodeToString(b, Base64.DEFAULT);
+                profilePicView.setImageBitmap(bm);
+                profilePicViewHint.setText("");
+
+            }
+        });
     }
 
-    private void commitTour() {
+    private interface CommitTourCallback {
+        void done(String postResult);
+    }
+    private void commitTour(final CommitTourCallback callback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    tour.commitCreate();
+                    postResult =  tour.commitCreate();
+                    callback.done(postResult);
                     postCommit(false);
                 } catch (IOException e) {
                     postCommit(true);

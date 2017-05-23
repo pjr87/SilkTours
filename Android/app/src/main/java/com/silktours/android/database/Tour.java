@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -120,16 +121,44 @@ public class Tour extends Base implements Serializable {
         return result;
     }
 
+    public static JSONObject getTourHours(Tours t) throws IOException, JSONException {
+        URIBuilder uri = new URIBuilder(Common.SERVER_URL + "/tours/available_hours");
+        uri.addParam("tour_id", t.getId_tour().toString());
+        uri.addParam("start_date", "2017-5-16");
+        uri.addParam("end_date", "2017-7-16");
+        JSONObject resultsJSON = Common.getJson(uri.build());
+
+        return resultsJSON;
+        /*for (int i=0; i<resultsJSON.length(); i++) {
+            JSONObject tourJSON = resultsJSON.getJSONObject(i);
+            Tour tour = new Tour();
+            tour.JSON = tourJSON;
+            Iterator<String> keysIt = tourJSON.keys();
+            while(keysIt.hasNext()) {
+                String key = keysIt.next();
+                try {
+                    Field field = Tour.class.getField(key);
+                    field.set(tour, tourJSON.get(key));
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
+            }
+            result.add(tour);
+        }
+        return result;*/
+    }
+
     /**
      * Call after creating a new object to commit the changes to the database
      * @throws IOException
      */
-    public void commitCreate() throws IOException {
+    public String commitCreate() throws IOException {
         String url = Common.SERVER_URL + "/tours";
         set("bypass", true); // Bypass auth
         Log.d("JSON", JSON.toString());
         String result = Common.request(url, JSON.toString(), "POST");
         Log.d("Server", result);
+        return result;
     }
 
     /**

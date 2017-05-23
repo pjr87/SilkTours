@@ -3,7 +3,6 @@ package com.silktours.android;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,17 +11,10 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 import com.silktours.android.database.PaymentInfo;
@@ -33,7 +25,9 @@ import com.silktours.android.database.User;
 import com.silktours.android.utils.ErrorDisplay;
 import com.silktours.android.utils.ListViewUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -42,9 +36,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.SimpleFormatter;
 
 public class BookTourFragment extends Fragment {
     private Tour tour;
@@ -53,6 +47,8 @@ public class BookTourFragment extends Fragment {
     private CaldroidFragment caldroidFragment;
     SimpleDateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd");
     private Map<String, List<TourEvent>> eventMap = new HashMap<>();
+
+    private Map<String, List<Tour>> eventMap1 = new HashMap<>();
     private View confirmBookingView;
     private AlertDialog confirmDialog;
 
@@ -86,9 +82,10 @@ public class BookTourFragment extends Fragment {
         android.support.v4.app.FragmentTransaction t = MainActivity.getInstance().getSupportFragmentManager().beginTransaction();
         t.replace(R.id.bookTourCalendar, caldroidFragment);
         t.commit();
-
-        new GetEvents().execute(tour.getInt("id_tour"));
+        new GetEvents().execute(0);
+        //new GetEvents().execute((Runnable) tour);
     }
+
 
     final CaldroidListener listener = new CaldroidListener() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -148,6 +145,7 @@ public class BookTourFragment extends Fragment {
         }
 
     };
+
 
     private void confirmBooking(final PaymentInfo payment) {
         Activity activity = MainActivity.getInstance();
@@ -215,26 +213,23 @@ public class BookTourFragment extends Fragment {
         });
     }
 
-    private class GetEvents extends AsyncTask<Integer, Integer, List<TourEvent>> {
-        protected List<TourEvent> doInBackground(Integer... id) {
-            try {
-                return TourEvent.getEvents(id[0]);
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
+    private class GetEvents extends AsyncTask<Integer, Integer, JSONObject> {
+        protected JSONObject doInBackground(Integer... id) {
+            return tourHours(tour);
         }
 
         protected void onProgressUpdate(Integer... progress) {
             //setProgressPercent(progress[0]);
         }
 
-        protected void onPostExecute(List<TourEvent> results) {
+        protected void onPostExecute(JSONObject results) {
             ColorDrawable blue = new ColorDrawable(0xBB0000FF);
-            SimpleDateFormat parser=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            for (TourEvent result : results) {
+            SimpleDateFormat parser=new SimpleDateFormat("yyyy-MM-dd");
+            Iterator<String> keys = results.keys();
+            while(keys.hasNext()) {
+                String key = keys.next();
                 try {
-                    Date startDate = parser.parse(result.getStr("start_date_time"));
+                    Date startDate = parser.parse(key);
                     caldroidFragment.setBackgroundDrawableForDate(blue, startDate);
                     String date = dateFormatter.format(startDate);
                     List<TourEvent> eventList = eventMap.get(date);
@@ -242,12 +237,36 @@ public class BookTourFragment extends Fragment {
                         eventList = new ArrayList<>();
                         eventMap.put(date, eventList);
                     }
-                    eventList.add(result);
+                    try {
+                        JSONArray times = results.getJSONArray(key);
+                        for (int j=0;j<times.length();j++) {
+                            JSONObject time = times.getJSONObject(j);
+                            TourEvent event = new TourEvent();
+                            event.set("start_date_time", key + " " + time.getString("start"));
+                            event.set("end_date_time", key + " " + time.getString("end"));
+                            event.set("state", "A");
+                            eventList.add(event);
+                        }
+                    }catch(JSONException e) {
+                        e.printStackTrace();
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
             caldroidFragment.refreshView();
         }
+    }
+
+    private JSONObject tourHours(final Tour t) {
+                final JSONObject hours;
+                try {
+                    Tours tour = new Tours(t.JSON);
+                    hours = Tour.getTourHours(tour);
+                    return hours;
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    return null;
+                }
     }
 }

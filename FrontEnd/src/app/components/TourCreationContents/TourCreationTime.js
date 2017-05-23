@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import {
@@ -22,6 +23,10 @@ class TourCreationTime extends React.Component{
     this._emitSpecialHourChange = this._emitSpecialHourChange.bind(this)
     this._emitSpecialHourDateChange = this._emitSpecialHourDateChange.bind(this)
     this._changeLength = this._changeLength.bind(this)
+  }
+
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
 
   next(){

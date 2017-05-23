@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import style from './style.css';
 import {Pager, Col, Row, Grid, FormControl} from 'react-bootstrap';
 import { updateLanguageState, setTabKey } from '../../actions/TourCreationActions';
@@ -10,6 +11,10 @@ class TourCreationLanguage extends React.Component{
     this.next = this.next.bind(this)
     this.previous = this.previous.bind(this)
     this._changeTour = this._changeTour.bind(this)
+  }
+
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
 
   next(){
