@@ -23,12 +23,16 @@ class TourCreationPhotos extends React.Component{
         image: '',
         imageLoaded: false,
         crop:{
-          aspect: 9/9
+          aspect: 9/9,
+            x: 35,
+            y: 35,
+            width: 25,
         },
         pixelCrop: {},
         cropped: false,
         height: 0,
-        width: 0
+        width: 0,
+        keepSelection: true,
     }
   }
 
@@ -165,11 +169,8 @@ class TourCreationPhotos extends React.Component{
           {this.props.photos ? <div>
           <div>
             <ReactCrop src={this.props.photos.file}
-                      {...this.state} keepSelection = {true}
-                       onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)}
-
-
-                       />
+                      {...this.state} 
+                       onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)} keepSelection />
           <br/>
           {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null }
           </div>
