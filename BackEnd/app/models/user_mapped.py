@@ -54,7 +54,7 @@ class User(Base):
     def set_props(self, data):
         for key in data:
             print(key)
-            if hasattr(self, key):
+            if hasattr(self, key) and key in data:
                 setattr(self, key, data[key])
             elif key == "address":
                 print("creatingAddress")
