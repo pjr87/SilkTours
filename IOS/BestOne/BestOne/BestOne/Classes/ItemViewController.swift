@@ -106,8 +106,6 @@ class ItemViewController: BaseViewController {
         messageButton.backgroundColor = UIColor.blue
         messageButton.frame.size = CGSize(width: ViewWidth * CGFloat(0.333), height: ViewWidth * CGFloat(0.09))
         messageButton.frame.origin = CGPoint(x: buttonsView.frame.width * CGFloat(0.083), y: 0)
-        messageButton.frame.size = CGSize(width: 125, height: 30)
-        messageButton.frame.origin = CGPoint(x: 35, y: 345)
         messageButton.addTarget(self, action: #selector(self.messagePressed), for: .touchUpInside)
         joinButton.setTitle("Join", for: .normal)
         joinButton.backgroundColor = UIColor.green
@@ -136,14 +134,8 @@ class ItemViewController: BaseViewController {
     
     
     fileprivate func loadImageSession() {
-        var images: [Media] = []
         var tourId = ""
-        if let v = shopItem?.id {
-            tourId = "\(v)"
-            BackendAPI.getImage(id: tourId) { medias in
-                images = medias
-            }
-        }
+        
 
         let photoScrollView:UIScrollView = UIScrollView()
         let photoLabel:UILabel = UILabel()
@@ -151,7 +143,6 @@ class ItemViewController: BaseViewController {
         let imageWidth:CGFloat = 80
         let imageHeight:CGFloat = 80
         let labelHeight:CGFloat = 30
-        let count:Int = images.count
         
         imageSessionView.frame.size = CGSize(width: ViewWidth, height: labelHeight + imageHeight + 20)
         imageSessionView.frame.origin = CGPoint(x: 0, y: gMapView.frame.maxY)
@@ -160,23 +151,30 @@ class ItemViewController: BaseViewController {
         photoLabel.frame.origin = CGPoint(x: 10, y: 0)
         photoScrollView.isScrollEnabled = true
         photoScrollView.frame.size = CGSize(width: ViewWidth, height: imageHeight + 10)
-        photoScrollView.contentSize = CGSize(width: (imageWidth + 5) * CGFloat(count) + 10, height: imageHeight + 10)
         photoScrollView.frame.origin = CGPoint(x: 0, y: labelHeight)
+        if let v = shopItem?.id {
+            tourId = "\(v)"
+            BackendAPI.getImage(id: tourId) { medias in
+                let count:Int = medias.count
+                for i in 0...count-1 {
+                    let tourImageView:UIImageView = UIImageView()
+                    tourImageView.backgroundColor = UIColor.blue
+                    //tourImageView.image = medias[i].getImage()
+                    print(i)
+                    tourImageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
+                    tourImageView.frame.origin = CGPoint(x: xPosition, y: 10)
+                    
+                    photoScrollView.addSubview(tourImageView)
+                    
+                    xPosition += imageWidth + 5
+                }
+                photoScrollView.contentSize = CGSize(width: (imageWidth + 5) * CGFloat(count) + 10, height: imageHeight + 10)
+            }
+        }
         
         imageSessionView.addSubview(photoLabel)
         imageSessionView.addSubview(photoScrollView)
-        for i in 0...count {
-            let tourImageView:UIImageView = UIImageView()
-            //tourImageView.backgroundColor = UIColor.blue
-            tourImageView.image = images[i].getImage()
-            
-            tourImageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
-            tourImageView.frame.origin = CGPoint(x: xPosition, y: 10)
-            
-            photoScrollView.addSubview(tourImageView)
-            
-            xPosition += imageWidth + 5
-        }
+        
         mainScrollView.addSubview(imageSessionView)
     }
     
