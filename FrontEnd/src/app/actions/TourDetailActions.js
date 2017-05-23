@@ -38,6 +38,9 @@ export function selectTour(tourId) {
       browserHistory.push('/notfound');
       return;
     }
+    var obj = {};
+
+    dispatch(updateTour(JSON.parse(JSON.stringify(obj))));
     dispatch(updateTourId(tourId));
     try {
       service.getTourById(tourId).then(function(response){
