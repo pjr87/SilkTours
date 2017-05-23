@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import logoImg from '../../style/images/logo.png';
 import {PageTitle, BannerImage, Interests, TourModify} from 'components';
 import style from './style.css';
@@ -26,10 +25,6 @@ class TourCreationContents extends React.Component{
     super();
     this.handleSelect = this.handleSelect.bind(this);
     this.handleMap = this.handleMap.bind(this);
-  }
-
-  componentDidUpdate() {
-    window.scrollTo(0, 0);
   }
 
   handleSelect(key){

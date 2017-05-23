@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import style from './style.css';
 import {EditableFieldClass} from '../Forms/Forms.js';
 import { Pager } from 'react-bootstrap';
@@ -21,10 +20,6 @@ class TourCreationPrice extends React.Component{
 
   previous(){
     this.props.dispatch(setTabKey("additional"));
-  }
-
-  componentDidUpdate() {
-    window.scrollTo(0, 0);
   }
 
   _changePrice(event) {
