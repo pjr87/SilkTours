@@ -29,7 +29,9 @@ class TourCreationContents extends React.Component{
 
   handleSelect(key){
     if(this.props.navAllowed){
-      this.props.dispatch(setTabKey(key));
+      window.scrollTo(0, 0);
+      console.log("to Top");
+      //this.props.dispatch(setTabKey(key));
     }
     else{
       console.log("Navigation is not allowed until on review page")
