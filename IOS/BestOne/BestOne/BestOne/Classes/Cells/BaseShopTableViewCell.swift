@@ -55,8 +55,9 @@ class BaseShopTableViewCell: UITableViewCell {
     
     //Private Methods
     @IBAction fileprivate func onFavoriteBtnClicked(_ sender: AnyObject) {
-        BackendAPI.toggleFav(tour_id:self.tour_id!, completion: nil)
-        delegate?.didFavoriteBtnClicked!(self)
+        BackendAPI.toggleFav(tour_id:self.tour_id!, completion: {()->Void in
+            self.delegate?.didFavoriteBtnClicked!(self)
+        })
     }
     
     @IBAction fileprivate func onAddItemBtnClicked(_ sender: AnyObject) {

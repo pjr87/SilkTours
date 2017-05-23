@@ -3,6 +3,7 @@ package com.silktours.android;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.silktours.android.database.Controller;
 import com.silktours.android.database.Media;
-import com.silktours.android.database.MediaHandler;
 import com.silktours.android.database.Tour;
 import com.silktours.android.database.Tours;
 import com.silktours.android.database.User;
@@ -38,7 +38,10 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -52,6 +55,11 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     private TextView txtStartDate;
     private TextView txtEndDate;
     private TextView txtDescription;
+    private TextView txtLanguage;
+    private TextView txtadditionalStay;
+    private TextView txtadditionalFood;
+    private TextView txtadditionalTravel;
+    private TextView txtGroupSizeMax;
     private ImageView imgProfile;
     private GoogleMap googleMap;
     private MapView mapView;
@@ -83,14 +91,18 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         }
         tourId = tour.getId_tour().toString();
         txtName = (TextView) rootView.findViewById(R.id.txtName);
-        txtCountry = (TextView) rootView.findViewById(R.id.txtCountry);
-        txtCity = (TextView) rootView.findViewById(R.id.txtCity);
+        //txtCity = (TextView) rootView.findViewById(R.id.txtCity);
         txtPrice = (TextView) rootView.findViewById(R.id.txtPrice);
-        txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
-        txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
+        txtLanguage = (TextView) rootView.findViewById(R.id.txtLanguage);
+        //txtStartDate = (TextView) rootView.findViewById(R.id.txtStartDate);
+        //txtEndDate = (TextView) rootView.findViewById(R.id.txtEndDate);
         txtDescription = (TextView) rootView.findViewById(R.id.txtDescription);
+        //txtGroupSizeMax = (TextView) rootView.findViewById(R.id.txtGroupSizeMax);
+        txtadditionalFood = (TextView) rootView.findViewById(R.id.txtAdditionalFood);
+        txtadditionalStay = (TextView) rootView.findViewById(R.id.txtAdditionalStay);
+        txtadditionalTravel = (TextView) rootView.findViewById(R.id.txtAdditionalTravel);
         imgProfile = (ImageView) rootView.findViewById(R.id.imgProfile);
-        lnlMedia = (LinearLayout) rootView.findViewById(R.id.lnlMedia);
+        //lnlMedia = (LinearLayout) rootView.findViewById(R.id.lnlMedia);
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -187,11 +199,11 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         stops = tour.getStops();
         for(int i = 0; i < stops.length; i++) {
-            LatLng sydney = new LatLng(stops[i][0], stops[i][1]);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+            LatLng cordinates = new LatLng(stops[i][0], stops[i][1]);
+            googleMap.addMarker(new MarkerOptions().position(cordinates).title("Marker Title").snippet("Marker Description"));
 
             // For zooming automatically to the location of the marker
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(cordinates).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
 
@@ -199,25 +211,43 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
 
     private void getInfo() {
         txtName.setText(tour.getName());
-        txtCity.setText(tour.getCity());
+        //txtCity.setText(tour.getCity());
         txtPrice.setText(tour.getPrice());
-        txtStartDate.setText(tour.getStartDate());
-        txtEndDate.setText(tour.getEndDate());
+        //txtStartDate.setText(Tour.getTourHours(tour));
+        /*
+        try {
+            Log.d("hourssss", String.valueOf(Tour.getTourHours(tour)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        */
+        //txtEndDate.setText(tour.getEndDate());
         txtDescription.setText(tour.getDescription());
-        new AsyncTask<Void, Void, Bitmap>() {
+        txtLanguage.setText((tour.getLanguage()));
+        //txtGroupSizeMax.setText(tour.getGroupSizeMax().toString());
+        txtadditionalFood.setText(tour.getAdditionalFood());
+        txtadditionalStay.setText(tour.getAdditionalStay());
+        txtadditionalTravel.setText(tour.getAdditionalTravel());
+        new Thread(new Runnable() {
             @Override
-            protected Bitmap doInBackground(Void... params) {
-                return getResizedBitmap(getBitmapFromURL(tour.getProfileImage()), 200, 200);
+            public void run() {
+                try {
+                    URL thumb_u = new URL(tour.getProfileImage());
+                    final Drawable thumb_d = Drawable.createFromStream(thumb_u.openStream(), "src");
+                    MainActivity.getInstance().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            imgProfile.setImageDrawable(thumb_d);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-            @Override
-            protected void onPostExecute(Bitmap response) {
-                if (response != null)
-                    imgProfile.setImageBitmap(response);
-            }
-        }.execute();
+        }).start();
         getMedia(tourId);
-
     }
 
     public void getMedia(final String tourId) {
@@ -249,7 +279,9 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                 try {
                     for (int i = 0; i < response.size(); i++) {
                         ImageView imageView = new ImageView(MainActivity.getInstance());
+                        //imgProfile.setImageBitmap(null);
                         imageView.setImageBitmap(getResizedBitmap(response.get(i), 200, 200));
+                        //imageView.setImageBitmap(null);
                         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                         imageView.setLayoutParams(layoutParams);
@@ -260,18 +292,9 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
                 } catch (Exception e) {
                     Log.e(TAG, "onPostExecute: ", e);
                 }
-                Bitmap bitmao = BitmapFactory.decodeResource(MainActivity.getInstance().getResources(), R.drawable.ic_message_bubble1);
-                try {
-                    MediaHandler.uploadProfileImage("tours", "2", bitmao);
-                } catch (Exception e ) {
-                    Log.e(TAG, "onPostExecute: ", e);
-                }
-
             }
         }.execute();
     }
-
-
 
     private Bitmap getBitmapFromURL(String src) {
         try {
@@ -300,7 +323,13 @@ public class Viewtour extends Fragment implements OnMapReadyCallback{
         matrix.postScale(scaleWidth, scaleHeight);
 
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
+        //bm.recycle();
+
+        if (bm != null && !bm.isRecycled()) {
+            bm.recycle();
+            bm = null;
+        }
+
         return resizedBitmap;
     }
 }

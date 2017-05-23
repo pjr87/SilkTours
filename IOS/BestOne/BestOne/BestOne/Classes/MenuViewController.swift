@@ -12,12 +12,14 @@ private enum MenuItemType: Int {
     case collections = 0
     case favorites
     case myCart
+    case messages
     case settings
     case logOut
 }
 
 private let RowHeightCoef = 0.077211
 private let CellIdentifier = "MenuTableViewCell"
+private var menuController: UIViewController? = nil
 
 class MenuViewController: UIViewController {
     
@@ -26,7 +28,7 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        menuController = self
         //load menu items
         menuItems = MenuManager.sharedManager.loadData()
     }
@@ -92,8 +94,11 @@ extension MenuViewController: UITableViewDelegate {
         
         //show next controller
         let nextControllerId = menuItem.title.replacingOccurrences(of: " ", with: "") + "Controller"
-        
-        slidingPanelController.centerViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: nextControllerId)
+        if nextControllerId.contains("Message") {
+            MessageController.launchThreads(sender: menuController!)
+        } else {
+            slidingPanelController.centerViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: nextControllerId)
+        }
         slidingPanelController.closePanel()
     }
 }

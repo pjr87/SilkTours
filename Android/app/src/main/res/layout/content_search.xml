@@ -8,6 +8,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.silktours.android.search">
 
+    <!-- Dummy item to prevent searchview from receiving focus on startup-->
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+
     <Button
         android:id="@+id/createTour"
         android:layout_width="wrap_content"
@@ -15,30 +22,39 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:textSize="16dp"
         android:text="Create Tour"/>
 
-    <ImageButton
-        android:id="@+id/filterButton"
-        android:focusableInTouchMode="true"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/searchlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_filter"
-        android:layout_alignParentRight="true" />
+        android:paddingBottom="20px"
+        android:paddingTop="20px">
+        <SearchView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchView"
+            android:iconifiedByDefault="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/filterButton" />
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:focusableInTouchMode="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_filter"
+            android:layout_alignParentRight="true" />
+    </LinearLayout>
 
-    <SearchView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchView"
-        android:iconifiedByDefault="false"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/filterButton" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_below="@+id/searchView"
+        android:layout_below="@+id/searchlayout"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="20px"/>
 
 </RelativeLayout>

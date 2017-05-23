@@ -186,7 +186,7 @@ public class MenuBar {
                             item.setScaleY((float) 1.5);
                             item.setIconTintList(null);
                             item.setIcon(icon);
-                            // item.setBackground(icon);
+                            //item.setBackground(icon);
                         }
                     });
                 }
