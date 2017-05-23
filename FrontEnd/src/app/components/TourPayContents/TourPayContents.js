@@ -156,19 +156,36 @@ class TourPayContents extends React.Component {
                     readOnly
                     />
                     <Modal show={this.state.showCal} onHide={this.closeModalCal} dialogClassName={Style.modalCal}>
-                      <InfiniteCalendar
-                        width={400}
-                        height={400}
-                        selected={this.state.today}
-                        minDate={this.state.today}
-                        onSelect={this.handleSelectedDateChange}
-                        />
-                      <p className={Style.contentSubTitle}>Available Time: </p>
-                      {this.props.tourDates.map((avTime, i) => {
-                        return (
-                          <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
-                      })}
-                      <Button onClick={this.closeModalCal}>Close</Button>
+                      <Grid>
+                        <Row>
+                          <Col xs={8} sm={8} md={6} lg={5}>
+                            <InfiniteCalendar
+                              width={400}
+                              height={400}
+                              selected={this.state.today}
+                              minDate={this.state.today}
+                              onSelect={this.handleSelectedDateChange}
+                              />
+                          </Col>
+                          <Col xs={4} sm={4} md={6} lg={7}>
+                            <p className={Style.contentTitle}>Available Time: </p>
+                            {this.props.tourDates.length > 0 ?
+                            (
+                              this.props.tourDates.map((avTime, i) => {
+                                return (
+                                  <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
+                              })
+                            )
+                            :
+                            (
+                              <p className={Style.content}>No available time.</p>
+                            )
+                            }
+                            <br/>
+                            <Button onClick={this.closeModalCal}>Close</Button>
+                          </Col>
+                        </Row>
+                      </Grid>
                     </Modal>
                 </FormGroup>
                 <FormGroup>

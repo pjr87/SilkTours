@@ -267,7 +267,7 @@ class TourDetailContents extends React.Component{
                     <Modal show={this.state.showModalCal} onHide={this.closeModalCal} dialogClassName={Style.modalCal}>
                     <Grid>
                       <Row>
-                        <Col xs={6} sm={6} md={6} lg={6}>
+                        <Col xs={8} sm={8} md={6} lg={5}>
                           <InfiniteCalendar
                             width={400}
                             height={400}
@@ -276,12 +276,21 @@ class TourDetailContents extends React.Component{
                             onSelect={this.handleSelectedDateChange}
                             />
                         </Col>
-                        <Col xs={6} sm={6} md={6} lg={6}>
+                        <Col xs={4} sm={4} md={6} lg={7}>
                           <p className={Style.contentTitle}>Available Time: </p>
-                          {this.props.tourDates.map((avTime, i) => {
-                            return (
-                              <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
-                          })}
+                          {this.props.tourDates.length > 0 ?
+                          (
+                            this.props.tourDates.map((avTime, i) => {
+                              return (
+                                <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
+                            })
+                          )
+                          :
+                          (
+                            <p className={Style.content}>No available time.</p>
+                          )
+                          }
+                          <br/>
                           <Button onClick={this.closeModalCal}>Close</Button>
                         </Col>
                       </Row>
