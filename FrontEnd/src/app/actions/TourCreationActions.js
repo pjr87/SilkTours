@@ -330,6 +330,7 @@ export function setConfirmed(newConfirmedState) {
  * @param message
  */
 export function setTabKey(newTabKeyState) {
+  window.scrollTo(0, 0);
   return { type: tourCreationConstants.UPDATE_TAB_KEY, newTabKeyState };
 }
 

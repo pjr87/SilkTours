@@ -5,43 +5,38 @@
 //  Created by Yongqiang Fan on 5/16/17.
 //  Copyright © 2017 AppsFoundation. All rights reserved.
 //
+//# TODO: Make this object when have time!
 
 import Foundation
 
 class Media {
-    var image:UIImage = UIImage()
+    var image:UIImage
+    var display_rank:Int
+    var file_name:String
+    var url:String
     
-    init() {
-        
+    init(display_rank: Int, file_name: String, url: String) {
+        self.display_rank = display_rank
+        self.file_name = file_name
+        self.url = url
+        self.image = UIImage()
+        BackendAPI.getImageByUrl(url: url) { image in
+            self.image = image
+        }
     }
     
     func getImage() -> UIImage {
         return self.image
     }
     
-    func setImageByUrl(url:String, completion:@escaping (UIImage) -> ()) {
-        let mediaUrl = URL(string: url)!
+    /*
+    func getImagesWithId(tourId:String) -> [String] {
         
-        let session = URLSession(configuration: .default)
-        let downloadImageTask = session.dataTask(with: mediaUrl) { (data, response, error) in
-            if let e = error {
-                print("Error downloading picture: \(e)")
-            } else {
-                if let res = response as? HTTPURLResponse {
-                    print("Downloaded picture with response code \(res.statusCode)")
-                    if let imageData = data {
-                        //print(imageData)
-                        //self.image = UIImage(data: imageData)!
-                        completion((UIImage(data: imageData))!)
-                    } else {
-                        print("Couldn't get image: Image is nil")
-                    }
-                } else {
-                    print("Couldn't get response code for some reason")
-                }
-            }
-        }
-        downloadImageTask.resume()
+    }*/
+    
+    func setImage() {
+        
     }
+    
     
 }

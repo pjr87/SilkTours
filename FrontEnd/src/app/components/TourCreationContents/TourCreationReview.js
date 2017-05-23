@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import style from './style.css';
 import {StaticField} from '../Forms/Forms.js';
 import { Pager, HelpBlock } from 'react-bootstrap';
@@ -20,10 +19,6 @@ class TourCreationReview extends React.Component{
       this.props.photos,
       this.props.hours_special,
       this.props.base_hours))
-  }
-
-  componentDidUpdate() {
-    window.scrollTo(0, 0);
   }
 
   previous(){
