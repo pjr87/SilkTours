@@ -170,7 +170,7 @@ class TourCreationPhotos extends React.Component{
           <div>
             <ReactCrop src={this.props.photos.file}
                       {...this.state} 
-                       onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)} keepSelection />
+                       onChange={(crop, pixelCrop) => this.onChange(crop, pixelCrop)} keepSelection minWidth={8} minHeight={8} />
           <br/>
           {this.state.imageLoaded ? <button onClick={() => this.handleClick('image')}>crop</button> : null }
           </div>

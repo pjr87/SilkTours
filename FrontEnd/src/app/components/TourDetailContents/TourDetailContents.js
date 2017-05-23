@@ -12,6 +12,8 @@ import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDa
 import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
 import dateFormat from 'dateformat';
 
+var PacmanLoader = require('halogen/PacmanLoader');
+
 
 class TourDetailContents extends React.Component{
   constructor(props) {
@@ -112,6 +114,35 @@ class TourDetailContents extends React.Component{
   }
 
   render(){
+    // try change me to a custom color like "red" or "#000000"
+    var color = '#BB66AA';
+
+    console.log("Tour:", this.props.selectedTour);
+    console.log(this.props.tourDates);
+
+    console.log("test: ", JSON.stringify(this.props.selectedTour) == '{}' )
+
+    if( !this.props.selectedTour || !this.props.tourDates || JSON.stringify(this.props.selectedTour) == '{}'  ){
+      console.log("render1");
+      console.log(this.props.selectedTour);
+      console.log(this.props.tourDates);
+      return <div>
+        <br/>
+        <br/>
+          <Grid>
+            <Col sm={6} xsOffset={5}>
+              <PacmanLoader style={Style.spinner} color={color}/>
+            </Col>
+          </Grid>
+      </div>
+    }
+
+    console.log("render2");
+    console.log(this.props.selectedTour);
+    console.log(this.props.tourDates);
+
+
+    console.log("stops: ", this.props.tourDates);
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
     let isGuide = false;
