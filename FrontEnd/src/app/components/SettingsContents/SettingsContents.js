@@ -17,7 +17,16 @@ class SettingsContents extends React.Component{
   }
 
   onSubmitClick(){
-    this.props.dispatch(updateUser(this.props.id_user, this.props.user, this.props.auth));
+    let tmp = {
+        address: this.props.user.address,
+        description: this.props.user.description,
+        dob: this.props.user.dob,
+        first_name: this.props.user.first_name,
+        interests: this.props.user.interests,
+        last_name: this.props.user.last_name,
+        profile_picture: this.props.user.profile_picture,
+    };
+    this.props.dispatch(updateUser(this.props.id_user, tmp, this.props.auth));
   }
 
   componentDidMount(){

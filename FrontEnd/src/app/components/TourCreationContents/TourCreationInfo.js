@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import style from './style.css';
 import { updateGuideState, setTabKey } from '../../actions/TourCreationActions';
 import { Pager } from 'react-bootstrap';
@@ -10,10 +9,6 @@ class TourCreationInfo extends React.Component{
 
     this.next = this.next.bind(this)
     this.addGuide = this.addGuide.bind(this)
-  }
-
-  componentDidUpdate() {
-    window.scrollTo(0, 0);
   }
 
   addGuide(){

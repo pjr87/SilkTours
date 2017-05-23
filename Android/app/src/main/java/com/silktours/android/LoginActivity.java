@@ -670,8 +670,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         user.setUserId(Integer.toString(silkUser.getInt(User.ID_USERS))); //userId it can be any unique user identifier
         user.setDisplayName(silkUser.getStr(User.FIRST_NAME) + " " + silkUser.getStr(User.LAST_NAME));
         user.setEmail(silkUser.getStr(User.EMAIL));
-        user.setAuthenticationTypeId(com.applozic.mobicomkit.api.account.user.User.AuthenticationType.APPLOZIC.getValue());  //User.AuthenticationType.APPLOZIC.getValue() for password verification from Applozic server and User.AuthenticationType.CLIENT.getValue() for access Token verification from your server set access token as password
-        user.setPassword(""); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+        //user.setAuthenticationTypeId(com.applozic.mobicomkit.api.account.user.User.AuthenticationType.APPLOZIC.getValue());  //User.AuthenticationType.APPLOZIC.getValue() for password verification from Applozic server and User.AuthenticationType.CLIENT.getValue() for access Token verification from your server set access token as password
+        //user.setPassword(""); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
         user.setImageLink(silkUser.getStr(User.PROFILE_PICTURE));
         new com.applozic.mobicomkit.api.account.user.UserLoginTask(user, listener, this).execute((Void) null);
     }
@@ -701,8 +701,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String UserId) {
+        public void getAuthenticationDetails(final AuthenticationContinuation authenticationContinuation, String UserId) {
+            AuthenticationDetails authDetails = new AuthenticationDetails(mEmail, mPassword, null);
 
+            // Now allow the authentication to continue
+            authenticationContinuation.setAuthenticationDetails(authDetails);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    authenticationContinuation.continueTask();
+                }
+            }).start();
         }
 
         @Override

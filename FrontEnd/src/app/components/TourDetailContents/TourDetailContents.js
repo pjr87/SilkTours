@@ -12,6 +12,8 @@ import { setSelectedTour, setSelectedDateId, setSelectedDateStart, setSelectedDa
 import InfiniteCalendar, { Calendar, defaultMultipleDateInterpolation, withMultipleDates } from 'react-infinite-calendar';
 import dateFormat from 'dateformat';
 
+var PacmanLoader = require('halogen/PacmanLoader');
+
 
 class TourDetailContents extends React.Component{
   constructor(props) {
@@ -112,6 +114,35 @@ class TourDetailContents extends React.Component{
   }
 
   render(){
+    // try change me to a custom color like "red" or "#000000"
+    var color = '#BB66AA';
+
+    console.log("Tour:", this.props.selectedTour);
+    console.log(this.props.tourDates);
+
+    console.log("test: ", JSON.stringify(this.props.selectedTour) == '{}' )
+
+    if( !this.props.selectedTour || !this.props.tourDates || JSON.stringify(this.props.selectedTour) == '{}'  ){
+      console.log("render1");
+      console.log(this.props.selectedTour);
+      console.log(this.props.tourDates);
+      return <div>
+        <br/>
+        <br/>
+          <Grid>
+            <Col sm={6} xsOffset={5}>
+              <PacmanLoader style={Style.spinner} color={color}/>
+            </Col>
+          </Grid>
+      </div>
+    }
+
+    console.log("render2");
+    console.log(this.props.selectedTour);
+    console.log(this.props.tourDates);
+
+
+    console.log("stops: ", this.props.tourDates);
     const guidesLength = this.props.selectedTour.guides.length;
     let guideButton = null;
     let isGuide = false;
@@ -241,13 +272,13 @@ class TourDetailContents extends React.Component{
                 <p className={Style.contentTitle}><b>Meeting Location</b></p>
                   {this.props.selectedTour.guides.map((guides, i) => {
                     return (
-                      <li key={i} className={Style.content}><Link
+                      <p key={i} className={Style.content}><Link
                                     to={{
                                       pathname: '/profile',
                                       query: { guideUserId: this.props.selectedTour.guides[0].id_user}
                                       }}>
                                       {guides.first_name} {guides.last_name}
-                                    </Link></li>);
+                                    </Link></p>);
 
                     })}
                 <p className={Style.content}>{this.props.selectedTour.address.city}</p>
@@ -265,19 +296,36 @@ class TourDetailContents extends React.Component{
                 <div className={Style.buttonContainer}>
                   <Button onClick={this.openModalCal}>Check Available Date</Button>
                     <Modal show={this.state.showModalCal} onHide={this.closeModalCal} dialogClassName={Style.modalCal}>
-                    <InfiniteCalendar
-                      width={400}
-                      height={400}
-                      selected={this.state.today}
-                      minDate={this.state.today}
-                      onSelect={this.handleSelectedDateChange}
-                      />
-                    <p className={Style.contentSubTitle}>Available Time: </p>
-                    {this.props.tourDates.map((avTime, i) => {
-                      return (
-                        <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
-                    })}
-                    <Button onClick={this.closeModalCal}>Close</Button>
+                    <Grid>
+                      <Row>
+                        <Col xs={8} sm={8} md={6} lg={5}>
+                          <InfiniteCalendar
+                            width={400}
+                            height={400}
+                            selected={this.state.today}
+                            minDate={this.state.today}
+                            onSelect={this.handleSelectedDateChange}
+                            />
+                        </Col>
+                        <Col xs={4} sm={4} md={6} lg={7}>
+                          <p className={Style.contentTitle}>Available Time: </p>
+                          {this.props.tourDates.length > 0 ?
+                          (
+                            this.props.tourDates.map((avTime, i) => {
+                              return (
+                                <li key={i} className={Style.content}>{avTime.start} ~ {avTime.end}</li>);
+                            })
+                          )
+                          :
+                          (
+                            <p className={Style.content}>No available time.</p>
+                          )
+                          }
+                          <br/>
+                          <Button onClick={this.closeModalCal}>Close</Button>
+                        </Col>
+                      </Row>
+                    </Grid>
                     </Modal>
                   {reserveEditButton}
                   {guideButton}
@@ -289,13 +337,13 @@ class TourDetailContents extends React.Component{
                 <div className={Style.reviewContainer}>
                 <Panel header="Reviews">
                 <ListGroup fill>
-                {this.props.selectedTour.ratings.map((reviews, i) => {
+                {this.props.selectedTour.ratings.length > 0 ? this.props.selectedTour.ratings.map((reviews, i) => {
                   return (
                     <ListGroupItem key={i}>
                       <p className={Style.reviewContentTitle}>{reviews.id_user} {reviews.date_time_created}:</p>
                       <p className={Style.reviewContent}>{reviews.comments}</p>
                     </ListGroupItem>);
-                })}
+                }) : <div style={{padding: 15}} >No Reviews Available</div>}
                 </ListGroup>
                 </Panel>
                 </div>
