@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         user.setDisplayName(from.getStr(User.FIRST_NAME) + " " + from.getStr(User.LAST_NAME));
         user.setEmail(from.getStr(User.EMAIL));
         user.setAuthenticationTypeId(com.applozic.mobicomkit.api.account.user.User.AuthenticationType.APPLOZIC.getValue());  //User.AuthenticationType.APPLOZIC.getValue() for password verification from Applozic server and User.AuthenticationType.CLIENT.getValue() for access Token verification from your server set access token as password
-        user.setPassword("silkpassword"); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+        //user.setPassword(""); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
         user.setImageLink(from.getStr(User.PROFILE_PICTURE));
         new UserLoginTask(user, listener, this).execute((Void) null);
     }
