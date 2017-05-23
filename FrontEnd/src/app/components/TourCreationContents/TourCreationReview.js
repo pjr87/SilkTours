@@ -19,7 +19,6 @@ class TourCreationReview extends React.Component{
       this.props.auth,
       this.props.photos,
       this.props.hours_special,
-      this.props.hours_special_dates,
       this.props.base_hours))
   }
 

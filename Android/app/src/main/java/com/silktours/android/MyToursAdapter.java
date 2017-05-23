@@ -56,7 +56,8 @@ public class MyToursAdapter extends ArrayAdapter<Tour>{
             protected Bitmap doInBackground(Void... params) {
                 try {
                     foundImages.add(position);
-                    return getResizedBitmap(getBitmapFromURL(tour.getStr("profile_image")), 200, 200);
+                    //return getResizedBitmap(getBitmapFromURL(tour.getStr("profile_image")), 200, 200);
+                    return getBitmapFromURL(tour.getStr("profile_image"));
                 } catch (Exception e) {
                     Log.e("MytourAdapter", "doInBackground: ", e);
                 }

@@ -56,7 +56,7 @@ class TourCreationContents extends React.Component{
           <Tab.Container activeKey={this.props.tabKey} onSelect={this.handleSelect} id="left-tabs-example" defaultActiveKey="location">
             <Row className="clearfix">
               <Col sm={4}>
-                <Nav stacked bsStyle="pills" >
+                <Nav stacked bsStyle="pills" className={style.ContainerStyle} >
                   <NavItem eventKey="info">
                     <Image src={logoImg} style={{width:65, height:65, marginTop: -8}} circle/>
                   </NavItem>
@@ -96,7 +96,7 @@ class TourCreationContents extends React.Component{
                 </Nav>
               </Col>
               <Col sm={8}>
-                <Tab.Content animation>
+                <Tab.Content animation >
                   <Tab.Pane eventKey="info">
                     <TourCreationInfo
                       user={this.props.user}
@@ -165,7 +165,6 @@ class TourCreationContents extends React.Component{
                       auth={this.props.auth}
                       photos={this.props.photos}
                       hours_special={this.props.hours_special}
-                      hours_special_dates={this.props.hours_special_dates}
                       base_hours={this.props.base_hours}
                       navAllowed={this.props.navAllowed}/>
                   </Tab.Pane>

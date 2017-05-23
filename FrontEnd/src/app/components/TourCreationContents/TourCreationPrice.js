@@ -30,7 +30,9 @@ class TourCreationPrice extends React.Component{
   _changePrice(event) {
     if(!isNaN(event.target.value))
     {
-       this._emitUserChange({...this.props.tour, price: event.target.value});
+      if(event.target.value >=0 && event.target.value <= 500){
+        this._emitUserChange({...this.props.tour, price: event.target.value});
+      }
     }else{
        console.log("Not a number");
     }
@@ -45,7 +47,7 @@ class TourCreationPrice extends React.Component{
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>What will this tour cost?</p>
+          <p className={style.HeaderStyle}>What will this tour cost? Price must be between 0 and 500</p>
           <br/>
           <EditableFieldClass style={style.BodyStyle} label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
           <br/>
@@ -60,7 +62,7 @@ class TourCreationPrice extends React.Component{
       return (
         <div>
           <br/>
-          <p className={style.HeaderStyle}>What will this tour cost?</p>
+          <p className={style.HeaderStyle}>What will this tour cost? Price must be between 0 and 500</p>
           <br/>
           <EditableFieldClass style={style.BodyStyle} label="Price" onChange={this._changePrice} value={this.props.tour.price}/>
           <br/>

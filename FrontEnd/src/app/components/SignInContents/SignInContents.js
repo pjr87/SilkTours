@@ -112,7 +112,8 @@ class SignInContents extends React.Component{
                   type="username"
                   ref="username"
                   onChange={this._changeUsername}
-                  placeholder="Email" />
+                  placeholder="Email"
+                  value={this.props.loginFormState.username} />
               </Col>
             </FormGroup>
             <FormGroup>
@@ -124,7 +125,8 @@ class SignInContents extends React.Component{
                   type="password"
                   ref="password"
                   onChange={this._changePassword}
-                  placeholder="Password" />
+                  placeholder="Password"
+                  value={this.props.loginFormState.password}/>
               </Col>
             </FormGroup>
             <FormGroup

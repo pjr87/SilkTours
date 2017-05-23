@@ -18,6 +18,7 @@ class TourCreationPhotos extends React.Component{
     this.onDrop = this.onDrop.bind(this)
     this.onOpenClick = this.onOpenClick.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
 
     this.state = {
         image: '',
@@ -26,7 +27,9 @@ class TourCreationPhotos extends React.Component{
           aspect: 9/9
         },
         pixelCrop: {},
-        cropped: false
+        cropped: false,
+        height: 0,
+        width: 0
     }
   }
 
@@ -61,6 +64,17 @@ class TourCreationPhotos extends React.Component{
       }
       photos = newFile;
     });
+
+    console.log(files);
+
+    const audio = document.createElement('img');
+    audio.src = files[0].preview;
+    audio.onload = function()
+    {
+      this.setState({height: audio.naturalHeight, width: audio.naturalWidth});
+      audio.parentNode.removeChild(audio);
+    }.bind(this);
+
     this.props.dispatch(updatePhotoState(photos));
   }
 
@@ -79,17 +93,17 @@ class TourCreationPhotos extends React.Component{
 
     var img = document.querySelector('#left-tabs-example-pane-photos > div > div:nth-child(7) > div > div > div > img');
 
-    console.log("img", img.height, " ", img.width);
 
+    var imageWidth = this.state.width;
+    var imageHeight = this.state.height;
 
-    var imageWidth = img.width;
-    var imageHeight = img.height;
+    console.log("height width", this.imageHeight, " ", this.imageWidth);
 
-    var cropX = (this.state.crop.x / 100) * imageWidth;
-    var cropY = (this.state.crop.y / 100) * imageHeight;
+    var cropX = (this.state.crop.x / 100.0) * imageWidth;
+    var cropY = (this.state.crop.y / 100.0) * imageHeight;
 
-    var cropWidth = (this.state.crop.width / 100) * imageWidth;
-    var cropHeight = (this.state.crop.height / 100) * imageHeight;
+    var cropWidth = (this.state.crop.width / 100.0) * imageWidth;
+    var cropHeight = (this.state.crop.height / 100.0) * imageHeight;
 
     var canvas = document.createElement('canvas');
     canvas.width = cropWidth;
@@ -135,6 +149,8 @@ class TourCreationPhotos extends React.Component{
     }
     photos = newFile;
     this.props.dispatch(updatePhotoState(photos));
+
+
   }
 
   render(){
