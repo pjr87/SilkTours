@@ -384,8 +384,6 @@ def set_user():
     """
     Creates a user using the usual user JSON object
     """
-    if not checkLogin():
-        return notAuthorizedResponse()
     user = User()
     user.create_or_edit(request.get_json())
     return jsonify(user.serialize())

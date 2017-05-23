@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -241,7 +241,7 @@
 
         <meta-data
             android:name="com.applozic.application.key"
-            android:value="208f30b543b13fdfba85ce3c442e217ad" />
+            android:value="99f097e1f3b4ebb13e008942be1ccf34" />
         <!-- Applozic Application Key -->
 
         <meta-data

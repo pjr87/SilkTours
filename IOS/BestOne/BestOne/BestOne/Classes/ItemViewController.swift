@@ -22,10 +22,13 @@ class ItemViewController: BaseViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl?
     var mainScrollView: UIScrollView = UIScrollView()
     var shopItem: ShopItem?
+
     var buttonsView:UIView = UIView()
     var informationView:UIView = UIView()
     var gMapView:UIView = UIView()
     var imageSessionView:UIView = UIView()
+
+    var guideId = "1" // TODO: Get the real guide id from JSON
     
     var mapView: GMSMapView!
     @IBOutlet weak var googleMapsHeightConstraint: NSLayoutConstraint!
@@ -86,6 +89,10 @@ class ItemViewController: BaseViewController {
         informationView.addSubview(descriptionLabel)
         mainScrollView.addSubview(informationView)
     }
+
+    func messagePressed() {
+        MessageController.launchThread(sender: self, forUser: guideId)
+    }
     
     fileprivate func loadButtons() {
         
@@ -99,6 +106,9 @@ class ItemViewController: BaseViewController {
         messageButton.backgroundColor = UIColor.blue
         messageButton.frame.size = CGSize(width: ViewWidth * CGFloat(0.333), height: ViewWidth * CGFloat(0.09))
         messageButton.frame.origin = CGPoint(x: buttonsView.frame.width * CGFloat(0.083), y: 0)
+        messageButton.frame.size = CGSize(width: 125, height: 30)
+        messageButton.frame.origin = CGPoint(x: 35, y: 345)
+        messageButton.addTarget(self, action: #selector(self.messagePressed), for: .touchUpInside)
         joinButton.setTitle("Join", for: .normal)
         joinButton.backgroundColor = UIColor.green
         joinButton.frame.size = CGSize(width: ViewWidth * CGFloat(0.333), height: ViewWidth * CGFloat(0.09))

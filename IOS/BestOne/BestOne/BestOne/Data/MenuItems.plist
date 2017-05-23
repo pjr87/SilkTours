@@ -20,6 +20,12 @@
 		<key>iconTitle</key>
 		<string>myCart</string>
 	</dict>
+    <dict>
+        <key>title</key>
+        <string>Messages</string>
+        <key>iconTitle</key>
+        <string>mail</string>
+    </dict>
 	<dict>
 		<key>title</key>
 		<string>Settings</string>

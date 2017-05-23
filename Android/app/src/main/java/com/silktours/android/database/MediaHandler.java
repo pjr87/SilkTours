@@ -1,6 +1,5 @@
 package com.silktours.android.database;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -8,13 +7,12 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-import com.silktours.android.MainActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -200,7 +198,7 @@ public class MediaHandler {
         }
 
     }
-
+    /*
     public static JSONObject Base64Encoder(Bitmap image) throws JSONException{
         int bytes = image.getByteCount();
         ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
@@ -212,14 +210,19 @@ public class MediaHandler {
         js.put("file", encodedImage);
         return js;
     }
+    */
 
-    public static String chooseFile() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        MainActivity.getInstance().startActivityForResult(Intent.createChooser(intent,
-                "Select Picture"), SELECT_PICTURE);
-        return null;
+    public static JSONObject Base64Encoder(Bitmap image) throws JSONException{
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encodedProfileImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        JSONObject js = new JSONObject();
+        //js.put("name", UUID.randomUUID() + ".jpg");
+        js.put("name", "testImage" + ".jpg");
+        js.put("file", encodedProfileImage);
+        return js;
     }
 
     public static Bitmap getBitmapFromURL(String src) {
